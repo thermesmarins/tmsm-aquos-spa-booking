@@ -82,8 +82,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public.js', array( 'jquery', 'wp-util' ), $this->version, true );
-
 		wp_deregister_script('bootstrap-datepicker');
 		wp_enqueue_script( 'bootstrap-datepicker', '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js', array( 'jquery', 'bootstrap' ), null, true );
 
@@ -94,6 +92,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				array( 'jquery', 'bootstrap', 'bootstrap-datepicker' ), null, true );
 		}
 
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public.js', array( 'jquery', 'wp-util', 'bootstrap-datepicker' ), $this->version, true );
 		// Params
 		$params = [
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -285,8 +284,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('json data:');
-			error_log(print_r($jsondata, true));
+			//error_log('json data:');
+			//error_log(print_r($jsondata, true));
 		}
 
 		wp_send_json($jsondata);
@@ -331,7 +330,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'return'  => 'ids',
 				'limit' => -1,
 			);
-			error_log('$product_category->term_id: '.$product_category->term_id);
 			$products_ids = wc_get_products( $args );
 			$products = [];
 			if(!empty($products_ids)){
@@ -363,8 +361,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('json data:');
-			error_log(print_r($jsondata, true));
+			//error_log('json data:');
+			//error_log(print_r($jsondata, true));
 		}
 
 		wp_send_json($jsondata);
@@ -405,6 +403,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
 
+
+			// @TODO connect to TMSM webservice
 			$times[] = [ 'hour'=> 10];
 			$times[] = [ 'hour'=> 11];
 			$times[] = [ 'hour'=> 15];
@@ -423,12 +423,69 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('json data:');
-			error_log(print_r($jsondata, true));
+			//error_log('json data:');
+			//error_log(print_r($jsondata, true));
 		}
 
 		wp_send_json($jsondata);
 		wp_die();
-
 	}
+
+	/**
+	 * Ajax For Add To Cart
+	 *
+	 * @since    1.0.0
+	 */
+	public static function ajax_addtocart() {
+
+		$security = sanitize_text_field( $_POST['security'] );
+		$product_category_id = sanitize_text_field( $_POST['productcategory'] );
+		$product_id = sanitize_text_field( $_POST['product'] );
+		$time = sanitize_text_field( $_POST['time'] );
+		$date = sanitize_text_field( $_POST['date'] );
+
+		$errors = array(); // Array to hold validation errors
+		$jsondata   = array(); // Array to pass back data
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('ajax_times');
+		}
+
+		// Check security
+		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_category_id) || empty($product_id) || empty($date) || empty($time)) {
+			$errors[] = __('Token security not valid', 'tmsm-aquos-spa-booking');
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log('Ajax security not OK');
+			}
+		}
+		else{
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log('Ajax security OK');
+			}
+
+			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
+
+			// @TODO add to cart
+
+		}
+
+
+		// Return a response
+		if( ! empty($errors) ) {
+			$jsondata['success'] = false;
+			$jsondata['errors']  = $errors;
+		}
+		else {
+			$jsondata['success'] = true;
+		}
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			//error_log('json data:');
+			//error_log(print_r($jsondata, true));
+		}
+
+		wp_send_json($jsondata);
+		wp_die();
+	}
+
 }
