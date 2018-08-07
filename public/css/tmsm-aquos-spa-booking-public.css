@@ -1,4 +1,41 @@
-/**
- * All of the CSS for your public-facing functionality should be
- * included in this file.
- */
+#tmsm-aquos-spa-booking-categories-container,
+#tmsm-aquos-spa-booking-products-container,
+#tmsm-aquos-spa-booking-date-container,
+#tmsm-aquos-spa-booking-times-container {
+  width: 48%;
+  vertical-align: top;
+  display: inline-block;
+}
+
+#tmsm-aquos-spa-booking-categories-container,
+#tmsm-aquos-spa-booking-date-container{
+  margin-right: 2%
+}
+
+#tmsm-aquos-spa-booking-products .media-object{
+  min-width: 150px;
+}
+
+.tmsm-aquos-spa-booking-time{
+  min-width: 100px;
+}
+
+.tmsm-aquos-spa-booking-time-change-label,
+.tmsm-aquos-spa-booking-product-selected-label,
+.tmsm-aquos-spa-booking-product-change-label{
+  display: none;
+}
+
+.tmsm-aquos-spa-booking-time-group.selected .tmsm-aquos-spa-booking-time-change-label,
+.tmsm-aquos-spa-booking-time-group.selected .tmsm-aquos-spa-booking-product-selected-label,
+.tmsm-aquos-spa-booking-time-group.selected .tmsm-aquos-spa-booking-product-change-label{
+  display: inline-block;
+}
+
+.tmsm-aquos-spa-booking-time-group.not-selected{
+  display: none;
+}
+
+#tmsm-aquos-spa-booking-confirm-container{
+  text-align: right;
+}

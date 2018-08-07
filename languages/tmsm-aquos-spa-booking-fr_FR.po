@@ -1,20 +1,18 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
 "POT-Creation-Date: 2018-08-07 15:56+0200\n"
-"PO-Revision-Date: 2014-10-24 21:08+0100\n"
-"Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
+"PO-Revision-Date: 2018-08-07 15:59+0200\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
-"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.8\n"
-"X-Poedit-KeywordsList: _e;__;_n:1,2;_x:1,2c;esc_attr__;esc_attr_e;"
-"esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: _e;__;_n:1,2;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
+"Language: fr\n"
 "X-Poedit-SearchPath-0: languages\n"
 "X-Poedit-SearchPath-1: .\n"
 "X-Poedit-SearchPathExcluded-0: vendor\n"
@@ -22,54 +20,54 @@ msgstr ""
 #: public/class-tmsm-aquos-spa-booking-public.php:103
 msgctxt "price"
 msgid "From"
-msgstr ""
+msgstr "À partir de"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:155
 msgid "Pick your treatments category:"
-msgstr ""
+msgstr "Choisir la catégorie de soins :"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:161
 msgid "Pick your treatment:"
-msgstr ""
+msgstr "Choisir le soin :"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:165
 msgid "Pick your date:"
-msgstr ""
+msgstr "Choisir la date :"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:170
 msgid "Pick your time:"
-msgstr ""
+msgstr "Choisir l’heure :"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:174
 msgid "Confirm this booking"
-msgstr ""
+msgstr "Confirmez cette réservation"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:194
 msgid "Change time"
-msgstr ""
+msgstr "Changer l’heure"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:225
 msgid "Know more about this product"
-msgstr ""
+msgstr "En savoir plus sur ce produit"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:227
 msgid "Book this treatment"
-msgstr ""
+msgstr "Réserver ce traitement"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:228
 msgid "Treatment selected"
-msgstr ""
+msgstr "Soin sélectionné"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:230
 msgid "Change treatment"
-msgstr ""
+msgstr "Changer de soin"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:257
 #: public/class-tmsm-aquos-spa-booking-public.php:316
 #: public/class-tmsm-aquos-spa-booking-public.php:396
 msgid "Token security not valid"
-msgstr ""
+msgstr "Jeton de sécurité non valide"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:349
 msgid "No product in this category"
-msgstr ""
+msgstr "Aucun produit dans cette catégorie"

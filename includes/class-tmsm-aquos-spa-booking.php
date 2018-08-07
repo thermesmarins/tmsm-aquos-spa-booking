@@ -156,7 +156,6 @@ class Tmsm_Aquos_Spa_Booking {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
 	}
 
 	/**
@@ -170,8 +169,23 @@ class Tmsm_Aquos_Spa_Booking {
 
 		$plugin_public = new Tmsm_Aquos_Spa_Booking_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles', 100 );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts', 100 );
+
+		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_category_template' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_template' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'time_template' );
+
+		// Ajax
+		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );
+		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );
+
+		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-products', $plugin_public, 'ajax_products' );
+		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-products', $plugin_public, 'ajax_products' );
+
+		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-times', $plugin_public, 'ajax_times' );
+		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-times', $plugin_public, 'ajax_times' );
 
 	}
 

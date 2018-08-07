@@ -6,4 +6,4 @@ Allows Spa Booking for TMSM
 Features
 -----------
 
-@TODO
+@TODO Setting for parent product category
