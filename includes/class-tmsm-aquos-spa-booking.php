@@ -210,6 +210,8 @@ class Tmsm_Aquos_Spa_Booking {
 
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-addtocart', $plugin_public, 'ajax_addtocart' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-addtocart', $plugin_public, 'ajax_addtocart' );
+
+		// Override Cart/Checkout
 		$this->loader->add_action( 'woocommerce_before_calculate_totals', $plugin_public, 'woocommerce_before_calculate_totals_appointment' );
 
 		$this->loader->add_filter( 'woocommerce_available_payment_gateways', $plugin_public, 'woocommerce_available_payment_gateways_cashondelivery', 10, 3 );
