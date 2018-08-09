@@ -103,7 +103,15 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						'id'       => 'tmsm_aquos_spa_booking_daysrange',
 						'name'     => __( 'Days Range', 'tmsm-aquos-spa-booking' ),
 						'desc'     => '<p class="description">'.__( 'Number of days it is possible to book in the future.', 'tmsm-aquos-spa-booking'  ).'</p>',
-						'default'  => 'no',
+						'default'  => 30,
+					),
+
+					array(
+						'type'     => 'textarea',
+						'id'       => 'tmsm_aquos_spa_booking_cancellationpolicy',
+						'name'     => __( 'Cancellation Policy', 'tmsm-woocommerce-vouchers' ),
+						'desc'     => __( 'months', 'tmsm-woocommerce-vouchers' ),
+						'default'  => '12',
 					),
 
 					array(

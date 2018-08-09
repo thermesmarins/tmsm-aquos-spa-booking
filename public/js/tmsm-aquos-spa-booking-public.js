@@ -166,8 +166,11 @@
     });
 
     // Datepicker
-    $.fn.datepicker.defaults.language = tmsm_aquos_spa_booking_params.locale;
-    $('#tmsm-aquos-spa-booking-datepicker').datepicker({}).on('changeDate', function (date) {
+    $('#tmsm-aquos-spa-booking-datepicker').datepicker({
+      language: tmsm_aquos_spa_booking_params.locale,
+      format: 'yyyy-mm-dd',
+      endDate: tmsm_aquos_spa_booking_params.options.enddate,
+    }).on('changeDate', function (date) {
       tmsmAquosSpaBookingLoadTimes(date);
     });
 
