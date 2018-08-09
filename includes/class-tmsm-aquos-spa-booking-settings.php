@@ -45,7 +45,7 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 			public function get_sections() {
 
 				$sections = array(
-					''         => __( 'Voucher settings', 'tmsm-aquos-spa-booking' ),
+					''         => __( 'Settings', 'tmsm-aquos-spa-booking' ),
 				);
 
 				return $sections;
@@ -84,22 +84,31 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 					array(
 						'type'     => 'checkbox',
 						'id'       => 'tmsm_aquos_spa_booking_acceptcashondelivery',
-						'name'     => __( 'Accept Cash On Delivery', 'tmsm-woocommerce-vouchers' ),
-						'desc'     => '<p class="description">'.__( 'Accept Cash On Delivery for the bookable products. Note: if cart has other types of products, the default methods will apply.' ).'</p>',
+						'name'     => __( 'Accept Cash On Delivery', 'tmsm-aquos-spa-booking' ),
+						'desc'     => '<p class="description">'.__( 'Accept Cash On Delivery for the bookable products. Note: if cart has other types of products, the default methods will apply.', 'tmsm-aquos-spa-booking'  ).'</p>',
 						'default'  => 'yes',
 					),
 
 					array(
 						'type'     => 'checkbox',
 						'id'       => 'tmsm_aquos_spa_booking_acceptonlinepayment',
-						'name'     => __( 'Accept Online Payment', 'tmsm-woocommerce-vouchers' ),
-						'desc'     => '<p class="description">'.__( 'Accept Online Payment for the Bookable Products.' ).'</p>',
+						'name'     => __( 'Accept Online Payment', 'tmsm-aquos-spa-booking' ),
+						'desc'     => '<p class="description">'.__( 'Accept Online Payment for the Bookable Products.', 'tmsm-aquos-spa-booking'  ).'</p>',
+						'default'  => 'no',
+					),
+
+
+					array(
+						'type'     => 'number',
+						'id'       => 'tmsm_aquos_spa_booking_daysrange',
+						'name'     => __( 'Days Range', 'tmsm-aquos-spa-booking' ),
+						'desc'     => '<p class="description">'.__( 'Number of days it is possible to book in the future.', 'tmsm-aquos-spa-booking'  ).'</p>',
 						'default'  => 'no',
 					),
 
 					array(
 						'type' => 'sectionend',
-						'id'   => 'tmsm_woocommerce_vouchers_settings'
+						'id'   => 'tmsm_aquos_spa_booking_settings'
 					),
 
 				) ;
