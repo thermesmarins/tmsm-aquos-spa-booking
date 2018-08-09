@@ -610,4 +610,33 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 	}
 
+	/**
+	 * Displays hidden delivery date for order item in order view (frontend)
+	 * /my-account/view-order/$order_id/
+	 * /checkout/order-received/$order_id/
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string        $html
+	 * @param  WC_Order_Item $item
+	 * @param  array         $args
+	 *
+	 * @return string
+	 */
+	public function woocommerce_display_item_meta_appointment( $html, $item, $args ) {
+
+		$strings = [];
+
+		if ( !empty($item['_appointment'])) {
+			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Appointment:', 'tmsm-aquos-spa-booking' ) . '</strong> '
+			                       .  esc_html($item['_appointment']) ;
+		}
+
+		if ( $strings != [] ) {
+			$html .= $args['before'] . implode( $args['separator'], $strings ) . $args['after'];
+		}
+
+		return $html;
+	}
+
 }

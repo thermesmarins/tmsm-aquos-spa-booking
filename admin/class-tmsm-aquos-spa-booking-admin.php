@@ -76,4 +76,30 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 	}
 
+	/**
+	 * Displays recipient item meta on order page
+	 *
+	 * @version 1.0.0
+	 * @since   1.0.0
+	 *
+	 * @param mixed         $formatted_meta
+	 * @param WC_Order_Item $order_item
+	 *
+	 * @return mixed
+	 */
+	public function woocommerce_order_item_get_formatted_meta_data( $formatted_meta, WC_Order_Item $order_item ) {
+		if ( empty( $formatted_meta ) ) {
+			return $formatted_meta;
+		}
+
+		foreach ( $formatted_meta as $meta ) {
+
+			if($meta->key == '_appointment' && !empty($meta->value)){
+				$meta->display_key = __('Appointment', 'tmsm-aquos-spa-booking');
+			}
+
+		}
+
+		return $formatted_meta;
+	}
 }

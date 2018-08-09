@@ -1,18 +1,26 @@
 TMSM Aquos Spa Booking
 ======================
 
-Allows Spa Booking for TMSM
+Allow Spa Booking for TMSM
 
 Features
 -----------
 
-@TODO Setting for parent product category
-@TODO Setting for webservice URL
+Soon
 
-@TODO create product field for Aquos ID
-@TODO map products with Aquos ID
+TODO
+----
 
-
+* Settings:
+    * Setting for parent product category
+    * Setting for webservice URL
+    * Setting for Payment Method: COD (Cash on Delivery) or not
+* Create product field for Aquos ID
+* Map products with Aquos ID
+* Restrict booking to product with Aquos ID
+* Payment Method:
+    * Force Payment Method chosen
+    * Handle other types of product in cart, conflict of Payment Methods
 
 
 
