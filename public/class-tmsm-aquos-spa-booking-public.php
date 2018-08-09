@@ -268,11 +268,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
 
-			$product_categories = get_terms( 'product_cat', array(
+			// Get "product_cat" Terms With Parent as an Option
+			$settings_maincategory  = get_option( 'tmsm_aquos_spa_booking_productcat', 0 );
+			$product_categories = get_terms( 'product_cat', [
 				'hide_empty' => true,
-				'parent' => 57,
+				'parent' => !empty($settings_maincategory) ? $settings_maincategory: 0,
 				'orderby'    => 'parent',
-			) );
+			]);
+
 			$jsondata['product_categories'] = $product_categories;
 		}
 
@@ -339,35 +342,41 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				foreach($products_ids as $key => $product_id){
 					$product = wc_get_product($product_id);
 
-					$product_virtual_chepeast = null;
+					$product_cheapest = null;
 
-					if($product->is_virtual()){
-						$product_virtual_chepeast = $product;
+					$aquos_id = get_post_meta( $product_id, '_aquos_id', true);
+					if(empty($aquos_id)){
+						continue;
+					}
+
+					if(!$product->is_virtual() && !$product->is_type( 'variable' )){
+						$product_cheapest = $product;
 					}
 					else{
 						if($product->is_type( 'variable' ) ){
 							foreach ( $product->get_available_variations() as $variation_data ) {
+
 								if(empty($variation_data['variation_id'])){
 									continue;
 								}
 								$variation = wc_get_product($variation_data['variation_id']);
-								if(!$variation->get_virtual()){
+								if($variation->get_virtual()){
 									continue;
 								}
 								if($product->get_price() === $variation->get_price()){
-									$product_virtual_chepeast = $variation;
+									$product_cheapest = $variation;
 								}
 							}
 						}
 					}
 
-					if(!empty($product_virtual_chepeast)){
+					if ( ! empty( $product_cheapest ) ) {
 						$products[$key] = [
-							'id' => esc_js($product_virtual_chepeast->get_id()),
+							'id' => esc_js($product_cheapest->get_id()),
 							'permalink' => esc_js($product->get_permalink()),
 							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-							'price' => $product_virtual_chepeast->get_price_html(),
-							'name' => esc_js($product_virtual_chepeast->get_name()),
+							'price' => $product_cheapest->get_price_html(),
+							'name' => esc_js($product_cheapest->get_name()),
 						];
 					}
 
@@ -507,10 +516,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$time_formatted
 			);
 			$quantity = 1;
-			$variation_id = 10554;
+			$variation_id = $product_id;
 			$variation = array();
 			$cart_item_data = [
-				'appointment' => $appointment
+				'appointment' => $appointment,
+				//'price' => 12 // if I want to force a price in the cart
 			];
 
 			$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $cart_item_data);
@@ -628,8 +638,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$strings = [];
 
 		if ( !empty($item['_appointment'])) {
-			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Appointment:', 'tmsm-aquos-spa-booking' ) . '</strong> '
-			                       .  esc_html($item['_appointment']) ;
+			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Appointment:', 'tmsm-aquos-spa-booking' ) . '</strong> '.  esc_html($item['_appointment']) ;
 		}
 
 		if ( $strings != [] ) {
@@ -638,5 +647,66 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		return $html;
 	}
+
+	/**
+	 * Update Price in Cart
+	 *
+	 * @param WC_Cart $cart
+	 */
+	public function woocommerce_before_calculate_totals_appointment($cart){
+		foreach ( $cart->cart_contents as $key => $value ) {
+			//$value['data']->set_price($value['price']); // If I want to force a price in the cart
+			if(!empty($value['appointment'])){
+				$value['data']->set_virtual(true);
+			}
+		}
+	}
+
+	/**
+	 * Disable Other Payments Gateways if Cas On Delivery is Prefered Method
+	 *
+	 * @param $available_gateways
+	 *
+	 * @return mixed
+	 */
+	function woocommerce_available_payment_gateways_cashondelivery( $available_gateways ) {
+		global $woocommerce;
+
+		$settings_acceptcashondelivery = get_option( 'tmsm_aquos_spa_booking_acceptcashondelivery', 'yes' );
+		$settings_acceptonlinepayment = get_option( 'tmsm_aquos_spa_booking_acceptonlinepayment', 'no' );
+
+		// Check cart content: if all products are appointments
+		$all_appointments = true;
+		foreach ( $woocommerce->cart->cart_contents as $key => $values ) {
+			if(empty($values['appointment'])){
+				$all_appointments = false;
+				break;
+			}
+		}
+
+		// All products are appointments, allow accepted methods
+		if($all_appointments === true){
+
+			if($settings_acceptcashondelivery === 'no'){
+				unset($available_gateways['cod']);
+			}
+			if($settings_acceptonlinepayment === 'no' && $settings_acceptcashondelivery === 'yes'){
+				if(!empty($available_gateways)){
+					foreach ($available_gateways as $available_gateway_key => $available_gateway){
+						if($available_gateway_key !== 'cod'){
+							unset($available_gateways[$available_gateway_key]);
+						}
+					}
+				}
+			}
+		}
+		// If at least one product is not an appointment, then remove cod
+		else{
+			unset($available_gateways['cod']);
+		}
+
+		return $available_gateways;
+	}
+
 
 }

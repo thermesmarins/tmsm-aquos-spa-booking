@@ -102,4 +102,52 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 		return $formatted_meta;
 	}
+
+	/**
+	 * Include settings class
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $settings
+	 *
+	 * @return array
+	 */
+	function woocommerce_get_settings_pages_aquosspabooking($settings) {
+		$settings[] = include( plugin_dir_path( dirname( __FILE__ ) ) .'includes/class-tmsm-aquos-spa-booking-settings.php' );
+		return $settings; // Return
+	}
+
+	/**
+	 * Add Aquos ID Field to Inventory Product Data Tab
+	 */
+	public function woocommerce_product_options_inventory_product_data_aquosid(){
+		echo '<div class="options_group">';
+		woocommerce_wp_text_input(
+			array(
+				'id'          => '_aquos_id',
+				'label'       => __( 'Aquos Product ID', 'tmsm-aquos-spa-booking' ),
+				'placeholder' => '',
+				'desc_tip'    => 'true',
+				'description' => __( 'If empty, the product won\'t be bookable.', 'tmsm-aquos-spa-booking' )
+			)
+		);
+		echo '</div>';
+	}
+
+	/**
+	 * Save Product Data
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $post_id
+	 *
+	 * @return void
+	 */
+	function woocommerce_process_product_save_options( $post_id ) {
+
+		if ( isset( $_POST['_aquos_id'] ) ) :
+			update_post_meta( $post_id, '_aquos_id', absint( $_POST['_aquos_id'] ) );
+		endif;
+
+	}
 }
