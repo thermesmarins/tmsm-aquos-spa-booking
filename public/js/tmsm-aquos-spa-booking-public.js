@@ -124,7 +124,6 @@
               //console.log('data.product:');
               //console.log(data.products);
               $.each(data.products, function (index, product) {
-                console.log(product);
                 $('#tmsm-aquos-spa-booking-products').append(product_template(product));
               });
             }
@@ -218,7 +217,7 @@
           success: function (data) {
             if (data.success === true) {
 
-              window.location = data.redirect;
+              //window.location = data.redirect;
 
             }
             else {

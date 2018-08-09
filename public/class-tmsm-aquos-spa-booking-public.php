@@ -148,6 +148,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		$output = '';
 
+
+
 		$output = '
 		<form id="tmsm-aquos-spa-booking-form">
 		<div id="tmsm-aquos-spa-booking-categories-container">
@@ -221,6 +223,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				</div>
 				<div class="media-body">
 					<h4 class="media-heading">{{ data.name }}</h4>
+					<h6 class="media-heading">{{{ data.price }}}</h6>
 					<p><a href="{{ data.permalink }}"><?php echo __('Know more about this product', 'tmsm-aquos-spa-booking');?></a></p>
 					<p><a href="#" class="<?php echo self::button_class(); ?> tmsm-aquos-spa-booking-product-select" data-product="{{ data.id }}">
 							<span class="tmsm-aquos-spa-booking-product-select-label"><?php echo __('Book this treatment', 'tmsm-aquos-spa-booking');?></span>
@@ -335,12 +338,39 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			if(!empty($products_ids)){
 				foreach($products_ids as $key => $product_id){
 					$product = wc_get_product($product_id);
-					$products[$key] = [
-						'id' => esc_js($product->get_id()),
-						'permalink' => esc_js($product->get_permalink()),
-						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-						'name' => esc_js($product->get_name()),
-					];
+
+					$product_virtual_chepeast = null;
+
+					if($product->is_virtual()){
+						$product_virtual_chepeast = $product;
+					}
+					else{
+						if($product->is_type( 'variable' ) ){
+							foreach ( $product->get_available_variations() as $variation_data ) {
+								if(empty($variation_data['variation_id'])){
+									continue;
+								}
+								$variation = wc_get_product($variation_data['variation_id']);
+								if(!$variation->get_virtual()){
+									continue;
+								}
+								if($product->get_price() === $variation->get_price()){
+									$product_virtual_chepeast = $variation;
+								}
+							}
+						}
+					}
+
+					if(!empty($product_virtual_chepeast)){
+						$products[$key] = [
+							'id' => esc_js($product_virtual_chepeast->get_id()),
+							'permalink' => esc_js($product->get_permalink()),
+							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+							'price' => $product_virtual_chepeast->get_price_html(),
+							'name' => esc_js($product_virtual_chepeast->get_name()),
+						];
+					}
+
 				}
 			}
 			else{
@@ -465,10 +495,29 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
 
-			// @TODO add to cart
+			// Add To Cart
+			//$product_id = 10554 ;
+			$datetime = new \DateTime($date . ' ' . $time . ':00:00');
+			$timestamp = $datetime->getTimestamp();
+			$date_formatted = date_i18n( get_option( 'date_format' ), $timestamp );
+			$time_formatted = date_i18n( get_option( 'time_format' ), $timestamp );
+			$appointment = sprintf(
+				_x( '%s at %s', 'date+time', 'tmsm-aquos-spa-booking' ),
+				$date_formatted,
+				$time_formatted
+			);
+			$quantity = 1;
+			$variation_id = 10554;
+			$variation = array();
+			$cart_item_data = [
+				'appointment' => $appointment
+			];
+
+			$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $cart_item_data);
+
+			$redirect = wc_get_cart_url();
 
 		}
-
 
 		// Return a response
 		if( ! empty($errors) ) {
@@ -486,6 +535,79 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		wp_send_json($jsondata);
 		wp_die();
+	}
+
+	/**
+	 * Add Appointment Data Date+Time When Adding To Cart
+	 *
+	 * @param array $cart_item_data
+	 * @param int   $product_id
+	 * @param int   $variation_id
+	 *
+	 * @return array
+	 */
+	public function woocommerce_add_cart_item_data_appointment( $cart_item_data, $product_id, $variation_id ){
+		$appointment = sanitize_text_field(filter_input( INPUT_POST, 'appointment' ));
+
+		if ( empty( $appointment ) ) {
+			return $cart_item_data;
+		}
+
+		$cart_item_data['appointment'] = $appointment;
+
+		return $cart_item_data;
+	}
+
+	/**
+	 * Display Appointment Data Date+Time When Adding To Cart
+	 *
+	 * @param array $item_data
+	 * @param array $cart_item
+	 *
+	 * @return array
+	 */
+	function woocommerce_get_item_data_appointment( $item_data, $cart_item ) {
+
+		//error_log(print_r($item_data, true));
+		//error_log(print_r($cart_item, true));
+		if ( empty( $cart_item['appointment'] ) ) {
+			return $item_data;
+		}
+
+		$item_data[] = array(
+			'key'     => __( 'Appointment', 'tmsm-aquos-spa-booking' ),
+			'value'   => wc_clean( $cart_item['appointment'] ),
+			'display' => '',
+		);
+
+		return $item_data;
+	}
+
+
+	/**
+	 * Update Order Item Meta With Appointment Data
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WC_Order_Item_Product $item
+	 * @param string                $cart_item_key
+	 * @param array                 $values
+	 * @param WC_Order              $order
+	 */
+	public function woocommerce_checkout_create_order_line_item_appointment( $item, $cart_item_key, $values, $order ) {
+
+		$variation_id = isset( $values['variation_id'] ) && ! empty( $values['variation_id'] ) ? $values['variation_id'] : $values['product_id'];
+
+		$product = $item->get_product();
+
+		if ( $product ) {
+			$variation_id = $product->get_id();
+		}
+
+		if ( ! empty( $values['appointment'] ) ) {
+			$item->add_meta_data( '_appointment', $values['appointment'], true );
+		}
+
 	}
 
 }
