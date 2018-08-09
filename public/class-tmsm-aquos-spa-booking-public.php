@@ -598,11 +598,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		$variation_id = isset( $values['variation_id'] ) && ! empty( $values['variation_id'] ) ? $values['variation_id'] : $values['product_id'];
 
-		$product = $item->get_product();
+		/*$product = $item->get_product();
 
 		if ( $product ) {
 			$variation_id = $product->get_id();
-		}
+		}*/
 
 		if ( ! empty( $values['appointment'] ) ) {
 			$item->add_meta_data( '_appointment', $values['appointment'], true );
