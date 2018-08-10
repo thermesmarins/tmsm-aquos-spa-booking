@@ -220,7 +220,9 @@
           success: function (data) {
             if (data.success === true) {
 
-              //window.location = data.redirect;
+              if(data.redirect){
+                window.location = data.redirect;
+              }
 
             }
             else {

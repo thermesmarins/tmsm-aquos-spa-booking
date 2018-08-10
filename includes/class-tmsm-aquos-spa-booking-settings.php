@@ -85,7 +85,7 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						'type'     => 'checkbox',
 						'id'       => 'tmsm_aquos_spa_booking_acceptcashondelivery',
 						'name'     => __( 'Accept Cash On Delivery', 'tmsm-aquos-spa-booking' ),
-						'desc'     => '<p class="description">'.__( 'Accept Cash On Delivery for the bookable products. Note: if cart has other types of products, the default methods will apply.', 'tmsm-aquos-spa-booking'  ).'</p>',
+						'desc'     => '<p class="description">'.__( 'Accept Cash On Delivery for the bookable products. It has to be enabled in the Checkout Page. Note: if cart has other types of products, the default methods will apply.', 'tmsm-aquos-spa-booking'  ).'</p>',
 						'default'  => 'yes',
 					),
 
@@ -96,7 +96,6 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						'desc'     => '<p class="description">'.__( 'Accept Online Payment for the Bookable Products.', 'tmsm-aquos-spa-booking'  ).'</p>',
 						'default'  => 'no',
 					),
-
 
 					array(
 						'type'     => 'number',
@@ -109,9 +108,19 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 					array(
 						'type'     => 'textarea',
 						'id'       => 'tmsm_aquos_spa_booking_cancellationpolicy',
-						'name'     => __( 'Cancellation Policy', 'tmsm-woocommerce-vouchers' ),
-						'desc'     => __( 'months', 'tmsm-woocommerce-vouchers' ),
-						'default'  => '12',
+						'name'     => __( 'Cancellation Policy', 'tmsm-aquos-spa-booking' ),
+					),
+
+					array(
+						'type'     => 'textarea',
+						'id'       => 'tmsm_aquos_spa_booking_thankyou',
+						'name'     => __( 'Message in order received page', 'tmsm-aquos-spa-booking' ),
+					),
+
+					array(
+						'type'     => 'textarea',
+						'id'       => 'tmsm_aquos_spa_booking_orderemail',
+						'name'     => __( 'Message in order email', 'tmsm-aquos-spa-booking' ),
 					),
 
 					array(

@@ -197,6 +197,10 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_filter( 'woocommerce_get_item_data', $plugin_public, 'woocommerce_get_item_data_appointment', 10, 2 );
 		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'woocommerce_checkout_create_order_line_item_appointment', 10, 4 );
 		$this->loader->add_filter( 'woocommerce_display_item_meta', $plugin_public, 'woocommerce_display_item_meta_appointment', 10, 3 );
+		$this->loader->add_filter( 'woocommerce_thankyou_order_received_text', $plugin_public, 'woocommerce_thankyou_order_received_text_appointment', 100, 2 );
+		$this->loader->add_action( 'woocommerce_email_before_order_table', $plugin_public, 'woocommerce_email_before_order_table_appointment', 20, 4 );
+
+
 
 		// Ajax
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );

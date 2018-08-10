@@ -184,7 +184,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<input type="hidden" id="tmsm-aquos-spa-booking-selected-date" name="date" value="">
 		<input type="hidden" id="tmsm-aquos-spa-booking-selected-time" name="time" value="">
 		'.wp_nonce_field( 'tmsm-aquos-spa-booking-nonce-action', 'tmsm-aquos-spa-booking-nonce', true, false ).'
-		</form>';
+		</form>
+		<p>'.esc_html(get_option( 'tmsm_aquos_spa_booking_cancellationpolicy', '' )).'</p>
+		';
 
 		return $output;
 	}
@@ -531,6 +533,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $cart_item_data);
 
 			$redirect = wc_get_cart_url();
+			$jsondata['redirect'] = $redirect;
 
 		}
 
@@ -714,4 +717,72 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	}
 
 
+	/**
+	 * If Order has at least one appointment
+	 *
+	 * @param WC_Order $order
+	 *
+	 * @return bool
+	 */
+	private function order_has_appointment($order){
+
+		$has_appointment = false;
+
+		if ( ! empty( $order ) ) {
+
+
+			foreach ( $order->get_items() as $order_item_id => $order_item_data) {
+
+				// Has appointment
+				if(!empty($order_item_data['_appointment'])){
+					$has_appointment = true;
+				}
+
+			}
+		}
+		return $has_appointment;
+	}
+
+
+	/**
+	 * @param $thankyou
+	 * @param $order WC_Order
+	 *
+	 * @return string
+	 */
+	function woocommerce_thankyou_order_received_text_appointment( $thankyou, $order ) {
+
+		if ( self::order_has_appointment( $order ) === true ) {
+			$message = get_option( 'tmsm_aquos_spa_booking_thankyou', false );
+
+			if ( ! empty( $message ) ) {
+				$thankyou .= '<br><br>' . esc_html( $message );
+			}
+		}
+
+		return $thankyou;
+
+	}
+
+	/**
+	 * Generates Order structured data.
+	 *
+	 * Hooked into `woocommerce_email_order_details` action hook.
+	 *
+	 * @param WC_Order $order         Order data.
+	 * @param bool     $sent_to_admin Send to admin (default: false).
+	 * @param bool     $plain_text    Plain text email (default: false).
+	 * @param string   $email         Email address.
+	 */
+	public function woocommerce_email_before_order_table_appointment($order, $sent_to_admin, $plain_text, $email){
+
+		if ( self::order_has_appointment( $order ) === true && $sent_to_admin === false ) {
+			$message = get_option( 'tmsm_aquos_spa_booking_orderemail', false );
+
+			if ( ! empty( $message ) ) {
+				echo '<p>' . esc_html( $message ) . '</p>';
+			}
+		}
+
+	}
 }

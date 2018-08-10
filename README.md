@@ -6,7 +6,12 @@ Allow Spa Booking for TMSM
 Features
 -----------
 
-Soon
+* Shortcode for Spa Booking
+* Displays a list of compatible products
+* User can select a product, a date
+* Then it connects to a webservice for time slots
+* Adds the product with a datetime meta
+* Enable Cash on Delivery Method
 
 TODO
 ----
@@ -14,6 +19,5 @@ TODO
 * Settings:
     * Setting for webservice URL
 * Map products with Aquos ID
-* Define cancellation info
 * Display duration of treatment
-
+* Expire products in cart (after 2 hours)
