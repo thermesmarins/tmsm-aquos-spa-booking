@@ -527,6 +527,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$variation = array();
 			$cart_item_data = [
 				'appointment' => $appointment,
+				'timestamp_added' => time(),
 				//'price' => 12 // if I want to force a price in the cart
 			];
 
@@ -784,5 +785,35 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			}
 		}
 
+	}
+
+	/**
+	 * Remove Appointments that are expired, too hold = 2 hours
+	 */
+	public function woocommerce_check_cart_items_expire(){
+		if( is_cart() || is_checkout() ) {
+			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+
+				if(!empty($cart_item['appointment']) && !empty($cart_item['timestamp_added'])){
+					$_product = $cart_item['data'];
+					if( time() > ( $cart_item['timestamp_added'] + 3600 * 2)){
+						WC()->cart->remove_cart_item( $cart_item_key );
+						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'woocommerce' ), $_product->get_name() ), 'notice' );
+					}
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * Force orders be marked as "on hold" instead of "processing"
+	 *
+	 * @param $status
+	 *
+	 * @return string
+	 */
+	public function woocommerce_cod_process_payment_order_status($status){
+		return 'on-hold';
 	}
 }
