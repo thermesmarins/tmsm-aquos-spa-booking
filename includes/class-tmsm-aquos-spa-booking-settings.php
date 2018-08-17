@@ -70,6 +70,21 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 					),
 
 					array(
+						'type'     => 'url',
+						'id'       => 'tmsm_aquos_spa_booking_webserviceurl',
+						'name'     => __( 'Web Service URL', 'tmsm-aquos-spa-booking' ),
+						'desc'     => ''.
+						              '<p class="description">'.
+						              __( 'The URL of the Aquos web service. Use the special variables in the URL:', 'tmsm-aquos-spa-booking').
+						              '<br>'.sprintf(__( '%s as the requested date.', 'tmsm-aquos-spa-booking'), '<code>{date}</code>').
+						              '<br>'.sprintf(__( '%s as the requested product ID.', 'tmsm-aquos-spa-booking'), '<code>{product_id}</code>').
+						              '<br>'.sprintf(__( '%s as the the web site id.', 'tmsm-aquos-spa-booking'), '<code>{site_id}</code>').
+						              '<br>'.sprintf(__( '%s as the web site name.', 'tmsm-aquos-spa-booking'), '<code>{site_name}</code>').
+						              '</p>',
+						'class'  => 'large-text',
+					),
+
+					array(
 						'type'     => 'number',
 						'id'       => 'tmsm_aquos_spa_booking_productcat',
 						'name'     => __( 'WooCommerce Product Category ID', 'tmsm-aquos-spa-booking' ),
@@ -78,7 +93,6 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						              __( 'The ID of the product category. Leave 0 if all categories can be booked.', 'tmsm-aquos-spa-booking'). '</p>',
 						'default' => 0,
 						'class'  => 'regular-text',
-						'required' => true
 					),
 
 					array(

@@ -93,6 +93,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public.js', array( 'jquery', 'wp-util', 'bootstrap-datepicker' ), $this->version, true );
 
+		$startdate = new \DateTime();
+		$startdate->modify('+1 day');
 		$enddate = new \DateTime();
 		$enddate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrange', 30 ). ' days');
 
@@ -107,6 +109,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			'options'  => [
 				'daysrange' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrange', 30 )),
 				'enddate' => $enddate->format('Y-m-d'),
+				'startdate' => $startdate->format('Y-m-d'),
 			],
 		];
 
@@ -449,8 +452,21 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
 
+			// Call web service
+			$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurl' );
+			error_log('before curl_init');
+			if(!empty($settings_webserviceurl)){
+				error_log('curl_init');
+				$ch = curl_init();
+				curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
+				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+				curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
+				$result = curl_exec( $ch );
+				curl_close( $ch );
+				// @TODO analyse response
+				error_log(var_export(json_decode($result, true), true));
+			}
 
-			// @TODO connect to TMSM webservice
 			$times[] = [ 'hour'=> 10];
 			$times[] = [ 'hour'=> 11];
 			$times[] = [ 'hour'=> 15];

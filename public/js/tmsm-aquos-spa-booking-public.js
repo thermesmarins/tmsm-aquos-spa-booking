@@ -169,6 +169,7 @@
     $('#tmsm-aquos-spa-booking-datepicker').datepicker({
       language: tmsm_aquos_spa_booking_params.locale,
       format: 'yyyy-mm-dd',
+      startDate: tmsm_aquos_spa_booking_params.options.startdate,
       endDate: tmsm_aquos_spa_booking_params.options.enddate,
     }).on('changeDate', function (date) {
       tmsmAquosSpaBookingLoadTimes(date);
