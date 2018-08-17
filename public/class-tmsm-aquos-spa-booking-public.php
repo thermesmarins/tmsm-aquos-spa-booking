@@ -431,6 +431,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$product_id = sanitize_text_field( $_POST['product'] );
 		$date = sanitize_text_field( $_POST['date'] );
 
+		$product = wc_get_product($product_id);
+		$aquos_id = get_post_meta($product_id, '_aquos_id', true);
+
 		$errors = array(); // Array to hold validation errors
 		$jsondata   = array(); // Array to pass back data
 
@@ -439,7 +442,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		// Check security
-		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_category_id) || empty($product_id) || empty($date)) {
+		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_category_id) || empty($product_id) || empty($date) || empty($aquos_id) ) {
 			$errors[] = __('Token security not valid', 'tmsm-aquos-spa-booking');
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 				error_log('Ajax security not OK');
@@ -454,15 +457,25 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			// Call web service
 			$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurl' );
-			error_log('before curl_init');
 			if(!empty($settings_webserviceurl)){
-				error_log('curl_init');
+
+				error_log('url before:'.$settings_webserviceurl);
+
+				$patterns = ['{date}', '{product_id}', '{site_id}', 'site_name'];
+				$replacements = [$date, $aquos_id, (is_multisite() ? get_current_blog_id() : 0 ), bloginfo('name')];
+
+				// Replace keywords in url
+				$settings_webserviceurl = preg_replace($patterns, $replacements, $string);
+				error_log( 'url after:' . $settings_webserviceurl );
+
+				// Connect with cURL
 				$ch = curl_init();
 				curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
 				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 				curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
 				$result = curl_exec( $ch );
 				curl_close( $ch );
+
 				// @TODO analyse response
 				error_log(var_export(json_decode($result, true), true));
 			}
