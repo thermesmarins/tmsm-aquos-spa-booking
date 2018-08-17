@@ -462,10 +462,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				error_log('url before:'.$settings_webserviceurl);
 
 				$patterns = ['{date}', '{product_id}', '{site_id}', 'site_name'];
-				$replacements = [$date, $aquos_id, (is_multisite() ? get_current_blog_id() : 0 ), bloginfo('name')];
+				$replacements = [esc_html($date), esc_html($aquos_id), (is_multisite() ? get_current_blog_id() : 0 ), esc_html(get_bloginfo('name'))];
 
 				// Replace keywords in url
-				$settings_webserviceurl = preg_replace($patterns, $replacements, $string);
+				$settings_webserviceurl = preg_replace($patterns, $replacements, $settings_webserviceurl);
 				error_log( 'url after:' . $settings_webserviceurl );
 
 				// Connect with cURL
