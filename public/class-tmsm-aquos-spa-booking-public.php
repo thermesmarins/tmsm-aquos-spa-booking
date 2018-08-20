@@ -432,6 +432,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$date = sanitize_text_field( $_POST['date'] );
 
 		$product = wc_get_product($product_id);
+
+		if($product->is_type('variation')){
+			$product_id = $product->get_parent_id();
+		}
+
 		$aquos_id = get_post_meta($product_id, '_aquos_id', true);
 
 		$errors = array(); // Array to hold validation errors
@@ -461,8 +466,18 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 				error_log('url before:'.$settings_webserviceurl);
 
-				$patterns = ['{date}', '{product_id}', '{site_id}', 'site_name'];
-				$replacements = [esc_html($date), esc_html($aquos_id), (is_multisite() ? get_current_blog_id() : 0 ), esc_html(get_bloginfo('name'))];
+				$patterns = [
+					'{date}',
+					'{product_id}',
+					'{site_id}',
+					'{site_name}'
+				];
+				$replacements = [
+					esc_html( $date ),
+					esc_html( $aquos_id ),
+					( is_multisite() ? get_current_blog_id() : "aaa" ),
+					esc_html( get_bloginfo( 'name' ) ),
+				];
 
 				// Replace keywords in url
 				$settings_webserviceurl = preg_replace($patterns, $replacements, $settings_webserviceurl);
