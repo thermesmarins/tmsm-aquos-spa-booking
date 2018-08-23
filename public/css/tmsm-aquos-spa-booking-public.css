@@ -1,16 +1,17 @@
-#tmsm-aquos-spa-booking-categories-container,
+/*#tmsm-aquos-spa-booking-categories-container,
 #tmsm-aquos-spa-booking-products-container,
 #tmsm-aquos-spa-booking-date-container,
 #tmsm-aquos-spa-booking-times-container {
   width: 48%;
   vertical-align: top;
   display: inline-block;
-}
+}*/
 
-#tmsm-aquos-spa-booking-categories-container,
+/*#tmsm-aquos-spa-booking-categories-container,
 #tmsm-aquos-spa-booking-date-container{
   margin-right: 2%
-}
+}*/
+
 
 #tmsm-aquos-spa-booking-products .media-object{
   min-width: 150px;
@@ -37,5 +38,52 @@
 }
 
 #tmsm-aquos-spa-booking-confirm-container{
-  text-align: right;
+  text-align: center;
+  margin-bottom: 100px;
+
+}
+
+/* Styling for Aquatonic */
+
+#tmsm-aquos-spa-booking-categories-container,
+#tmsm-aquos-spa-booking-products-container,
+#tmsm-aquos-spa-booking-date-container,
+#tmsm-aquos-spa-booking-times-container {
+  border: 3px solid black;
+  height: 50vh;
+  vertical-align: middle;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 97px;
+}
+
+#tmsm-aquos-spa-booking-categories-container:before,
+#tmsm-aquos-spa-booking-products-container:before,
+#tmsm-aquos-spa-booking-date-container:before,
+#tmsm-aquos-spa-booking-times-container:before {
+  position: absolute;
+  top: -100px;
+  width: 3px;
+  height: 100px;
+  background: black;
+  content: "";
+}
+
+#tmsm-aquos-spa-booking-form{
+  text-align: center;
+  width: 50%;
+  margin: auto auto;
+  margin-top: 100px;
+}
+#tmsm-aquos-spa-booking-date-inner{
+  display: block;
+  width: 80%;
+}
+#tmsm-aquos-spa-booking-date-inner table{
+  width: 100%;
+}
+#tmsm-aquos-spa-booking-date-inner .datepicker-inline{
+  width: 100%;
 }

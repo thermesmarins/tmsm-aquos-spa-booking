@@ -13,12 +13,11 @@ Features
 * Adds the product with a datetime meta
 * Enable Cash on Delivery Method
 * Make Cash On Delivery Payments "on-hold' instead of "paid"
+* Expire products in cart (after 2 hours)
 
 TODO
 ----
 
-* Settings:
-    * Setting for webservice URL
 * Map products with Aquos ID
 * Display duration of treatment
-* Expire products in cart (after 2 hours)
+

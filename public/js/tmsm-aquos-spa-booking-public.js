@@ -4,11 +4,22 @@
   // Check existence of shortcode
   if ($('#tmsm-aquos-spa-booking-form').length > 0) {
 
+    // Animate Display
+    var tmsmAquosSpaBookingAnimate = function(element){
+      console.log('tmsmAquosSpaBookingAnimate ' + element.attr('id'))
+      element.show();
+      $('html, body').animate({
+        scrollTop: element.offset().top
+      }, 400);
+    };
+
     // Load Product Category
     var tmsmAquosSpaBookingLoadProductCategories = function () {
-      console.log('tmsmAquosSpaBookingLoadProductCategories');
 
       var productcategory_template = wp.template('tmsm-aquos-spa-booking-product-category');
+
+      $('#tmsm-aquos-spa-booking-categories').empty().val('').prop('disabled', true).attr('title', tmsm_aquos_spa_booking_params.i18n.loading).selectpicker('destroy').selectpicker();
+
       $.ajax({
         url: _wpUtilSettings.ajax.url,
         type: 'post',
@@ -20,10 +31,11 @@
         },
         success: function (data) {
           if (data.success === true) {
+            $('#tmsm-aquos-spa-booking-categories').empty().val('').prop('disabled', false).attr('title', tmsm_aquos_spa_booking_params.i18n.selectcategory).selectpicker('destroy').selectpicker();
             $.each(data.product_categories, function (index, product_category) {
-              console.log(product_category);
               $('#tmsm-aquos-spa-booking-categories').append(productcategory_template(product_category));
             });
+            $('#tmsm-aquos-spa-booking-categories').selectpicker('refresh');
           }
           else {
             // App error
@@ -38,8 +50,70 @@
     };
     tmsmAquosSpaBookingLoadProductCategories();
 
+    // Load Products
+    var tmsmAquosSpaBookingLoadProducts = function (productcategory_element) {
+
+      tmsmAquosSpaBookingAnimate($('#tmsm-aquos-spa-booking-products-container'));
+
+      $('#tmsm-aquos-spa-booking-date-container').hide();
+      $('#tmsm-aquos-spa-booking-times-container').hide();
+
+      $('#tmsm-aquos-spa-booking-confirm').hide();
+      $('#tmsm-aquos-spa-booking-times').empty();
+      $('#tmsm-aquos-spa-booking-date-display').empty();
+
+      $('#tmsm-aquos-spa-booking-products').empty().val('').prop('disabled', true).attr('title', tmsm_aquos_spa_booking_params.i18n.loading).selectpicker('destroy').selectpicker();
+
+      var product_template = wp.template('tmsm-aquos-spa-booking-product');
+      var product_category = productcategory_element.val();
+
+      if (product_category) {
+        $('#tmsm-aquos-spa-booking-selected-productcategory').val(product_category);
+
+        //$('#tmsm-aquos-spa-booking-categories .list-group-item').removeClass('active');
+        //productcategory_element.closest('.list-group-item').addClass('active');
+
+        $.ajax({
+          url: _wpUtilSettings.ajax.url,
+          type: 'post',
+          dataType: 'json',
+          enctype: 'multipart/form-data',
+          data: {
+            action: 'tmsm-aquos-spa-booking-products',
+            productcategory: product_category,
+            security: $('#tmsm-aquos-spa-booking-nonce').val(),
+          },
+          success: function (data) {
+            if (data.success === true) {
+              //console.log('data.product:');
+              //console.log(data.products);
+              $('#tmsm-aquos-spa-booking-products').empty().val('').prop('disabled', false).attr('title', tmsm_aquos_spa_booking_params.i18n.selectproduct).selectpicker('destroy').selectpicker();
+
+              $.each(data.products, function (index, product) {
+                $('#tmsm-aquos-spa-booking-products').append(product_template(product));
+              });
+              $('#tmsm-aquos-spa-booking-products').selectpicker('refresh');
+
+            }
+            else {
+              // App error
+            }
+          },
+          error: function (jqXHR, textStatus) {
+            // Ajax error
+            console.log(jqXHR);
+            console.log(textStatus);
+          }
+        });
+      }
+    };
+
+
     // Load Times
     var tmsmAquosSpaBookingLoadTimes = function (date) {
+
+      tmsmAquosSpaBookingAnimate($('#tmsm-aquos-spa-booking-times-container'));
+
       var date_formatted = date.format('yyyy-mm-dd');
       $('#tmsm-aquos-spa-booking-times').empty();
       var product_category = $('#tmsm-aquos-spa-booking-selected-productcategory').val();
@@ -92,75 +166,31 @@
       }
     };
 
-    // Load Products
-    var tmsmAquosSpaBookingLoadProducts = function (productcategory_element) {
-
-      $('#tmsm-aquos-spa-booking-confirm').hide();
-      $('#tmsm-aquos-spa-booking-times').empty();
-      $('#tmsm-aquos-spa-booking-date-display').empty();
-
-      $('#tmsm-aquos-spa-booking-products').empty();
-      var product_template = wp.template('tmsm-aquos-spa-booking-product');
-      var product_category = productcategory_element.attr('data-product-category');
-
-      if (product_category) {
-        $('#tmsm-aquos-spa-booking-selected-productcategory').val(product_category);
-
-        $('#tmsm-aquos-spa-booking-categories .list-group-item').removeClass('active');
-        productcategory_element.closest('.list-group-item').addClass('active');
-
-        $.ajax({
-          url: _wpUtilSettings.ajax.url,
-          type: 'post',
-          dataType: 'json',
-          enctype: 'multipart/form-data',
-          data: {
-            action: 'tmsm-aquos-spa-booking-products',
-            productcategory: product_category,
-            security: $('#tmsm-aquos-spa-booking-nonce').val(),
-          },
-          success: function (data) {
-            if (data.success === true) {
-              //console.log('data.product:');
-              //console.log(data.products);
-              $.each(data.products, function (index, product) {
-                $('#tmsm-aquos-spa-booking-products').append(product_template(product));
-              });
-            }
-            else {
-              // App error
-            }
-          },
-          error: function (jqXHR, textStatus) {
-            // Ajax error
-            console.log(jqXHR);
-            console.log(textStatus);
-          }
-        });
-      }
-    };
 
     // Product Category Selection
-    $('#tmsm-aquos-spa-booking-categories').on('click', '.tmsm-aquos-spa-booking-product-category', function (e) {
+    $('#tmsm-aquos-spa-booking-categories').on('change', function (e) {
       e.preventDefault();
-      tmsmAquosSpaBookingLoadProducts($(this))
+      tmsmAquosSpaBookingLoadProducts($(this));
     });
 
     // Product Selection
-    $('#tmsm-aquos-spa-booking-products').on('click', '.tmsm-aquos-spa-booking-product-select', function (e) {
+    $('#tmsm-aquos-spa-booking-products').on('change', function (e) {
       e.preventDefault();
 
-      var product = $(this).attr('data-product');
+      tmsmAquosSpaBookingAnimate($('#tmsm-aquos-spa-booking-date-container'));
+      $('#tmsm-aquos-spa-booking-times-container').hide();
+
+      var product = $(this).val();
 
       if (product) {
         $('#tmsm-aquos-spa-booking-selected-product').val(product);
         $('.tmsm-aquos-spa-booking-product').hide();
-        $(this).addClass('disabled');
+        /*$(this).addClass('disabled');
         $('.tmsm-aquos-spa-booking-product-select-label', this).hide();
         $('.tmsm-aquos-spa-booking-product-selected-label', this).show();
         var groupitem = $(this).closest('.tmsm-aquos-spa-booking-product');
         groupitem.show().addClass('selected');
-        $('.tmsm-aquos-spa-booking-product-change-label', groupitem).show();
+        $('.tmsm-aquos-spa-booking-product-change-label', groupitem).show();*/
       }
 
     });
@@ -197,6 +227,9 @@
     // Confirm
     $('#tmsm-aquos-spa-booking-confirm').on('click', function (e) {
       e.preventDefault();
+
+      $(this).addClass('disabled');
+      $('#tmsm-aquos-spa-booking-confirm-loading').show();
 
       var product_category = $('#tmsm-aquos-spa-booking-selected-productcategory').val();
       var product = $('#tmsm-aquos-spa-booking-selected-product').val();

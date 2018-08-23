@@ -105,6 +105,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			'security' => wp_create_nonce( 'security' ),
 			'i18n'     => [
 				'fromprice'          => _x( 'From', 'price', 'tmsm-aquos-spa-booking' ),
+				'selectcategory'          => __( 'Select a category', 'tmsm-aquos-spa-booking' ),
+				'selectproduct'          => __( 'Select a product', 'tmsm-aquos-spa-booking' ),
+				'loading'          => __( 'Loading', 'tmsm-aquos-spa-booking' ),
 			],
 			'options'  => [
 				'daysrange' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrange', 30 )),
@@ -161,25 +164,36 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$output = '
 		<form id="tmsm-aquos-spa-booking-form">
 		<div id="tmsm-aquos-spa-booking-categories-container">
-		<h2>'. __( 'Pick your treatments category:', 'tmsm-aquos-spa-booking' ).'</h2>
-		<ul id="tmsm-aquos-spa-booking-categories" class="list-group">
-		</ul>
+		<div id="tmsm-aquos-spa-booking-categories-inner">
+		<h3>'. __( 'Pick your treatments category:', 'tmsm-aquos-spa-booking' ).'</h3>
+		<select id="tmsm-aquos-spa-booking-categories" title="'. esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ).'">
+		</select>
+		</div>
 		</div>
 		
-		<div id="tmsm-aquos-spa-booking-products-container">
-		<h2>'. __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ).'</h2>
-		<div id="tmsm-aquos-spa-booking-products"></div>
+		<div id="tmsm-aquos-spa-booking-products-container" style="display: none">
+		<div id="tmsm-aquos-spa-booking-products-inner">
+		<h3>'. __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ).'</h3>
+		<select id="tmsm-aquos-spa-booking-products" title="'. esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ).'"></select>
 		</div>
-		<div id="tmsm-aquos-spa-booking-date-container">
-		<h2>'. __( 'Pick your date:', 'tmsm-aquos-spa-booking' ).'</h2>
+		</div>
+		
+		<div id="tmsm-aquos-spa-booking-date-container" style="display: none">
+		<div id="tmsm-aquos-spa-booking-date-inner">
+		<h3>'. __( 'Pick your date:', 'tmsm-aquos-spa-booking' ).'</h3>
 		<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default">
 		</div>
 		</div>
-		<div id="tmsm-aquos-spa-booking-times-container">
-		<h2>'. __( 'Pick your time:', 'tmsm-aquos-spa-booking' ).'</h2>
+		</div>
+		
+		<div id="tmsm-aquos-spa-booking-times-container" style="display: none">
+		<div id="tmsm-aquos-spa-booking-times-inner">
+		<h3>'. __( 'Pick your time:', 'tmsm-aquos-spa-booking' ).'</h3>
 		<p id="tmsm-aquos-spa-booking-date-display"></p>
 		<div id="tmsm-aquos-spa-booking-times"></div>
 		</div>
+		</div>
+		
 		<p id="tmsm-aquos-spa-booking-confirm-container"><a href="#" class="'.self::button_class().'" id="tmsm-aquos-spa-booking-confirm" style="display: none;">'. __( 'Confirm this booking', 'tmsm-aquos-spa-booking' ).'</a></p>
 		<input type="hidden" name="language" value="'.$this->get_locale().'">
 		<input type="hidden" id="tmsm-aquos-spa-booking-selected-productcategory" name="productcategory" value="">
@@ -188,12 +202,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<input type="hidden" id="tmsm-aquos-spa-booking-selected-time" name="time" value="">
 		'.wp_nonce_field( 'tmsm-aquos-spa-booking-nonce-action', 'tmsm-aquos-spa-booking-nonce', true, false ).'
 		</form>
-		<p>'.esc_html(get_option( 'tmsm_aquos_spa_booking_cancellationpolicy', '' )).'</p>
+		<p id="tmsm-aquos-spa-booking-cancellationpolicy" style="display: none">'.esc_html(get_option( 'tmsm_aquos_spa_booking_cancellationpolicy', '' )).'</p>
 		';
 
 		return $output;
 	}
-
 
 	/**
 	 * Date Template
@@ -207,7 +220,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<?php
 	}
 
-
 	/**
 	 * Product Category Template
 	 */
@@ -215,7 +227,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product-category">
-			<li class="list-group-item"><a class="tmsm-aquos-spa-booking-product-category" href="#" data-product-category="{{ data.term_id }}">{{ data.name }}</a></li>
+			<option value="{{ data.term_id }}">
+				<# if (data.parent !== <?php echo esc_html(get_option( 'tmsm_aquos_spa_booking_productcat', 0 )) ?>) { #>
+				-&nbsp;&nbsp;
+				<# } #>
+
+				{{ data.name }} ({{ data.count }})</option>
 		</script>
 		<?php
 	}
@@ -227,24 +244,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product">
-			<div class="media tmsm-aquos-spa-booking-product">
-				<div class="media-left">
-					<img class="media-object" src="{{ data.thumbnail }}" alt="{{ data.name }}">
-				</div>
-				<div class="media-body">
-					<h4 class="media-heading">{{ data.name }}</h4>
-					<h6 class="media-heading">{{{ data.price }}}</h6>
-					<p><a href="{{ data.permalink }}"><?php echo __('Know more about this product', 'tmsm-aquos-spa-booking');?></a></p>
-					<p><a href="#" class="<?php echo self::button_class(); ?> tmsm-aquos-spa-booking-product-select" data-product="{{ data.id }}">
-							<span class="tmsm-aquos-spa-booking-product-select-label"><?php echo __('Book this treatment', 'tmsm-aquos-spa-booking');?></span>
-							<span class="tmsm-aquos-spa-booking-product-selected-label"><?php echo __('Treatment selected', 'tmsm-aquos-spa-booking');?></span>
-						</a></p>
-					<p><a href="#" class="tmsm-aquos-spa-booking-product-change-label" ><?php echo __('Change treatment', 'tmsm-aquos-spa-booking');?></a></p>
-				</div>
-			</div>
+			<option value="{{ data.id }}">{{ data.name }} — {{ data.price }}</option>
 		</script>
 		<?php
-
 	}
 
 
@@ -282,7 +284,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$settings_maincategory  = get_option( 'tmsm_aquos_spa_booking_productcat', 0 );
 			$product_categories = get_terms( 'product_cat', [
 				'hide_empty' => true,
-				'parent' => !empty($settings_maincategory) ? $settings_maincategory: 0,
+				'child_of' => !empty($settings_maincategory) ? $settings_maincategory: 0,
 				'orderby'    => 'parent',
 			]);
 
@@ -385,7 +387,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 							'id' => esc_js($product_cheapest->get_id()),
 							'permalink' => esc_js($product->get_permalink()),
 							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-							'price' => $product_cheapest->get_price_html(),
+							'price' => html_entity_decode(wp_strip_all_tags($product_cheapest->get_price_html())),
 							'name' => esc_js($product_cheapest->get_name()),
 						];
 					}
@@ -832,7 +834,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	}
 
 	/**
-	 * Remove Appointments that are expired, too hold = 2 hours
+	 * Remove Appointments that are expired, too old = 2 hours
 	 */
 	public function woocommerce_check_cart_items_expire(){
 		if( is_cart() || is_checkout() ) {
