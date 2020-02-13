@@ -135,6 +135,23 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	}
 
 	/**
+	 * Save Product Variation Data
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param $variation_id
+	 *
+	 * @return void
+	 */
+	function woocommerce_save_product_variation( $variation_id, $i ) {
+
+		if ( isset( $_POST['_aquos_id'][$i] ) ) :
+			update_post_meta( $variation_id, '_aquos_id', sanitize_text_field( $_POST['_aquos_id'][$i] ) );
+		endif;
+
+	}
+
+	/**
 	 * Save Product Data
 	 *
 	 * @since 1.0.0
@@ -146,8 +163,25 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	function woocommerce_process_product_save_options( $post_id ) {
 
 		if ( isset( $_POST['_aquos_id'] ) ) :
-			update_post_meta( $post_id, '_aquos_id', absint( $_POST['_aquos_id'] ) );
+			update_post_meta( $post_id, '_aquos_id', sanitize_text_field( $_POST['_aquos_id'] ) );
 		endif;
 
+	}
+
+	/**
+	 * Add Aquos ID Field to Product Variation
+	 *
+	 * @param int     $loop           Position in the loop.
+	 * @param array   $variation_data Variation data.
+	 * @param WP_Post $variation      Post data.
+	 */
+	function woocommerce_variation_options_pricing( $loop, $variation_data, $variation ) {
+		woocommerce_wp_text_input( array(
+				'id' => '_aquos_id[' . $loop . ']',
+				'wrapper_class' => 'form-row',
+				'label' => __( 'Aquos Product ID', 'tmsm-aquos-spa-booking' ),
+				'value' => get_post_meta( $variation->ID, '_aquos_id', true )
+			)
+		);
 	}
 }
