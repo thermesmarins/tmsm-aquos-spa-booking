@@ -94,7 +94,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public.js', array( 'jquery', 'wp-util', 'bootstrap-datepicker' ), $this->version, true );
 
 		$startdate = new \DateTime();
-		$startdate->modify('+1 day');
+		$startdate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 ). ' days');
 		$enddate = new \DateTime();
 		$enddate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 ). ' days');
 
@@ -110,7 +110,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'loading'          => __( 'Loading', 'tmsm-aquos-spa-booking' ),
 			],
 			'options'  => [
-				'daysrange' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 )),
+				'daysrangefrom' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 )),
+				'daysrangeto' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 )),
 				'enddate' => $enddate->format('Y-m-d'),
 				'startdate' => $startdate->format('Y-m-d'),
 			],
