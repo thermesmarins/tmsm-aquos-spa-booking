@@ -168,7 +168,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'woocommerce_product_options_inventory_product_data', $plugin_admin, 'woocommerce_product_options_inventory_product_data_aquosid' );
 
 		$this->loader->add_action( 'woocommerce_process_product_meta_simple', $plugin_admin, 'woocommerce_process_product_save_options' );
-		$this->loader->add_action( 'woocommerce_process_product_meta_simple', $plugin_admin, 'woocommerce_process_product_save_options' );
+		$this->loader->add_action( 'woocommerce_process_product_meta_variable', $plugin_admin, 'woocommerce_process_product_save_options' );
 		$this->loader->add_action( 'woocommerce_save_product_variation', $plugin_admin, 'woocommerce_save_product_variation', 10, 2 );
 		$this->loader->add_action( 'woocommerce_variation_options_pricing', $plugin_admin, 'woocommerce_variation_options_pricing', 10, 3 );
 
@@ -191,6 +191,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_category_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_template' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_variation_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'time_template' );
 
 		// WooCommerce
@@ -210,6 +211,9 @@ class Tmsm_Aquos_Spa_Booking {
 
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-products', $plugin_public, 'ajax_products' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-products', $plugin_public, 'ajax_products' );
+
+		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-variations', $plugin_public, 'ajax_product_variations' );
+		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-variations', $plugin_public, 'ajax_product_variations' );
 
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-times', $plugin_public, 'ajax_times' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-times', $plugin_public, 'ajax_times' );

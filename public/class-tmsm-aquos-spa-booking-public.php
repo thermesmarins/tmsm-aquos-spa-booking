@@ -178,6 +178,13 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		</div>
 		</div>
 		
+		<div id="tmsm-aquos-spa-booking-variations-container" style="display: none">
+		<div id="tmsm-aquos-spa-booking-variations-inner">
+		<h3>'. __( 'Pick your variation:', 'tmsm-aquos-spa-booking' ).'</h3>
+		<select id="tmsm-aquos-spa-booking-variations" title="'. esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ).'"></select>
+		</div>
+		</div>
+		
 		<div id="tmsm-aquos-spa-booking-date-container" style="display: none">
 		<div id="tmsm-aquos-spa-booking-date-inner">
 		<h3>'. __( 'Pick your date:', 'tmsm-aquos-spa-booking' ).'</h3>
@@ -244,7 +251,19 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product">
-			<option value="{{ data.id }}">{{ data.name }} — {{ data.price }}</option>
+			<option value="{{ data.id }}" data-sku="{{ data.sku }}" data-variable="{{ data.variable }}">{{ data.name }} — {{ data.price }}</option>
+		</script>
+		<?php
+	}
+
+	/**
+	 * Product Variation Template
+	 */
+	public function product_variation_template(){
+		?>
+
+		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product-variation">
+			<option value="{{ data.id }}" data-sku="{{ data.sku }}">{{ data.name }} — {{ data.price }}</option>
 		</script>
 		<?php
 	}
@@ -347,6 +366,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'category' => $product_category->slug,
 				'return'  => 'ids',
 				'limit' => -1,
+				'orderby' => 'name',
 			);
 			$products_ids = wc_get_products( $args );
 			$products = [];
@@ -354,43 +374,75 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				foreach($products_ids as $key => $product_id){
 					$product = wc_get_product($product_id);
 
-					$product_cheapest = null;
+					$products[$product->get_id()] = [
+						'id' => esc_js($product->get_id()),
+						'permalink' => esc_js($product->get_permalink()),
+						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+						'price' => html_entity_decode(wp_strip_all_tags($product->get_price_html())),
+						'sku' => esc_js($product->get_sku()),
+						'name' => esc_js($product->get_name()),
+						'variable' => esc_js($product->is_type( 'variable' )),
+					];
 
-					$aquos_id = get_post_meta( $product_id, '_aquos_id', true);
-					if(empty($aquos_id)){
-						continue;
-					}
 
-					if(!$product->is_virtual() && !$product->is_type( 'variable' )){
-						$product_cheapest = $product;
+					/*if(!$product->is_type( 'variable' )){
+
+						$aquos_id = get_post_meta( $product_id, '_aquos_id', true);
+						if(empty($aquos_id)){
+							continue;
+						}
+
+						$sku = substr( $product->get_sku(), 0, 2 ) === 'E-' ? substr( $product->get_sku(), 2 ) : $product->get_sku();
+						error_log($product->get_sku());
+						error_log($sku);
+
+						$product_and_variations[$sku] = [
+							'id' => esc_js($product->get_id()),
+							'permalink' => esc_js($product->get_permalink()),
+							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+							'price' => html_entity_decode(wp_strip_all_tags($product->get_price_html())),
+							'sku' => esc_js($product->get_sku()),
+							'name' => esc_js($product->get_name()),
+						];
 					}
 					else{
 						if($product->is_type( 'variable' ) ){
 							foreach ( $product->get_available_variations() as $variation_data ) {
 
-								if(empty($variation_data['variation_id'])){
+								$variation = wc_get_product( $variation_data['variation_id'] );
+
+								if(empty($variation)){
 									continue;
 								}
-								$variation = wc_get_product($variation_data['variation_id']);
-								if($variation->get_virtual()){
+
+								$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
+
+								if($variation->get_attribute('format-bon-cadeau')){
+									error_log($variation->get_attribute('format-bon-cadeau'));
+									$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
+								}
+
+								$aquos_id = get_post_meta( $variation->get_id(), '_aquos_id', true);
+								if(empty($aquos_id)){
 									continue;
 								}
-								if($product->get_price() === $variation->get_price()){
-									$product_cheapest = $variation;
-								}
+								$sku = substr( $variation->get_sku(), 0, 2 ) === 'E-' ? substr( $variation->get_sku(), 2 ) : $variation->get_sku();
+								error_log($variation->get_sku());
+								error_log($sku);
+
+								$product_and_variations[$sku] = [
+									'id' => esc_js($variation->get_id()),
+									'permalink' => esc_js($variation->get_permalink()),
+									'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+									'price' => html_entity_decode(wp_strip_all_tags($variation->get_price_html())),
+									'sku' => esc_js($variation->get_sku()),
+									'name' => $variation_name,
+								];
+
 							}
 						}
-					}
+					}*/
 
-					if ( ! empty( $product_cheapest ) ) {
-						$products[$key] = [
-							'id' => esc_js($product_cheapest->get_id()),
-							'permalink' => esc_js($product->get_permalink()),
-							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-							'price' => html_entity_decode(wp_strip_all_tags($product_cheapest->get_price_html())),
-							'name' => esc_js($product_cheapest->get_name()),
-						];
-					}
 
 				}
 			}
@@ -420,6 +472,109 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		wp_die();
 
 	}
+
+
+	/**
+	 * Ajax For Products
+	 *
+	 * @since    1.0.0
+	 */
+	public static function ajax_product_variations() {
+
+		$security = sanitize_text_field( $_POST['security'] );
+		$product_id = sanitize_text_field( $_POST['product'] );
+
+		$errors = array(); // Array to hold validation errors
+		$jsondata   = array(); // Array to pass back data
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('ajax_product_variations');
+		}
+
+		// Check security
+		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_id)) {
+			$errors[] = __('Token security not valid', 'tmsm-aquos-spa-booking');
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log('Ajax security not OK');
+			}
+		}
+		else{
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log('Ajax security OK');
+			}
+
+			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
+
+			$product = wc_get_product($product_id);
+
+			$variations = [];
+
+			if($product->is_type( 'variable' ) ) {
+				foreach ( $product->get_available_variations() as $variation_data ) {
+
+					$variation = wc_get_product( $variation_data['variation_id'] );
+
+					if(empty($variation)){
+						continue;
+					}
+
+					$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
+
+					if($variation->get_attribute('format-bon-cadeau')){
+						error_log($variation->get_attribute('format-bon-cadeau'));
+						$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
+					}
+
+					$variation_name = str_replace($product->get_name(). ' - ', '', $variation_name);
+					$variation_name = str_replace($product->get_name(). ' ㅡ ', '', $variation_name);
+					$variation_name = str_replace($product->get_name(). ' — ', '', $variation_name);
+
+					$aquos_id = get_post_meta( $variation->get_id(), '_aquos_id', true);
+					if(empty($aquos_id)){
+						continue;
+					}
+					$sku = substr( $variation->get_sku(), 0, 2 ) === 'E-' ? substr( $variation->get_sku(), 2 ) : $variation->get_sku();
+
+					$variations[$sku] = [
+						'id' => esc_js($variation->get_id()),
+						'permalink' => esc_js($variation->get_permalink()),
+						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+						'price' => html_entity_decode(wp_strip_all_tags($variation->get_price_html())),
+						'sku' => esc_js($variation->get_sku()),
+						'name' => $variation_name,
+					];
+
+
+				}
+			}
+			else{
+				$errors[] = __('Product is not variable', 'tmsm-aquos-spa-booking');
+			}
+
+
+			$jsondata['variations'] = $variations;
+		}
+
+
+		// Return a response
+		if( ! empty($errors) ) {
+			$jsondata['success'] = false;
+			$jsondata['errors']  = $errors;
+		}
+		else {
+			$jsondata['success'] = true;
+		}
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			//error_log('json data:');
+			//error_log(print_r($jsondata, true));
+		}
+
+		wp_send_json($jsondata);
+		wp_die();
+
+	}
+
 
 	/**
 	 * Ajax For Times
