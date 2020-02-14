@@ -113,10 +113,18 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 
 					array(
 						'type'     => 'number',
-						'id'       => 'tmsm_aquos_spa_booking_daysrange',
-						'name'     => __( 'Days Range', 'tmsm-aquos-spa-booking' ),
-						'desc'     => '<p class="description">'.__( 'Number of days it is possible to book in the future.', 'tmsm-aquos-spa-booking'  ).'</p>',
-						'default'  => 30,
+						'id'       => 'tmsm_aquos_spa_booking_daysrangefrom',
+						'name'     => __( 'Days Range From', 'tmsm-aquos-spa-booking' ),
+						'desc'     => '<p class="description">'.__( 'Users can\'t book before this number of days after the current date.', 'tmsm-aquos-spa-booking'  ).'</p>',
+						'default'  => 1,
+					),
+
+					array(
+						'type'     => 'number',
+						'id'       => 'tmsm_aquos_spa_booking_daysrangeto',
+						'name'     => __( 'Days Range To', 'tmsm-aquos-spa-booking' ),
+						'desc'     => '<p class="description">'.__( 'Users can\'t book after this number of days after the current date.', 'tmsm-aquos-spa-booking'  ).'</p>',
+						'default'  => 60,
 					),
 
 					array(

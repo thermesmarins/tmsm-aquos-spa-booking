@@ -96,7 +96,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$startdate = new \DateTime();
 		$startdate->modify('+1 day');
 		$enddate = new \DateTime();
-		$enddate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrange', 30 ). ' days');
+		$enddate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 ). ' days');
 
 		// Params
 		$params = [
@@ -110,7 +110,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'loading'          => __( 'Loading', 'tmsm-aquos-spa-booking' ),
 			],
 			'options'  => [
-				'daysrange' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrange', 30 )),
+				'daysrange' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 )),
 				'enddate' => $enddate->format('Y-m-d'),
 				'startdate' => $startdate->format('Y-m-d'),
 			],
