@@ -91,7 +91,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				array( 'jquery', 'bootstrap', 'bootstrap-datepicker' ), null, true );
 		}
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public.js', array( 'jquery', 'wp-util', 'bootstrap-datepicker' ), $this->version, true );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public.js', array( 'jquery', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
 
 		$startdate = new \DateTime();
 		$startdate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 ). ' days');
@@ -118,6 +118,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		];
 
 		wp_localize_script( $this->plugin_name, 'tmsm_aquos_spa_booking_params', $params);
+		wp_localize_script( $this->plugin_name, 'TmsmAquosSpaBooking', $params);
 	}
 
 
@@ -160,8 +161,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		$output = '';
 
-
-
 		$output = '
 		<form id="tmsm-aquos-spa-booking-form">
 		<div id="tmsm-aquos-spa-booking-categories-container">
@@ -198,6 +197,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<div id="tmsm-aquos-spa-booking-times-inner">
 		<h3>'. __( 'Pick your time:', 'tmsm-aquos-spa-booking' ).'</h3>
 		<p id="tmsm-aquos-spa-booking-date-display"></p>
+		<p id="tmsm-aquos-spa-booking-times-loading">'. __( 'Loading', 'tmsm-aquos-spa-booking' ).'</p>
 		<div id="tmsm-aquos-spa-booking-times"></div>
 		</div>
 		</div>
@@ -584,98 +584,106 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public static function ajax_times() {
 
-		$security = sanitize_text_field( $_POST['security'] );
+		$security            = sanitize_text_field( $_POST['security'] );
 		$product_category_id = sanitize_text_field( $_POST['productcategory'] );
-		$product_id = sanitize_text_field( $_POST['product'] );
-		$date = sanitize_text_field( $_POST['date'] );
+		$product_id          = sanitize_text_field( $_POST['product'] );
+		$date                = sanitize_text_field( $_POST['date'] );
 
-		$product = wc_get_product($product_id);
+		$product = wc_get_product( $product_id );
 
-		if($product->is_type('variation')){
-			$product_id = $product->get_parent_id();
-		}
+		$aquos_id = get_post_meta( $product_id, '_aquos_id', true );
 
-		$aquos_id = get_post_meta($product_id, '_aquos_id', true);
-
-		$errors = array(); // Array to hold validation errors
-		$jsondata   = array(); // Array to pass back data
+		$errors   = array(); // Array to hold validation errors
+		$jsondata = array(); // Array to pass back data
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('ajax_times');
+			error_log( 'ajax_times' );
+		}
+
+		if(empty( $aquos_id )){
+			$errors[] = __( 'This product is not bookable', 'tmsm-aquos-spa-booking' );
+		}
+		if(empty( $product_id )){
+			$errors[] = __( 'Product information is missing', 'tmsm-aquos-spa-booking' );
+		}
+		if(empty( $date )){
+			$errors[] = __( 'Date is missing', 'tmsm-aquos-spa-booking' );
+		}
+		if(empty( $product_category_id )){
+			$errors[] = __( 'Product category is missing', 'tmsm-aquos-spa-booking' );
 		}
 
 		// Check security
-		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_category_id) || empty($product_id) || empty($date) || empty($aquos_id) ) {
-			$errors[] = __('Token security not valid', 'tmsm-aquos-spa-booking');
+		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) ) {
+			$errors[] = __( 'Token security not valid', 'tmsm-aquos-spa-booking' );
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log('Ajax security not OK');
+				error_log( 'Ajax security not OK' );
 			}
-		}
-		else{
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log('Ajax security OK');
-			}
-
-			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
-
-			// Call web service
-			$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurl' );
-			if(!empty($settings_webserviceurl)){
-
-				error_log('url before:'.$settings_webserviceurl);
-
-				$patterns = [
-					'{date}',
-					'{product_id}',
-					'{site_id}',
-					'{site_name}'
-				];
-				$replacements = [
-					esc_html( $date ),
-					esc_html( $aquos_id ),
-					( is_multisite() ? get_current_blog_id() : "aaa" ),
-					esc_html( get_bloginfo( 'name' ) ),
-				];
-
-				// Replace keywords in url
-				$settings_webserviceurl = preg_replace($patterns, $replacements, $settings_webserviceurl);
-				error_log( 'url after:' . $settings_webserviceurl );
-
-				// Connect with cURL
-				$ch = curl_init();
-				curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
-				curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-				curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
-				$result = curl_exec( $ch );
-				curl_close( $ch );
-
-				// @TODO analyse response
-				error_log(var_export(json_decode($result, true), true));
-			}
-
-			$times[] = [ 'hour'=> 10];
-			$times[] = [ 'hour'=> 11];
-			$times[] = [ 'hour'=> 15];
-			$times[] = [ 'hour'=> 17];
-			$jsondata['times'] = $times;
 		}
 
 
-		// Return a response
-		if( ! empty($errors) ) {
+		if ( !empty( $errors ) ) {
 			$jsondata['success'] = false;
 			$jsondata['errors']  = $errors;
 		}
-		else {
-			$jsondata['success'] = true;
+
+		check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
+
+		// Call web service
+		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurl' );
+		if ( ! empty( $settings_webserviceurl ) ) {
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'url before:' . $settings_webserviceurl );
+			}
+
+			$patterns     = [
+				'{date}',
+				'{product_id}',
+				'{site_id}',
+				'{site_name}'
+			];
+			$replacements = [
+				esc_html( $date ),
+				esc_html( $aquos_id ),
+				( is_multisite() ? get_current_blog_id() : 0 ),
+				esc_html( get_bloginfo( 'name' ) ),
+			];
+
+			// Replace keywords in url
+			$settings_webserviceurl = preg_replace( $patterns, $replacements, $settings_webserviceurl );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'url after:' . $settings_webserviceurl );
+			}
+
+			// Connect with cURL
+			$ch = curl_init();
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
+			$result = curl_exec( $ch );
+			curl_close( $ch );
+
+			// TODO analyse response
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( var_export( json_decode( $result, true ), true ) );
+			}
 		}
+
+		$times[]           = [ 'hour' => 10 ];
+		$times[]           = [ 'hour' => 11 ];
+		$times[]           = [ 'hour' => 15 ];
+		$times[]           = [ 'hour' => 17 ];
+		$jsondata['times'] = $times;
+
+		$jsondata['success'] = true;
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			//error_log('json data:');
 			//error_log(print_r($jsondata, true));
 		}
 
-		wp_send_json($jsondata);
+		wp_send_json( $jsondata );
 		wp_die();
 	}
 

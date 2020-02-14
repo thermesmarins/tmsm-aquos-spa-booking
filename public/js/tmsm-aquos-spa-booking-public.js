@@ -1,5 +1,9 @@
-(function ($) {
+var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
+
+(function ($, TmsmAquosSpaBooking) {
   'use strict';
+
+  var selected_date = null;
 
   // Check existence of shortcode
   if ($('#tmsm-aquos-spa-booking-form').length > 0) {
@@ -200,6 +204,8 @@
           },
           success: function (data) {
             if (data.success === true) {
+              var $list = $('#tmsm-aquos-spa-booking-times').empty();
+
               $.each(data.times, function (index, time) {
                 var date = new Date();
                 date.setHours(time.hour);
@@ -210,7 +216,12 @@
                   minute: '2-digit'
                 };
                 time.hour_formatted = date.toLocaleTimeString(tmsm_aquos_spa_booking_params.locale, options);
-                $('#tmsm-aquos-spa-booking-times').append(time_template(time));
+
+                //var addtemplate = time_template(time);
+                //$('#tmsm-aquos-spa-booking-times').append(addtemplate);
+
+                var item = new TmsmAquosSpaBooking.TimesView( { model: time } );
+                $list.append( item.render().$el );
               });
             }
             else {
@@ -225,6 +236,73 @@
         });
       }
     };
+
+
+    /**
+     * Times View
+     *
+     * @see https://deliciousbrains.com/building-reactive-wordpress-plugins-part-1-backbone-js/
+     */
+    TmsmAquosSpaBooking.TimesView = Backbone.View.extend( {
+      tagName: '',
+      template: wp.template('tmsm-aquos-spa-booking-time'),
+      //template: wp.template( $( '#cron-pixie-event-item-tmpl' ).html() ),
+
+      initialize: function() {
+        this.listenTo( this.model, 'change', this.render );
+        //this.listenTo( this.model, 'destroy', this.remove );
+      },
+
+      events: {
+        'click .tmsm-aquos-spa-booking-time-change-label': 'changeTime'
+      },
+
+      render: function() {
+        console.log('this.model:');
+        console.log(this.model);
+        var html = this.template( this.model );
+        this.$el.html( html );
+
+        return this;
+      },
+
+      changeTime: function() {
+        console.log('changeTime');
+        tmsmAquosSpaBookingLoadTimes(selected_date);
+      },
+      runNow: function() {
+        console.log('runNow');
+      }
+      /*runNow: function() {
+        CronPixie.pauseTimer();
+
+        // Only bother to run update if not due before next refresh.
+        var seconds_due = this.model.get( 'seconds_due' );
+
+        if ( seconds_due > CronPixie.timer_period ) {
+          var timestamp = this.model.get( 'timestamp' ) - seconds_due;
+          this.model.save(
+            { timestamp: timestamp, seconds_due: 0 },
+            {
+              success: function( model, response, options ) {
+
+                 console.log( options );
+                 console.log( response );
+
+                CronPixie.runTimer();
+              },
+              error: function( model, response, options ) {
+
+                 console.log( options );
+                 console.log( response );
+
+                CronPixie.runTimer();
+              }
+            }
+          );
+        }
+      }*/
+    } );
 
 
     // Product Category Selection
@@ -286,6 +364,7 @@
       startDate: tmsm_aquos_spa_booking_params.options.startdate,
       endDate: tmsm_aquos_spa_booking_params.options.enddate,
     }).on('changeDate', function (date) {
+      selected_date = date;
       tmsmAquosSpaBookingLoadTimes(date);
     });
 
@@ -306,6 +385,13 @@
 
         $('#tmsm-aquos-spa-booking-confirm').show();
       }
+    });
+
+    $('.tmsm-aquos-spa-booking-time-change-label').on('click', function(e){
+      // TODO change label
+      e.preventDefault();
+      console.log('.tmsm-aquos-spa-booking-time-change-label');
+      tmsmAquosSpaBookingLoadTimes(selected_date);
     });
 
     // Confirm
@@ -362,5 +448,18 @@
 
   }
 
+  /**
+   * Set initial data into view and start recurring display updates.
+   */
+  TmsmAquosSpaBooking.init = function() {
+    //TmsmAquosSpaBooking.timesview = new TmsmAquosSpaBooking.TimesView();
+    //TmsmAquosSpaBooking.timesview.render();
+  };
 
-})(jQuery);
+
+  $( document ).ready( function() {
+    TmsmAquosSpaBooking.init();
+  } );
+
+
+})(jQuery, TmsmAquosSpaBooking);
