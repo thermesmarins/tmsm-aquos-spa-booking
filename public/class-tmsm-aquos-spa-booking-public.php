@@ -742,7 +742,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $cart_item_data);
 
-			$redirect = wc_get_cart_url();
+			//$redirect = wc_get_cart_url();
+			$redirect = wc_get_checkout_url();
 			$jsondata['redirect'] = $redirect;
 
 		}
