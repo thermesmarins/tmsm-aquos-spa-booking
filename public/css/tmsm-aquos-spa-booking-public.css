@@ -27,13 +27,13 @@
   display: none;
 }
 
-.tmsm-aquos-spa-booking-time-group.selected .tmsm-aquos-spa-booking-time-change-label,
-.tmsm-aquos-spa-booking-time-group.selected .tmsm-aquos-spa-booking-product-selected-label,
-.tmsm-aquos-spa-booking-time-group.selected .tmsm-aquos-spa-booking-product-change-label{
+.tmsm-aquos-spa-booking-time-listitem.selected .tmsm-aquos-spa-booking-time-change-label,
+.tmsm-aquos-spa-booking-time-listitem.selected .tmsm-aquos-spa-booking-product-selected-label,
+.tmsm-aquos-spa-booking-time-listitem.selected .tmsm-aquos-spa-booking-product-change-label{
   display: inline-block;
 }
 
-.tmsm-aquos-spa-booking-time-group.not-selected{
+.tmsm-aquos-spa-booking-time-listitem.not-selected{
   display: none;
 }
 
@@ -94,4 +94,7 @@
 }
 #tmsm-aquos-spa-booking-date-inner .datepicker-inline{
   width: 100%;
+}
+.tmsm-aquos-spa-booking-time-listitem{
+  margin-bottom: 8px;
 }

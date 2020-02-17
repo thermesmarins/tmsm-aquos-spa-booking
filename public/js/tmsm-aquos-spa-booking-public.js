@@ -244,32 +244,58 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
      * @see https://deliciousbrains.com/building-reactive-wordpress-plugins-part-1-backbone-js/
      */
     TmsmAquosSpaBooking.TimesView = Backbone.View.extend( {
-      tagName: '',
+      tagName: 'li',
+      className: 'tmsm-aquos-spa-booking-time-listitem',
       template: wp.template('tmsm-aquos-spa-booking-time'),
       //template: wp.template( $( '#cron-pixie-event-item-tmpl' ).html() ),
 
       initialize: function() {
+        $('#tmsm-aquos-spa-booking-times-loading').hide();
         this.listenTo( this.model, 'change', this.render );
-        //this.listenTo( this.model, 'destroy', this.remove );
+        this.listenTo( this.model, 'destroy', this.destroy );
+        this.listenTo( this.model, 'destroy', this.remove );
       },
 
       events: {
+        'click .tmsm-aquos-spa-booking-time': 'selectTime',
         'click .tmsm-aquos-spa-booking-time-change-label': 'changeTime'
       },
 
+      destroy: function(){
+        $('#tmsm-aquos-spa-booking-times-loading').show();
+      },
+
       render: function() {
-        console.log('this.model:');
-        console.log(this.model);
         var html = this.template( this.model );
         this.$el.html( html );
-
         return this;
+      },
+
+      selectTime: function(e) {
+        e.preventDefault();
+        console.log('selectTime');
+
+        var time = this.model.hour_formatted;
+
+        if (time) {
+          $('#tmsm-aquos-spa-booking-selected-time').val(time);
+
+          //$('.tmsm-aquos-spa-booking-time-listitem').removeClass('selected').addClass('not-selected');
+          $('.tmsm-aquos-spa-booking-time-listitem').removeClass('disabled').removeClass('selected').addClass('not-selected');
+          //var groupitem = $(this).closest('.tmsm-aquos-spa-booking-time-listitem');
+          //groupitem.removeClass('not-selected').addClass('selected');
+          //$(this).addClass('disabled').addClass('selected').removeClass('not-selected');
+          this.$el.addClass('selected').removeClass('not-selected').find('.tmsm-aquos-spa-booking-time').addClass('disabled');
+
+          $('#tmsm-aquos-spa-booking-confirm').show();
+        }
       },
 
       changeTime: function() {
         console.log('changeTime');
         tmsmAquosSpaBookingLoadTimes(selected_date);
       },
+
       runNow: function() {
         console.log('runNow');
       }
@@ -369,7 +395,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
     });
 
     // Time Selection
-    $('#tmsm-aquos-spa-booking-times').on('click', '.tmsm-aquos-spa-booking-time', function (e) {
+    /*$('#tmsm-aquos-spa-booking-times').on('click', '.tmsm-aquos-spa-booking-time', function (e) {
       e.preventDefault();
 
       var time = $(this).attr('data-time');
@@ -385,7 +411,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
 
         $('#tmsm-aquos-spa-booking-confirm').show();
       }
-    });
+    });*/
 
     $('.tmsm-aquos-spa-booking-time-change-label').on('click', function(e){
       // TODO change label

@@ -198,7 +198,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<h3>'. __( 'Pick your time:', 'tmsm-aquos-spa-booking' ).'</h3>
 		<p id="tmsm-aquos-spa-booking-date-display"></p>
 		<p id="tmsm-aquos-spa-booking-times-loading">'. __( 'Loading', 'tmsm-aquos-spa-booking' ).'</p>
-		<div id="tmsm-aquos-spa-booking-times"></div>
+		<ul id="tmsm-aquos-spa-booking-times" class="list-unstyled"></ul>
 		</div>
 		</div>
 		
@@ -223,7 +223,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-time">
-			<p class="tmsm-aquos-spa-booking-time-group"><a class="<?php echo self::button_class(); ?> tmsm-aquos-spa-booking-time" href="#" data-time="{{ data.hour }}">{{ data.hour_formatted }}</a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a></p>
+			<a class="<?php echo self::button_class(); ?> tmsm-aquos-spa-booking-time" href="#" data-time="{{ data.hour }}">{{ data.hour_formatted }}</a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
 		</script>
 		<?php
 	}
@@ -722,8 +722,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
 
 			// Add To Cart
-			//$product_id = 10554 ;
-			$datetime = new \DateTime($date . ' ' . $time . ':00:00');
+			$datetime = new \DateTime($date . ' ' . $time );
 			$timestamp = $datetime->getTimestamp();
 			$date_formatted = date_i18n( get_option( 'date_format' ), $timestamp );
 			$time_formatted = date_i18n( get_option( 'time_format' ), $timestamp );
@@ -1006,7 +1005,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 				if(!empty($cart_item['appointment']) && !empty($cart_item['timestamp_added'])){
 					$_product = $cart_item['data'];
-					if( time() > ( $cart_item['timestamp_added'] + 3600 * 2)){
+					if( time() > ( $cart_item['timestamp_added'] + 3600 * get_option( 'tmsm_aquos_spa_booking_cartexpirehours', 2 ))){
 						WC()->cart->remove_cart_item( $cart_item_key );
 						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'woocommerce' ), $_product->get_name() ), 'notice' );
 					}
