@@ -206,6 +206,9 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_filter( 'woocommerce_cod_process_payment_order_status', $plugin_public, 'woocommerce_cod_process_payment_order_status', 20, 1 );
 		$this->loader->add_filter( 'woocommerce_order_button_text', $plugin_public, 'woocommerce_order_button_text', 20, 1 );
 		$this->loader->add_filter( 'woocommerce_order_item_needs_processing', $plugin_public, 'woocommerce_order_item_needs_processing', 20, 3 );
+		// Virtual only Column
+		$this->loader->add_action( 'manage_shop_order_posts_custom_column', $plugin_public, 'shop_order_posts_custom_column_appointment', 50, 2 );
+
 
 		// Ajax
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );

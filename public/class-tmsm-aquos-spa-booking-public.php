@@ -878,8 +878,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$order->set_shipping_country('');
 		$order->add_meta_data('_appointment', 'yes', true);
 
-		error_log(print_r($order,true));
-
 	}
 
 	/**
@@ -1145,4 +1143,26 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		return $item_needs_processing;
 	}
 
+	/**
+	 * "Virtual only" column content
+	 *
+	 * @param $column
+	 * @param $post_id
+	 */
+	function shop_order_posts_custom_column_appointment( $column, $post_id )
+	{
+		global $post, $the_order;
+
+		if ( empty( $the_order ) || $the_order->get_id() !== $post->ID ) {
+			$the_order = wc_get_order( $post->ID );
+		}
+
+		switch ( $column ) {
+			case 'shipping_address':
+				if ( $the_order->get_meta('_appointment', true) === 'yes') {
+					echo '<span class="description" style="display: inline-block; margin-top: -10px; margin-left: -10px;"><span class="dashicons dashicons-calendar" style=""></span> '.__( 'Appointment', 'tmsm-woocommerce-vouchers' ).'</span>';
+				}
+				break;
+		}
+	}
 }
