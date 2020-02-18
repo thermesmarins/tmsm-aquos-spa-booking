@@ -720,6 +720,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$time = sanitize_text_field( $_POST['time'] );
 		$date = sanitize_text_field( $_POST['date'] );
 
+		$product = wc_get_product($product_id);
+
+		$aquos_id = sanitize_text_field( $product->get_meta('_aquos_id', true ));
+
 		$errors = array(); // Array to hold validation errors
 		$jsondata   = array(); // Array to pass back data
 
@@ -756,6 +760,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$variation = array();
 			$cart_item_data = [
 				'appointment' => $appointment,
+				'aquos_id' => $aquos_id,
 				'timestamp_added' => time(),
 				//'price' => 12 // if I want to force a price in the cart
 			];
@@ -797,12 +802,17 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function woocommerce_add_cart_item_data_appointment( $cart_item_data, $product_id, $variation_id ){
 		$appointment = sanitize_text_field(filter_input( INPUT_POST, 'appointment' ));
+		$aquos_id = sanitize_text_field(filter_input( INPUT_POST, 'aquos_id' ));
 
-		if ( empty( $appointment ) ) {
+		if ( !empty( $appointment ) ) {
+			$cart_item_data['appointment'] = $appointment;
 			return $cart_item_data;
 		}
 
-		$cart_item_data['appointment'] = $appointment;
+		if ( !empty( $aquos_id ) ) {
+			$cart_item_data['aquos_id'] = $aquos_id;
+			return $cart_item_data;
+		}
 
 		return $cart_item_data;
 	}
@@ -816,18 +826,23 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return array
 	 */
 	function woocommerce_get_item_data_appointment( $item_data, $cart_item ) {
-
-		//error_log(print_r($item_data, true));
-		//error_log(print_r($cart_item, true));
-		if ( empty( $cart_item['appointment'] ) ) {
-			return $item_data;
+		
+		if ( !empty( $cart_item['appointment'] ) ) {
+			$item_data[] = array(
+				'key'     => __( 'Appointment', 'tmsm-aquos-spa-booking' ),
+				'value'   => wc_clean( $cart_item['appointment'] ),
+				'display' => '',
+			);
 		}
 
-		$item_data[] = array(
-			'key'     => __( 'Appointment', 'tmsm-aquos-spa-booking' ),
-			'value'   => wc_clean( $cart_item['appointment'] ),
-			'display' => '',
-		);
+		if ( !empty( $cart_item['aquos_id'] ) ) {
+			$item_data[] = array(
+				'key'     => __( 'Aquos ID', 'tmsm-aquos-spa-booking' ),
+				'value'   => wc_clean( $cart_item['aquos_id'] ),
+				'display' => '',
+			);
+		}
+
 
 		return $item_data;
 	}
@@ -842,20 +857,28 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @param string                $cart_item_key
 	 * @param array                 $values
 	 * @param WC_Order              $order
+	 *
+	 * @throws WC_Data_Exception Throws exception when invalid data is found.
 	 */
 	public function woocommerce_checkout_create_order_line_item_appointment( $item, $cart_item_key, $values, $order ) {
 
 		$variation_id = isset( $values['variation_id'] ) && ! empty( $values['variation_id'] ) ? $values['variation_id'] : $values['product_id'];
 
-		/*$product = $item->get_product();
-
-		if ( $product ) {
-			$variation_id = $product->get_id();
-		}*/
-
 		if ( ! empty( $values['appointment'] ) ) {
 			$item->add_meta_data( '_appointment', $values['appointment'], true );
+			$item->add_meta_data( '_aquos_id', $values['aquos_id'], true );
 		}
+
+		error_log('woocommerce_checkout_create_order_line_item_appointment');
+		$order->set_shipping_first_name('');
+		$order->set_shipping_last_name('');
+		$order->set_shipping_address_1('');
+		$order->set_shipping_address_2('');
+		$order->set_shipping_city('');
+		$order->set_shipping_country('');
+		$order->add_meta_data('_appointment', 'yes', true);
+
+		error_log(print_r($order,true));
 
 	}
 
@@ -952,11 +975,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	/**
 	 * If Order has at least one appointment
 	 *
-	 * @param WC_Order $order
+	 * @param WC_Order|int $order
 	 *
 	 * @return bool
 	 */
 	private function order_has_appointment($order){
+
+		$order_id = WC_Order_Factory::get_order_id( $order );
+
+		$order = wc_get_order($order_id);
 
 		$has_appointment = false;
 
@@ -1098,6 +1125,24 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$classes[] = 'tmsm-aquos-spa-booking-checkout-has-appointments';
 		}
 		return $classes;
+	}
+
+	/**
+	 * Make orders not needing processing if it has appointments
+	 *
+	 * @param bool $item_needs_processing
+	 * @param WC_Product $product
+	 * @param int $order_id
+	 *
+	 * @return bool
+	 */
+	public function woocommerce_order_item_needs_processing($item_needs_processing, $product, $order_id){
+
+		if($this->order_has_appointment($order_id)){
+			$item_needs_processing = false;
+		}
+
+		return $item_needs_processing;
 	}
 
 }
