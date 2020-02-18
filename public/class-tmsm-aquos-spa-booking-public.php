@@ -137,7 +137,24 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @return string
 	 */
-	private static function button_class(){
+	private static function button_class_default(){
+		$theme = wp_get_theme();
+		$buttonclass = '';
+		if ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) ) {
+			$buttonclass = 'btn btn-default';
+		}
+		if ( 'OceanWP' == $theme->get( 'Name' ) || 'oceanwp' == $theme->get( 'Template' ) ) {
+			$buttonclass = 'button';
+		}
+		return $buttonclass;
+	}
+
+	/**
+	 * Button Class
+	 *
+	 * @return string
+	 */
+	private static function button_class_primary(){
 		$theme = wp_get_theme();
 		$buttonclass = '';
 		if ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) ) {
@@ -202,7 +219,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		</div>
 		</div>
 		
-		<p id="tmsm-aquos-spa-booking-confirm-container"><a href="#" class="'.self::button_class().'" id="tmsm-aquos-spa-booking-confirm" style="display: none;">'. __( 'Confirm this booking', 'tmsm-aquos-spa-booking' ).'</a></p>
+		<p id="tmsm-aquos-spa-booking-confirm-container">
+		<a href="#" class="'.self::button_class_default().'" id="tmsm-aquos-spa-booking-cancel" >'. __( 'Cancel', 'tmsm-aquos-spa-booking' ).'</a>		
+		<a href="#" class="'.self::button_class_primary().'" id="tmsm-aquos-spa-booking-confirm" style="display: none;">'. __( 'Confirm this booking', 'tmsm-aquos-spa-booking' ).'</a>
+		</p>
 		<input type="hidden" name="language" value="'.$this->get_locale().'">
 		<input type="hidden" id="tmsm-aquos-spa-booking-selected-productcategory" name="productcategory" value="">
 		<input type="hidden" id="tmsm-aquos-spa-booking-selected-product" name="product" value="">
@@ -223,7 +243,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-time">
-			<a class="<?php echo self::button_class(); ?> tmsm-aquos-spa-booking-time" href="#" data-time="{{ data.hour }}">{{ data.hour_formatted }}</a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
+			<a class="<?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-time="{{ data.hour }}">{{ data.hour_formatted }}</a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
 		</script>
 		<?php
 	}
@@ -877,6 +897,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			//$value['data']->set_price($value['price']); // If I want to force a price in the cart
 			if(!empty($value['appointment'])){
 				$value['data']->set_virtual(true);
+				$value['data']->set_price(0);
 			}
 		}
 	}
@@ -1026,4 +1047,57 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	public function woocommerce_cod_process_payment_order_status($status){
 		return 'on-hold';
 	}
+
+	/**
+	 * Filters the post title.
+	 *
+	 * @param string $title The post title.
+	 * @param int    $id    The post ID.
+	 *
+	 * @return string
+	 */
+	public function the_title($title, $id){
+
+		if($id === intval(get_option( 'woocommerce_checkout_page_id' ))){
+			$title = __( 'Appointment', 'tmsm-aquos-spa-booking' );
+		}
+		return $title;
+	}
+
+
+	/**
+	 * Filters the checkout button text
+	 *
+	 * @param $text
+	 *
+	 * @return string
+	 */
+	public function woocommerce_order_button_text($text){
+		global $post;
+
+		if($post->ID === intval(get_option( 'woocommerce_checkout_page_id' ))){
+			$text = __( 'Book', 'tmsm-aquos-spa-booking' );
+		}
+		return $text;
+	}
+
+	/**
+	 * Filters the list of CSS body class names for the current post or page.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string[] $classes An array of body class names.
+	 * @param string[] $class   An array of additional class names added to the body.
+	 *
+	 * @return string[]
+	 */
+	public function body_class($classes, $class){
+		global $post;
+
+		if($post->ID === intval(get_option( 'woocommerce_checkout_page_id' ))){
+			$classes[] = 'tmsm-aquos-spa-booking-checkout-has-appointments';
+		}
+		return $classes;
+	}
+
 }

@@ -204,6 +204,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'woocommerce_email_before_order_table', $plugin_public, 'woocommerce_email_before_order_table_appointment', 20, 4 );
 		$this->loader->add_action( 'woocommerce_check_cart_items', $plugin_public, 'woocommerce_check_cart_items_expire' );
 		$this->loader->add_filter( 'woocommerce_cod_process_payment_order_status', $plugin_public, 'woocommerce_cod_process_payment_order_status', 20, 1 );
+		$this->loader->add_filter( 'woocommerce_order_button_text', $plugin_public, 'woocommerce_order_button_text', 20, 1 );
 
 		// Ajax
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );
@@ -223,8 +224,10 @@ class Tmsm_Aquos_Spa_Booking {
 
 		// Override Cart/Checkout
 		$this->loader->add_action( 'woocommerce_before_calculate_totals', $plugin_public, 'woocommerce_before_calculate_totals_appointment' );
-
 		$this->loader->add_filter( 'woocommerce_available_payment_gateways', $plugin_public, 'woocommerce_available_payment_gateways_cashondelivery', 10, 3 );
+
+		$this->loader->add_filter( 'the_title', $plugin_public, 'the_title', 10, 2 );
+		$this->loader->add_filter( 'body_class', $plugin_public, 'body_class', 10, 2 );
 
 	}
 

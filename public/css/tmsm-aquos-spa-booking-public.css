@@ -39,12 +39,22 @@
 
 #tmsm-aquos-spa-booking-confirm-container{
   text-align: center;
-  margin-bottom: 100px;
-
+  padding-bottom: 40px;
+}
+#tmsm-aquos-spa-booking-cancel{
+  float: left;
+}
+#tmsm-aquos-spa-booking-confirm{
+  float: right;
 }
 
 #tmsm-aquos-spa-booking-form .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
   width: 400px;
+}
+
+/* Hide coupon form when checkout has appointments */
+.tmsm-aquos-spa-booking-checkout-has-appointments .woocommerce-form-coupon-toggle{
+  display: none;
 }
 
 

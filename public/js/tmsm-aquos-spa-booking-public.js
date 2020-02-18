@@ -20,6 +20,21 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
     // Load Product Category
     var tmsmAquosSpaBookingLoadProductCategories = function () {
 
+      $('#tmsm-aquos-spa-booking-cancel').hide();
+      $('#tmsm-aquos-spa-booking-products-container').hide();
+      $('#tmsm-aquos-spa-booking-variations-container').hide();
+      $('#tmsm-aquos-spa-booking-date-container').hide();
+      $('#tmsm-aquos-spa-booking-times-container').hide();
+
+      $('#tmsm-aquos-spa-booking-confirm').hide();
+      $('#tmsm-aquos-spa-booking-times').empty();
+      $('#tmsm-aquos-spa-booking-date-display').empty();
+
+      $('#tmsm-aquos-spa-booking-selected-productcategory').val('');
+      $('#tmsm-aquos-spa-booking-selected-product').val('');
+      $('#tmsm-aquos-spa-booking-selected-time').val('');
+      $('#tmsm-aquos-spa-booking-selected-date').val('');
+
       var productcategory_template = wp.template('tmsm-aquos-spa-booking-product-category');
 
       $('#tmsm-aquos-spa-booking-categories').empty().val('').prop('disabled', true).attr('title', tmsm_aquos_spa_booking_params.i18n.loading).selectpicker('destroy').selectpicker();
@@ -62,6 +77,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
       $('#tmsm-aquos-spa-booking-date-container').hide();
       $('#tmsm-aquos-spa-booking-times-container').hide();
 
+      $('#tmsm-aquos-spa-booking-cancel').show();
       $('#tmsm-aquos-spa-booking-confirm').hide();
       $('#tmsm-aquos-spa-booking-times').empty();
       $('#tmsm-aquos-spa-booking-date-display').empty();
@@ -420,7 +436,14 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
       tmsmAquosSpaBookingLoadTimes(selected_date);
     });
 
+
     // Confirm
+    $('#tmsm-aquos-spa-booking-cancel').on('click', function (e) {
+      e.preventDefault();
+      tmsmAquosSpaBookingLoadProductCategories();
+    });
+
+      // Confirm
     $('#tmsm-aquos-spa-booking-confirm').on('click', function (e) {
       e.preventDefault();
 
