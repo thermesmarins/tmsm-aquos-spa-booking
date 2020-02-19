@@ -133,7 +133,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 
 	/**
-	 * Button Class
+	 * Button Class Default
 	 *
 	 * @return string
 	 */
@@ -150,7 +150,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	}
 
 	/**
-	 * Button Class
+	 * Button Class Primary
 	 *
 	 * @return string
 	 */
@@ -166,6 +166,24 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		return $buttonclass;
 	}
 
+
+	/**
+	 * Alert Class Error
+	 *
+	 * @return string
+	 */
+	private static function alert_class_error(){
+		$theme = wp_get_theme();
+		$buttonclass = '';
+		if ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) ) {
+			$buttonclass = 'alert alert-danger';
+		}
+		if ( 'OceanWP' == $theme->get( 'Name' ) || 'oceanwp' == $theme->get( 'Template' ) ) {
+			$buttonclass = 'alert';
+		}
+		return $buttonclass;
+	}
+
 	/**
 	 * Booking Page Shortcode
 	 *
@@ -176,63 +194,81 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			'option' => '',
 		), $atts, 'tmsm-aquos-spa-booking' );
 
+
+		// Check if cart has products other than appointments
+		$cart_has_products = false;
+		if(!empty(WC()->cart->get_cart_contents())){
+			foreach(WC()->cart->get_cart_contents() as $cart_item){
+				//print_r($cart_item);
+				if(empty($cart_item['appointment'])){
+					$cart_has_products = true;
+				}
+			}
+		}
 		$output = '';
+		if($cart_has_products){
+			$output = '<p id="tmsm-aquos-spa-booking-emptycartfirst" class="'.self::alert_class_error().'" >'.sprintf(__( 'Your cart contains products other than appointments, please <a href="%s">empty your cart or complete the order</a> before booking an appointment.', 'tmsm-aquos-spa-booking' ), wc_get_cart_url()).'</p>';
+		}
+		else {
 
-		$output = '
-		<form id="tmsm-aquos-spa-booking-form">
-		<div id="tmsm-aquos-spa-booking-categories-container">
-		<div id="tmsm-aquos-spa-booking-categories-inner">
-		<h3>'. __( 'Pick your treatments category:', 'tmsm-aquos-spa-booking' ).'</h3>
-		<select id="tmsm-aquos-spa-booking-categories" title="'. esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ).'">
-		</select>
-		</div>
-		</div>
-		
-		<div id="tmsm-aquos-spa-booking-products-container" style="display: none">
-		<div id="tmsm-aquos-spa-booking-products-inner">
-		<h3>'. __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ).'</h3>
-		<select id="tmsm-aquos-spa-booking-products" title="'. esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ).'"></select>
-		</div>
-		</div>
-		
-		<div id="tmsm-aquos-spa-booking-variations-container" style="display: none">
-		<div id="tmsm-aquos-spa-booking-variations-inner">
-		<h3>'. __( 'Pick your variation:', 'tmsm-aquos-spa-booking' ).'</h3>
-		<select id="tmsm-aquos-spa-booking-variations" title="'. esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ).'"></select>
-		</div>
-		</div>
-		
-		<div id="tmsm-aquos-spa-booking-date-container" style="display: none">
-		<div id="tmsm-aquos-spa-booking-date-inner">
-		<h3>'. __( 'Pick your date:', 'tmsm-aquos-spa-booking' ).'</h3>
-		<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default">
-		</div>
-		</div>
-		</div>
-		
-		<div id="tmsm-aquos-spa-booking-times-container" style="display: none">
-		<div id="tmsm-aquos-spa-booking-times-inner">
-		<h3>'. __( 'Pick your time:', 'tmsm-aquos-spa-booking' ).'</h3>
-		<p id="tmsm-aquos-spa-booking-date-display"></p>
-		<p id="tmsm-aquos-spa-booking-times-loading">'. __( 'Loading', 'tmsm-aquos-spa-booking' ).'</p>
-		<ul id="tmsm-aquos-spa-booking-times" class="list-unstyled"></ul>
-		</div>
-		</div>
-		
-		<p id="tmsm-aquos-spa-booking-confirm-container">
-		<a href="#" class="'.self::button_class_default().'" id="tmsm-aquos-spa-booking-cancel" >'. __( 'Cancel', 'tmsm-aquos-spa-booking' ).'</a>		
-		<a href="#" class="'.self::button_class_primary().'" id="tmsm-aquos-spa-booking-confirm" style="display: none;">'. __( 'Confirm this booking', 'tmsm-aquos-spa-booking' ).'</a>
-		</p>
-		<input type="hidden" name="language" value="'.$this->get_locale().'">
-		<input type="hidden" id="tmsm-aquos-spa-booking-selected-productcategory" name="productcategory" value="">
-		<input type="hidden" id="tmsm-aquos-spa-booking-selected-product" name="product" value="">
-		<input type="hidden" id="tmsm-aquos-spa-booking-selected-date" name="date" value="">
-		<input type="hidden" id="tmsm-aquos-spa-booking-selected-time" name="time" value="">
-		'.wp_nonce_field( 'tmsm-aquos-spa-booking-nonce-action', 'tmsm-aquos-spa-booking-nonce', true, false ).'
-		</form>
-		<p id="tmsm-aquos-spa-booking-cancellationpolicy" style="display: none">'.esc_html(get_option( 'tmsm_aquos_spa_booking_cancellationpolicy', '' )).'</p>
-		';
+			$output = '
+			<form id="tmsm-aquos-spa-booking-form">
+			<div id="tmsm-aquos-spa-booking-categories-container">
+			<div id="tmsm-aquos-spa-booking-categories-inner">
+			<h3>' . __( 'Pick your treatments category:', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<select id="tmsm-aquos-spa-booking-categories" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '">
+			</select>
+			</div>
+			</div>
+			
+			<div id="tmsm-aquos-spa-booking-products-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-products-inner">
+			<h3>' . __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<select id="tmsm-aquos-spa-booking-products" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			</div>
+			</div>
+			
+			<div id="tmsm-aquos-spa-booking-variations-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-variations-inner">
+			<h3>' . __( 'Pick your variation:', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<select id="tmsm-aquos-spa-booking-variations" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			</div>
+			</div>
+			
+			<div id="tmsm-aquos-spa-booking-date-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-date-inner">
+			<h3>' . __( 'Pick your date:', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default">
+			</div>
+			</div>
+			</div>
+			
+			<div id="tmsm-aquos-spa-booking-times-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-times-inner">
+			<h3>' . __( 'Pick your time:', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<p id="tmsm-aquos-spa-booking-date-display"></p>
+			<p id="tmsm-aquos-spa-booking-times-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
+			<ul id="tmsm-aquos-spa-booking-times" class="list-unstyled"></ul>
+			</div>
+			</div>
+			
+			<p id="tmsm-aquos-spa-booking-confirm-container">
+			<a href="#" class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-cancel" >' . __( 'Cancel', 'tmsm-aquos-spa-booking' ) . '</a>		
+			<a href="#" class="' . self::button_class_primary() . '" id="tmsm-aquos-spa-booking-confirm" style="display: none;">'
+				          . __( 'Confirm this booking', 'tmsm-aquos-spa-booking' ) . '</a>
+			</p>
+			<input type="hidden" name="language" value="' . $this->get_locale() . '">
+			<input type="hidden" id="tmsm-aquos-spa-booking-selected-productcategory" name="productcategory" value="">
+			<input type="hidden" id="tmsm-aquos-spa-booking-selected-product" name="product" value="">
+			<input type="hidden" id="tmsm-aquos-spa-booking-selected-date" name="date" value="">
+			<input type="hidden" id="tmsm-aquos-spa-booking-selected-time" name="time" value="">
+			' . wp_nonce_field( 'tmsm-aquos-spa-booking-nonce-action', 'tmsm-aquos-spa-booking-nonce', true, false ) . '
+			</form>
+			<p id="tmsm-aquos-spa-booking-cancellationpolicy" style="display: none">' . esc_html( get_option( 'tmsm_aquos_spa_booking_cancellationpolicy',
+						'' ) ) . '</p>
+			';
 
+		}
 		return $output;
 	}
 

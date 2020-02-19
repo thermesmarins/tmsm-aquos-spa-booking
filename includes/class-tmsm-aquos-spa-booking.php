@@ -189,49 +189,51 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts', 100 );
 
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
+
+		// Html Templates
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_category_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_variation_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'time_template' );
 
-		// WooCommerce
+		// Cart Items
 		$this->loader->add_filter( 'woocommerce_add_cart_item_data', $plugin_public, 'woocommerce_add_cart_item_data_appointment', 10, 3 );
 		$this->loader->add_filter( 'woocommerce_get_item_data', $plugin_public, 'woocommerce_get_item_data_appointment', 10, 2 );
 		$this->loader->add_filter( 'woocommerce_get_item_data', $plugin_public, 'woocommerce_get_item_data_appointment', 10, 2 );
 		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'woocommerce_checkout_create_order_line_item_appointment', 10, 4 );
 		$this->loader->add_filter( 'woocommerce_display_item_meta', $plugin_public, 'woocommerce_display_item_meta_appointment', 10, 3 );
+		$this->loader->add_action( 'woocommerce_check_cart_items', $plugin_public, 'woocommerce_check_cart_items_expire' );
+
+		// Confirmation Page/Emails
 		$this->loader->add_filter( 'woocommerce_thankyou_order_received_text', $plugin_public, 'woocommerce_thankyou_order_received_text_appointment', 100, 2 );
 		$this->loader->add_action( 'woocommerce_email_before_order_table', $plugin_public, 'woocommerce_email_before_order_table_appointment', 20, 4 );
-		$this->loader->add_action( 'woocommerce_check_cart_items', $plugin_public, 'woocommerce_check_cart_items_expire' );
-		$this->loader->add_filter( 'woocommerce_cod_process_payment_order_status', $plugin_public, 'woocommerce_cod_process_payment_order_status', 20, 1 );
-		$this->loader->add_filter( 'woocommerce_order_button_text', $plugin_public, 'woocommerce_order_button_text', 20, 1 );
-		$this->loader->add_filter( 'woocommerce_order_item_needs_processing', $plugin_public, 'woocommerce_order_item_needs_processing', 20, 3 );
+
 		// Virtual only Column
 		$this->loader->add_action( 'manage_shop_order_posts_custom_column', $plugin_public, 'shop_order_posts_custom_column_appointment', 50, 2 );
 
+		// Checkout Page Customization
+		$this->loader->add_filter( 'the_title', $plugin_public, 'the_title', 10, 2 );
+		$this->loader->add_filter( 'body_class', $plugin_public, 'body_class', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_order_button_text', $plugin_public, 'woocommerce_order_button_text', 20, 1 );
 
-		// Ajax
+		// Get Data on Appointment Page
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );
-
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-products', $plugin_public, 'ajax_products' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-products', $plugin_public, 'ajax_products' );
-
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-variations', $plugin_public, 'ajax_product_variations' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-variations', $plugin_public, 'ajax_product_variations' );
-
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-times', $plugin_public, 'ajax_times' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-times', $plugin_public, 'ajax_times' );
-
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-addtocart', $plugin_public, 'ajax_addtocart' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-addtocart', $plugin_public, 'ajax_addtocart' );
 
-		// Override Cart/Checkout
+		// Checkout: set virtual, and set payments gateways
 		$this->loader->add_action( 'woocommerce_before_calculate_totals', $plugin_public, 'woocommerce_before_calculate_totals_appointment' );
 		$this->loader->add_filter( 'woocommerce_available_payment_gateways', $plugin_public, 'woocommerce_available_payment_gateways_cashondelivery', 10, 3 );
+		$this->loader->add_filter( 'woocommerce_cod_process_payment_order_status', $plugin_public, 'woocommerce_cod_process_payment_order_status', 20, 1 );
+		$this->loader->add_filter( 'woocommerce_order_item_needs_processing', $plugin_public, 'woocommerce_order_item_needs_processing', 20, 3 );
 
-		$this->loader->add_filter( 'the_title', $plugin_public, 'the_title', 10, 2 );
-		$this->loader->add_filter( 'body_class', $plugin_public, 'body_class', 10, 2 );
 
 	}
 
