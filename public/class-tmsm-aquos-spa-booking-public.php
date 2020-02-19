@@ -79,6 +79,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * Register the JavaScript for the public-facing side of the site.
 	 *
 	 * @since    1.0.0
+	 *
+	 * @throws Exception
 	 */
 	public function enqueue_scripts() {
 
@@ -564,54 +566,60 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			$product = wc_get_product($product_id);
 
-			$variations = [];
+			if ( ! empty( $product ) && $product instanceof WC_Product ) {
 
-			if($product->is_type( 'variable' ) ) {
-				foreach ( $product->get_available_variations() as $variation_data ) {
+				if($product->is_type( 'variable' ) && $product instanceof WC_Product_Variable) {
+					$variations = [];
+					foreach ( $product->get_available_variations() as $variation_data ) {
 
-					$variation = wc_get_product( $variation_data['variation_id'] );
+						$variation = wc_get_product( $variation_data['variation_id'] );
 
-					if(empty($variation)){
-						continue;
+						if(empty($variation)){
+							continue;
+						}
+						if ( ! ( $variation instanceof WC_Product_Variation ) ) {
+							continue;
+						}
+
+						$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
+
+						if($variation->get_attribute('format-bon-cadeau')){
+							error_log($variation->get_attribute('format-bon-cadeau'));
+							$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
+						}
+
+						$variation_name = str_replace($product->get_name(). ' - ', '', $variation_name);
+						$variation_name = str_replace($product->get_name(). ' ㅡ ', '', $variation_name);
+						$variation_name = str_replace($product->get_name(). ' — ', '', $variation_name);
+
+						$aquos_id = get_post_meta( $variation->get_id(), '_aquos_id', true);
+						if(empty($aquos_id)){
+							continue;
+						}
+						$sku = substr( $variation->get_sku(), 0, 2 ) === 'E-' ? substr( $variation->get_sku(), 2 ) : $variation->get_sku();
+
+						$variations[$sku] = [
+							'id' => esc_js($variation->get_id()),
+							'permalink' => esc_js($variation->get_permalink()),
+							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+							'price' => html_entity_decode(wp_strip_all_tags($variation->get_price_html())),
+							'sku' => esc_js($variation->get_sku()),
+							'name' => $variation_name,
+						];
+
+
 					}
-
-					$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
-
-					if($variation->get_attribute('format-bon-cadeau')){
-						error_log($variation->get_attribute('format-bon-cadeau'));
-						$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
-					}
-
-					$variation_name = str_replace($product->get_name(). ' - ', '', $variation_name);
-					$variation_name = str_replace($product->get_name(). ' ㅡ ', '', $variation_name);
-					$variation_name = str_replace($product->get_name(). ' — ', '', $variation_name);
-
-					$aquos_id = get_post_meta( $variation->get_id(), '_aquos_id', true);
-					if(empty($aquos_id)){
-						continue;
-					}
-					$sku = substr( $variation->get_sku(), 0, 2 ) === 'E-' ? substr( $variation->get_sku(), 2 ) : $variation->get_sku();
-
-					$variations[$sku] = [
-						'id' => esc_js($variation->get_id()),
-						'permalink' => esc_js($variation->get_permalink()),
-						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-						'price' => html_entity_decode(wp_strip_all_tags($variation->get_price_html())),
-						'sku' => esc_js($variation->get_sku()),
-						'name' => $variation_name,
-					];
-
-
+					$jsondata['variations'] = $variations;
 				}
+				else{
+					$errors[] = __('Product is not variable', 'tmsm-aquos-spa-booking');
+				}
+
 			}
 			else{
-				$errors[] = __('Product is not variable', 'tmsm-aquos-spa-booking');
+				$errors[] = __('Product doesnt not exist', 'tmsm-aquos-spa-booking');
 			}
-
-
-			$jsondata['variations'] = $variations;
 		}
-
 
 		// Return a response
 		if( ! empty($errors) ) {
