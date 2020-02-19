@@ -60,6 +60,7 @@
 
 /* Styling for Aquatonic */
 
+#tmsm-aquos-spa-booking-voucher-container,
 #tmsm-aquos-spa-booking-categories-container,
 #tmsm-aquos-spa-booking-products-container,
 #tmsm-aquos-spa-booking-variations-container,
@@ -76,6 +77,7 @@
   padding: 10%;
 }
 
+#tmsm-aquos-spa-booking-voucher-container:before,
 #tmsm-aquos-spa-booking-categories-container:before,
 #tmsm-aquos-spa-booking-products-container:before,
 #tmsm-aquos-spa-booking-variations-container:before,

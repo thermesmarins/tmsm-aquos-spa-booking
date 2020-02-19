@@ -215,7 +215,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			$output = '
 			<form id="tmsm-aquos-spa-booking-form">
-			<div id="tmsm-aquos-spa-booking-categories-container">
+			
+			<div id="tmsm-aquos-spa-booking-voucher-container">
+			<div id="tmsm-aquos-spa-booking-voucher-inner">
+			<h3>' . __( 'Do you have a voucher?', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<label class="radio-inline">
+			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucheryes" value="1"> ' . __( 'I have a voucher', 'tmsm-aquos-spa-booking' ) . '
+			</label>
+			<label class="radio-inline">
+			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucherno" value="0"> ' . __( 'I don\'t have any voucher', 'tmsm-aquos-spa-booking' ) . '
+			</label>
+			</div>
+			</div>
+			
+			<div id="tmsm-aquos-spa-booking-categories-container" style="display: none">
 			<div id="tmsm-aquos-spa-booking-categories-inner">
 			<h3>' . __( 'Pick your treatments category:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<select id="tmsm-aquos-spa-booking-categories" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '">
@@ -255,11 +268,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			
 			<p id="tmsm-aquos-spa-booking-confirm-container">
-			<a href="#" class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-cancel" >' . __( 'Cancel', 'tmsm-aquos-spa-booking' ) . '</a>		
+			<a href="#" class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-cancel" style="display: none;">' . __( 'Cancel', 'tmsm-aquos-spa-booking' ) . '</a>		
 			<a href="#" class="' . self::button_class_primary() . '" id="tmsm-aquos-spa-booking-confirm" style="display: none;">'
 				          . __( 'Confirm this booking', 'tmsm-aquos-spa-booking' ) . '</a>
 			</p>
 			<input type="hidden" name="language" value="' . $this->get_locale() . '">
+			<input type="hidden" id="tmsm-aquos-spa-booking-selected-voucher" name="voucher" value="">
 			<input type="hidden" id="tmsm-aquos-spa-booking-selected-productcategory" name="productcategory" value="">
 			<input type="hidden" id="tmsm-aquos-spa-booking-selected-product" name="product" value="">
 			<input type="hidden" id="tmsm-aquos-spa-booking-selected-date" name="date" value="">
