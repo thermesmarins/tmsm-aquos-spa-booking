@@ -818,6 +818,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$variation = array();
 			$cart_item_data = [
 				'appointment' => $appointment,
+				'appointment_date' => $date,
+				'appointment_time' => $time,
 				'aquos_id' => $aquos_id,
 				'timestamp_added' => time(),
 				//'price' => 12 // if I want to force a price in the cart
@@ -860,16 +862,21 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function woocommerce_add_cart_item_data_appointment( $cart_item_data, $product_id, $variation_id ){
 		$appointment = sanitize_text_field(filter_input( INPUT_POST, 'appointment' ));
+		$appointment_date = sanitize_text_field(filter_input( INPUT_POST, 'appointment_date' ));
+		$appointment_time = sanitize_text_field(filter_input( INPUT_POST, 'appointment_time' ));
 		$aquos_id = sanitize_text_field(filter_input( INPUT_POST, 'aquos_id' ));
 
 		if ( !empty( $appointment ) ) {
 			$cart_item_data['appointment'] = $appointment;
-			return $cart_item_data;
 		}
-
+		if ( !empty( $appointment_date ) ) {
+			$cart_item_data['appointment_date'] = $appointment_date;
+		}
+		if ( !empty( $appointment_time ) ) {
+			$cart_item_data['appointment_time'] = $appointment_time;
+		}
 		if ( !empty( $aquos_id ) ) {
 			$cart_item_data['aquos_id'] = $aquos_id;
-			return $cart_item_data;
 		}
 
 		return $cart_item_data;
@@ -884,7 +891,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return array
 	 */
 	function woocommerce_get_item_data_appointment( $item_data, $cart_item ) {
-		
+
+		//print_r($cart_item);
 		if ( !empty( $cart_item['appointment'] ) ) {
 			$item_data[] = array(
 				'key'     => __( 'Appointment', 'tmsm-aquos-spa-booking' ),
@@ -923,6 +931,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$variation_id = isset( $values['variation_id'] ) && ! empty( $values['variation_id'] ) ? $values['variation_id'] : $values['product_id'];
 
 		if ( ! empty( $values['appointment'] ) ) {
+			$item->add_meta_data( '_appointment_date', $values['appointment_date'], true );
+			$item->add_meta_data( '_appointment_time', $values['appointment_time'], true );
 			$item->add_meta_data( '_appointment', $values['appointment'], true );
 			$item->add_meta_data( '_aquos_id', $values['aquos_id'], true );
 		}
@@ -956,8 +966,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$strings = [];
 
 		if ( !empty($item['_appointment'])) {
-			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Appointment:', 'tmsm-aquos-spa-booking' ) . '</strong> '.  esc_html($item['_appointment']) ;
+			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Appointment:', 'tmsm-aquos-spa-booking' ) . '</strong> '.  esc_html($item['_appointment']);
 		}
+
+
 
 		if ( $strings != [] ) {
 			$html .= $args['before'] . implode( $args['separator'], $strings ) . $args['after'];

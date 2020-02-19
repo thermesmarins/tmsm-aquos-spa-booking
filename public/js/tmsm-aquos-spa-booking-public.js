@@ -534,27 +534,25 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
         });
       }
 
-
-
     });
 
 
+    /**
+     * Set initial data into view and start recurring display updates.
+     */
+    TmsmAquosSpaBooking.init = function() {
+      TmsmAquosSpaBooking.voucherview = new TmsmAquosSpaBooking.VoucherView();
+      //TmsmAquosSpaBooking.timesview.render();
+      tmsmAquosSpaBookingReset();
+
+    };
+
+
+    $( document ).ready( function() {
+      TmsmAquosSpaBooking.init();
+    } );
   }
 
-  /**
-   * Set initial data into view and start recurring display updates.
-   */
-  TmsmAquosSpaBooking.init = function() {
-    TmsmAquosSpaBooking.voucherview = new TmsmAquosSpaBooking.VoucherView();
-    //TmsmAquosSpaBooking.timesview.render();
-    tmsmAquosSpaBookingReset();
-
-  };
-
-
-  $( document ).ready( function() {
-    TmsmAquosSpaBooking.init();
-  } );
 
 
 })(jQuery, TmsmAquosSpaBooking);
