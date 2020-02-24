@@ -772,65 +772,68 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public static function ajax_addtocart() {
 
+		$errors = array(); // Array to hold validation errors
+		$jsondata   = array(); // Array to pass back data
+
 		$security = sanitize_text_field( $_POST['security'] );
 		$product_category_id = sanitize_text_field( $_POST['productcategory'] );
+		$voucher = sanitize_text_field( $_POST['has_voucher'] );
 		$product_id = sanitize_text_field( $_POST['product'] );
 		$time = sanitize_text_field( $_POST['time'] );
 		$date = sanitize_text_field( $_POST['date'] );
 
 		$product = wc_get_product($product_id);
 
-		$aquos_id = sanitize_text_field( $product->get_meta('_aquos_id', true ));
-
-		$errors = array(); // Array to hold validation errors
-		$jsondata   = array(); // Array to pass back data
-
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('ajax_times');
-		}
-
-		// Check security
-		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_category_id) || empty($product_id) || empty($date) || empty($time)) {
-			$errors[] = __('Token security not valid', 'tmsm-aquos-spa-booking');
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log('Ajax security not OK');
-			}
+		// Product existance
+		if ( empty( $product ) ) {
+			$errors[] = __('Product not found', 'tmsm-aquos-spa-booking');
 		}
 		else{
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log('Ajax security OK');
+			$aquos_id = sanitize_text_field( $product->get_meta('_aquos_id', true ));
+
+			// Check security
+			if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_category_id) || empty($product_id) || empty($date) || empty($time)) {
+				$errors[] = __('Token security not valid', 'tmsm-aquos-spa-booking');
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log('Ajax security not OK');
+				}
 			}
+			else{
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log('Ajax security OK');
+				}
 
-			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
+				check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
 
-			// Add To Cart
-			$datetime = new \DateTime($date . ' ' . $time );
-			$timestamp = $datetime->getTimestamp();
-			$date_formatted = date_i18n( get_option( 'date_format' ), $timestamp );
-			$time_formatted = date_i18n( get_option( 'time_format' ), $timestamp );
-			$appointment = sprintf(
-				_x( '%s at %s', 'date+time', 'tmsm-aquos-spa-booking' ),
-				$date_formatted,
-				$time_formatted
-			);
-			$quantity = 1;
-			$variation_id = $product_id;
-			$variation = array();
-			$cart_item_data = [
-				'appointment' => $appointment,
-				'appointment_date' => $date,
-				'appointment_time' => $time,
-				'aquos_id' => $aquos_id,
-				'timestamp_added' => time(),
-				//'price' => 12 // if I want to force a price in the cart
-			];
+				// Cart Item Data
+				$datetime = new \DateTime($date . ' ' . $time );
+				$timestamp = $datetime->getTimestamp();
+				$date_formatted = date_i18n( get_option( 'date_format' ), $timestamp );
+				$time_formatted = date_i18n( get_option( 'time_format' ), $timestamp );
+				$appointment = sprintf(
+					_x( '%s at %s', 'date+time', 'tmsm-aquos-spa-booking' ),
+					$date_formatted,
+					$time_formatted
+				);
+				$quantity = 1;
+				$variation_id = $product_id;
+				$variation = array();
+				$cart_item_data = [
+					'has_voucher' => $voucher,
+					'appointment' => $appointment,
+					'appointment_date' => $date,
+					'appointment_time' => $time,
+					'aquos_id' => $aquos_id,
+					'timestamp_added' => time(),
+					//'price' => 12 // if I want to force a price in the cart
+				];
 
-			$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $cart_item_data);
+				$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $cart_item_data);
 
-			//$redirect = wc_get_cart_url();
-			$redirect = wc_get_checkout_url();
-			$jsondata['redirect'] = $redirect;
-
+				//$redirect = wc_get_cart_url();
+				$redirect = wc_get_checkout_url();
+				$jsondata['redirect'] = $redirect;
+			}
 		}
 
 		// Return a response
@@ -861,11 +864,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return array
 	 */
 	public function woocommerce_add_cart_item_data_appointment( $cart_item_data, $product_id, $variation_id ){
+		$voucher = sanitize_text_field(filter_input( INPUT_POST, 'has_voucher' ));
 		$appointment = sanitize_text_field(filter_input( INPUT_POST, 'appointment' ));
 		$appointment_date = sanitize_text_field(filter_input( INPUT_POST, 'appointment_date' ));
 		$appointment_time = sanitize_text_field(filter_input( INPUT_POST, 'appointment_time' ));
 		$aquos_id = sanitize_text_field(filter_input( INPUT_POST, 'aquos_id' ));
 
+		if ( !empty( $voucher ) ) {
+			$cart_item_data['has_voucher'] = $voucher;
+		}
 		if ( !empty( $appointment ) ) {
 			$cart_item_data['appointment'] = $appointment;
 		}
@@ -901,6 +908,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			);
 		}
 
+		if ( !empty( $cart_item['has_voucher'] ) ) {
+			$item_data[] = array(
+				'key'     => __( 'Has Voucher', 'tmsm-aquos-spa-booking' ),
+				'value'   => ($cart_item['has_voucher'] == '1'? __( 'Yes', 'tmsm-aquos-spa-booking' ): __( 'No', 'tmsm-aquos-spa-booking' )),
+				'display' => '',
+			);
+		}
+
 		if ( !empty( $cart_item['aquos_id'] ) ) {
 			$item_data[] = array(
 				'key'     => __( 'Aquos ID', 'tmsm-aquos-spa-booking' ),
@@ -908,7 +923,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'display' => '',
 			);
 		}
-
 
 		return $item_data;
 	}
@@ -934,10 +948,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$item->add_meta_data( '_appointment_date', $values['appointment_date'], true );
 			$item->add_meta_data( '_appointment_time', $values['appointment_time'], true );
 			$item->add_meta_data( '_appointment', $values['appointment'], true );
+			$item->add_meta_data( '_has_voucher', $values['has_voucher'], true );
 			$item->add_meta_data( '_aquos_id', $values['aquos_id'], true );
 		}
 
-		error_log('woocommerce_checkout_create_order_line_item_appointment');
 		$order->set_shipping_first_name('');
 		$order->set_shipping_last_name('');
 		$order->set_shipping_address_1('');
@@ -969,7 +983,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Appointment:', 'tmsm-aquos-spa-booking' ) . '</strong> '.  esc_html($item['_appointment']);
 		}
 
-
+		if ( !empty($item['_has_voucher'])) {
+			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Has Voucher', 'tmsm-aquos-spa-booking' ) . '</strong> ';
+		}
 
 		if ( $strings != [] ) {
 			$html .= $args['before'] . implode( $args['separator'], $strings ) . $args['after'];
@@ -1151,14 +1167,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @return string
 	 */
-	public function the_title($title, $id){
+	public function the_title( $title, $id ) {
 
-		if($id === intval(get_option( 'woocommerce_checkout_page_id' ))){
+		if ( $id === intval( get_option( 'woocommerce_checkout_page_id' ) ) ) {
 			$title = __( 'Appointment', 'tmsm-aquos-spa-booking' );
 		}
+
 		return $title;
 	}
-
 
 	/**
 	 * Filters the checkout button text

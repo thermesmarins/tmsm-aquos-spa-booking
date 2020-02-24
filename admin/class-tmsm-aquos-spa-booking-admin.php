@@ -97,10 +97,33 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			if($meta->key == '_appointment' && !empty($meta->value)){
 				$meta->display_key = __('Appointment', 'tmsm-aquos-spa-booking');
 			}
+			if ( $meta->key == '_has_voucher' ) {
+				$meta->display_key = __('Has Voucher', 'tmsm-aquos-spa-booking');
+				$meta->display_value = ( $meta->value ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
+			}
+			if($meta->key == '_aquos_id' && !empty($meta->value)){
+				$meta->display_key = __('Aquos ID', 'tmsm-aquos-spa-booking');
+			}
 
 		}
 
 		return $formatted_meta;
+	}
+
+	/**
+	 * Hide order item meta from Order
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $item_array
+	 *
+	 * @return array $item_array
+	 */
+	public function woocommerce_hidden_order_itemmeta_appointment($item_meta){
+		$item_meta[] = '_appointment_date';
+		$item_meta[] = '_appointment_time';
+
+		return $item_meta;
 	}
 
 	/**

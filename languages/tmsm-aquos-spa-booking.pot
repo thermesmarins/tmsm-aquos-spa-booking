@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-02-19 14:52+0100\n"
+"POT-Creation-Date: 2020-02-19 17:58+0100\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -20,18 +20,30 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: vendor\n"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:98
-#: public/class-tmsm-aquos-spa-booking-public.php:890
-#: public/class-tmsm-aquos-spa-booking-public.php:1145
-#: public/class-tmsm-aquos-spa-booking-public.php:1221
+#: public/class-tmsm-aquos-spa-booking-public.php:905
+#: public/class-tmsm-aquos-spa-booking-public.php:1173
+#: public/class-tmsm-aquos-spa-booking-public.php:1249
 msgid "Appointment"
 msgstr ""
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:128
-#: admin/class-tmsm-aquos-spa-booking-admin.php:182
+#: admin/class-tmsm-aquos-spa-booking-admin.php:101
+#: admin/class-tmsm-aquos-spa-booking-admin.php:102
+#: public/class-tmsm-aquos-spa-booking-public.php:913
+#: public/class-tmsm-aquos-spa-booking-public.php:987
+msgid "Has Voucher"
+msgstr ""
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:105
+#: public/class-tmsm-aquos-spa-booking-public.php:921
+msgid "Aquos ID"
+msgstr ""
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:135
+#: admin/class-tmsm-aquos-spa-booking-admin.php:189
 msgid "Aquos Product ID"
 msgstr ""
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:131
+#: admin/class-tmsm-aquos-spa-booking-admin.php:138
 msgid "If empty, the product won't be bookable."
 msgstr ""
 
@@ -225,7 +237,7 @@ msgstr ""
 #: public/class-tmsm-aquos-spa-booking-public.php:425
 #: public/class-tmsm-aquos-spa-booking-public.php:569
 #: public/class-tmsm-aquos-spa-booking-public.php:696
-#: public/class-tmsm-aquos-spa-booking-public.php:794
+#: public/class-tmsm-aquos-spa-booking-public.php:796
 msgid "Token security not valid"
 msgstr ""
 
@@ -257,27 +269,35 @@ msgstr ""
 msgid "Product category is missing"
 msgstr ""
 
-#: public/class-tmsm-aquos-spa-booking-public.php:812
+#: public/class-tmsm-aquos-spa-booking-public.php:789
+msgid "Product not found"
+msgstr ""
+
+#: public/class-tmsm-aquos-spa-booking-public.php:814
 #, php-format
 msgctxt "date+time"
 msgid "%s at %s"
 msgstr ""
 
-#: public/class-tmsm-aquos-spa-booking-public.php:898
-msgid "Aquos ID"
+#: public/class-tmsm-aquos-spa-booking-public.php:914
+msgid "Yes"
 msgstr ""
 
-#: public/class-tmsm-aquos-spa-booking-public.php:959
+#: public/class-tmsm-aquos-spa-booking-public.php:914
+msgid "No"
+msgstr ""
+
+#: public/class-tmsm-aquos-spa-booking-public.php:983
 msgid "Appointment:"
 msgstr ""
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1115
+#: public/class-tmsm-aquos-spa-booking-public.php:1143
 #, php-format
 msgid ""
 "The product %s has been removed from cart since it has expired. "
 "Please try to book it again."
 msgstr ""
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1162
+#: public/class-tmsm-aquos-spa-booking-public.php:1190
 msgid "Book"
 msgstr ""

@@ -159,14 +159,14 @@ class Tmsm_Aquos_Spa_Booking {
 
 
 		// Order
-		//$this->loader->add_action( 'woocommerce_hidden_order_itemmeta', $plugin_admin, 'woocommerce_hidden_order_itemmeta', 10, 1 );
 		$this->loader->add_action( 'woocommerce_order_item_get_formatted_meta_data', $plugin_admin, 'woocommerce_order_item_get_formatted_meta_data', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_hidden_order_itemmeta', $plugin_admin, 'woocommerce_hidden_order_itemmeta_appointment', 20, 1 );
 
 		// WooCommerce settings
 		$this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'woocommerce_get_settings_pages_aquosspabooking' );
 
+		// WooCommerce Aquos ID Field
 		$this->loader->add_action( 'woocommerce_product_options_inventory_product_data', $plugin_admin, 'woocommerce_product_options_inventory_product_data_aquosid' );
-
 		$this->loader->add_action( 'woocommerce_process_product_meta_simple', $plugin_admin, 'woocommerce_process_product_save_options' );
 		$this->loader->add_action( 'woocommerce_process_product_meta_variable', $plugin_admin, 'woocommerce_process_product_save_options' );
 		$this->loader->add_action( 'woocommerce_save_product_variation', $plugin_admin, 'woocommerce_save_product_variation', 10, 2 );
