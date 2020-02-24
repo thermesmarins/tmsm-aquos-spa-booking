@@ -324,7 +324,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product">
-			<option value="{{ data.id }}" data-sku="{{ data.sku }}" data-variable="{{ data.variable }}">{{ data.name }} — {{ data.price }}</option>
+			<option value="{{ data.id }}" data-sku="{{ data.sku }}" data-variable="{{ data.variable }}">{{ data.name }}
+			<# if ( data.is_voucher == '0') { #>
+                — {{ data.price }}
+            <# } #>
+			</option>
 		</script>
 		<?php
 	}
@@ -336,7 +340,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product-variation">
-			<option value="{{ data.id }}" data-sku="{{ data.sku }}">{{ data.name }} — {{ data.price }}</option>
+			<option value="{{ data.id }}" data-sku="{{ data.sku }}">{{ data.name }}
+            <# if ( data.is_voucher == '0') { #>
+                — {{ data.price }}
+            <# } #>
+			</option>
 		</script>
 		<?php
 	}

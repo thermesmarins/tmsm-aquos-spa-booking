@@ -137,6 +137,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
               $('#tmsm-aquos-spa-booking-products').empty().val('').prop('disabled', false).attr('title', tmsm_aquos_spa_booking_params.i18n.selectproduct).selectpicker('destroy').selectpicker();
 
               $.each(data.products, function (index, product) {
+                product.is_voucher = $('#tmsm-aquos-spa-booking-selected-hasvoucher').val();
                 $('#tmsm-aquos-spa-booking-products').append(product_template(product));
               });
               $('#tmsm-aquos-spa-booking-products').selectpicker('refresh');
@@ -192,6 +193,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
               $('#tmsm-aquos-spa-booking-variations').empty().val('').prop('disabled', false).attr('title', tmsm_aquos_spa_booking_params.i18n.selectproduct).selectpicker('destroy').selectpicker();
 
               $.each(data.variations, function (index, variation) {
+                variation.is_voucher = $('#tmsm-aquos-spa-booking-selected-hasvoucher').val();
                 $('#tmsm-aquos-spa-booking-variations').append(product_variation_template(variation));
               });
               $('#tmsm-aquos-spa-booking-variations').selectpicker('refresh');
