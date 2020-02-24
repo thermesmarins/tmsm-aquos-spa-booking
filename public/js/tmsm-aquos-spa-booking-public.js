@@ -33,7 +33,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
       $('#tmsm-aquos-spa-booking-times').empty();
       $('#tmsm-aquos-spa-booking-date-display').empty();
 
-      $('#tmsm-aquos-spa-booking-selected-voucher').val('');
+      $('#tmsm-aquos-spa-booking-selected-hasvoucher').val('');
       $('#tmsm-aquos-spa-booking-selected-productcategory').val('');
       $('#tmsm-aquos-spa-booking-selected-product').val('');
       $('#tmsm-aquos-spa-booking-selected-time').val('');
@@ -384,7 +384,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
       },
       selectVoucher: function(event){
         console.log('selectVoucher');
-        $('#tmsm-aquos-spa-booking-selected-voucher').val($(event.target).val());
+        $('#tmsm-aquos-spa-booking-selected-hasvoucher').val($(event.target).val());
         tmsmAquosSpaBookingLoadProductCategories();
       },
       render: function() {
@@ -494,7 +494,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
       $(this).addClass('disabled');
       $('#tmsm-aquos-spa-booking-confirm-loading').show();
 
-      var voucher = $('#tmsm-aquos-spa-booking-selected-voucher').val();
+      var has_voucher = $('#tmsm-aquos-spa-booking-selected-hasvoucher').val();
       var product_category = $('#tmsm-aquos-spa-booking-selected-productcategory').val();
       var product = $('#tmsm-aquos-spa-booking-selected-product').val();
       var date = $('#tmsm-aquos-spa-booking-selected-date').val();
@@ -509,7 +509,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
           enctype: 'multipart/form-data',
           data: {
             action: 'tmsm-aquos-spa-booking-addtocart',
-            voucher: voucher,
+            has_voucher: has_voucher,
             productcategory: product_category,
             product: product,
             date: date,

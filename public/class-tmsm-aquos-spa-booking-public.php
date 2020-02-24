@@ -273,7 +273,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				          . __( 'Confirm this booking', 'tmsm-aquos-spa-booking' ) . '</a>
 			</p>
 			<input type="hidden" name="language" value="' . $this->get_locale() . '">
-			<input type="hidden" id="tmsm-aquos-spa-booking-selected-voucher" name="voucher" value="">
+			<input type="hidden" id="tmsm-aquos-spa-booking-selected-hasvoucher" name="has_voucher" value="">
 			<input type="hidden" id="tmsm-aquos-spa-booking-selected-productcategory" name="productcategory" value="">
 			<input type="hidden" id="tmsm-aquos-spa-booking-selected-product" name="product" value="">
 			<input type="hidden" id="tmsm-aquos-spa-booking-selected-date" name="date" value="">
@@ -777,7 +777,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		$security = sanitize_text_field( $_POST['security'] );
 		$product_category_id = sanitize_text_field( $_POST['productcategory'] );
-		$voucher = sanitize_text_field( $_POST['has_voucher'] );
+		$has_voucher = sanitize_text_field( $_POST['has_voucher'] );
 		$product_id = sanitize_text_field( $_POST['product'] );
 		$time = sanitize_text_field( $_POST['time'] );
 		$date = sanitize_text_field( $_POST['date'] );
@@ -819,7 +819,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$variation_id = $product_id;
 				$variation = array();
 				$cart_item_data = [
-					'has_voucher' => $voucher,
+					'has_voucher' => $has_voucher,
 					'appointment' => $appointment,
 					'appointment_date' => $date,
 					'appointment_time' => $time,
@@ -864,14 +864,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return array
 	 */
 	public function woocommerce_add_cart_item_data_appointment( $cart_item_data, $product_id, $variation_id ){
-		$voucher = sanitize_text_field(filter_input( INPUT_POST, 'has_voucher' ));
+		$has_voucher = sanitize_text_field(filter_input( INPUT_POST, 'has_voucher' ));
 		$appointment = sanitize_text_field(filter_input( INPUT_POST, 'appointment' ));
 		$appointment_date = sanitize_text_field(filter_input( INPUT_POST, 'appointment_date' ));
 		$appointment_time = sanitize_text_field(filter_input( INPUT_POST, 'appointment_time' ));
 		$aquos_id = sanitize_text_field(filter_input( INPUT_POST, 'aquos_id' ));
 
-		if ( !empty( $voucher ) ) {
-			$cart_item_data['has_voucher'] = $voucher;
+		if ( !empty( $has_voucher ) ) {
+			$cart_item_data['has_voucher'] = $has_voucher;
 		}
 		if ( !empty( $appointment ) ) {
 			$cart_item_data['appointment'] = $appointment;
@@ -908,7 +908,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			);
 		}
 
-		if ( !empty( $cart_item['has_voucher'] ) ) {
+		if ( isset( $cart_item['has_voucher'] ) ) {
 			$item_data[] = array(
 				'key'     => __( 'Has Voucher', 'tmsm-aquos-spa-booking' ),
 				'value'   => ($cart_item['has_voucher'] == '1'? __( 'Yes', 'tmsm-aquos-spa-booking' ): __( 'No', 'tmsm-aquos-spa-booking' )),
@@ -984,7 +984,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		if ( !empty($item['_has_voucher'])) {
-			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Has Voucher', 'tmsm-aquos-spa-booking' ) . '</strong> ';
+			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Has Voucher:', 'tmsm-aquos-spa-booking' ) . '</strong> '. ($item['_has_voucher'] == 1 ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
 		}
 
 		if ( $strings != [] ) {
@@ -1004,7 +1004,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			//$value['data']->set_price($value['price']); // If I want to force a price in the cart
 			if(!empty($value['appointment'])){
 				$value['data']->set_virtual(true);
-				$value['data']->set_price(0);
+				if(!empty($value['appointment']) && $value['has_voucher'] == 1){
+					$value['data']->set_price(0);
+				}
 			}
 		}
 	}
@@ -1246,7 +1248,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		switch ( $column ) {
 			case 'shipping_address':
 				if ( $the_order->get_meta('_appointment', true) === 'yes') {
-					echo '<span class="description" style="display: inline-block; margin-top: -10px; margin-left: -10px;"><span class="dashicons dashicons-calendar" style=""></span> '.__( 'Appointment', 'tmsm-woocommerce-vouchers' ).'</span>';
+					echo '<span class="description" style="display: inline-block; margin-top: -10px; margin-left: -10px;"><span class="dashicons dashicons-calendar" style=""></span> '.__( 'Appointment', 'tmsm-aquos-spa-booking' ).'</span>';
 				}
 				break;
 		}

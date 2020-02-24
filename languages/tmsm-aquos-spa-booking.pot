@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-02-19 17:58+0100\n"
+"POT-Creation-Date: 2020-02-24 16:11+0100\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -27,10 +27,19 @@ msgid "Appointment"
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:101
-#: admin/class-tmsm-aquos-spa-booking-admin.php:102
 #: public/class-tmsm-aquos-spa-booking-public.php:913
 #: public/class-tmsm-aquos-spa-booking-public.php:987
 msgid "Has Voucher"
+msgstr ""
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:102
+#: public/class-tmsm-aquos-spa-booking-public.php:914
+msgid "Yes"
+msgstr ""
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:102
+#: public/class-tmsm-aquos-spa-booking-public.php:914
+msgid "No"
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:105
@@ -38,12 +47,12 @@ msgstr ""
 msgid "Aquos ID"
 msgstr ""
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:135
-#: admin/class-tmsm-aquos-spa-booking-admin.php:189
+#: admin/class-tmsm-aquos-spa-booking-admin.php:151
+#: admin/class-tmsm-aquos-spa-booking-admin.php:205
 msgid "Aquos Product ID"
 msgstr ""
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:138
+#: admin/class-tmsm-aquos-spa-booking-admin.php:154
 msgid "If empty, the product won't be bookable."
 msgstr ""
 
@@ -277,14 +286,6 @@ msgstr ""
 #, php-format
 msgctxt "date+time"
 msgid "%s at %s"
-msgstr ""
-
-#: public/class-tmsm-aquos-spa-booking-public.php:914
-msgid "Yes"
-msgstr ""
-
-#: public/class-tmsm-aquos-spa-booking-public.php:914
-msgid "No"
 msgstr ""
 
 #: public/class-tmsm-aquos-spa-booking-public.php:983
