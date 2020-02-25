@@ -1009,7 +1009,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function woocommerce_before_calculate_totals_appointment($cart){
 		foreach ( $cart->cart_contents as $key => $value ) {
-			//$value['data']->set_price($value['price']); // If I want to force a price in the cart
 			if(!empty($value['appointment'])){
 				$value['data']->set_virtual(true);
 				if(!empty($value['appointment']) && $value['has_voucher'] == 1){
