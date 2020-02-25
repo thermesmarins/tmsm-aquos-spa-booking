@@ -220,10 +220,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-voucher-inner">
 			<h3>' . __( 'Do you have a voucher?', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<label class="radio-inline">
-			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucheryes" value="1"> ' . __( 'I have a voucher', 'tmsm-aquos-spa-booking' ) . '
+			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucheryes" value="1" autocomplete="off"> ' . __( 'I have a voucher', 'tmsm-aquos-spa-booking' ) . '
 			</label>
 			<label class="radio-inline">
-			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucherno" value="0"> ' . __( 'I don\'t have any voucher', 'tmsm-aquos-spa-booking' ) . '
+			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucherno" value="0" autocomplete="off"> ' . __( 'I don\'t have any voucher', 'tmsm-aquos-spa-booking' ) . '
 			</label>
 			</div>
 			</div>

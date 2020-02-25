@@ -21,8 +21,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
     var tmsmAquosSpaBookingReset = function () {
 
       $('#tmsm-aquos-spa-booking-cancel').hide();
-      $('#tmsm-aquos-spa-booking-categories-container').hide();
-      $('#tmsm-aquos-spa-booking-voucher-container input').attr('checked', false);
+      $('#tmsm-aquos-spa-booking-voucher-container input').attr('checked', false).removeAttr('checked').prop('checked', false);
       $('#tmsm-aquos-spa-booking-categories-container').hide();
       $('#tmsm-aquos-spa-booking-products-container').hide();
       $('#tmsm-aquos-spa-booking-variations-container').hide();
@@ -38,7 +37,6 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
       $('#tmsm-aquos-spa-booking-selected-product').val('');
       $('#tmsm-aquos-spa-booking-selected-time').val('');
       $('#tmsm-aquos-spa-booking-selected-date').val('');
-
 
     };
 
