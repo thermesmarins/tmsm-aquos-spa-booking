@@ -1261,4 +1261,40 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				break;
 		}
 	}
+
+
+	/**
+	 * Order Status Appointment for COD payments (not free)
+	 *
+	 * @param string $status
+	 * @param WC_Order $order
+	 *
+	 * @return string
+	 */
+	function order_status_appointment_cod( $status, $order ) {
+
+		if ( self::order_has_appointment( $order ) ) {
+			$status = 'wc-appointment';
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Order Status Appointment for Voucher payments (free)
+	 *
+	 * @param string $status
+	 * @param int $order_id
+	 * @param WC_Order $order
+	 *
+	 * @return string
+	 */
+	function order_status_appointment_voucher( $status, $order_id, $order ) {
+
+		if ( self::order_has_appointment( $order ) ) {
+			$status = 'wc-appointment';
+		}
+
+		return $status;
+	}
 }

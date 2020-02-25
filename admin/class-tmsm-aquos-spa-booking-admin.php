@@ -109,6 +109,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		return $order_statuses;
 	}
 
+
+
 	/**
 	 * Displays recipient item meta on order page
 	 *

@@ -157,7 +157,6 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-
 		// WooCommerce Order Status
 		$this->loader->add_filter( 'woocommerce_register_shop_order_post_statuses', $plugin_admin, 'order_status_appointment_register', 20 );
 		$this->loader->add_filter( 'wc_order_statuses', $plugin_admin, 'order_status_appointment_name', 20, 1 );
@@ -237,6 +236,11 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_filter( 'woocommerce_available_payment_gateways', $plugin_public, 'woocommerce_available_payment_gateways_cashondelivery', 10, 3 );
 		$this->loader->add_filter( 'woocommerce_cod_process_payment_order_status', $plugin_public, 'woocommerce_cod_process_payment_order_status', 20, 1 );
 		$this->loader->add_filter( 'woocommerce_order_item_needs_processing', $plugin_public, 'woocommerce_order_item_needs_processing', 20, 3 );
+
+		// Order Status Appointment for COD (not free)
+		$this->loader->add_filter( 'woocommerce_cod_process_payment_order_status', $plugin_public, 'order_status_appointment_cod', 20, 2 );
+		// Order Status Appointment for Voucher (free)
+		$this->loader->add_filter( 'woocommerce_payment_complete_order_status', $plugin_public, 'order_status_appointment_voucher', 60, 3 );
 
 
 	}
