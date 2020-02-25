@@ -212,7 +212,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'woocommerce_email_before_order_table', $plugin_public, 'woocommerce_email_before_order_table_appointment', 20, 4 );
 
 		// Virtual only Column
-		$this->loader->add_action( 'manage_shop_order_posts_custom_column', $plugin_public, 'shop_order_posts_custom_column_appointment', 50, 2 );
+		//$this->loader->add_action( 'manage_shop_order_posts_custom_column', $plugin_public, 'shop_order_posts_custom_column_appointment', 50, 2 );
 
 		// Checkout Page Customization
 		$this->loader->add_filter( 'the_title', $plugin_public, 'the_title', 10, 2 );

@@ -1,4 +1,4 @@
-/**
- * All of the CSS for your admin-specific functionality should be
- * included in this file.
- */
+.order-status.status-appointment {
+  background: #e0d0c7;
+  color: #523b2c;
+}
