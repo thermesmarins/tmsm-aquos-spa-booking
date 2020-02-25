@@ -958,15 +958,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$item->add_meta_data( '_appointment', $values['appointment'], true );
 			$item->add_meta_data( '_has_voucher', $values['has_voucher'], true );
 			$item->add_meta_data( '_aquos_id', $values['aquos_id'], true );
-		}
 
-		$order->set_shipping_first_name('');
-		$order->set_shipping_last_name('');
-		$order->set_shipping_address_1('');
-		$order->set_shipping_address_2('');
-		$order->set_shipping_city('');
-		$order->set_shipping_country('');
-		$order->add_meta_data('_appointment', 'yes', true);
+			$order->set_shipping_first_name('');
+			$order->set_shipping_last_name('');
+			$order->set_shipping_address_1('');
+			$order->set_shipping_address_2('');
+			$order->set_shipping_city('');
+			$order->set_shipping_country('');
+			$order->add_meta_data('_appointment', 'yes', true);
+		}
 
 	}
 
