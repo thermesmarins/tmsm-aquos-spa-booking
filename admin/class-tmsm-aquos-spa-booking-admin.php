@@ -76,19 +76,25 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 	}
 
-
 	/**
 	 * Register Customer Order Status "Appointment"
+	 *
+	 * @param array $order_statuses
+	 *
+	 * @return array
 	 */
-	function order_status_appointment_register() {
-		register_post_status( 'wc-appointment', array(
-			'label' => _x( 'Appointment', 'Order status', 'tmsm-aquos-spa-booking' ),
-			'public' => true,
-			'exclude_from_search' => false,
-			'show_in_admin_all_list' => true,
+	function order_status_appointment_register( $order_statuses ) {
+
+		// Status must start with "wc-"
+		$order_statuses['wc-appointment'] = array(
+			'label'                     => _x( 'Appointment', 'Order status', 'tmsm-aquos-spa-booking' ),
+			'public'                    => true,
+			'exclude_from_search'       => false,
+			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
-			'label_count' => _n_noop( 'Appointment (%s)', 'Appointments (%s)', 'text_domain' )
-		) );
+			'label_count'               => _n_noop( 'Appointment <span class="count">(%s)</span>', 'Appointments <span class="count">(%s)</span>', 'tmsm-aquos-spa-booking' ),
+		);
+		return $order_statuses;
 	}
 
 	/**

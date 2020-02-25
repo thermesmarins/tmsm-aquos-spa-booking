@@ -159,7 +159,7 @@ class Tmsm_Aquos_Spa_Booking {
 
 
 		// WooCommerce Order Status
-		$this->loader->add_filter( 'init', $plugin_admin, 'order_status_appointment_register', 20 );
+		$this->loader->add_filter( 'woocommerce_register_shop_order_post_statuses', $plugin_admin, 'order_status_appointment_register', 20 );
 		$this->loader->add_filter( 'wc_order_statuses', $plugin_admin, 'order_status_appointment_name', 20, 1 );
 
 		// WooCommerce Order
