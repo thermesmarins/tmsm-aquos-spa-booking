@@ -120,7 +120,7 @@ class Tmsm_Aquos_Spa_Booking {
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-tmsm-aquos-spa-booking-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-tmsm-aquos-spa-booking-public-old.php';
 
 		$this->loader = new Tmsm_Aquos_Spa_Booking_Loader();
 
@@ -197,6 +197,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_category_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_variation_template' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_attribute_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'time_template' );
 
 		// Cart Items
