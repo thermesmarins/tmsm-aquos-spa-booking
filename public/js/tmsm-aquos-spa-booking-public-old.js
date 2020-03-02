@@ -266,7 +266,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
           },
           success: function (data) {
             if (data.success === true) {
-              console.log(data);
+              //console.log(data);
               var $list = $('#tmsm-aquos-spa-booking-times').empty();
 
               $('#tmsm-aquos-spa-booking-times-error').empty();
@@ -277,20 +277,26 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
 
               $.each(data.times, function (index, time) {
                 var date = new Date();
-                date.setHours(time.hour);
-                date.setMinutes(0);
-                date.setSeconds(0);
-                var options = {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                };
-                time.hour_formatted = date.toLocaleTimeString(tmsm_aquos_spa_booking_params.locale, options);
+                console.log(time);
+                if(time.Hour){
+                  var timesplit = time.Hour.split(':');
+                  console.log(timesplit);
+                  date.setHours(timesplit[0]);
+                  date.setMinutes(timesplit[1]);
+                  date.setSeconds(0);
+                  var options = {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  };
+                  time.hour_formatted = date.toLocaleTimeString(tmsm_aquos_spa_booking_params.locale, options);
 
-                //var addtemplate = time_template(time);
-                //$('#tmsm-aquos-spa-booking-times').append(addtemplate);
+                  //var addtemplate = time_template(time);
+                  //$('#tmsm-aquos-spa-booking-times').append(addtemplate);
 
-                var item = new TmsmAquosSpaBooking.TimesView( { model: time } );
-                $list.append( item.render().$el );
+                  var item = new TmsmAquosSpaBooking.TimesView( { model: time } );
+                  $list.append( item.render().$el );
+                }
+
               });
             }
             else {
