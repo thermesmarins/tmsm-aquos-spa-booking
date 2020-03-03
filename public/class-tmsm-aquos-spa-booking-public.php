@@ -93,7 +93,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				array( 'jquery', 'bootstrap', 'bootstrap-datepicker' ), null, true );
 		}
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public-old.js', array( 'jquery', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public.js', array( 'jquery', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
 
 		$startdate = new \DateTime();
 		$startdate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 ). ' days');
@@ -120,7 +120,46 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		];
 
 		wp_localize_script( $this->plugin_name, 'tmsm_aquos_spa_booking_params', $params);
-		wp_localize_script( $this->plugin_name, 'TmsmAquosSpaBooking', $params);
+
+
+		// Add initial data to CronPixie JS object so it can be rendered without fetch.
+		// Also add translatable strings for JS as well as reference settings.
+		$data = array(
+			'strings'      => array(
+				'no_selection'    => __( 'No selection', 'tmsm-aquos-spa-booking' ),
+				'no_events'    => _x( '(none)', 'no event to show', 'tmsm-aquos-spa-booking' ),
+				'due'          => _x( 'due', 'label for when cron event date', 'tmsm-aquos-spa-booking' ),
+				'now'          => _x( 'now', 'cron event is due now', 'tmsm-aquos-spa-booking' ),
+				'passed'       => _x( 'passed', 'cron event is over due', 'tmsm-aquos-spa-booking' ),
+				'weeks_abrv'   => _x( 'w', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+				'days_abrv'    => _x( 'd', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+				'hours_abrv'   => _x( 'h', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+				'minutes_abrv' => _x( 'm', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+				'seconds_abrv' => _x( 's', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+				'run_now'      => _x( 'Run event now.', 'Title for run now icon', 'tmsm-aquos-spa-booking' ),
+			),
+			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+			'nonce'        => wp_create_nonce( 'cron-pixie' ),
+			'timer_period' => 5, // How often should display be updated, in seconds.
+			'data'         => array(
+				'havevoucher' => [
+					'yes' => [
+						'name' => __( 'I have a voucher', 'tmsm-aquos-spa-booking' ),
+						'slug' => 'yes',
+						'value' => 1,
+					],
+					'no' => [
+						'name' => __( 'I don\'t have any voucher', 'tmsm-aquos-spa-booking' ),
+						'slug' => 'no',
+						'value' => 0,
+					],
+				],
+				'schedules' => $this->_get_schedules(),
+				'productcategories' => $this->_get_product_categories(),
+				'products' => $this->_get_products(),
+			),
+		);
+		wp_localize_script( $this->plugin_name, 'TmsmAquosSpaBookingApp', $data );
 	}
 
 
@@ -219,19 +258,22 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-voucher-container">
 			<div id="tmsm-aquos-spa-booking-voucher-inner">
 			<h3>' . __( 'Do you have a voucher?', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<ul id="tmsm-aquos-spa-booking-voucher-list"></ul>
+			<!--
 			<label class="radio-inline">
 			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucheryes" value="1" autocomplete="off"> ' . __( 'I have a voucher', 'tmsm-aquos-spa-booking' ) . '
 			</label>
 			<label class="radio-inline">
 			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucherno" value="0" autocomplete="off"> ' . __( 'I don\'t have any voucher', 'tmsm-aquos-spa-booking' ) . '
 			</label>
+			-->
 			</div>
 			</div>
 			
 			<div id="tmsm-aquos-spa-booking-categories-container" style="display: none">
 			<div id="tmsm-aquos-spa-booking-categories-inner">
 			<h3>' . __( 'Pick your treatments category:', 'tmsm-aquos-spa-booking' ) . '</h3>
-			<select id="tmsm-aquos-spa-booking-categories" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '">
+			<select id="tmsm-aquos-spa-booking-categories-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '">
 			</select>
 			</div>
 			</div>
@@ -239,7 +281,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-products-container" style="display: none">
 			<div id="tmsm-aquos-spa-booking-products-inner">
 			<h3>' . __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ) . '</h3>
-			<select id="tmsm-aquos-spa-booking-products" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			<select id="tmsm-aquos-spa-booking-products-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
 			
@@ -250,7 +292,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-attributes">
 				<p><a href="#" id="tmsm-aquos-spa-booking-variations-reset">' . __( 'Reset your options choices', 'tmsm-aquos-spa-booking' ) . '</a></p>
 			</div>-->
-			<select id="tmsm-aquos-spa-booking-variations" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			<select id="tmsm-aquos-spa-booking-variations" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
 			
@@ -294,6 +336,21 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	}
 
 	/**
+	 * Have Voucher Template
+	 */
+	public function havevoucher_template(){
+		?>
+
+		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-havevoucher">
+			<label class="radio-inline">
+				<input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucher{{ data.slug}}" value="{{ data.value}}" autocomplete="off"> {{ data.name}}
+			</label>
+		</script>
+		<?php
+	}
+
+
+	/**
 	 * Date Template
 	 */
 	public function time_template(){
@@ -312,12 +369,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product-category">
-			<option value="{{ data.term_id }}">
-				<# if (data.parent !== <?php echo esc_html(get_option( 'tmsm_aquos_spa_booking_productcat', 0 )) ?>) { #>
-				-&nbsp;&nbsp;
-				<# } #>
-
-				{{ data.name }} ({{ data.count }})</option>
+			<# if (data.parent !== <?php echo esc_html(get_option( 'tmsm_aquos_spa_booking_productcat', 0 )) ?>) { #>
+			-&nbsp;&nbsp;
+			<# } #>
+			{{ data.name }} ({{ data.count }})
 		</script>
 		<?php
 	}
@@ -329,11 +384,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product">
-			<option value="{{ data.id }}" data-sku="{{ data.sku }}" data-variable="{{ data.variable }}">{{ data.name }}
+				{{ data.name }}
 			                                                                                            <# if ( data.is_voucher == '0') { #>
 			                                                                                            — {{ data.price }}
 			                                                                                            <# } #>
-			</option>
+
 		</script>
 		<?php
 	}
@@ -376,14 +431,53 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<?php
 	}
 
+	/**
+	 * Product Variation Template
+	 */
+	public function cronpixie_template(){
+		?>
+
+		<script type="text/template" id="cron-pixie-schedule-item-tmpl">
+			<span class="cron-pixie-schedule-display"><%= display %></span>
+			<ul class="cron-pixie-events"></ul>
+		</script>
+
+		<!-- Event Item template -->
+		<script type="text/template" id="cron-pixie-event-item-tmpl">
+			<% if ( undefined == hook ) { %>
+			<span class="cron-pixie-event-empty"><%= TmsmAquosSpaBookingApp.strings.no_events %></span>
+			<% } else { %>
+			<span class="cron-pixie-event-run dashicons dashicons-controls-forward" title="<%- TmsmAquosSpaBookingApp.strings.run_now %>"></span>
+			<span class="cron-pixie-event-hook"><%= hook %></span>
+			<div class="cron-pixie-event-timestamp dashicons-before dashicons-clock">
+				<span class="cron-pixie-event-due"><%- TmsmAquosSpaBookingApp.strings.due %>:&nbsp;<%= new Date( timestamp * 1000 ).toLocaleString() %></span>
+				&nbsp;
+				<span class="cron-pixie-event-seconds-due">(<%= TmsmAquosSpaBookingApp.displayInterval( seconds_due ) %>)</span>
+			</div>
+			<% } %>
+		</script>
+
+		<!-- Main content -->
+		<div id="cron-pixie-main">
+			<h3>Schedules</h3>
+			<ul class="cron-pixie-schedules"></ul>
+		</div>
+		<?php
+	}
+
+	
+
 
 	/**
 	 * Ajax For Product Categories
 	 *
 	 * @since    1.0.0
 	 */
-	public static function ajax_product_categories() {
+	public function ajax_product_categories() {
 
+		$this->_ajax_return( $this->_get_product_categories() );
+
+		/*
 		$security = sanitize_text_field( $_POST['security'] );
 
 		error_log('security: '.$security);
@@ -435,7 +529,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		wp_send_json($jsondata);
-		wp_die();
+		wp_die();*/
 
 	}
 
@@ -444,8 +538,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function ajax_products() {
+	public function ajax_products() {
 
+		$this->_ajax_return( $this->_get_products() );
+
+		/*
 		$security = sanitize_text_field( $_POST['security'] );
 		$product_category_id = sanitize_text_field( $_POST['productcategory'] );
 
@@ -494,63 +591,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					];
 
 
-					/*if(!$product->is_type( 'variable' )){
 
-						$aquos_id = get_post_meta( $product_id, '_aquos_id', true);
-						if(empty($aquos_id)){
-							continue;
-						}
-
-						$sku = substr( $product->get_sku(), 0, 2 ) === 'E-' ? substr( $product->get_sku(), 2 ) : $product->get_sku();
-						error_log($product->get_sku());
-						error_log($sku);
-
-						$product_and_variations[$sku] = [
-							'id' => esc_js($product->get_id()),
-							'permalink' => esc_js($product->get_permalink()),
-							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-							'price' => html_entity_decode(wp_strip_all_tags($product->get_price_html())),
-							'sku' => esc_js($product->get_sku()),
-							'name' => esc_js($product->get_name()),
-						];
-					}
-					else{
-						if($product->is_type( 'variable' ) ){
-							foreach ( $product->get_available_variations() as $variation_data ) {
-
-								$variation = wc_get_product( $variation_data['variation_id'] );
-
-								if(empty($variation)){
-									continue;
-								}
-
-								$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
-
-								if($variation->get_attribute('format-bon-cadeau')){
-									error_log($variation->get_attribute('format-bon-cadeau'));
-									$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
-								}
-
-								$aquos_id = get_post_meta( $variation->get_id(), '_aquos_id', true);
-								if(empty($aquos_id)){
-									continue;
-								}
-								$sku = substr( $variation->get_sku(), 0, 2 ) === 'E-' ? substr( $variation->get_sku(), 2 ) : $variation->get_sku();
-								error_log($variation->get_sku());
-								error_log($sku);
-
-								$product_and_variations[$sku] = [
-									'id' => esc_js($variation->get_id()),
-									'permalink' => esc_js($variation->get_permalink()),
-									'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-									'price' => html_entity_decode(wp_strip_all_tags($variation->get_price_html())),
-									'sku' => esc_js($variation->get_sku()),
-									'name' => $variation_name,
-								];
-
-							}
-						}
-					}*/
 
 
 				}
@@ -578,7 +619,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		wp_send_json($jsondata);
-		wp_die();
+		wp_die();*/
 
 	}
 
@@ -1429,5 +1470,194 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		return $status;
+	}
+
+
+	/**
+	 * Send a response to ajax request, as JSON.
+	 *
+	 * @param mixed $response
+	 */
+	private function _ajax_return( $response = true ) {
+		echo json_encode( $response );
+		exit;
+	}
+
+	/**
+	 * Displays a JSON encoded list of cron schedules.
+	 *
+	 * @return mixed|string|void
+	 */
+	public function ajax_schedules() {
+		//error_log( print_r($_POST, true) );
+		//error_log( print_r($_GET, true) );
+		// TODO check nonce security
+		$this->_ajax_return( $this->_get_schedules() );
+	}
+
+	/**
+	 * Returns list of cron schedules.
+	 *
+	 * @return array
+	 */
+	private function _get_schedules() {
+
+		// Get list of schedules.
+		$schedules = wp_get_schedules();
+
+		// Append a "Once Only" schedule.
+		$schedules['once'] = array(
+			'display' => __( 'Once Only', 'tmsm-aquos-spa-booking' ),
+		);
+
+		// Get list of jobs assigned to schedules.
+		// Using "private" function is really naughty, but it's the best option compared to querying db/options.
+		$cron_array = _get_cron_array();
+
+		// Consistent timestamp for seconds until due.
+		$now = time();
+
+		// Add child cron events to schedules.
+		foreach ( $cron_array as $timestamp => $jobs ) {
+			foreach ( $jobs as $hook => $events ) {
+				foreach ( $events as $key => $event ) {
+					$event['hook']        = $hook;
+					$event['timestamp']   = $timestamp;
+					$event['seconds_due'] = $timestamp - $now;
+
+					// The cron array also includes events without a recurring schedule.
+					$scheduled = empty( $event['schedule'] ) ? 'once' : $event['schedule'];
+
+					$schedules[ $scheduled ]['events'][] = $event;
+				}
+			}
+		}
+
+		// We need to change the associative array (map) into an indexed one (set) for easier use in collection.
+		$set = array();
+		foreach ( $schedules as $name => $schedule ) {
+			$schedule['name'] = $name;
+			$set[]            = $schedule;
+		}
+
+		return $set;
+	}
+
+	/**
+	 * Returns list of product categories.
+	 *
+	 * @return array
+	 */
+	private function _get_product_categories() {
+
+		error_log('_get_product_categories');
+		// Get "product_cat" Terms With Parent as an Option
+		$settings_maincategory  = get_option( 'tmsm_aquos_spa_booking_productcat', 0 );
+		$product_categories = get_terms( 'product_cat', [
+			'hide_empty' => true,
+			'child_of' => !empty($settings_maincategory) ? $settings_maincategory: 0,
+			'orderby'    => 'parent',
+		]);
+
+		return $product_categories;
+	}
+
+	/**
+	 * Returns list of product categories.
+	 *
+	 * @return array
+	 */
+	private function _get_products() {
+
+		error_log('_get_products');
+
+		$product_category_id = 50;
+		$product_category = get_term( $product_category_id, 'product_cat');
+		$args = array(
+			'category' => $product_category->slug,
+			'return'  => 'ids',
+			'limit' => -1,
+			'orderby' => 'name',
+		);
+		$products_ids = wc_get_products( $args );
+		$products = [];
+		if(!empty($products_ids)){
+			foreach($products_ids as $key => $product_id){
+				$product = wc_get_product($product_id);
+
+				//$products[$product->get_id()] = [
+				$products[] = [
+					'id' => esc_js($product->get_id()),
+					'permalink' => esc_js($product->get_permalink()),
+					'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+					'price' => html_entity_decode(wp_strip_all_tags($product->get_price_html())),
+					'sku' => esc_js($product->get_sku()),
+					'name' => esc_js($product->get_name()),
+					'variable' => esc_js($product->is_type( 'variable' )),
+				];
+
+
+				/*if(!$product->is_type( 'variable' )){
+
+					$aquos_id = get_post_meta( $product_id, '_aquos_id', true);
+					if(empty($aquos_id)){
+						continue;
+					}
+
+					$sku = substr( $product->get_sku(), 0, 2 ) === 'E-' ? substr( $product->get_sku(), 2 ) : $product->get_sku();
+					error_log($product->get_sku());
+					error_log($sku);
+
+					$product_and_variations[$sku] = [
+						'id' => esc_js($product->get_id()),
+						'permalink' => esc_js($product->get_permalink()),
+						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+						'price' => html_entity_decode(wp_strip_all_tags($product->get_price_html())),
+						'sku' => esc_js($product->get_sku()),
+						'name' => esc_js($product->get_name()),
+					];
+				}
+				else{
+					if($product->is_type( 'variable' ) ){
+						foreach ( $product->get_available_variations() as $variation_data ) {
+
+							$variation = wc_get_product( $variation_data['variation_id'] );
+
+							if(empty($variation)){
+								continue;
+							}
+
+							$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
+
+							if($variation->get_attribute('format-bon-cadeau')){
+								error_log($variation->get_attribute('format-bon-cadeau'));
+								$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
+							}
+
+							$aquos_id = get_post_meta( $variation->get_id(), '_aquos_id', true);
+							if(empty($aquos_id)){
+								continue;
+							}
+							$sku = substr( $variation->get_sku(), 0, 2 ) === 'E-' ? substr( $variation->get_sku(), 2 ) : $variation->get_sku();
+							error_log($variation->get_sku());
+							error_log($sku);
+
+							$product_and_variations[$sku] = [
+								'id' => esc_js($variation->get_id()),
+								'permalink' => esc_js($variation->get_permalink()),
+								'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+								'price' => html_entity_decode(wp_strip_all_tags($variation->get_price_html())),
+								'sku' => esc_js($variation->get_sku()),
+								'name' => $variation_name,
+							];
+
+						}
+					}
+				}*/
+
+
+			}
+		}
+		return $products;
 	}
 }
