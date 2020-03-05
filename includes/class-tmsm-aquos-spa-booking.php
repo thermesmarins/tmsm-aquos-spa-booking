@@ -225,10 +225,16 @@ class Tmsm_Aquos_Spa_Booking {
 		// Get Data on Appointment Page
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-product-categories', $plugin_public, 'ajax_product_categories' );
+
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-products', $plugin_public, 'ajax_products' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-products', $plugin_public, 'ajax_products' );
+
+		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-attributes', $plugin_public, 'ajax_product_attributes' );
+		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-attributes', $plugin_public, 'ajax_product_attributes' );
+
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-variations', $plugin_public, 'ajax_product_variations' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-variations', $plugin_public, 'ajax_product_variations' );
+
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-times', $plugin_public, 'ajax_times' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-times', $plugin_public, 'ajax_times' );
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-addtocart', $plugin_public, 'ajax_addtocart' );

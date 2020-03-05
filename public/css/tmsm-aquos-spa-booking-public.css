@@ -64,6 +64,7 @@
 #tmsm-aquos-spa-booking-categories-container,
 #tmsm-aquos-spa-booking-products-container,
 #tmsm-aquos-spa-booking-variations-container,
+#tmsm-aquos-spa-booking-attributes-container,
 #tmsm-aquos-spa-booking-date-container,
 #tmsm-aquos-spa-booking-times-container {
   border: 3px solid black;
@@ -81,6 +82,7 @@
 #tmsm-aquos-spa-booking-categories-container:before,
 #tmsm-aquos-spa-booking-products-container:before,
 #tmsm-aquos-spa-booking-variations-container:before,
+#tmsm-aquos-spa-booking-attributes-container:before,
 #tmsm-aquos-spa-booking-date-container:before,
 #tmsm-aquos-spa-booking-times-container:before {
   position: absolute;
