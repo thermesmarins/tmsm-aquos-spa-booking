@@ -478,16 +478,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
 
     });
 
-    // Datepicker
-    $('#tmsm-aquos-spa-booking-datepicker').datepicker({
-      language: tmsm_aquos_spa_booking_params.locale,
-      format: 'yyyy-mm-dd',
-      startDate: tmsm_aquos_spa_booking_params.options.startdate,
-      endDate: tmsm_aquos_spa_booking_params.options.enddate,
-    }).on('changeDate', function (date) {
-      selected_date = date;
-      tmsmAquosSpaBookingLoadTimes(date);
-    });
+
 
     // Time Selection
     /*$('#tmsm-aquos-spa-booking-times').on('click', '.tmsm-aquos-spa-booking-time', function (e) {

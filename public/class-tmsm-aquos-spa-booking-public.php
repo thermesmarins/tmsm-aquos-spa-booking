@@ -138,6 +138,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'seconds_abrv' => _x( 's', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
 				'run_now'      => _x( 'Run event now.', 'Title for run now icon', 'tmsm-aquos-spa-booking' ),
 			),
+			'calendar'  => [
+				'daysrangefrom' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 )),
+				'daysrangeto' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 )),
+				'enddate' => $enddate->format('Y-m-d'),
+				'startdate' => $startdate->format('Y-m-d'),
+			],
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
 			'nonce'        => wp_create_nonce( 'cron-pixie' ),
 			'timer_period' => 5, // How often should display be updated, in seconds.
@@ -159,6 +165,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'products' => $this->_get_products(),
 				'productattributes' => array(),
 				'productvariations' => array(),
+				'times' => array(),
 			),
 		);
 		wp_localize_script( $this->plugin_name, 'TmsmAquosSpaBookingApp', $data );
@@ -294,7 +301,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			
 			<p id="tmsm-aquos-spa-booking-attributes-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
 			<ul id="tmsm-aquos-spa-booking-attributes-list" class="list-unstyled"></ul>
-			<p><a href="#" id="tmsm-aquos-spa-booking-attributes-reset">' . __( 'Reset your options choices', 'tmsm-aquos-spa-booking' ) . '</a></p>
+			<p class="tmsm-aquos-spa-booking-attributes-reset-confirm">
+			<a href="#" id="tmsm-aquos-spa-booking-attributes-reset" class="'.self::button_class_default().'">' . __( 'Reset your options', 'tmsm-aquos-spa-booking' ) . '</a>
+			<a href="#" id="tmsm-aquos-spa-booking-attributes-confirm" class="'.self::button_class_primary().'">' . __( 'Confirm your options', 'tmsm-aquos-spa-booking' ) . '</a>
+			</p>
 			<select id="tmsm-aquos-spa-booking-variations-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
@@ -313,7 +323,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<p id="tmsm-aquos-spa-booking-date-display"></p>
 			<p id="tmsm-aquos-spa-booking-times-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
 			<p id="tmsm-aquos-spa-booking-times-error"></p>
-			<ul id="tmsm-aquos-spa-booking-times" class="list-unstyled"></ul>
+			<ul id="tmsm-aquos-spa-booking-times-list" class="list-unstyled"></ul>
 			</div>
 			</div>
 			
@@ -360,7 +370,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-time">
-			<a class="<?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-time="{{ data.hour }}">{{ data.hour_formatted }}</a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
+			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-time="{{ data.hour }}">{{ data.hour_formatted }}</a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
 		</script>
 		<?php
 	}
@@ -412,16 +422,13 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product-attribute">
-			<p class="tmsm-aquos-spa-booking-product-attribute-terms">
-				<span style="display: none;">{{ data.label }}</span>
-				<# _.each( data.terms, function(term, index) { #>
+			<span style="display: none;">{{ data.label }}</span>
+			<# _.each( data.terms, function(term, index) { #>
 
-				<label class="radio-inline" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> style="display:nonee"<# } #>>
-				<input class="tmsm-aquos-spa-booking-term" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" class="" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked="checked"<# } #>>{{term.name}}
-				</label>
-				<# }) #>
-			</p>
-
+			<label class="radio-inline" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> style="display:nonee"<# } #>>
+			<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked="checked"<# } #>>{{term.name}}
+			</label>
+			<# }) #>
 
 		</script>
 		<?php
