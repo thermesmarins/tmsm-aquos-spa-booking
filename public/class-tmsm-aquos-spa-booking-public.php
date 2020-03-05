@@ -160,7 +160,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 						'value' => 0,
 					],
 				],
-				'schedules' => $this->_get_schedules(),
+				//'schedules' => $this->_get_schedules(),
 				'productcategories' => $this->_get_product_categories(),
 				'products' => $this->_get_products(),
 				'productattributes' => array(),

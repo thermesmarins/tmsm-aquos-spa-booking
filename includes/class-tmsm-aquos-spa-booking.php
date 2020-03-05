@@ -200,7 +200,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_variation_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_attribute_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'time_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'cronpixie_template' );
+		//$this->loader->add_action( 'wp_footer', $plugin_public, 'cronpixie_template' );
 
 		// Cart Items
 		$this->loader->add_filter( 'woocommerce_add_cart_item_data', $plugin_public, 'woocommerce_add_cart_item_data_appointment', 10, 3 );
@@ -240,8 +240,8 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'wp_ajax_tmsm-aquos-spa-booking-addtocart', $plugin_public, 'ajax_addtocart' );
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-addtocart', $plugin_public, 'ajax_addtocart' );
 
-		$this->loader->add_action( 'wp_ajax_nopriv_cron_pixie_schedules', $plugin_public, 'ajax_schedules' );
-		$this->loader->add_action( 'wp_ajax_cron_pixie_schedules', $plugin_public, 'ajax_schedules' );
+		//$this->loader->add_action( 'wp_ajax_nopriv_cron_pixie_schedules', $plugin_public, 'ajax_schedules' );
+		//$this->loader->add_action( 'wp_ajax_cron_pixie_schedules', $plugin_public, 'ajax_schedules' );
 		$this->loader->add_action( 'wp_ajax_nopriv_cron_pixie_events', $plugin_public, 'ajax_events' );
 		$this->loader->add_action( 'wp_ajax_cron_pixie_events', $plugin_public, 'ajax_events' );
 

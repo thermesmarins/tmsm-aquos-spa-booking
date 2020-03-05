@@ -87,9 +87,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
   }, AdminAjaxSyncableMixin ) );
 
 
-  /**
-   * Single cron event.
-   */
+
+  /*
   TmsmAquosSpaBookingApp.EventModel = BaseModel.extend( {
     action: 'cron_pixie_events',
     defaults: {
@@ -102,17 +101,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     }
   } );
 
-  /**
-   * Collection of cron events.
-   */
+
   TmsmAquosSpaBookingApp.EventsCollection = BaseCollection.extend( {
     action: 'cron_pixie_events',
     model: TmsmAquosSpaBookingApp.EventModel
   } );
 
-  /**
-   * Single cron schedule with nested cron events.
-   */
+
   TmsmAquosSpaBookingApp.ScheduleModel = BaseModel.extend( {
     action: 'cron_pixie_schedules',
     defaults: {
@@ -123,17 +118,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     }
   } );
 
-  /**
-   * Collection of cron schedules.
-   */
   TmsmAquosSpaBookingApp.SchedulesCollection = BaseCollection.extend( {
     action: 'cron_pixie_schedules',
     model: TmsmAquosSpaBookingApp.ScheduleModel
   } );
 
-  /**
-   * The main view for listing cron schedules.
-   */
   TmsmAquosSpaBookingApp.SchedulesListView = Backbone.View.extend( {
     el: '#cron-pixie-main',
 
@@ -153,9 +142,6 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     }
   } );
 
-  /**
-   * A single cron schedule's view.
-   */
   TmsmAquosSpaBookingApp.SchedulesListItemView = Backbone.View.extend( {
     tagName: 'li',
     className: 'cron-pixie-schedule',
@@ -184,9 +170,6 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     }
   } );
 
-  /**
-   * A single cron event's view.
-   */
   TmsmAquosSpaBookingApp.EventsListItemView = Backbone.View.extend( {
     tagName: 'li',
     className: 'cron-pixie-event',
@@ -211,6 +194,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
   } );
 
+  */
 
   /**
    * Have Voucher
@@ -1166,10 +1150,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     TmsmAquosSpaBookingApp.productCategoriesList = new TmsmAquosSpaBookingApp.ProductCategoriesListView( { collection: TmsmAquosSpaBookingApp.productcategories } );
     TmsmAquosSpaBookingApp.productCategoriesList.render();
 
-    TmsmAquosSpaBookingApp.schedules = new TmsmAquosSpaBookingApp.SchedulesCollection();
+    /*TmsmAquosSpaBookingApp.schedules = new TmsmAquosSpaBookingApp.SchedulesCollection();
     TmsmAquosSpaBookingApp.schedules.reset( TmsmAquosSpaBookingApp.data.schedules );
     TmsmAquosSpaBookingApp.schedulesList = new TmsmAquosSpaBookingApp.SchedulesListView( { collection: TmsmAquosSpaBookingApp.schedules } );
-    TmsmAquosSpaBookingApp.schedulesList.render();
+    TmsmAquosSpaBookingApp.schedulesList.render();*/
 
   };
 
