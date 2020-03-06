@@ -21,6 +21,10 @@
   min-width: 100px;
 }
 
+.tmsm-aquos-spa-booking-time.selected + .tmsm-aquos-spa-booking-time-change-label{
+  display: inline-block;
+}
+
 .tmsm-aquos-spa-booking-time-change-label,
 .tmsm-aquos-spa-booking-product-selected-label,
 .tmsm-aquos-spa-booking-product-change-label{
@@ -63,6 +67,10 @@
   -ms-appearance: checkbox;     /* not currently supported */
 }
 
+li.tmsm-aquos-spa-booking-time-item {
+  display: inline-block;
+  margin: 0 10px 10px 0;
+}
 
 /* Styling for Aquatonic */
 

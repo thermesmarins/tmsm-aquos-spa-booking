@@ -144,6 +144,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'enddate' => $enddate->format('Y-m-d'),
 				'startdate' => $startdate->format('Y-m-d'),
 			],
+			'role'   => current_user_can('edit_posts'),
+			'locale'   => $this->get_locale(),
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
 			'nonce'        => wp_create_nonce( 'cron-pixie' ),
 			'timer_period' => 5, // How often should display be updated, in seconds.
@@ -279,7 +281,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			</div>
 			
-			<div id="tmsm-aquos-spa-booking-categories-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-categories-container" >
 			<div id="tmsm-aquos-spa-booking-categories-inner">
 			<h3>' . __( 'Pick your treatments category:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<select id="tmsm-aquos-spa-booking-categories-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '">
@@ -287,7 +289,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			</div>
 			
-			<div id="tmsm-aquos-spa-booking-products-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-products-container" >
 			<div id="tmsm-aquos-spa-booking-products-inner">
 			<h3>' . __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<p id="tmsm-aquos-spa-booking-products-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
@@ -295,7 +297,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			</div>
 			
-			<div id="tmsm-aquos-spa-booking-attributes-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-attributes-container" >
 			<div id="tmsm-aquos-spa-booking-attributes-inner">
 			<h3>' . __( 'Pick your variation:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			
@@ -309,7 +311,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			</div>
 			
-			<div id="tmsm-aquos-spa-booking-date-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-date-container" >
 			<div id="tmsm-aquos-spa-booking-date-inner">
 			<h3>' . __( 'Pick your date:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default">
@@ -317,20 +319,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			</div>
 			
-			<div id="tmsm-aquos-spa-booking-times-container" style="display: none">
+			<div id="tmsm-aquos-spa-booking-times-container" >
 			<div id="tmsm-aquos-spa-booking-times-inner">
 			<h3>' . __( 'Pick your time:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<p id="tmsm-aquos-spa-booking-date-display"></p>
 			<p id="tmsm-aquos-spa-booking-times-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
-			<p id="tmsm-aquos-spa-booking-times-error"></p>
+			<p id="tmsm-aquos-spa-booking-times-error" style="display: none">' . __( 'No time results for this date', 'tmsm-aquos-spa-booking' ) . '</p>
 			<ul id="tmsm-aquos-spa-booking-times-list" class="list-unstyled"></ul>
 			</div>
 			</div>
 			
 			<p id="tmsm-aquos-spa-booking-confirm-container">
-			<a href="#" class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-cancel" style="display: none;">' . __( 'Cancel', 'tmsm-aquos-spa-booking' ) . '</a>		
-			<a href="#" class="' . self::button_class_primary() . '" id="tmsm-aquos-spa-booking-confirm" style="display: none;">'
-			          . __( 'Confirm this booking', 'tmsm-aquos-spa-booking' ) . '</a>
+			<a href="#" class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-cancel">' . __( 'Cancel', 'tmsm-aquos-spa-booking' ) . '</a>		
+			<a href="#" class="' . self::button_class_primary() . '" id="tmsm-aquos-spa-booking-confirm">'
+			          . __( 'Confirm this appointment', 'tmsm-aquos-spa-booking' ) . '</a>
 			</p>
 			<input type="hidden" name="language" value="' . $this->get_locale() . '">
 			<input type="hidden" id="tmsm-aquos-spa-booking-selected-hasvoucher" name="has_voucher" value="">
@@ -370,7 +372,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-time">
-			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-time="{{ data.hour }}">{{ data.hour_formatted }}</a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
+			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-hour="{{ data.hour }}" data-minutes="{{ data.minutes }}" data-hourminutes="{{ data.hourminutes }}" data-priority="{{ data.priority }}">{{ data.hourminutes }} <# if ( TmsmAquosSpaBookingApp.role == "1" && data.priority == 1) { #> *<# } #></a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
 		</script>
 		<?php
 	}
@@ -425,7 +427,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<span style="display: none;">{{ data.label }}</span>
 			<# _.each( data.terms, function(term, index) { #>
 
-			<label class="radio-inline" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> style="display:nonee"<# } #>>
+			<label class="radio-inline" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> style="display:none"<# } #>>
 			<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked="checked"<# } #>>{{term.name}}
 			</label>
 			<# }) #>
@@ -437,7 +439,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	/**
 	 * Product Variation Template
 	 */
-	public function cronpixie_template(){
+	/*public function cronpixie_template(){
 		?>
 
 		<script type="text/template" id="cron-pixie-schedule-item-tmpl">
@@ -465,7 +467,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<ul class="cron-pixie-schedules"></ul>
 		</div>
 		<?php
-	}
+	}*/
 
 	
 
@@ -652,157 +654,61 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function ajax_times() {
+	public function ajax_times() {
 
-		$security            = sanitize_text_field( $_POST['security'] );
-		$product_category_id = sanitize_text_field( $_POST['productcategory'] );
-		$product_id          = sanitize_text_field( $_POST['product'] );
-		$date                = sanitize_text_field( $_POST['date'] );
-		$times = [];
-
-		$product = wc_get_product( $product_id );
-
-		$aquos_id = get_post_meta( $product_id, '_aquos_id', true );
-
-		$errors   = array(); // Array to hold validation errors
-		$jsondata = array(); // Array to pass back data
-
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'ajax_times' );
-		}
-
-		if(empty( $aquos_id )){
-			$errors[] = __( 'This product is not bookable', 'tmsm-aquos-spa-booking' );
-		}
-		if(empty( $product_id )){
-			$errors[] = __( 'Product information is missing', 'tmsm-aquos-spa-booking' );
-		}
-		if(empty( $date )){
-			$errors[] = __( 'Date is missing', 'tmsm-aquos-spa-booking' );
-		}
-		if(empty( $product_category_id )){
-			$errors[] = __( 'Product category is missing', 'tmsm-aquos-spa-booking' );
-		}
-
-		// Check security
-		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) ) {
-			$errors[] = __( 'Token security not valid', 'tmsm-aquos-spa-booking' );
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'Ajax security not OK' );
-			}
-		}
-
-
-		if ( !empty( $errors ) ) {
-			$jsondata['success'] = false;
-			$jsondata['errors']  = $errors;
-		}
-
-		check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
-
-		// Call web service
-		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurl' );
-		if ( ! empty( $settings_webserviceurl ) ) {
-
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'url before:' . $settings_webserviceurl );
-			}
-
-			$patterns     = [
-				'/{date}/',
-				'/{product_id}/',
-				'/{site_id}/',
-				'/{site_name}/'
-			];
-			$replacements = [
-				esc_html( str_replace( '-', '', $date ) ),
-				esc_html( $aquos_id ),
-				( is_multisite() ? get_current_blog_id() : 0 ),
-				esc_html( get_bloginfo( 'name' ) ),
-			];
-
-			// Replace keywords in url
-			$settings_webserviceurl = preg_replace( $patterns, $replacements, $settings_webserviceurl );
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'url after:' . $settings_webserviceurl );
-			}
-
-			// Connect with cURL
-			$ch = curl_init();
-			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
-			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-			curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
-			$result = curl_exec( $ch );
-			curl_close( $ch );
-
-			if(empty($result)){
-				$errors[] = __( 'Web service is not available', 'tmsm-aquos-spa-booking' );
-			}
-			else{
-				$result_array = json_decode( $result, true );
-
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( var_export( $result_array, true ) );
-				}
-
-				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
-					$times = $result_array['Schedules'];
-				}
-				else{
-					if(!empty($result_array['ErrorCode']) && !empty($result_array['ErrorMessage'])){
-						$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $result_array['ErrorCode'], $result_array['ErrorMessage']);
-					}
-				}
-			}
-		}
-
-		$times = self::sort_times( $times );
-		$times = self::select_times( $times );
-
-		if ( count( $times ) == 0 ) {
-			$errors[] = __( 'No time slot available for this day and this product', 'tmsm-aquos-spa-booking' );
-		}
-
-		$jsondata['times'] = $times;
-
-		$jsondata['success'] = true;
-		$jsondata['errors'] = $errors;
-
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('json data:');
-			error_log(print_r($jsondata, true));
-		}
-
-		wp_send_json( $jsondata );
-		wp_die();
+		$this->_ajax_return( $this->_get_times() );
 	}
 
 	/**
-	 * Sort Times
+	 * Sort Times By Priority
 	 *
 	 * @param array $times
 	 *
 	 * @return array
 	 */
-	private function sort_times($times) {
+	private function sort_times_by_priority($times) {
 
-		uasort($times, array($this, "compare_priority_times"));
+		uasort($times, array($this, 'compare_times_by_priority'));
 		return $times;
 	}
 
 	/**
-	 * Compare Times
+	 * Sort Times By Hour+Minutes
+	 *
+	 * @param array $times
+	 *
+	 * @return array
+	 */
+	private function sort_times_by_hourminutes($times) {
+
+		uasort($times, array($this, 'compare_times_by_hourminutes'));
+		return $times;
+	}
+
+	/**
+	 * Compare Times By Priority
 	 *
 	 * @param $times
 	 *
 	 * @return mixed
 	 */
-	private function compare_priority_times($a, $b) {
-		return $a['Priority'] < $b['Priority'] ;
+	private function compare_times_by_priority($a, $b) {
+		return $a['priority'] < $b['priority'] ;
 	}
 
 	/**
-	 * Compare Times
+	 * Compare Times By Hour+Minutes
+	 *
+	 * @param $times
+	 *
+	 * @return mixed
+	 */
+	private function compare_times_by_hourminutes($a, $b) {
+		return $a['hourminutes'] > $b['hourminutes'] ;
+	}
+
+	/**
+	 * Select Times
 	 *
 	 * @param $times
 	 *
@@ -817,7 +723,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$selected_times = [];
 		if(count($times)>0){
 			foreach ($times as $time){
-				if(!empty($time) && $time['Priority'] == 1){
+				if(!empty($time) && $time['priority'] == 1){
 					$count_priorities++;
 					$priorities[] = $time;
 				}
@@ -828,15 +734,25 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			}
 
 			$diff_priorities = 4 - $count_priorities;
-			error_log('$diff_priorities: '.$diff_priorities);
-			error_log('$count_priorities: '.$count_priorities);
-			error_log('$count_notpriorities: '.$count_notpriorities);
 			$selected_times = $priorities;
+
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log('$diff_priorities: '.$diff_priorities);
+				error_log('$count_priorities: '.$count_priorities);
+				error_log('$count_notpriorities: '.$count_notpriorities);
+				error_log('$priorities');
+				error_log(print_r($priorities, true));
+				error_log('$not_priorities');
+				error_log(print_r($not_priorities, true));
+			}
 
 			// Complete with non priorities
 			if($diff_priorities > 0){
 				for ($cpt_priorities = 0; $cpt_priorities <= $diff_priorities; $cpt_priorities++){
-					$selected_times[] = $not_priorities[$diff_priorities];
+					if(isset($not_priorities[$cpt_priorities])){
+						$selected_times[] = $not_priorities[$cpt_priorities];
+					}
 				}
 			}
 			else{
@@ -1387,12 +1303,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @return mixed|string|void
 	 */
-	public function ajax_schedules() {
+	/*public function ajax_schedules() {
 		//error_log( print_r($_POST, true) );
 		//error_log( print_r($_GET, true) );
 		// TODO check nonce security
 		$this->_ajax_return( $this->_get_schedules() );
-	}
+	}*/
 
 	/**
 	 * Returns list of cron schedules.
@@ -1533,14 +1449,17 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					$attributes[] = $options;
 				}
 
-				error_log(print_r($jsondata, true));
+				//error_log(print_r($jsondata, true));
 			}
 			else{
 				$errors[] = __('Product is not variable', 'tmsm-aquos-spa-booking');
 			}
 
 		}
-
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('$attributes:');
+			error_log(print_r($attributes, true));
+		}
 		return $attributes;
 	}
 
@@ -1609,6 +1528,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		else{
 			$errors[] = __('Product doesnt not exist', 'tmsm-aquos-spa-booking');
 		}
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('$variations:');
+			error_log(print_r($variations, true));
+		}
 		return $variations;
 	}
 
@@ -1622,14 +1546,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		error_log('_get_products');
 
 		$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
-		//$product_category_id = 50;
-		$product_category = get_term( $product_category_id, 'product_cat');
 		$args = array(
-			'category' => $product_category->slug,
 			'return'  => 'ids',
 			'limit' => -1,
 			'orderby' => 'name',
 		);
+		if(!empty($product_category_id)){
+			$product_category = get_term( $product_category_id, 'product_cat');
+			$args['category'] = $product_category->slug;
+		}
+
 		$products_ids = wc_get_products( $args );
 		$products = [];
 		if(!empty($products_ids)){
@@ -1709,6 +1635,142 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			}
 		}
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('$products:');
+			error_log(print_r($products, true));
+		}
 		return $products;
+	}
+
+	/**
+	 * Get Times from Web Service
+	 *
+	 * @since    1.0.0
+	 *
+	 * @return array
+	 */
+	private function _get_times() {
+
+		$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
+		$product_id          = sanitize_text_field( $_REQUEST['product'] );
+		$date                = sanitize_text_field( $_REQUEST['date'] );
+		$times = [];
+
+		$product = wc_get_product( $product_id );
+
+		$aquos_id = get_post_meta( $product_id, '_aquos_id', true );
+
+		$errors   = array(); // Array to hold validation errors
+		$jsondata = array(); // Array to pass back data
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'ajax_times' );
+		}
+
+		if(empty( $aquos_id )){
+			$errors[] = __( 'This product is not bookable', 'tmsm-aquos-spa-booking' );
+		}
+		if(empty( $product_id )){
+			$errors[] = __( 'Product information is missing', 'tmsm-aquos-spa-booking' );
+		}
+		if(empty( $date )){
+			$errors[] = __( 'Date is missing', 'tmsm-aquos-spa-booking' );
+		}
+		if(empty( $product_category_id )){
+			$errors[] = __( 'Product category is missing', 'tmsm-aquos-spa-booking' );
+		}
+
+		if ( !empty( $errors ) ) {
+			$jsondata['success'] = false;
+			$jsondata['errors']  = $errors;
+		}
+
+		// Call web service
+		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurl' );
+		if ( ! empty( $settings_webserviceurl ) ) {
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'url before:' . $settings_webserviceurl );
+			}
+
+			$patterns     = [
+				'/{date}/',
+				'/{product_id}/',
+				'/{site_id}/',
+				'/{site_name}/'
+			];
+			$replacements = [
+				esc_html( str_replace( '-', '', $date ) ),
+				esc_html( $aquos_id ),
+				( is_multisite() ? get_current_blog_id() : 0 ),
+				esc_html( get_bloginfo( 'name' ) ),
+			];
+
+			// Replace keywords in url
+			$settings_webserviceurl = preg_replace( $patterns, $replacements, $settings_webserviceurl );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'url after:' . $settings_webserviceurl );
+			}
+
+			// Connect with cURL
+			$ch = curl_init();
+			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
+			$result = curl_exec( $ch );
+			curl_close( $ch );
+
+			if(empty($result)){
+				$errors[] = __( 'Web service is not available', 'tmsm-aquos-spa-booking' );
+			}
+			else{
+				$result_array = json_decode( $result, true );
+
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( var_export( $result_array, true ) );
+				}
+
+				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
+
+					foreach($result_array['Schedules'] as $schedule){
+						$schedule_hourminutes = explode(':', $schedule['Hour']);
+						$times[] = [
+						'hour' => $schedule_hourminutes[0],
+						'minutes' => $schedule_hourminutes[1],
+						'hourminutes' => $schedule['Hour'],
+						'priority' => $schedule['Priority'],
+						];
+					}
+				}
+				else{
+					if(!empty($result_array['ErrorCode']) && !empty($result_array['ErrorMessage'])){
+						$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $result_array['ErrorCode'], $result_array['ErrorMessage']);
+					}
+				}
+			}
+		}
+
+		//$times = self::sort_times_by_priority( $times );
+		$times = self::select_times( $times );
+		//$times = self::sort_times_by_hourminutes( $times );
+
+		if ( count( $times ) == 0 ) {
+			$errors[] = __( 'No time slot available for this day and this product', 'tmsm-aquos-spa-booking' );
+		}
+
+		//$jsondata['times'] = $times;
+
+		//$jsondata['success'] = true;
+		//$jsondata['errors'] = $errors;
+
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('$errors:');
+			error_log(print_r($errors, true));
+			//error_log('$times:');
+			//error_log(print_r($times, true));
+		}
+
+		return $times;
 	}
 }
