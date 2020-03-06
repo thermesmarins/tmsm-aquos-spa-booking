@@ -1210,7 +1210,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     events: {
-      'click #tmsm-aquos-spa-booking-cancel': 'cancel'
+      'click #tmsm-aquos-spa-booking-cancel': 'cancel',
+      'click #tmsm-aquos-spa-booking-confirm': 'confirm'
     },
 
     cancel: function(event){
@@ -1228,6 +1229,33 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       TmsmAquosSpaBookingApp.productVariationsList.reset();
       TmsmAquosSpaBookingApp.dateList.reset();
       TmsmAquosSpaBookingApp.timesList.reset();
+    },
+
+    confirm: function(event) {
+      event.preventDefault();
+
+      console.log('SelectedDataView confirm');
+
+      wp.ajax.send('tmsm-aquos-spa-booking-addtocart', {
+        success: function(data){
+          console.log('wp.ajax.send success');
+          console.log(data);
+          if(data.redirect){
+            //window.location = data.redirect;
+          }
+        },
+        error: function(data){
+          console.log('wp.ajax.send error');
+          console.log(data);
+          },
+        data: {
+          nonce: TmsmAquosSpaBookingApp.nonce,
+          selecteddata: TmsmAquosSpaBookingApp.selectedData.attributes,
+        }
+      });
+
+
+
     },
 
     change: function (){
