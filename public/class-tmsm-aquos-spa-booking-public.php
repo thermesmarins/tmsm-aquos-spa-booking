@@ -304,7 +304,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<p id="tmsm-aquos-spa-booking-attributes-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
 			<ul id="tmsm-aquos-spa-booking-attributes-list" class="list-unstyled"></ul>
 			<p class="tmsm-aquos-spa-booking-attributes-reset-confirm">
-			<a href="#" id="tmsm-aquos-spa-booking-attributes-reset" class="'.self::button_class_default().'">' . __( 'Reset your options', 'tmsm-aquos-spa-booking' ) . '</a>
+			<a href="#" id="tmsm-aquos-spa-booking-attributes-cancel" class="'.self::button_class_default().'">' . __( 'Reset your options', 'tmsm-aquos-spa-booking' ) . '</a>
 			<a href="#" id="tmsm-aquos-spa-booking-attributes-confirm" class="'.self::button_class_primary().'">' . __( 'Confirm your options', 'tmsm-aquos-spa-booking' ) . '</a>
 			</p>
 			<select id="tmsm-aquos-spa-booking-variations-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
@@ -1490,6 +1490,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					if ( ! ( $variation instanceof WC_Product_Variation ) ) {
 						continue;
 					}
+
+					error_log('variation '.$variation->get_name());
 
 					$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
 

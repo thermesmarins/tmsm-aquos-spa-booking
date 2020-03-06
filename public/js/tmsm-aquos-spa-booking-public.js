@@ -578,7 +578,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     el: '#tmsm-aquos-spa-booking-attributes-container',
     selectedValue: null,
     loadingElement: '#tmsm-aquos-spa-booking-attributes-loading',
-    resetElement: '#tmsm-aquos-spa-booking-attributes-reset',
+    cancelElement: '#tmsm-aquos-spa-booking-attributes-cancel',
     confirmElement: '#tmsm-aquos-spa-booking-attributes-confirm',
     listElement: '#tmsm-aquos-spa-booking-attributes-list',
 
@@ -589,22 +589,22 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     events: {
-      'click #tmsm-aquos-spa-booking-attributes-reset': 'reset',
+      'click #tmsm-aquos-spa-booking-attributes-cancel': 'cancel',
       'click #tmsm-aquos-spa-booking-attributes-confirm': 'confirm',
     },
 
     loading: function(){
       console.log('AttributesListView loading');
       $( this.loadingElement ).show();
-      $( this.resetElement ).hide();
+      $( this.cancelElement ).hide();
       $( this.confirmElement ).hide();
       $( this.listElement ).hide();
     },
     loaded: function(){
       console.log('AttributesListView loaded');
       $( this.loadingElement ).hide();
-      $( this.resetElement ).show();
-      $( this.confirmElement ).show();
+      $( this.cancelElement ).show();
+
       $( this.listElement ).show();
 
       if ( typeof TmsmAquosSpaBookingApp.productVariationsList !== 'undefined' ) {
@@ -624,6 +624,14 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.loaded();
 
       return this;
+    },
+    cancel: function (event){
+      event.preventDefault();
+      console.log('AttributesListView cancel');
+      this.$('input').attr('checked', false).removeAttr('checked').prop('checked', false);
+      this.$('input.checked-default').attr('checked', true).prop('checked', true);
+      TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
+      this.selectedValue = null;
     },
     reset: function (event){
       console.log('AttributesListView reset');
@@ -848,6 +856,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       if (typeof $list.selectpicker === 'function') {
         $list.selectpicker('refresh');
+      }
+
+      if(this.collection.length > 0){
+        this.$(TmsmAquosSpaBookingApp.productAttributesList.confirmElement).show();
       }
 
       TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
