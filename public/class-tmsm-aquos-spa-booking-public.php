@@ -332,9 +332,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-confirm-container">
 			
 			<p id="tmsm-aquos-spa-booking-confirm-error"></p>
-			<a href="#" class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-cancel">' . __( 'Cancel', 'tmsm-aquos-spa-booking' ) . '</a>		
-			<a href="#" class="' . self::button_class_primary() . '" id="tmsm-aquos-spa-booking-confirm">'
-			          . __( 'Confirm this appointment', 'tmsm-aquos-spa-booking' ) . '</a>
+			<button class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-cancel">' . __( 'Cancel', 'tmsm-aquos-spa-booking' ) . '</button>		
+			<button class="' . self::button_class_primary() . '" id="tmsm-aquos-spa-booking-confirm">'
+			          . __( 'Add this appointment', 'tmsm-aquos-spa-booking' ) . '</button>
 			</div>
 			</form>
 			<p id="tmsm-aquos-spa-booking-cancellationpolicy" style="display: none">' . esc_html( get_option( 'tmsm_aquos_spa_booking_cancellationpolicy',
@@ -1563,8 +1563,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('$variations:');
-			error_log(print_r($variations, true));
+			//error_log('$variations:');
+			//error_log(print_r($variations, true));
 		}
 		return $variations;
 	}
@@ -1578,7 +1578,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		error_log('_get_products');
 
-		$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
+		$product_category_id = null;
+
+		if(isset($_REQUEST['productcategory'])){
+			$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
+		}
+
 		$args = array(
 			'return'  => 'ids',
 			'limit' => -1,
@@ -1670,8 +1675,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('$products:');
-			error_log(print_r($products, true));
+			//error_log('$products:');
+			//error_log(print_r($products, true));
 		}
 		return $products;
 	}
@@ -1805,5 +1810,32 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		return $times;
+	}
+
+	/**
+	 * Do actions when order status changed to appointment
+	 *
+	 * @param int      $order_id
+	 * @param WC_Order $order
+	 *                       
+	 */
+	public function change_order_status_appointment (int $order_id, WC_Order $order){
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('change_order_status_appointment for order '.$order_id);
+		}
+
+		//$background_process = new Tmsm_Aquos_Spa_Booking_Background_Process();
+		$background_process = $GLOBALS['tmsm_asb_bp'];
+
+		$item = ['order_id' => $order_id];
+		$background_process->push_to_queue( $item );
+
+		$item = ['order_id' => 'aaa'];
+		$background_process->push_to_queue( $item );
+
+		$item = ['order_id' => 'bbb'];
+		$background_process->push_to_queue( $item );
+
+		$background_process->save()->dispatch();
 	}
 }

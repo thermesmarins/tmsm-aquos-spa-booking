@@ -1240,7 +1240,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       event.preventDefault();
 
       console.log('SelectedDataView confirm');
-
+      $(this.errorElement).empty();
       this.showLoading();
       var container = this;
 
@@ -1302,11 +1302,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     showLoading: function(){
       console.log('SelectedDataView showLoading');
-      $( this.confirmButton ).prop('disabled', true);
+      $( this.confirmButton ).prop('disabled', true).addClass('btn-disabled');
     },
     hideLoading: function(){
       console.log('SelectedDataView hideLoading');
-      $( this.confirmButton ).prop('disabled', false);
+      $( this.confirmButton ).prop('disabled', false).removeClass('btn-disabled');
     },
     showError: function(){
       $( this.errorElement ).show();

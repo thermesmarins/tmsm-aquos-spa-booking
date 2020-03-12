@@ -106,6 +106,11 @@ class Tmsm_Aquos_Spa_Booking {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-loader.php';
 
 		/**
+		 * The class responsible for orchestrating the background process actions
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-backgroundprocess.php';
+
+		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
@@ -257,6 +262,7 @@ class Tmsm_Aquos_Spa_Booking {
 		// Order Status Appointment for Voucher (free)
 		$this->loader->add_filter( 'woocommerce_payment_complete_order_status', $plugin_public, 'order_status_appointment_voucher', 60, 3 );
 
+		$this->loader->add_action( 'woocommerce_order_status_appointment', $plugin_public, 'change_order_status_appointment', 80, 2 );
 
 	}
 

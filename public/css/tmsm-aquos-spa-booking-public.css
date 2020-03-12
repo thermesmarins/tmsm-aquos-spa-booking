@@ -67,7 +67,8 @@
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .cart_totals .shop_table,
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .product-total,
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .cart-subtotal,
-.tmsm-aquos-spa-booking-checkout-has-voucheronly .order-total
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .order-total,
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .woocommerce-table--order-details tfoot
 {
   display: none;
 }
