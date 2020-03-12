@@ -61,6 +61,17 @@
   display: none;
 }
 
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .product-price,
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .product-subtotal,
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .cart_totals h2,
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .cart_totals .shop_table,
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .product-total,
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .cart-subtotal,
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .order-total
+{
+  display: none;
+}
+
 #tmsm-aquos-spa-booking-attributes-container input[type="radio"] {
   -webkit-appearance: checkbox; /* Chrome, Safari, Opera */
   -moz-appearance: checkbox;    /* Firefox */

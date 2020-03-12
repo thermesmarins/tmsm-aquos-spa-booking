@@ -30,7 +30,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         options.data.action = this.action;
       }
 
-      //console.log('sync action: '+options.data.action);
+      console.log('sync action: '+options.data.action);
+      console.log('sync options: ');
+      console.log(options);
 
 
       return Backbone.sync( method, object, options );
@@ -1200,13 +1202,14 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     el: '#tmsm-aquos-spa-booking-confirm-container',
     cancelButton: '#tmsm-aquos-spa-booking-cancel',
     confirmButton: '#tmsm-aquos-spa-booking-confirm',
+    errorElement: '#tmsm-aquos-spa-booking-confirm-error',
 
     initialize: function() {
       console.log('SelectedDataView initialize');
+      this.hideError();
       this.hideConfirm();
       this.hideCancel();
       this.listenTo(this.model, 'change', this.change);
-      this.listenTo(this.cancelButton, 'click', this.cancel);
     },
 
     events: {
@@ -1216,6 +1219,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     cancel: function(event){
       event.preventDefault();
+
+      this.hideError();
 
       console.log('SelectedDataView cancel');
 
@@ -1236,18 +1241,34 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       console.log('SelectedDataView confirm');
 
+      this.showLoading();
+      var container = this;
+
       wp.ajax.send('tmsm-aquos-spa-booking-addtocart', {
         success: function(data){
           console.log('wp.ajax.send success');
           console.log(data);
           if(data.redirect){
-            //window.location = data.redirect;
+            console.log('redirect!');
+            window.location = data.redirect;
+          }
+          else{
+            console.log('no redirect...');
+            console.log(data.redirect);
           }
         },
         error: function(data){
           console.log('wp.ajax.send error');
           console.log(data);
-          },
+          container.hideLoading();
+          console.log('wp.ajax.send error');
+          console.log(data);
+          if(data.errors){
+            container.showError();
+            $(container.errorElement).html( data.errors );
+          }
+
+        },
         data: {
           nonce: TmsmAquosSpaBookingApp.nonce,
           selecteddata: TmsmAquosSpaBookingApp.selectedData.attributes,
@@ -1279,6 +1300,20 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     },
 
+    showLoading: function(){
+      console.log('SelectedDataView showLoading');
+      $( this.confirmButton ).prop('disabled', true);
+    },
+    hideLoading: function(){
+      console.log('SelectedDataView hideLoading');
+      $( this.confirmButton ).prop('disabled', false);
+    },
+    showError: function(){
+      $( this.errorElement ).show();
+    },
+    hideError: function(){
+      $( this.errorElement ).hide();
+    },
     showConfirm: function(){
       console.log('SelectedDataView showConfirm');
       $( this.confirmButton ).show();
