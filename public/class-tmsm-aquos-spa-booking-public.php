@@ -1725,7 +1725,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		// Call web service
-		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurl' );
+		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurltimes' );
 		if ( ! empty( $settings_webserviceurl ) ) {
 
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -1828,12 +1828,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$background_process = $GLOBALS['tmsm_asb_bp'];
 
 		$item = ['order_id' => $order_id];
-		$background_process->push_to_queue( $item );
-
-		$item = ['order_id' => 'aaa'];
-		$background_process->push_to_queue( $item );
-
-		$item = ['order_id' => 'bbb'];
 		$background_process->push_to_queue( $item );
 
 		$background_process->save()->dispatch();

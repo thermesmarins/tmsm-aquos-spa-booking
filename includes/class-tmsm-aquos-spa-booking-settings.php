@@ -71,14 +71,41 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 
 					array(
 						'type'     => 'url',
-						'id'       => 'tmsm_aquos_spa_booking_webserviceurl',
-						'name'     => __( 'Web Service URL', 'tmsm-aquos-spa-booking' ),
+						'id'       => 'tmsm_aquos_spa_booking_webserviceurltimes',
+						'name'     => __( 'Web Service URL for times', 'tmsm-aquos-spa-booking' ),
 						'desc'     => ''.
 						              '<p class="description">'.
 						              __( 'The URL of the Aquos web service. Use the special variables in the URL:', 'tmsm-aquos-spa-booking').
-						              '<br>'.sprintf(__( '%s as the requested date.', 'tmsm-aquos-spa-booking'), '<code>{date}</code>').
-						              '<br>'.sprintf(__( '%s as the requested product ID.', 'tmsm-aquos-spa-booking'), '<code>{product_id}</code>').
 						              '<br>'.sprintf(__( '%s as the the web site id.', 'tmsm-aquos-spa-booking'), '<code>{site_id}</code>').
+						              '<br>'.sprintf(__( '%s as the requested product ID.', 'tmsm-aquos-spa-booking'), '<code>{product_id}</code>').
+						              '<br>'.sprintf(__( '%s as the requested date.', 'tmsm-aquos-spa-booking'), '<code>{date}</code>').
+						              '<br>'.sprintf(__( '%s as the web site name.', 'tmsm-aquos-spa-booking'), '<code>{site_name}</code>').
+						              '</p>',
+						'class'  => 'large-text',
+					),
+
+					array(
+						'type'     => 'url',
+						'id'       => 'tmsm_aquos_spa_booking_webserviceurlsubmit',
+						'name'     => __( 'Web Service URL for submission', 'tmsm-aquos-spa-booking' ),
+						'desc'     => ''.
+						              '<p class="description">'.
+						              __( 'The URL of the Aquos web service. Use the special variables in the URL:', 'tmsm-aquos-spa-booking').
+						              '<br>'.sprintf(__( '%s as the the web site id.', 'tmsm-aquos-spa-booking'), '<code>{site_id}</code>').
+						              '<br>'.sprintf(__( '%s as the requested product ID.', 'tmsm-aquos-spa-booking'), '<code>{product_id}</code>').
+						              '<br>'.sprintf(__( '%s as the requested date.', 'tmsm-aquos-spa-booking'), '<code>{date}</code>').
+						              '<br>'.sprintf(__( '%s as the requested time.', 'tmsm-aquos-spa-booking'), '<code>{time}</code>').
+						              '<br>'.sprintf(__( '%s as the customer title.', 'tmsm-aquos-spa-booking'), '<code>{title}</code>').
+						              '<br>'.sprintf(__( '%s as the customer lastname.', 'tmsm-aquos-spa-booking'), '<code>{lastname}</code>').
+						              '<br>'.sprintf(__( '%s as the customer firstname.', 'tmsm-aquos-spa-booking'), '<code>{firstname}</code>').
+						              '<br>'.sprintf(__( '%s as the customer email.', 'tmsm-aquos-spa-booking'), '<code>{email}</code>').
+						              '<br>'.sprintf(__( '%s if customer has a voucher.', 'tmsm-aquos-spa-booking'), '<code>{has_voucher}</code>').
+						              '<br>'.sprintf(__( '%s as the customer birthdate.', 'tmsm-aquos-spa-booking'), '<code>{birthdate}</code>').
+						              '<br>'.sprintf(__( '%s as the customer address.', 'tmsm-aquos-spa-booking'), '<code>{address}</code>').
+						              '<br>'.sprintf(__( '%s as the customer postalcode.', 'tmsm-aquos-spa-booking'), '<code>{postalcode}</code>').
+						              '<br>'.sprintf(__( '%s as the customer city.', 'tmsm-aquos-spa-booking'), '<code>{city}</code>').
+						              '<br>'.sprintf(__( '%s as the customer phone.', 'tmsm-aquos-spa-booking'), '<code>{phone}</code>').
+						              '<br>'.sprintf(__( '%s as the customer notes.', 'tmsm-aquos-spa-booking'), '<code>{notes}</code>').
 						              '<br>'.sprintf(__( '%s as the web site name.', 'tmsm-aquos-spa-booking'), '<code>{site_name}</code>').
 						              '</p>',
 						'class'  => 'large-text',

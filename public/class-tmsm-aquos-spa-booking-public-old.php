@@ -761,7 +761,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
 
 		// Call web service
-		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurl' );
+		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurltimes' );
 		if ( ! empty( $settings_webserviceurl ) ) {
 
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
