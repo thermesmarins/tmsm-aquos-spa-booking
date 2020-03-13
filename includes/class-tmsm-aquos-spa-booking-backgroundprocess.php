@@ -109,12 +109,12 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								$order_item_data['_aquos_id'],
 								( is_multisite() ? get_current_blog_id() : 0 ),
 								$order_item_data['_appointment_time'],
-								'M.', // TODO update Billing Fields plugin to manage the field settings in the backend
+								$order->get_meta('billing_title') == '1' ? 'M.' : 'Mme',
 								$order->get_billing_first_name() ?? '""',
 								$order->get_billing_last_name() ?? '""',
 								$order->get_billing_email() ?? '""',
 								$order_item_data['_has_voucher'] ?? '0',
-								'20190615', // TODO update Billing Fields plugin to manage the field settings in the backend
+								$order->get_meta('billing_birthdate') ?? '""',
 								$order->get_billing_address_1(). ' '.$order->get_billing_address_2(),
 								$order->get_billing_postcode() ?? '""',
 								$order->get_billing_city() ?? '""',
