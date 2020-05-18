@@ -104,23 +104,26 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								'/{site_name}/'
 							];
 
+							$appointment_date = esc_html( str_replace( '-', '', trim($order_item_data['_appointment_date'] )) );
+							$appointment_time = esc_html($order_item_data['_appointment_time']);
+
 							$replacements = [
-								esc_html( str_replace( '-', '', $order_item_data['_appointment_date'] ) ),
-								$order_item_data['_aquos_id'],
+								$appointment_date,
+								esc_html(trim($order_item_data['_aquos_id'])),
 								( is_multisite() ? get_current_blog_id() : 0 ),
-								$order_item_data['_appointment_time'],
-								$order->get_meta('billing_title') == '1' ? 'M.' : 'Mme',
-								$order->get_billing_first_name() ?? '""',
-								$order->get_billing_last_name() ?? '""',
-								$order->get_billing_email() ?? '""',
+								esc_html($order_item_data['_appointment_time']),
+								urlencode($order->get_meta('_billing_title') == '1') ? 'M.' : 'Mme',
+								urlencode(esc_html(trim($order->get_billing_first_name()))) ?? '',
+								urlencode(esc_html(trim($order->get_billing_last_name()))) ?? '',
+								urlencode(esc_html(trim($order->get_billing_email()))) ?? '',
 								$order_item_data['_has_voucher'] ?? '0',
-								$order->get_meta('billing_birthdate') ?? '""',
-								$order->get_billing_address_1(). ' '.$order->get_billing_address_2(),
-								$order->get_billing_postcode() ?? '""',
-								$order->get_billing_city() ?? '""',
-								$order->get_billing_phone() ?? '""',
-								$order->get_customer_note() ?? '""',
-								esc_html( get_bloginfo( 'name' ) ) ?? '""',
+								str_replace( '-', '', $order->get_meta( '_billing_birthdate' ) ) ?? '',
+								urlencode(esc_html(trim($order->get_billing_address_1(). ' '.$order->get_billing_address_2()))),
+								esc_html(trim($order->get_billing_postcode())) ?? '',
+								urlencode(esc_html(trim($order->get_billing_city()))) ?? '',
+								urlencode(esc_html(trim($order->get_billing_phone()))) ?? '',
+								urlencode(esc_html(trim($order->get_customer_note())) ?? ''),
+								urlencode(esc_html( get_bloginfo( 'name' ) )) ?? '',
 							];
 
 							// Replace keywords in url
@@ -128,6 +131,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 								error_log( 'url after:' . $settings_webserviceurl );
 							}
+							$settings_webserviceurl.='///';
 
 							// Connect with cURL
 							$ch = curl_init();
@@ -135,7 +139,8 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 							curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
 							$result = curl_exec( $ch );
-							curl_close( $ch );
+							$errors = [];
+							$result_array = [];
 
 							if(empty($result)){
 								if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -146,19 +151,23 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							else{
 								$result_array = json_decode( $result, true );
 
+								// Debug response
 								if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 									error_log('Webservice response');
 									error_log( var_export( $result_array, true ) );
+									error_log( print_r( curl_getinfo($ch), true ) );
 								}
 
+								// No errors, success
 								if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
-									// no errors
 									wc_update_order_item_meta($order_item_id, '_appointment_processed', 'yes');
 									if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 										error_log('Web service submission successful');
 									}
 
 								}
+
+								// Some error detected
 								else{
 									if(!empty($result_array['ErrorCode']) && !empty($result_array['ErrorMessage'])){
 										if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -174,6 +183,38 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 									}
 								}
 							}
+							curl_close( $ch );
+
+
+							// Notify admin if errors
+							if(!empty($errors)) {
+
+								wc_update_order_item_meta($order_item_id, '_appointment_processed', 'no');
+								update_post_meta($order_id, '_appointment_error', 'yes');
+
+								$blogname = esc_html( get_bloginfo( 'name' ) );
+								$email    = stripslashes( get_site_option( 'admin_email' ) );
+								$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking submission error %s', 'tmsm-aquos-spa-booking' ), $blogname, $result_array['ErrorCode'] ?? __( 'Unknown error', 'tmsm-aquos-spa-booking' ));
+
+								$message  = sprintf(__( 'Customer %s ', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_full_name());
+								$message .= "\r\n";
+								$message .= sprintf(__( 'Address: %s ', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_address());
+								$message .= "\r\n";
+								$message .= sprintf(__( 'Email: %s ', 'tmsm-aquos-spa-booking' ), $order->get_billing_email());
+								$message .= "\r\n\r\n";
+								$message .= sprintf(__( 'Treatment: %s', 'tmsm-aquos-spa-booking' ), $order_item_data);
+								$message .= "\r\n";
+								$message .= sprintf(__( 'Appointment: %s at %s', 'tmsm-aquos-spa-booking' ), $appointment_date, $appointment_time);
+								$message .= "\r\n";
+								$message .= sprintf(__( 'URL called: %s', 'tmsm-aquos-spa-booking' ), $settings_webserviceurl);
+								$message .= "\r\n";
+								$message .= sprintf(__( 'Errors: %s', 'tmsm-aquos-spa-booking' ), implode(', ', $errors));
+
+								$headers = 'Auto-Submitted: auto-generated';
+								wp_mail( $email, $subject, $message, $headers );
+
+							}
+
 						}
 
 					}

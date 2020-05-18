@@ -237,7 +237,7 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
 
     // Load Times
     var tmsmAquosSpaBookingLoadTimes = function (date) {
-
+      console.log('tmsmAquosSpaBookingLoadTimes');
       tmsmAquosSpaBookingAnimate($('#tmsm-aquos-spa-booking-times-container'));
 
       var date_formatted = date.format('yyyy-mm-dd');
@@ -266,7 +266,8 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
           },
           success: function (data) {
             if (data.success === true) {
-              //console.log(data);
+              console.log('success');
+              console.log(data);
               var $list = $('#tmsm-aquos-spa-booking-times').empty();
 
               $('#tmsm-aquos-spa-booking-times-error').empty();
