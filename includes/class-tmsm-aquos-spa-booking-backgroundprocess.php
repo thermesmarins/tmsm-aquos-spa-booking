@@ -131,7 +131,6 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 								error_log( 'url after:' . $settings_webserviceurl );
 							}
-							$settings_webserviceurl.='///';
 
 							// Connect with cURL
 							$ch = curl_init();
@@ -193,7 +192,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								update_post_meta($order_id, '_appointment_error', 'yes');
 
 								$blogname = esc_html( get_bloginfo( 'name' ) );
-								$email    = stripslashes( get_site_option( 'admin_email' ) );
+								$email    = stripslashes( get_option( 'admin_email' ) );
 								$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking submission error %s', 'tmsm-aquos-spa-booking' ), $blogname, $result_array['ErrorCode'] ?? __( 'Unknown error', 'tmsm-aquos-spa-booking' ));
 
 								$message  = sprintf(__( 'Customer %s ', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_full_name());
@@ -202,17 +201,27 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								$message .= "\r\n";
 								$message .= sprintf(__( 'Email: %s ', 'tmsm-aquos-spa-booking' ), $order->get_billing_email());
 								$message .= "\r\n\r\n";
-								$message .= sprintf(__( 'Treatment: %s', 'tmsm-aquos-spa-booking' ), $order_item_data);
+								$message .= sprintf(__( 'Treatment: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name']);
 								$message .= "\r\n";
-								$message .= sprintf(__( 'Appointment: %s at %s', 'tmsm-aquos-spa-booking' ), $appointment_date, $appointment_time);
+								$message .= sprintf(__( 'Appointment: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name']);
 								$message .= "\r\n";
 								$message .= sprintf(__( 'URL called: %s', 'tmsm-aquos-spa-booking' ), $settings_webserviceurl);
 								$message .= "\r\n";
 								$message .= sprintf(__( 'Errors: %s', 'tmsm-aquos-spa-booking' ), implode(', ', $errors));
 
 								$headers = 'Auto-Submitted: auto-generated';
-								wp_mail( $email, $subject, $message, $headers );
+								$email_sent = wp_mail( $email, $subject, $message, $headers );
+								if ( defined( 'WP_DEBUG' ) && WP_DEBUG && $email_sent) {
+									error_log('Error email sent');
+								}
 
+							}
+							// Success, send confirmation email to customer
+							else{
+								if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+									error_log('Triggering action woocommerce_order_action_send_appointment_confirmation');
+								}
+								do_action( 'woocommerce_order_action_send_appointment_confirmation', $order );
 							}
 
 						}

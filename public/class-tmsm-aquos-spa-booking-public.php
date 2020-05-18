@@ -1153,7 +1153,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		if ( self::order_has_appointment( $order ) === true ) {
 
 			if($order->get_meta('_appointment_error', true) == 'yes'){
-				echo '<p class="woocommerce-notice woocommerce-notice--error woocommerce-thankyou-order-failed">'.__( 'Submission failed, we will contact you shortly.', 'tmsm-aquos-spa-booking' ).'</p>';
+				echo '<p class="woocommerce-notice woocommerce-notice--error woocommerce-thankyou-order-failed">'.__( 'Submission failed, booking service has been notified and will contact you shortly.', 'tmsm-aquos-spa-booking' ).'</p>';
 			}
 
 		}
@@ -1852,5 +1852,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$background_process->push_to_queue( $item );
 
 		$background_process->save()->dispatch();
+	}
+
+	/**
+	 *  Add a custom email to the list of emails WooCommerce should load
+	 *
+	 * @param array $email_classes available email classes
+	 * @return array filtered available email classes
+	 */
+	function email_classes_appointment( $email_classes ) {
+
+		error_log('email_classes_appointment');
+		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment'] = require_once( 'class-tmsm-aquos-spa-booking-email-appointment.php' );
+
+		return $email_classes;
+
 	}
 }

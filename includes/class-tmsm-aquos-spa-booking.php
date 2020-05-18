@@ -265,6 +265,10 @@ class Tmsm_Aquos_Spa_Booking {
 
 		$this->loader->add_action( 'woocommerce_order_status_appointment', $plugin_public, 'change_order_status_appointment', 80, 2 );
 
+		// Order email notification
+		$this->loader->add_filter( 'woocommerce_email_classes', $plugin_public, 'email_classes_appointment', 90, 1 );
+
+
 	}
 
 	/**
