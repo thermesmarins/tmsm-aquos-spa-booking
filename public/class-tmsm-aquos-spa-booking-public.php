@@ -1133,9 +1133,30 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			if ( ! empty( $message ) ) {
 				$thankyou .= '<br><br>' . esc_html( $message );
 			}
+
 		}
 
 		return $thankyou;
+
+	}
+
+	/**
+	 * Diplay error in submission failed
+	 *
+	 * @param int $order_id
+	 *
+	 */
+	function woocommerce_thankyou_order_error( int $order_id ) {
+
+		$order = wc_get_order($order_id);
+
+		if ( self::order_has_appointment( $order ) === true ) {
+
+			if($order->get_meta('_appointment_error', true) == 'yes'){
+				echo '<p class="woocommerce-notice woocommerce-notice--error woocommerce-thankyou-order-failed">'.__( 'Submission failed, we will contact you shortly.', 'tmsm-aquos-spa-booking' ).'</p>';
+			}
+
+		}
 
 	}
 
