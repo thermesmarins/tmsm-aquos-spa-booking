@@ -52,6 +52,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+
 	}
 
 	/**
@@ -1127,11 +1128,13 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	function woocommerce_thankyou_order_received_text_appointment( $thankyou, $order ) {
 
+		WC()->cart->empty_cart();
+
 		if ( self::order_has_appointment( $order ) === true ) {
 			$message = get_option( 'tmsm_aquos_spa_booking_thankyou', false );
 
 			if ( ! empty( $message ) ) {
-				$thankyou .= '<br><br>' . esc_html( $message );
+				$thankyou .= '<br><br>' . nl2br(esc_html( $message ));
 			}
 
 		}
@@ -1176,7 +1179,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$message = get_option( 'tmsm_aquos_spa_booking_orderemail', false );
 
 			if ( ! empty( $message ) ) {
-				echo '<p>' . esc_html( $message ) . '</p>';
+				echo '<p>' . nl2br(esc_html( $message )) . '</p>';
 			}
 		}
 
@@ -1845,6 +1848,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			error_log('change_order_status_appointment for order '.$order_id);
 		}
 
+		WC()->cart->empty_cart();
+		
 		//$background_process = new Tmsm_Aquos_Spa_Booking_Background_Process();
 		$background_process = $GLOBALS['tmsm_asb_bp'];
 
@@ -1854,18 +1859,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$background_process->save()->dispatch();
 	}
 
-	/**
-	 *  Add a custom email to the list of emails WooCommerce should load
-	 *
-	 * @param array $email_classes available email classes
-	 * @return array filtered available email classes
-	 */
-	function email_classes_appointment( $email_classes ) {
 
-		error_log('email_classes_appointment');
-		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment'] = require_once( 'class-tmsm-aquos-spa-booking-email-appointment.php' );
 
-		return $email_classes;
 
-	}
+
+
 }

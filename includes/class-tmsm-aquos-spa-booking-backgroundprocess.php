@@ -3,7 +3,9 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 require( 'vendors/wp-async-request.php' );
 require( 'vendors/wp-background-process.php' );
-
+if(! defined('TMSM_AQUOS_SPA_BOOKING_TEMPLATES')){
+	define( 'TMSM_AQUOS_SPA_BOOKING_TEMPLATES', plugin_dir_path( __FILE__ ) );
+}
 /**
  * Extends the background process class
  *
@@ -26,9 +28,39 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 	 */
 	public function __construct() {
 
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log('__construct Tmsm_Aquos_Spa_Booking_Background_Process');
+		}
+
 		$this->prefix = 'wp_' . get_current_blog_id();
 
+		add_filter( 'woocommerce_email_classes', array( $this, 'register_email' ), 90, 1 );
+
+		add_action( 'testing_action', array( $this, 'trigger' ) );
+
 		parent::__construct();
+	}
+
+	public function trigger( $order_id ) {
+
+		$email_classes  = WC()->mailer()->emails;
+
+		$email_appointment = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment'];
+		$email_appointment->trigger($order_id);
+
+
+	}
+
+	/**
+	 * @param array $email_classes
+	 *
+	 * @return array
+	 */
+	public function register_email( $email_classes ) {
+		error_log('register_email');
+		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment'] = require_once(plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-email-appointment.php');
+
+		return $email_classes;
 	}
 
 	/**
@@ -221,7 +253,11 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 									error_log('Triggering action woocommerce_order_action_send_appointment_confirmation');
 								}
-								do_action( 'woocommerce_order_action_send_appointment_confirmation', $order );
+
+								global $wp_actions;
+								error_log(print_r($wp_actions, true));
+								//do_action( 'woocommerce_order_action_send_appointment_confirmation', $order );
+								do_action( 'testing_action', $order->get_id() );
 							}
 
 						}

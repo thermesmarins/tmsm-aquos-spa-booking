@@ -1,7 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-if ( ! class_exists( 'WC_KIA_Class_Email', false ) ) :
+
+if ( ! class_exists( 'WC_Email' ) ) {
+	return;
+}
+
+if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) ) :
 
 	/**
 	 * A custom Order WooCommerce Email class
@@ -19,7 +24,6 @@ if ( ! class_exists( 'WC_KIA_Class_Email', false ) ) :
 		 */
 		public function __construct() {
 
-			error_log('construct Tmsm_Aquos_Spa_Booking_Class_Email_Appointment');
 
 			// set ID, this simply needs to be a unique name
 			$this->id = 'tmsm_aquos_spa_booking_appointment';
@@ -36,6 +40,7 @@ if ( ! class_exists( 'WC_KIA_Class_Email', false ) ) :
 			$this->subject = __( 'Appointment Confirmation', 'tmsm-aquos-spa-booking' );
 
 			// these define the locations of the templates that this email should use, we'll just use the new order template since this email is similar
+			$this->template_base  = TMSM_AQUOS_SPA_BOOKING_TEMPLATES. 'templates/';
 			$this->template_html  = 'emails/tmsm-aquos-spa-booking-appointment.php';
 			$this->template_plain = 'emails/plain/tmsm-aquos-spa-booking-appointment.php';
 			$this->placeholders   = array(
@@ -95,10 +100,18 @@ if ( ! class_exists( 'WC_KIA_Class_Email', false ) ) :
 				$this->placeholders['{order_number}'] = $this->object->get_order_number();
 			}
 
+			error_log(print_r($this, true));
 			if ( $this->is_enabled() && $this->get_recipient() ) {
+				error_log('Email sending');
+				error_log('$this->get_recipient(): '.$this->get_recipient());
+				error_log('$this->get_subject(): '.$this->get_subject());
+				error_log('$this->get_content(): '.$this->get_content());
+				error_log('$this->get_headers(): '.$this->get_headers());
+				error_log(print_r($this->get_attachments(), true));
 				$success = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 
 				if( $success ) {
+					error_log('Email sent');
 					// ADD THE ORDER NOTE
 					//$message = sprintf( __( 'Class detail for "%s" is sent.', 'zlp_class' ), $order->get_meta( 'class_name', true ) );
 
@@ -114,11 +127,30 @@ if ( ! class_exists( 'WC_KIA_Class_Email', false ) ) :
 		}
 
 		/**
+		 * Get email content.
+		 *
+		 * @return string
+		 */
+		public function get_content() {
+			error_log('Tmsm_Aquos_Spa_Booking_Class_Email_Appointment get_content');
+			$this->sending = true;
+
+			if ( 'plain' === $this->get_email_type() ) {
+				$email_content = wordwrap( preg_replace( $this->plain_search, $this->plain_replace, wp_strip_all_tags( $this->get_content_plain() ) ), 70 );
+			} else {
+				$email_content = $this->get_content_html();
+			}
+
+			return $email_content;
+		}
+
+		/**
 		 * Get content html.
 		 *
 		 * @return string
 		 */
 		public function get_content_html() {
+
 			return wc_get_template_html(
 				$this->template_html,
 				array(
@@ -128,7 +160,9 @@ if ( ! class_exists( 'WC_KIA_Class_Email', false ) ) :
 					'sent_to_admin'      => false,
 					'plain_text'         => false,
 					'email'              => $this,
-				)
+				),
+				'',
+				$this->template_base
 			);
 		}
 
@@ -147,7 +181,9 @@ if ( ! class_exists( 'WC_KIA_Class_Email', false ) ) :
 					'sent_to_admin'      => false,
 					'plain_text'         => true,
 					'email'              => $this,
-				)
+				),
+				'',
+				$this->template_base
 			);
 		}
 
@@ -157,11 +193,10 @@ if ( ! class_exists( 'WC_KIA_Class_Email', false ) ) :
 		 * @return string
 		 */
 		public function get_default_additional_content() {
-			return __( 'Thanks for using {site_address}!', 'tmsm-aquos-spa-booking' );
+			return '';
 		}
 
 	} // end \Tmsm_Aquos_Spa_Booking_Class_Email_Appointment class
 
 endif;
-
 return new Tmsm_Aquos_Spa_Booking_Class_Email_Appointment();

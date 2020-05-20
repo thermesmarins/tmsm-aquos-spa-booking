@@ -72,6 +72,7 @@ class Tmsm_Aquos_Spa_Booking {
 		} else {
 			$this->version = '1.0.0';
 		}
+
 		$this->plugin_name = 'tmsm-aquos-spa-booking';
 
 		$this->load_dependencies();
@@ -109,6 +110,7 @@ class Tmsm_Aquos_Spa_Booking {
 		 * The class responsible for orchestrating the background process actions
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-backgroundprocess.php';
+
 
 		/**
 		 * The class responsible for defining internationalization functionality
@@ -158,6 +160,8 @@ class Tmsm_Aquos_Spa_Booking {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Tmsm_Aquos_Spa_Booking_Admin( $this->get_plugin_name(), $this->get_version() );
+
+
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -264,10 +268,6 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_filter( 'woocommerce_payment_complete_order_status', $plugin_public, 'order_status_appointment_voucher', 60, 3 );
 
 		$this->loader->add_action( 'woocommerce_order_status_appointment', $plugin_public, 'change_order_status_appointment', 80, 2 );
-
-		// Order email notification
-		$this->loader->add_filter( 'woocommerce_email_classes', $plugin_public, 'email_classes_appointment', 90, 1 );
-
 
 	}
 

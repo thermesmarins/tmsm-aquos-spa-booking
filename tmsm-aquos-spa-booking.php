@@ -40,6 +40,11 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'TMSM_AQUOS_SPA_BOOKING_VERSION', '1.0.0' );
 
+if(! defined('TMSM_AQUOS_SPA_BOOKING_TEMPLATES')){
+	define( 'TMSM_AQUOS_SPA_BOOKING_TEMPLATES', plugin_dir_path( __FILE__ ) );
+}
+
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-tmsm-aquos-spa-booking-activator.php
