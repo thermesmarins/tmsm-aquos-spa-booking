@@ -1181,8 +1181,189 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			if ( ! empty( $message ) ) {
 				echo '<p>' . nl2br(esc_html( $message )) . '</p>';
 			}
+
+			if ( $plain_text || ! is_a( $order, 'WC_Order' ) ) {
+				return;
+			}
+
+			// Prepare data for markup
+			$image = null;
+			$address = null;
+			if(class_exists('WPSEO_Options') && !empty(WPSEO_Options::get( 'company_logo' ))){
+				$image = WPSEO_Options::get( 'company_logo' );
+			}
+			if(class_exists('RankMath\Helper')){
+				$image = RankMath\Helper::get_settings( 'titles.knowledgegraph_logo' );
+				$address = RankMath\Helper::get_settings( 'titles.local_address' );
+				$contact_page_id = RankMath\Helper::get_settings( 'titles.local_seo_contact_page' );
+			}
+
+			$shop_name      = get_bloginfo( 'name' );
+			$shop_url       = home_url();
+
+			$markup = array();
+			foreach ( $order->get_items() as $item ) {
+				if ( ! apply_filters( 'woocommerce_order_item_visible', true, $item ) ) {
+					continue;
+				}
+
+				// Has appointment
+				if ( empty( $item['_appointment'] ) ) {
+					continue;
+				}
+				// Generate markup for every Event/Appointment
+				$markup[] = array(
+					'@context'          => 'http://schema.org',
+					'@type'             => 'EventReservation',
+					'reservationNumber' => $order->get_id(),
+					'reservationStatus' => 'http://schema.org/Confirmed',
+					'underName'         => [
+						'@type' => 'Person',
+						'name'  => $order->get_formatted_billing_full_name(),
+					],
+					'modifiedTime' => date(DATE_ATOM, time()),
+					'modifyReservationUrl' => $contact_page_id ? get_permalink($contact_page_id) : '',
+					'reservationFor'    => [
+						'@type'     => 'Event',
+						'name'      => $item['name'],
+						'performer' => [
+							'@type' => 'Organization',
+							'name'  => $shop_name,
+							'image' => $image ?? '',
+						],
+						'startDate' => $item['_appointment_date'] . 'T' . $item['_appointment_time'] . ':00',
+						'location'  => [
+							'@type'   => 'Place',
+							'name'    => $shop_name,
+							'address' => [
+								'@type'           => 'PostalAddress',
+								'streetAddress'   => ( $address ? $address['streetAddress'] : '' ),
+								'addressLocality' => ( $address ? $address['addressLocality'] : '' ),
+								'addressRegion'   => ( $address ? $address['addressRegion'] : '' ),
+								'postalCode'      => ( $address ? $address['postalCode'] : '' ),
+								'addressCountry'  => ( $address ? $address['addressCountry'] : '' ),
+							],
+						],
+					],
+
+				);
+			}
+
+			if ( $markup ) {
+				echo '<script type="application/ld+json">' . wc_esc_json( wp_json_encode( $markup ), true ) . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
 		}
 
+	}
+
+	/**
+	 * Generates Appointment structured data.
+	 *
+	 * Hooked into `woocommerce_email_order_details` action hook.
+	 *
+	 * @param WC_Order $order         Order data.
+	 * @param bool     $sent_to_admin Send to admin (default: false).
+	 * @param bool     $plain_text    Plain text email (default: false).
+	 */
+	public function generate_order_data( $order, $sent_to_admin = false, $plain_text = false ) {
+		if ( $plain_text || ! is_a( $order, 'WC_Order' ) ) {
+			return;
+		}
+
+		$shop_name      = get_bloginfo( 'name' );
+		$shop_url       = home_url();
+		$order_url      = $sent_to_admin ? $order->get_edit_order_url() : $order->get_view_order_url();
+		$order_statuses = array(
+			'pending'    => 'https://schema.org/OrderPaymentDue',
+			'processing' => 'https://schema.org/OrderProcessing',
+			'on-hold'    => 'https://schema.org/OrderProblem',
+			'completed'  => 'https://schema.org/OrderDelivered',
+			'cancelled'  => 'https://schema.org/OrderCancelled',
+			'refunded'   => 'https://schema.org/OrderReturned',
+			'failed'     => 'https://schema.org/OrderProblem',
+		);
+
+		$markup_offers = array();
+		foreach ( $order->get_items() as $item ) {
+			if ( ! apply_filters( 'woocommerce_order_item_visible', true, $item ) ) {
+				continue;
+			}
+
+			$product        = $order->get_product_from_item( $item );
+			$product_exists = is_object( $product );
+			$is_visible     = $product_exists && $product->is_visible();
+
+			$markup_offers[] = array(
+				'@type'              => 'Offer',
+				'price'              => $order->get_line_subtotal( $item ),
+				'priceCurrency'      => $order->get_currency(),
+				'priceSpecification' => array(
+					'price'            => $order->get_line_subtotal( $item ),
+					'priceCurrency'    => $order->get_currency(),
+					'eligibleQuantity' => array(
+						'@type' => 'QuantitativeValue',
+						'value' => apply_filters( 'woocommerce_email_order_item_quantity', $item['qty'], $item ),
+					),
+				),
+				'itemOffered'        => array(
+					'@type' => 'Product',
+					'name'  => apply_filters( 'woocommerce_order_item_name', $item['name'], $item, $is_visible ),
+					'sku'   => $product_exists ? $product->get_sku() : '',
+					'image' => $product_exists ? wp_get_attachment_image_url( $product->get_image_id() ) : '',
+					'url'   => $is_visible ? get_permalink( $product->get_id() ) : get_home_url(),
+				),
+				'seller'             => array(
+					'@type' => 'Organization',
+					'name'  => $shop_name,
+					'url'   => $shop_url,
+				),
+			);
+		}
+
+		$markup                       = array();
+		$markup['@type']              = 'Order';
+		$markup['url']                = $order_url;
+		$markup['orderStatus']        = isset( $order_statuses[ $order->get_status() ] ) ? $order_statuses[ $order->get_status() ] : '';
+		$markup['orderNumber']        = $order->get_order_number();
+		$markup['orderDate']          = $order->get_date_created()->format( 'c' );
+		$markup['acceptedOffer']      = $markup_offers;
+		$markup['discount']           = $order->get_total_discount();
+		$markup['discountCurrency']   = $order->get_currency();
+		$markup['price']              = $order->get_total();
+		$markup['priceCurrency']      = $order->get_currency();
+		$markup['priceSpecification'] = array(
+			'price'                 => $order->get_total(),
+			'priceCurrency'         => $order->get_currency(),
+			'valueAddedTaxIncluded' => 'true',
+		);
+		$markup['billingAddress']     = array(
+			'@type'           => 'PostalAddress',
+			'name'            => $order->get_formatted_billing_full_name(),
+			'streetAddress'   => $order->get_billing_address_1(),
+			'postalCode'      => $order->get_billing_postcode(),
+			'addressLocality' => $order->get_billing_city(),
+			'addressRegion'   => $order->get_billing_state(),
+			'addressCountry'  => $order->get_billing_country(),
+			'email'           => $order->get_billing_email(),
+			'telephone'       => $order->get_billing_phone(),
+		);
+		$markup['customer']           = array(
+			'@type' => 'Person',
+			'name'  => $order->get_formatted_billing_full_name(),
+		);
+		$markup['merchant']           = array(
+			'@type' => 'Organization',
+			'name'  => $shop_name,
+			'url'   => $shop_url,
+		);
+		$markup['potentialAction']    = array(
+			'@type'  => 'ViewAction',
+			'name'   => 'View Order',
+			'url'    => $order_url,
+			'target' => $order_url,
+		);
+
+		$this->set_data( apply_filters( 'woocommerce_structured_data_order', $markup, $sent_to_admin, $order ), true );
 	}
 
 	/**
