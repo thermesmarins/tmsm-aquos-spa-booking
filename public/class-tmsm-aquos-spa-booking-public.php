@@ -1222,14 +1222,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 						'name'  => $order->get_formatted_billing_full_name(),
 					],
 					'modifiedTime' => date(DATE_ATOM, time()),
-					'modifyReservationUrl' => $contact_page_id ? get_permalink($contact_page_id) : '',
+					//'modifyReservationUrl' => $contact_page_id ? get_permalink($contact_page_id) : '',
+					'modifyReservationUrl' => 'https://www.aquatonic.fr/nantes/contact/',
 					'reservationFor'    => [
 						'@type'     => 'Event',
 						'name'      => $item['name'],
 						'performer' => [
 							'@type' => 'Organization',
 							'name'  => $shop_name,
-							'image' => $image ?? '',
+							//'image' => $image ?? '',
+							'image' => 'https://www.aquatonic.fr/nantes/wp-content/uploads/sites/8/2010/08/aquatonic-nantes-1.jpg',
 						],
 						'startDate' => $item['_appointment_date'] . 'T' . $item['_appointment_time'] . ':00',
 						'location'  => [
@@ -1945,7 +1947,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			];
 			$replacements = [
 				esc_html( str_replace( '-', '', $date ) ),
-				esc_html( $aquos_id ),
+				esc_html( str_replace( ',', '+', $aquos_id ) ),
 				( is_multisite() ? get_current_blog_id() : 0 ),
 				esc_html( get_bloginfo( 'name' ) ),
 			];

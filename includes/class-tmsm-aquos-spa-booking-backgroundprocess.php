@@ -141,7 +141,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 							$replacements = [
 								$appointment_date,
-								esc_html(trim($order_item_data['_aquos_id'])),
+								esc_html(trim(str_replace(',', '+', $order_item_data['_aquos_id']))),
 								( is_multisite() ? get_current_blog_id() : 0 ),
 								esc_html($order_item_data['_appointment_time']),
 								urlencode($order->get_meta('_billing_title') == '1') ? 'M.' : 'Mme',
