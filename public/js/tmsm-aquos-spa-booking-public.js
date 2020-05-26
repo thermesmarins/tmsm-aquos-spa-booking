@@ -352,15 +352,15 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       TmsmAquosSpaBookingApp.productsList.loading();
       this.selectedValue = $(event.target).val();
       console.log('selectedValue: '+this.selectedValue);
+      TmsmAquosSpaBookingApp.productAttributesList.reset();
+      TmsmAquosSpaBookingApp.dateList.reset();
+      TmsmAquosSpaBookingApp.timesList.reset();
+
       TmsmAquosSpaBookingApp.products.fetch({ data: {
           productcategory: this.selectedValue,
         } });
 
       TmsmAquosSpaBookingApp.selectedData.set('productcategory', this.selectedValue);
-
-      TmsmAquosSpaBookingApp.productAttributesList.reset();
-      TmsmAquosSpaBookingApp.dateList.reset();
-      TmsmAquosSpaBookingApp.timesList.reset();
 
       TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productsList.element());
 
@@ -438,6 +438,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
   TmsmAquosSpaBookingApp.ProductsListView = Backbone.View.extend( {
     el: '#tmsm-aquos-spa-booking-products-container',
     selectedValue: null,
+    selectedIsVariable: null,
     selectElement: '#tmsm-aquos-spa-booking-products-select',
     loadingElement: '#tmsm-aquos-spa-booking-products-loading',
     buttonElement: '[data-id=tmsm-aquos-spa-booking-products-select]',
@@ -493,26 +494,38 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     change: function(event){
       console.log('ProductListView change');
       this.selectedValue = $(event.target).val();
+      TmsmAquosSpaBookingApp.productAttributesList.reset();
       TmsmAquosSpaBookingApp.productAttributesList.loading();
 
       console.log('selectedValue: '+this.selectedValue);
 
+      this.selectedIsVariable = $(event.target).children("option:selected").attr('data-variable');
+      console.log('selectedIsVariable: '+this.selectedIsVariable);
 
-      TmsmAquosSpaBookingApp.productvariations.fetch({ data: {
-          product: this.selectedValue,
-        } });
-      TmsmAquosSpaBookingApp.productattributes.fetch({ data: {
-          product: this.selectedValue,
-        } });
+      if(this.selectedIsVariable){
+        TmsmAquosSpaBookingApp.productvariations.fetch({ data: {
+            product: this.selectedValue,
+          } });
+        TmsmAquosSpaBookingApp.productattributes.fetch({ data: {
+            product: this.selectedValue,
+          } });
 
-      TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
+        TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
+        //TmsmAquosSpaBookingApp.productAttributesList.render();
 
-      TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
+        TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
 
-      TmsmAquosSpaBookingApp.dateList.reset();
-      TmsmAquosSpaBookingApp.timesList.reset();
+        TmsmAquosSpaBookingApp.dateList.reset();
+        TmsmAquosSpaBookingApp.timesList.reset();
 
-      TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productAttributesList.element());
+        TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productAttributesList.element());
+      }
+      else{
+        TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
+        TmsmAquosSpaBookingApp.selectedData.set('productvariation', this.selectedValue);
+        TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
+      }
+
     },
 
     reset: function (){
@@ -582,6 +595,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     loadingElement: '#tmsm-aquos-spa-booking-attributes-loading',
     cancelElement: '#tmsm-aquos-spa-booking-attributes-cancel',
     confirmElement: '#tmsm-aquos-spa-booking-attributes-confirm',
+    emptyElement: '#tmsm-aquos-spa-booking-attributes-empty',
     listElement: '#tmsm-aquos-spa-booking-attributes-list',
 
     initialize: function() {
@@ -597,23 +611,40 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     loading: function(){
       console.log('AttributesListView loading');
+      $( this.emptyElement ).hide();
       $( this.loadingElement ).show();
       $( this.cancelElement ).hide();
       $( this.confirmElement ).hide();
       $( this.listElement ).hide();
     },
     loaded: function(){
-      console.log('AttributesListView loaded');
+
       $( this.loadingElement ).hide();
       $( this.cancelElement ).show();
-
+      $( this.confirmElement ).show();
       $( this.listElement ).show();
 
+
       if ( typeof TmsmAquosSpaBookingApp.productVariationsList !== 'undefined' ) {
-        TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
+        if(TmsmAquosSpaBookingApp.productVariationsList.matchattributes()){
+          console.log('AttributesListView loaded');
+          $( this.emptyElement ).hide();
+
+
+        }
+        else{
+          console.log('AttributesListView error');
+          $( this.emptyElement ).show();
+          $( this.cancelElement ).hide();
+          $( this.confirmElement ).hide();
+          $( this.listElement ).hide();
+
+        }
       }
     },
     render: function() {
+      console.log('AttributesListView render');
+      $( this.loadingElement ).show();
       var $list = this.$( this.listElement ).empty();
 
       this.collection.each( function( model ) {
@@ -662,46 +693,61 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       var data   = {};
       var count  = 0;
       var chosen = 0;
-      // Get chosen attributes from form.
-      $attributeGroups.each( function() {
-        var $fields = $( this ).find( 'input[type=radio]' );
 
-        var attribute_name = $fields.data( 'attribute_name' ) || $fields.attr( 'name' );
-        var value          = $fields.filter(':checked').val() || '';
+      // Does product have attributes?
+      if($attributeGroups.length == 0){
+        console.log('AttributesListView no attributes');
+      }
+      // Does product have variations?
+      if(TmsmAquosSpaBookingApp.productVariationsList.variationsCount == 0){
+        console.log('productVariationsList no variations');
+        return false;
+      }
+      else{
+        // Get chosen attributes from form.
+        $attributeGroups.each( function() {
+          var $fields = $( this ).find( 'input[type=radio]' );
 
-        if ( value.length > 0 ) {
-          chosen ++;
-        }
+          var attribute_name = $fields.data( 'attribute_name' ) || $fields.attr( 'name' );
+          var value          = $fields.filter(':checked').val() || '';
 
-        count ++;
-        data[ attribute_name ] = value;
-      });
-      var attributes = {
-        'count'      : count,
-        'chosenCount': chosen,
-        'data'       : data
-      };
-      var currentAttributes = attributes.data;
-      //console.log('currentAttributes:');
-      //console.log(currentAttributes);
+          if ( value.length > 0 ) {
+            chosen ++;
+          }
 
-      // Loop through radio buttons and disable/enable based on selections.
-      $attributeGroups.each( function( index, el ) {
-        var current_attr      = $( el ),
-          $fields           = current_attr.find( 'input[type=radio]' ),
-          current_attr_name = $fields.data( 'attribute_name' ) || $fields.attr( 'name' );
+          count ++;
+          data[ attribute_name ] = value;
+        });
+        var attributes = {
+          'count'      : count,
+          'chosenCount': chosen,
+          'data'       : data
+        };
+        var currentAttributes = attributes.data;
+        //console.log('currentAttributes:');
+        //console.log(currentAttributes);
 
-        // The attribute of this radio button should not be taken into account when calculating its matching variations:
-        // The constraints of this attribute are shaped by the values of the other attributes.
-        var checkAttributes = $.extend( true, {}, currentAttributes );
+        // Loop through radio buttons and disable/enable based on selections.
+        $attributeGroups.each( function( index, el ) {
+          var current_attr      = $( el ),
+            $fields           = current_attr.find( 'input[type=radio]' ),
+            current_attr_name = $fields.data( 'attribute_name' ) || $fields.attr( 'name' );
 
-        checkAttributes[ current_attr_name ] = '';
+          // The attribute of this radio button should not be taken into account when calculating its matching variations:
+          // The constraints of this attribute are shaped by the values of the other attributes.
+          var checkAttributes = $.extend( true, {}, currentAttributes );
 
-      });
+          checkAttributes[ current_attr_name ] = '';
 
-      //console.log('checkAttributes:');
-      //console.log(checkAttributes);
-      return currentAttributes;
+        });
+
+        //console.log('checkAttributes:');
+        //console.log(checkAttributes);
+        return currentAttributes;
+      }
+
+
+
     },
 
     element: function (){
@@ -739,6 +785,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
 
       TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
+      //TmsmAquosSpaBookingApp.productAttributesList.loading();
+      //TmsmAquosSpaBookingApp.productAttributesList.render();
 
 
 
@@ -829,20 +877,22 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     el: '#tmsm-aquos-spa-booking-attributes-container',
     selectedValue: null,
     selectElement: '#tmsm-aquos-spa-booking-variations-select',
+    variationsCount: 0,
     buttonElement: '[data-id=tmsm-aquos-spa-booking-variations-select]',
 
     initialize: function() {
       console.log('ProductVariationsListView initialize');
+      $( this.emptyElement ).hide();
       $( this.selectElement ).empty().val('');
       this.listenTo( this.collection, 'sync', this.render );
     },
 
     events : {
       'change select' : 'change',
-
     },
 
     render: function() {
+
       var $list = this.$( this.selectElement ).empty().val('');
 
       $list.hide();
@@ -860,11 +910,20 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         $list.selectpicker('refresh');
       }
 
-      if(this.collection.length > 0){
+      this.variationsCount = this.collection.length;
+      /*if(this.collection.length > 0){
         this.$(TmsmAquosSpaBookingApp.productAttributesList.confirmElement).show();
       }
+      else{
+        this.$( this.emptyElement ).show();
+        this.$(TmsmAquosSpaBookingApp.productAttributesList.confirmElement).hide();
+        this.$(TmsmAquosSpaBookingApp.productAttributesList.cancelElement).hide();
+        this.$(TmsmAquosSpaBookingApp.productAttributesList.selectElement).hide();
+      }*/
 
-      TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
+      //TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
+      TmsmAquosSpaBookingApp.productAttributesList.loading();
+      TmsmAquosSpaBookingApp.productAttributesList.render();
 
       return this;
     },
@@ -889,38 +948,45 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     matchattributes: function(){
       console.log('ProductVariationsListView matchattributes');
 
-      var checkAttributes = TmsmAquosSpaBookingApp.productAttributesList.checkattributes()
+      var checkAttributes = TmsmAquosSpaBookingApp.productAttributesList.checkattributes();
 
-      //var variations = form.findMatchingVariations( form.variationData, checkAttributes );
-      var variations = this.collection.models;
-      //console.log('variations:');
-      //console.log(variations);
+      if(checkAttributes){
+        //var variations = form.findMatchingVariations( form.variationData, checkAttributes );
+        var variations = this.collection.models;
+        //console.log('variations:');
+        //console.log(variations);
 
-      for (var i = 0; i < variations.length; i++) {
-        //console.log('variation.attributes.attributes for variation '+variations[i].attributes.id);
-        var variation_attributes = JSON.parse(variations[i].attributes.attributes);
-        //console.log(variation_attributes);
+        for (var i = 0; i < variations.length; i++) {
+          //console.log('variation.attributes.attributes for variation '+variations[i].attributes.id);
+          var variation_attributes = JSON.parse(variations[i].attributes.attributes);
+          //console.log(variation_attributes);
 
-        // compare variations_attributes with checkAttributes
+          // compare variations_attributes with checkAttributes
 
-        var match = true;
-        for ( var attr_name in variation_attributes ) {
-          if ( variation_attributes.hasOwnProperty( attr_name ) ) {
-            var val1 = variation_attributes[ attr_name ];
-            var val2 = checkAttributes[ attr_name ];
-            if ( val1 !== undefined && val2 !== undefined && val1.length !== 0 && val2.length !== 0 && val1 !== val2 ) {
-              match = false;
+          var match = true;
+          for ( var attr_name in variation_attributes ) {
+            if ( variation_attributes.hasOwnProperty( attr_name ) ) {
+              var val1 = variation_attributes[ attr_name ];
+              var val2 = checkAttributes[ attr_name ];
+              if ( val1 !== undefined && val2 !== undefined && val1.length !== 0 && val2.length !== 0 && val1 !== val2 ) {
+                match = false;
+              }
             }
           }
-        }
-        if (match === true){
-          //console.log('variation match:');
-          //console.log(variations[i]);
+          if (match === true){
+            //console.log('variation match:');
+            //console.log(variations[i]);
 
 
-          $( this.selectElement ).selectpicker('val', variations[i].id).trigger('change');
+            $( this.selectElement ).selectpicker('val', variations[i].id).trigger('change');
+          }
         }
+        return variations;
       }
+      else{
+        return false;
+      }
+
     },
     element: function (){
       return this.$el;

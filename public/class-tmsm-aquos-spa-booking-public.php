@@ -303,6 +303,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<h3>' . __( 'Pick your variation:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			
 			<p id="tmsm-aquos-spa-booking-attributes-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
+			<p id="tmsm-aquos-spa-booking-attributes-empty">' . __( 'No options to pick', 'tmsm-aquos-spa-booking' ) . '</p>
 			<ul id="tmsm-aquos-spa-booking-attributes-list" class="list-unstyled"></ul>
 			<p class="tmsm-aquos-spa-booking-attributes-reset-confirm">
 			<a href="#" id="tmsm-aquos-spa-booking-attributes-cancel" class="'.self::button_class_default().'">' . __( 'Reset your options', 'tmsm-aquos-spa-booking' ) . '</a>
@@ -1807,6 +1808,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			foreach($products_ids as $key => $product_id){
 				$product = wc_get_product($product_id);
 
+				if($product->is_type( 'simple' ) && empty(get_post_meta( $product_id, '_aquos_id', true))){
+					continue;
+				}
 				//$products[$product->get_id()] = [
 				$products[] = [
 					'id' => esc_js($product->get_id()),
@@ -2041,9 +2045,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		$background_process->save()->dispatch();
 	}
-
-
-
 
 
 
