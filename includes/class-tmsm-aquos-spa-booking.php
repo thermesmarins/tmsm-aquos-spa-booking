@@ -177,8 +177,8 @@ class Tmsm_Aquos_Spa_Booking {
 		// WooCommerce Settings
 		$this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'woocommerce_get_settings_pages_aquosspabooking' );
 
-		// WooCommerce Aquos ID Field
-		$this->loader->add_action( 'woocommerce_product_options_inventory_product_data', $plugin_admin, 'woocommerce_product_options_inventory_product_data_aquosid' );
+		// WooCommerce Aquos ID Field + Aquos Choice Field
+		$this->loader->add_action( 'woocommerce_product_options_inventory_product_data', $plugin_admin, 'woocommerce_product_options_inventory_product_data_fields' );
 		$this->loader->add_action( 'woocommerce_process_product_meta_simple', $plugin_admin, 'woocommerce_process_product_save_options' );
 		$this->loader->add_action( 'woocommerce_process_product_meta_variable', $plugin_admin, 'woocommerce_process_product_save_options' );
 		$this->loader->add_action( 'woocommerce_save_product_variation', $plugin_admin, 'woocommerce_save_product_variation', 10, 2 );

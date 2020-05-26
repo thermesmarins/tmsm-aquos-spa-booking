@@ -176,7 +176,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	/**
 	 * Add Aquos ID Field to Inventory Product Data Tab
 	 */
-	public function woocommerce_product_options_inventory_product_data_aquosid(){
+	public function woocommerce_product_options_inventory_product_data_fields(){
 		echo '<div class="options_group">';
 		woocommerce_wp_text_input(
 			array(
@@ -185,6 +185,18 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				'placeholder' => '',
 				'desc_tip'    => 'true',
 				'description' => __( 'If empty, the product won\'t be bookable.', 'tmsm-aquos-spa-booking' )
+			)
+		);
+		echo '</div>';
+		echo '<div class="options_group">';
+		woocommerce_wp_textarea_input(
+			array(
+				'id'          => '_aquos_items_ids',
+				'label'       => __( 'Aquos Package Items (with IDs)', 'tmsm-aquos-spa-booking' ),
+				'placeholder' => '',
+				'desc_tip'    => 'true',
+				'rows'    => 8,
+				'description' => __( 'One item per line, write the Aquos product ID separated by an *. Result should be: product name * product id', 'tmsm-aquos-spa-booking' )
 			)
 		);
 		echo '</div>';
@@ -220,6 +232,10 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 		if ( isset( $_POST['_aquos_id'] ) ) :
 			update_post_meta( $post_id, '_aquos_id', sanitize_text_field( $_POST['_aquos_id'] ) );
+		endif;
+
+		if ( isset( $_POST['_aquos_items_ids'] ) ) :
+			update_post_meta( $post_id, '_aquos_items_ids', sanitize_textarea_field( $_POST['_aquos_items_ids'] ) );
 		endif;
 
 	}
