@@ -168,6 +168,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'products' => $this->_get_products(),
 				'productattributes' => array(),
 				'productvariations' => array(),
+				'choices' => array(),
 				'times' => array(),
 			),
 		);
@@ -313,6 +314,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			</div>
 			
+			<div id="tmsm-aquos-spa-booking-choices-container" >
+			<div id="tmsm-aquos-spa-booking-choices-inner">
+			<h3>' . __( 'Pick your choice:', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<p id="tmsm-aquos-spa-booking-choices-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
+			<select id="tmsm-aquos-spa-booking-choices-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			</div>
+			</div>
+			
 			<div id="tmsm-aquos-spa-booking-date-container" >
 			<div id="tmsm-aquos-spa-booking-date-inner">
 			<h3>' . __( 'Pick your date:', 'tmsm-aquos-spa-booking' ) . '</h3>
@@ -433,38 +442,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<?php
 	}
 
+
 	/**
-	 * Product Variation Template
+	 * Choice Template
 	 */
-	/*public function cronpixie_template(){
+	public function choice_template(){
 		?>
 
-		<script type="text/template" id="cron-pixie-schedule-item-tmpl">
-			<span class="cron-pixie-schedule-display"><%= display %></span>
-			<ul class="cron-pixie-events"></ul>
+		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-choice">
+			{{ data.name }}
 		</script>
-
-		<!-- Event Item template -->
-		<script type="text/template" id="cron-pixie-event-item-tmpl">
-			<% if ( undefined == hook ) { %>
-			<span class="cron-pixie-event-empty"><%= TmsmAquosSpaBookingApp.strings.no_events %></span>
-			<% } else { %>
-			<span class="cron-pixie-event-run dashicons dashicons-controls-forward" title="<%- TmsmAquosSpaBookingApp.strings.run_now %>"></span>
-			<span class="cron-pixie-event-hook"><%= hook %></span>
-			<div class="cron-pixie-event-timestamp dashicons-before dashicons-clock">
-				<span class="cron-pixie-event-due"><%- TmsmAquosSpaBookingApp.strings.due %>:&nbsp;<%= new Date( timestamp * 1000 ).toLocaleString() %></span>
-				&nbsp;
-			</div>
-			<% } %>
-		</script>
-
-		<!-- Main content -->
-		<div id="cron-pixie-main">
-			<h3>Schedules</h3>
-			<ul class="cron-pixie-schedules"></ul>
-		</div>
 		<?php
-	}*/
+	}
+
+
 
 	
 

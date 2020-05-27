@@ -324,7 +324,6 @@ var TmsmAquosSpaBooking = TmsmAquosSpaBooking || {};
       tagName: 'li',
       className: 'tmsm-aquos-spa-booking-time-listitem',
       template: wp.template('tmsm-aquos-spa-booking-time'),
-      //template: wp.template( $( '#cron-pixie-event-item-tmpl' ).html() ),
 
       initialize: function() {
         $('#tmsm-aquos-spa-booking-times-loading').hide();
