@@ -663,6 +663,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$is_voucher = sanitize_text_field( $selecteddata_array['is_voucher'] );
 		$product_id = sanitize_text_field( $selecteddata_array['product'] );
 		$productvariation_id = sanitize_text_field( $selecteddata_array['productvariation'] );
+		$choice_id = sanitize_text_field( $selecteddata_array['choice'] );
 		$date = sanitize_text_field( $selecteddata_array['date'] );
 		$hourminutes = sanitize_text_field( $selecteddata_array['hourminutes'] );
 
@@ -672,13 +673,18 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$product = $productvariation;
 			$product_id = $productvariation_id;
 		}
+		if(!empty($choice_id)){
+			$aquos_id = $choice_id;
+		}
 
 		// Product existance
 		if ( empty( $product ) ) {
 			$errors[] = __('Product not found', 'tmsm-aquos-spa-booking');
 		}
 		else{
-			$aquos_id = sanitize_text_field( $product->get_meta('_aquos_id', true ));
+			if(empty($aquos_id)){
+				$aquos_id = sanitize_text_field( $product->get_meta('_aquos_id', true ));
+			}
 
 
 			// Cart Item Data
@@ -1911,12 +1917,18 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
 		$product_id          = sanitize_text_field( $_REQUEST['product'] );
+		$productvariation_id = sanitize_text_field( $_REQUEST['productvariation'] );
+		$choice_id           = sanitize_text_field( $_REQUEST['choice'] );
 		$date                = sanitize_text_field( $_REQUEST['date'] );
-		$times = [];
+		$times               = [];
 
 		$product = wc_get_product( $product_id );
 
 		$aquos_id = get_post_meta( $product_id, '_aquos_id', true );
+
+		if ( ! empty( $choice_id ) ) {
+			$aquos_id = $choice_id;
+		}
 
 		$errors   = array(); // Array to hold validation errors
 		$jsondata = array(); // Array to pass back data

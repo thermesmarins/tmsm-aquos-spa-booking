@@ -1084,7 +1084,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.render();
     },
     selectDate: function (date) {
-      console.log('DateListView selectDate');
+      console.warn('DateListView selectDate');
       this.selectedValue = date.format('yyyy-mm-dd');
 
       var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
@@ -1095,11 +1095,14 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       console.log('TmsmAquosSpaBookingApp.productsList.selectedValue: '+TmsmAquosSpaBookingApp.productsList.selectedValue);
       console.log('TmsmAquosSpaBookingApp.productVariationsList.selectedValue: '+TmsmAquosSpaBookingApp.productVariationsList.selectedValue);
+      console.log('TmsmAquosSpaBookingApp.choicesList.selectedValue: '+TmsmAquosSpaBookingApp.choicesList.selectedValue);
 
       TmsmAquosSpaBookingApp.times.fetch({
         data: {
           productcategory: TmsmAquosSpaBookingApp.productCategoriesList.selectedValue,
-          product: (TmsmAquosSpaBookingApp.productVariationsList.selectedValue !== null ? TmsmAquosSpaBookingApp.productVariationsList.selectedValue : TmsmAquosSpaBookingApp.productsList.selectedValue ),
+          product: TmsmAquosSpaBookingApp.productsList.selectedValue,
+          productvariation: TmsmAquosSpaBookingApp.productVariationsList.selectedValue,
+          choice: TmsmAquosSpaBookingApp.choicesList.selectedValue,
           date: this.selectedValue
         }
       });
