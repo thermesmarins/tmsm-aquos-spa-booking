@@ -395,14 +395,19 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.selectedIsVariable = $(event.target).children("option:selected").attr('data-variable');
       console.log('selectedIsVariable: '+this.selectedIsVariable);
 
-      this.selectedHasChoices = (JSON.parse($(event.target).children("option:selected").attr('data-choices')).length !== 0);
+      var choices = JSON.parse($(event.target).children("option:selected").attr('data-choices'));
+      this.selectedHasChoices = (choices.length !== 0);
       console.warn('selectedChoices: ');
-      console.log(JSON.parse($(event.target).children("option:selected").attr('data-choices')));
-      console.log(JSON.parse($(event.target).children("option:selected").attr('data-choices')).length);
+      console.log(choices);
+      console.log(choices.length);
       console.log('selectedHasChoices: '+this.selectedHasChoices);
 
       if(this.selectedHasChoices){
         // Go to choices
+        TmsmAquosSpaBookingApp.data.choices = choices;
+        TmsmAquosSpaBookingApp.choices.reset( TmsmAquosSpaBookingApp.data.choices );
+        TmsmAquosSpaBookingApp.choicesList.render();
+
         TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.choicesList.element());
       }
       else{
