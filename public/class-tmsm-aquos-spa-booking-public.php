@@ -1811,7 +1811,24 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				if($product->is_type( 'simple' ) && empty(get_post_meta( $product_id, '_aquos_id', true))){
 					continue;
 				}
-				//$products[$product->get_id()] = [
+
+				// Construct json data for product choices
+				$aquos_items = [];
+				if(!empty($product->get_meta( '_aquos_items_ids' ))){
+					$aquos_items = preg_split('/\r\n|\r|\n/', esc_attr($product->get_meta( '_aquos_items_ids' )));
+					foreach($aquos_items as &$aquos_item){
+
+						$tmp_aquos_item = $aquos_item;
+						$tmp_aquos_item_array = explode('*', $tmp_aquos_item);
+						$aquos_item = [
+							'name' => trim($tmp_aquos_item_array[0]),
+							'aquos_id' => trim($tmp_aquos_item_array[1]),
+						];
+
+					}
+				}
+
+				// Construct product data
 				$products[] = [
 					'id' => esc_js($product->get_id()),
 					'permalink' => esc_js($product->get_permalink()),
@@ -1820,9 +1837,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					'sku' => esc_js($product->get_sku()),
 					'name' => esc_js($product->get_name()),
 					'variable' => esc_js($product->is_type( 'variable' )),
-					'choices' => json_encode($product->get_meta( '_aquos_items_ids' )),
+					'choices' => json_encode($aquos_items),
 				];
-
 
 				/*if(!$product->is_type( 'variable' )){
 
