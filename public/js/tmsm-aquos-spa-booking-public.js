@@ -402,6 +402,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log(choices.length);
       console.log('selectedHasChoices: '+this.selectedHasChoices);
 
+      TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
+      TmsmAquosSpaBookingApp.dateList.reset();
+      TmsmAquosSpaBookingApp.timesList.reset();
+      TmsmAquosSpaBookingApp.choicesList.reset();
+      TmsmAquosSpaBookingApp.productAttributesList.reset();
+      TmsmAquosSpaBookingApp.productVariationsList.reset();
+
       if(this.selectedHasChoices){
         // Go to choices
         TmsmAquosSpaBookingApp.data.choices = choices;
@@ -422,11 +429,6 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
           TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
           //TmsmAquosSpaBookingApp.productAttributesList.render();
-
-          TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
-
-          TmsmAquosSpaBookingApp.dateList.reset();
-          TmsmAquosSpaBookingApp.timesList.reset();
 
           TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productAttributesList.element());
         }
@@ -1237,7 +1239,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       $( this.selectButtons ).hide().removeClass('disabled').removeClass('selected').addClass('not-selected');
       $(event.target).show().addClass('selected').removeClass('not-selected').find('.tmsm-aquos-spa-booking-time').addClass('disabled');
 
-      //TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
+      TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
     },
 
     cancelTime: function(event){
