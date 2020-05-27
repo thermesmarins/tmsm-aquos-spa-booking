@@ -329,7 +329,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-product">
-			<option value="{{ data.id }}" data-sku="{{ data.sku }}" data-variable="{{ data.variable }}">{{ data.name }}
+			<option value="{{ data.id }}" data-sku="{{ data.sku }}" data-variable="{{ data.variable }}" data-choices="{{ data.choices }}">{{ data.name }}
 			<# if ( data.is_voucher == '0') { #>
                 — {{ data.price }}
             <# } #>
@@ -491,6 +491,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 						'sku' => esc_js($product->get_sku()),
 						'name' => esc_js($product->get_name()),
 						'variable' => esc_js($product->is_type( 'variable' )),
+						'choices' => esc_js($product->get_meta('_aquos_items_ids')),
 					];
 
 

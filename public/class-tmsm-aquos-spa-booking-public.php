@@ -1820,6 +1820,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					'sku' => esc_js($product->get_sku()),
 					'name' => esc_js($product->get_name()),
 					'variable' => esc_js($product->is_type( 'variable' )),
+					'choices' => json_encode($product->get_meta( '_aquos_items_ids' )),
 				];
 
 

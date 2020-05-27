@@ -423,6 +423,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       name: null,
       thumbnail: null,
       variable: null,
+      choices: null,
       is_voucher: null,
       price: null,
     }
@@ -553,7 +554,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       return {
         value: this.model.get('id'),
         'data-sku': this.model.get('sku'),
-        'data-variable': this.model.get('variable')
+        'data-variable': this.model.get('variable'),
+        'data-choices': this.model.get('choices')
     };
     },
     className: 'tmsm-aquos-spa-booking-product-option',

@@ -148,9 +148,9 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $item_array
+	 * @param array $item_meta
 	 *
-	 * @return array $item_array
+	 * @return array $item_meta
 	 */
 	public function woocommerce_hidden_order_itemmeta_appointment($item_meta){
 		$item_meta[] = '_appointment_date';
@@ -164,7 +164,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $settings
+	 * @param array $settings
 	 *
 	 * @return array
 	 */
