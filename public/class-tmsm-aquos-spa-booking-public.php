@@ -1924,12 +1924,21 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		$product = wc_get_product( $product_id );
 
+		// If it is a product
 		$aquos_id = get_post_meta( $product_id, '_aquos_id', true );
+		error_log( '$aquos_id: ' .$aquos_id);
 
-		if ( ! empty( $choice_id ) ) {
-			$aquos_id = $choice_id;
+		// If it is a variation
+		if ( ! empty( $productvariation_id ) ) {
+			$aquos_id = get_post_meta( $productvariation_id, '_aquos_id', true );
 		}
 
+		// If it is a choice
+		if ( ! empty( $choice_id ) ) {
+			error_log( 'choice_id exists: ' .$choice_id);
+			$aquos_id = $choice_id;
+		}
+		error_log( '$aquos_id: ' .$aquos_id);
 		$errors   = array(); // Array to hold validation errors
 		$jsondata = array(); // Array to pass back data
 
@@ -1954,6 +1963,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$jsondata['success'] = false;
 			$jsondata['errors']  = $errors;
 		}
+
 
 		// Call web service
 		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurltimes' );

@@ -1237,7 +1237,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       $( this.selectButtons ).hide().removeClass('disabled').removeClass('selected').addClass('not-selected');
       $(event.target).show().addClass('selected').removeClass('not-selected').find('.tmsm-aquos-spa-booking-time').addClass('disabled');
 
-      TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
+      //TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
     },
 
     cancelTime: function(event){
