@@ -227,11 +227,11 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								$email    = stripslashes( get_option( 'admin_email' ) );
 								$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking submission error %s', 'tmsm-aquos-spa-booking' ), $blogname, $result_array['ErrorCode'] ?? __( 'Unknown error', 'tmsm-aquos-spa-booking' ));
 
-								$message  = sprintf(__( 'Customer %s ', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_full_name());
+								$message  = sprintf(__( 'Customer %s', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_full_name());
 								$message .= "\r\n";
-								$message .= sprintf(__( 'Address: %s ', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_address());
+								$message .= sprintf(__( 'Address: %s', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_address());
 								$message .= "\r\n";
-								$message .= sprintf(__( 'Email: %s ', 'tmsm-aquos-spa-booking' ), $order->get_billing_email());
+								$message .= sprintf(__( 'Email: %s', 'tmsm-aquos-spa-booking' ), $order->get_billing_email());
 								$message .= "\r\n\r\n";
 								$message .= sprintf(__( 'Treatment: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name']);
 								$message .= "\r\n";

@@ -1222,6 +1222,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					'modifiedTime' => date(DATE_ATOM, time()),
 					'modifyReservationUrl' => $contact_page_id ? get_permalink($contact_page_id) : '',
 					//'modifyReservationUrl' => 'https://www.aquatonic.fr/nantes/contact/',
+					//'modifyReservationUrl' => 'https://www.aquatonic.fr/rennes/contact/',
+					//'modifyReservationUrl' => 'https://www.aquatonic.fr/paris/contact/',
 					'reservationFor'    => [
 						'@type'     => 'Event',
 						'name'      => $item['name'],
@@ -1230,6 +1232,13 @@ class Tmsm_Aquos_Spa_Booking_Public {
 							'name'  => $shop_name,
 							'image' => $image ?? '',
 							//'image' => 'https://www.aquatonic.fr/nantes/wp-content/uploads/sites/8/2010/08/aquatonic-nantes-1.jpg',
+							//'image' => 'https://mk0aquatonicxmkh2brf.kinstacdn.com/wp-content/uploads/sites/6/2017/08/aquatonic-rennes-1.jpg',
+							//'image' => 'https://mk0aquatonicxmkh2brf.kinstacdn.com/wp-content/uploads/sites/9/2012/10/parcours-aquatonic-montevrain.png',
+
+
+							//https://www.aquatonic.fr/nantes/wp-content/uploads/sites/8/2017/11/logo_aquatonic-nantes-600-300.png
+							//https://www.aquatonic.fr/rennes/wp-content/uploads/sites/6/2017/11/logo_aquatonic-rennes-600-300.png
+							//https://www.aquatonic.fr/paris/wp-content/uploads/sites/9/2017/11/logo_aquatonic-paris-600-300.png
 						],
 						'startDate' => $item['_appointment_date'] . 'T' . $item['_appointment_time'] . ':00',
 						'location'  => [
@@ -1805,7 +1814,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			foreach($products_ids as $key => $product_id){
 				$product = wc_get_product($product_id);
 
-				if($product->is_type( 'simple' ) && empty(get_post_meta( $product_id, '_aquos_id', true))){
+				if( ($product->is_type( 'simple' ) && empty(get_post_meta( $product_id, '_aquos_id', true))) && ! get_post_meta( $product_id, '_aquos_items_ids', true) ){
 					continue;
 				}
 
