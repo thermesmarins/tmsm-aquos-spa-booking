@@ -36,7 +36,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 		add_filter( 'woocommerce_email_classes', array( $this, 'register_email' ), 90, 1 );
 
-		add_action( 'testing_action', array( $this, 'trigger' ) );
+		add_action( 'woocommerce_order_action_send_appointment_confirmation', array( $this, 'trigger' ) );
 
 		parent::__construct();
 	}
@@ -256,8 +256,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 								global $wp_actions;
 								error_log(print_r($wp_actions, true));
-								//do_action( 'woocommerce_order_action_send_appointment_confirmation', $order );
-								do_action( 'testing_action', $order->get_id() );
+								do_action( 'woocommerce_order_action_send_appointment_confirmation', $order->get_id() );
 							}
 
 						}
