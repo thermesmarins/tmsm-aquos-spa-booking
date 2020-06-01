@@ -707,6 +707,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'appointment_time' => $hourminutes,
 				'aquos_id' => $aquos_id,
 				'timestamp_added' => time(),
+				'virtual' => 1,
+				'_virtual' => 1,
 				//'price' => 12 // if I want to force a price in the cart
 			];
 
@@ -880,6 +882,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		return $cart_item_data;
 	}
 
+
 	/**
 	 * Display Appointment Data Date+Time When Adding To Cart
 	 *
@@ -1002,6 +1005,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	}
 
 	/**
+	 * Check if Cart needs Shipping
+	 *
+	 * @param bool $needs_shipping
+	 *
+	 * @return bool
+	 */
+	function woocommerce_cart_needs_shipping(bool $needs_shipping){
+
+		if(self::cart_has_appointment()){
+			$needs_shipping = false;
+		}
+		return $needs_shipping;
+	}
+	/**
 	 * Disable Other Payments Gateways if Cas On Delivery is Prefered Method
 	 *
 	 * @param $available_gateways
@@ -1083,7 +1100,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @return bool
 	 */
-	private function cart_has_appointment(){
+	private static function cart_has_appointment(){
 
 		$cart_items = WC()->cart->get_cart_contents();
 		$cart_has_appointment = array_map( function( $cart_item ) { return $cart_item['appointment']; }, $cart_items );
@@ -1097,7 +1114,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @return bool
 	 */
-	private function cart_has_atleastonevoucher(){
+	private static function cart_has_atleastonevoucher(){
 
 		$cart_items = WC()->cart->get_cart_contents();
 		$cart_has_voucher = array_map( function( $cart_item ) { return $cart_item['has_voucher']; }, $cart_items );
@@ -1110,7 +1127,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @return bool
 	 */
-	private function cart_has_voucheronly(){
+	private static function cart_has_voucheronly(){
 
 		$cart_items = WC()->cart->get_cart_contents();
 		$cart_has_voucher = array_map( function( $cart_item ) { return $cart_item['has_voucher']; }, $cart_items );
@@ -1152,7 +1169,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$order = wc_get_order($order_id);
 
 		if ( self::order_has_appointment( $order ) === true ) {
-
 			if($order->get_meta('_appointment_error', true) == 'yes'){
 				echo '<p class="woocommerce-notice woocommerce-notice--error woocommerce-thankyou-order-failed">'.__( 'Submission failed, booking service has been notified and will contact you shortly.', 'tmsm-aquos-spa-booking' ).'</p>';
 			}
@@ -1386,7 +1402,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					$_product = $cart_item['data'];
 					if( time() > ( $cart_item['timestamp_added'] + 3600 * get_option( 'tmsm_aquos_spa_booking_cartexpirehours', 2 ))){
 						WC()->cart->remove_cart_item( $cart_item_key );
-						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'woocommerce' ), $_product->get_name() ), 'notice' );
+						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'tmsm-aquos-spa-booking' ), $_product->get_name() ), 'notice' );
 					}
 				}
 

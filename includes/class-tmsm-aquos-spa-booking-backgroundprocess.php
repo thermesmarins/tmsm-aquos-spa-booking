@@ -227,21 +227,26 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								$email    = stripslashes( get_option( 'admin_email' ) );
 								$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking submission error %s', 'tmsm-aquos-spa-booking' ), $blogname, $result_array['ErrorCode'] ?? __( 'Unknown error', 'tmsm-aquos-spa-booking' ));
 
-								$message  = sprintf(__( 'Customer %s', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_full_name());
-								$message .= "\r\n";
-								$message .= sprintf(__( 'Address: %s', 'tmsm-aquos-spa-booking' ), $order->get_formatted_billing_address());
-								$message .= "\r\n";
-								$message .= sprintf(__( 'Email: %s', 'tmsm-aquos-spa-booking' ), $order->get_billing_email());
-								$message .= "\r\n\r\n";
-								$message .= sprintf(__( 'Treatment: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name']);
-								$message .= "\r\n";
-								$message .= sprintf(__( 'Appointment: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name']);
-								$message .= "\r\n";
-								$message .= sprintf(__( 'URL called: %s', 'tmsm-aquos-spa-booking' ), $settings_webserviceurl);
-								$message .= "\r\n";
-								$message .= sprintf(__( 'Errors: %s', 'tmsm-aquos-spa-booking' ), implode(', ', $errors));
+								$message  = sprintf(__( 'An error occured while submitting appointment data to the Aquos web service on %s', 'tmsm-aquos-spa-booking' ), $blogname);
 
-								$headers = 'Auto-Submitted: auto-generated';
+								$message .= "\r\n\r\n";
+								$message  .= __( 'Customer:', 'tmsm-aquos-spa-booking' );
+								$message .= $order->get_formatted_billing_address();
+								$message .= "\r\n";
+								$message .= $order->get_billing_email();
+								$message .= "\r\n\r\n";
+								$message .= sprintf(__( 'Order: %s', 'tmsm-aquos-spa-booking' ), '<a href="'.$order->get_edit_order_url().'">'.$order->get_id().'</a>');
+								$message .= "\r\n";
+								$message .= sprintf(__( 'Appointment: %s on %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name'], $order_item_data['_appointment']);
+								$message .= "\r\n\r\n";
+
+								$message .= sprintf(__( 'Errors: %s', 'tmsm-aquos-spa-booking' ), implode(', ', $errors));
+								$message .= "\r\n";
+								$message .= sprintf(__( 'Web Service Request: %s', 'tmsm-aquos-spa-booking' ), $settings_webserviceurl);
+								$message .= "\r\n";
+								$message .= sprintf(__( 'Aquos Product ID: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['_aquos_id']);
+
+								$headers = 'Auto-Submitted: auto-generated; Content-Type: text/html; charset=UTF-8;';
 								$email_sent = wp_mail( $email, $subject, $message, $headers );
 								if ( defined( 'WP_DEBUG' ) && WP_DEBUG && $email_sent) {
 									error_log('Error email sent');
