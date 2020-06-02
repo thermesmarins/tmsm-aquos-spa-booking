@@ -231,11 +231,11 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 								$message .= "\r\n\r\n";
 								$message  .= __( 'Customer:', 'tmsm-aquos-spa-booking' );
-								$message .= $order->get_formatted_billing_address();
+								$message .= str_replace('<br/>', "\r\n", $order->get_formatted_billing_address());
 								$message .= "\r\n";
 								$message .= $order->get_billing_email();
 								$message .= "\r\n\r\n";
-								$message .= sprintf(__( 'Order: %s', 'tmsm-aquos-spa-booking' ), '<a href="'.$order->get_edit_order_url().'">'.$order->get_id().'</a>');
+								$message .= sprintf(__( 'Order: %s', 'tmsm-aquos-spa-booking' ), $order->get_edit_order_url());
 								$message .= "\r\n";
 								$message .= sprintf(__( 'Appointment: %s on %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name'], $order_item_data['_appointment']);
 								$message .= "\r\n\r\n";
@@ -248,7 +248,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 								$headers = 'Auto-Submitted: auto-generated; Content-Type: text/html; charset=UTF-8;';
 								$email_sent = wp_mail( $email, $subject, $message, $headers );
-								if ( defined( 'WP_DEBUG' ) && WP_DEBUG && $email_sent) {
+								if ( defined( 'WP_DEBUG' ) && WP_DEBUG && !$email_sent) {
 									error_log('Error email sent');
 								}
 

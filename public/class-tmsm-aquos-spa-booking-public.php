@@ -977,7 +977,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Appointment:', 'tmsm-aquos-spa-booking' ) . '</strong> '.  esc_html($item['_appointment']);
 		}
 
-		if ( !empty($item['_has_voucher'])) {
+		if ( isset($item['_has_voucher'])) {
 			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Has Voucher:', 'tmsm-aquos-spa-booking' ) . '</strong> '. ($item['_has_voucher'] == 1 ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
 		}
 
@@ -1018,6 +1018,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 		return $needs_shipping;
 	}
+
 	/**
 	 * Disable Other Payments Gateways if Cas On Delivery is Prefered Method
 	 *
