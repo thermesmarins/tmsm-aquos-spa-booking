@@ -141,3 +141,7 @@ li.tmsm-aquos-spa-booking-time-item {
 .tmsm-aquos-spa-booking-time-listitem{
   margin-bottom: 8px;
 }
+
+.radio-inline-pa_format-bon-cadeau{
+  display: none !important;
+}

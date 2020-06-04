@@ -433,7 +433,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<span style="display: none;">{{ data.label }}</span>
 			<# _.each( data.terms, function(term, index) { #>
 
-			<label class="radio-inline" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> style="display:none"<# } #>>
+			<label class="radio-inline radio-inline-{{ data.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> style="display:none"<# } #>>
 			<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked="checked"<# } #>>{{term.name}}
 			</label>
 			<# }) #>
@@ -1819,6 +1819,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			'return'  => 'ids',
 			'limit' => -1,
 			'orderby' => 'name',
+			'order' => 'ASC',
 		);
 		if(!empty($product_category_id)){
 			$product_category = get_term( $product_category_id, 'product_cat');
