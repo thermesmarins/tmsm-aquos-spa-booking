@@ -28,9 +28,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 	 */
 	public function __construct() {
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log('__construct Tmsm_Aquos_Spa_Booking_Background_Process');
-		}
+
 
 		$this->prefix = 'wp_' . get_current_blog_id();
 
