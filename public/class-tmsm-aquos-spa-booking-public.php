@@ -149,7 +149,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			'locale'   => $this->get_locale(),
 			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
 			'nonce'        => wp_create_nonce( 'tmsm-aquos-spa-booking-nonce-action' ),
-			'timer_period' => 5, // How often should display be updated, in seconds.
 			'data'         => array(
 				'havevoucher' => [
 					'yes' => [
