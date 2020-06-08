@@ -1,3 +1,5 @@
+* Check if appointment confirmation email was sent
+
 ### 1.0.4: June 8th, 2020
 * Add debug variable for development
 

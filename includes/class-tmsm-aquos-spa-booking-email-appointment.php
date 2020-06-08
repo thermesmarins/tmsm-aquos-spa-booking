@@ -85,30 +85,35 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 		 */
 		public function trigger( $order_id, $order = false ) {
 
+			// Check if email was sent
+			if(get_post_meta($order_id, '_appointment_sent', true) !== 'yes'){
 
-			$this->setup_locale();
+				$this->setup_locale();
 
-			if ( $order_id && ! is_a( $order, 'WC_Order' ) ) {
-				$order = wc_get_order( $order_id );
-			}
-
-			if ( is_a( $order, 'WC_Order' ) ) {
-				$this->object                         = $order;
-				$this->recipient                      = $this->object->get_billing_email();
-				$this->placeholders['{order_date}']   = wc_format_datetime( $this->object->get_date_created() );
-				$this->placeholders['{order_number}'] = $this->object->get_order_number();
-			}
-
-			if ( $this->is_enabled() && $this->get_recipient() ) {
-
-				$success = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-
-				if( $success ) {
-
+				if ( $order_id && ! is_a( $order, 'WC_Order' ) ) {
+					$order = wc_get_order( $order_id );
 				}
+
+				if ( is_a( $order, 'WC_Order' ) ) {
+					$this->object                         = $order;
+					$this->recipient                      = $this->object->get_billing_email();
+					$this->placeholders['{order_date}']   = wc_format_datetime( $this->object->get_date_created() );
+					$this->placeholders['{order_number}'] = $this->object->get_order_number();
+				}
+
+				if ( $this->is_enabled() && $this->get_recipient() ) {
+
+					$success = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+
+					if( $success ) {
+						update_post_meta($order_id, '_appointment_sent', 'yes');
+					}
+				}
+
+				$this->restore_locale();
 			}
 
-			$this->restore_locale();
+
 		}
 
 		/**
