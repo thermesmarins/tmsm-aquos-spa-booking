@@ -55,7 +55,6 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 	 * @return array
 	 */
 	public function register_email( $email_classes ) {
-		error_log('register_email');
 		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment'] = require_once(plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-email-appointment.php');
 
 		return $email_classes;

@@ -1,3 +1,5 @@
+* Remove debug log
+
 ### 1.0.1: June 8th, 2020
 * Cart count of appointments was wrong
 
