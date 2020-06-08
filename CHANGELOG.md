@@ -1,3 +1,4 @@
+### 1.0.2: June 8th, 2020
 * Remove debug log
 
 ### 1.0.1: June 8th, 2020
