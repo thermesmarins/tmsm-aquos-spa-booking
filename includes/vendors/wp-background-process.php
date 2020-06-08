@@ -73,7 +73,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		public function dispatch() {
 			// Schedule the cron healthcheck.
 
-			error_log('WP_Background_Process dispatch');
 
 			$this->schedule_event();
 
@@ -90,8 +89,7 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 */
 		public function push_to_queue( $data ) {
 
-			error_log('WP_Background_Process push_to_queue');
-			error_log(print_r($data, true));
+
 			$this->data[] = $data;
 
 			return $this;
@@ -104,18 +102,12 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 */
 		public function save() {
 
-			error_log('WP_Background_Process save');
 			//error_log(print_r($this->data, true));
 
 			$key = $this->generate_key();
 
 			if ( ! empty( $this->data ) ) {
-				error_log('WP_Background_Process updating');
-				error_log('key: '.$key);
-				error_log(print_r($this->data,true));
 				$result = update_site_option( $key, $this->data );
-
-				error_log('$result: '.$result);
 			}
 
 			return $this;
@@ -202,7 +194,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		protected function is_queue_empty() {
 			global $wpdb;
 
-			error_log('WP_Background_Process is_queue_empty');
 			$table  = $wpdb->options;
 			$column = 'option_name';
 
@@ -274,7 +265,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		protected function get_batch() {
 			global $wpdb;
 
-			error_log('WP_Background_Process get_batch');
 
 			$table        = $wpdb->options;
 			$column       = 'option_name';
@@ -314,7 +304,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		protected function handle() {
 			$this->lock_process();
 
-			error_log('WP_Background_Process handle');
 
 			do {
 				$batch = $this->get_batch();
@@ -455,7 +444,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 * and data exists in the queue.
 		 */
 		public function handle_cron_healthcheck() {
-			error_log('WP_Background_Process handle_cron_healthcheck');
 
 			if ( $this->is_process_running() ) {
 				// Background process already running.
@@ -477,13 +465,8 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 * Schedule event
 		 */
 		protected function schedule_event() {
-			error_log('WP_Background_Process schedule_event');
 			if ( ! wp_next_scheduled( $this->cron_hook_identifier ) ) {
-				error_log('WP_Background_Process not scheduled');
-				error_log('cron_interval_identifier: '.$this->cron_interval_identifier);
-				error_log('cron_hook_identifier: '.$this->cron_hook_identifier);
 				$result = wp_schedule_event( time(), $this->cron_interval_identifier, $this->cron_hook_identifier );
-				error_log('result:'.$result);
 			}
 		}
 

@@ -487,12 +487,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * Ajax check nonce security
 	 */
 	private function _ajax_checksecurity(){
-		error_log('_ajax_checksecurity');
-
-		error_log(print_r($_REQUEST, true));
 		$security = sanitize_text_field( $_REQUEST['nonce'] );
 
-		error_log('security: '.$security);
 		$errors = array(); // Array to hold validation errors
 		$jsondata   = array(); // Array to pass back data
 		
@@ -649,8 +645,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @throws Exception
 	 */
 	public static function ajax_addtocart() {
-
-		error_log('ajax_addtocart');
 
 		$selecteddata_array = isset( $_POST['selecteddata'] ) ? $_POST['selecteddata'] : array();
 
@@ -1644,7 +1638,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	private function _get_product_categories() {
 
-		error_log('_get_product_categories');
 		// Get "product_cat" Terms With Parent as an Option
 		$settings_maincategory  = get_option( 'tmsm_aquos_spa_booking_productcat', 0 );
 		$product_categories = get_terms( 'product_cat', [
@@ -1663,7 +1656,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	private function _get_product_attributes() {
 
-		error_log('_get_product_attributes');
 		$product_id = sanitize_text_field( $_REQUEST['product'] );
 		$product = wc_get_product($product_id);
 
@@ -1686,7 +1678,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
 
 					if($variation->get_attribute('format-bon-cadeau')){
-						error_log($variation->get_attribute('format-bon-cadeau'));
 						$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
 					}
 
@@ -1717,8 +1708,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 					$tax    = get_taxonomy( $name );
 					$labels = get_taxonomy_labels( $tax );
-					//error_log(print_r($tax, true));
-					//error_log(print_r($labels, true));
+
 					$options = [];
 					$options['label'] = $labels->singular_name;
 					$options['slug'] = $name;
@@ -1749,7 +1739,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	private function _get_product_variations() {
 
-		error_log('_get_product_variations');
 		$product_id = sanitize_text_field( $_REQUEST['product'] );
 		$product = wc_get_product($product_id);
 
@@ -1770,12 +1759,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 						continue;
 					}
 
-					error_log('variation '.$variation->get_name());
 
 					$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
 
 					if($variation->get_attribute('format-bon-cadeau')){
-						error_log($variation->get_attribute('format-bon-cadeau'));
 						$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
 					}
 
@@ -1823,8 +1810,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return array
 	 */
 	private function _get_products() {
-
-		error_log('_get_products');
 
 		$product_category_id = null;
 
@@ -1970,7 +1955,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		// If it is a product
 		$aquos_id = get_post_meta( $product_id, '_aquos_id', true );
-		error_log( '$aquos_id: ' .$aquos_id);
 
 		// If it is a variation
 		if ( ! empty( $productvariation_id ) ) {
@@ -1979,10 +1963,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		// If it is a choice
 		if ( ! empty( $choice_id ) ) {
-			error_log( 'choice_id exists: ' .$choice_id);
 			$aquos_id = $choice_id;
 		}
-		error_log( '$aquos_id: ' .$aquos_id);
 		$errors   = array(); // Array to hold validation errors
 		$jsondata = array(); // Array to pass back data
 

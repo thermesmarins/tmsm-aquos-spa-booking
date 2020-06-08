@@ -85,7 +85,6 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 		 */
 		public function trigger( $order_id, $order = false ) {
 
-			error_log('Triggered action woocommerce_order_action_send_appointment_confirmation');
 
 			$this->setup_locale();
 
@@ -100,26 +99,12 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 				$this->placeholders['{order_number}'] = $this->object->get_order_number();
 			}
 
-			error_log(print_r($this, true));
 			if ( $this->is_enabled() && $this->get_recipient() ) {
-				error_log('Email sending');
-				error_log('$this->get_recipient(): '.$this->get_recipient());
-				error_log('$this->get_subject(): '.$this->get_subject());
-				error_log('$this->get_content(): '.$this->get_content());
-				error_log('$this->get_headers(): '.$this->get_headers());
-				error_log(print_r($this->get_attachments(), true));
+
 				$success = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 
 				if( $success ) {
-					error_log('Email sent');
-					// ADD THE ORDER NOTE
-					//$message = sprintf( __( 'Class detail for "%s" is sent.', 'zlp_class' ), $order->get_meta( 'class_name', true ) );
 
-					//$order->add_order_note( $message );
-
-					// ADD THE FLAG SO THIS ACTION WON'T BE SHOWN AGAIN (I don't really now if that's good... you might need to resend it)
-					//	$order->update_meta_data( '_wc_order_class_detail_sent', 'yes' );
-					//$order->save();
 				}
 			}
 
@@ -132,7 +117,6 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 		 * @return string
 		 */
 		public function get_content() {
-			error_log('Tmsm_Aquos_Spa_Booking_Class_Email_Appointment get_content');
 			$this->sending = true;
 
 			if ( 'plain' === $this->get_email_type() ) {
