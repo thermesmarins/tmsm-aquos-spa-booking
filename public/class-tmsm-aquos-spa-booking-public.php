@@ -1103,9 +1103,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	private static function cart_has_appointment(){
 
 		$cart_items = WC()->cart->get_cart_contents();
-		$cart_has_appointment = array_map( function( $cart_item ) { return $cart_item['appointment']; }, $cart_items );
 
-		return (count($cart_has_appointment) > 0);
+		$count = 0;
+		foreach($cart_items as $cart_item){
+			if(!empty($cart_item['appointment'])){
+				$count ++;
+			}
+		}
+
+		return ($count > 0);
 	}
 
 
@@ -1117,9 +1123,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	private static function cart_has_atleastonevoucher(){
 
 		$cart_items = WC()->cart->get_cart_contents();
-		$cart_has_voucher = array_map( function( $cart_item ) { return $cart_item['has_voucher']; }, $cart_items );
 
-		return (array_sum($cart_has_voucher) > 0);
+		$count = 0;
+		foreach($cart_items as $cart_item){
+			if(!empty($cart_item['has_voucher'])){
+				$count ++;
+			}
+		}
+
+		return ($count > 0);
 	}
 
 	/**
@@ -1130,9 +1142,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	private static function cart_has_voucheronly(){
 
 		$cart_items = WC()->cart->get_cart_contents();
-		$cart_has_voucher = array_map( function( $cart_item ) { return $cart_item['has_voucher']; }, $cart_items );
 
-		return array_sum( $cart_has_voucher ) == count( $cart_items );
+		$count = 0;
+		foreach($cart_items as $cart_item){
+			if(!empty($cart_item['has_voucher'])){
+				$count ++;
+			}
+		}
+
+		return ($count == count( $cart_items ));
 	}
 
 	/**
