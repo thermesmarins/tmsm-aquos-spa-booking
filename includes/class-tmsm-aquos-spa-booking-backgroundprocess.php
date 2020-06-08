@@ -70,7 +70,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 	 */
 	protected function task( $item ) {
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			error_log('Tmsm_Aquos_Spa_Booking_Background_Process task:');
 			error_log(print_r($item, true));
 		}
@@ -81,13 +81,13 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 
 		if ( ! empty( $order ) ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log('Tmsm_Aquos_Spa_Booking_Background_Process is order');
 			}
 
 			foreach ( $order->get_items() as $order_item_id => $order_item_data) {
 
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 					error_log('Tmsm_Aquos_Spa_Booking_Background_Process order_item_data:');
 					error_log(print_r($order_item_data, true));
 				}
@@ -95,14 +95,14 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 				// Only items with an appointment
 				if(!empty($order_item_data['_appointment'])){
 
-					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 						error_log('Tmsm_Aquos_Spa_Booking_Background_Process order_item is appointment');
 					}
 
 					// If not aready processed, processing
 					if ( wc_get_order_item_meta( $order_item_id, '_appointment_processed', true ) !== 'yes' ) {
 
-						if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 							error_log('Tmsm_Aquos_Spa_Booking_Background_Process order_item is not processed');
 						}
 
@@ -110,7 +110,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 						$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurlsubmit' );
 						if ( ! empty( $settings_webserviceurl ) ) {
 
-							if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+							if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 								error_log( 'url before:' . $settings_webserviceurl );
 							}
 
@@ -157,7 +157,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 							// Replace keywords in url
 							$settings_webserviceurl = preg_replace( $patterns, $replacements, $settings_webserviceurl );
-							if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+							if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 								error_log( 'url after:' . $settings_webserviceurl );
 							}
 
@@ -171,7 +171,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							$result_array = [];
 
 							if(empty($result)){
-								if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+								if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 									error_log('Web service is not available');
 								}
 								$errors[] = __( 'Web service is not available', 'tmsm-aquos-spa-booking' );
@@ -180,7 +180,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								$result_array = json_decode( $result, true );
 
 								// Debug response
-								if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+								if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 									error_log('Webservice response');
 									error_log( var_export( $result_array, true ) );
 									error_log( print_r( curl_getinfo($ch), true ) );
@@ -189,7 +189,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								// No errors, success
 								if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
 									wc_update_order_item_meta($order_item_id, '_appointment_processed', 'yes');
-									if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+									if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 										error_log('Web service submission successful');
 									}
 
@@ -198,13 +198,13 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								// Some error detected
 								else{
 									if(!empty($result_array['ErrorCode']) && !empty($result_array['ErrorMessage'])){
-										if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+										if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 											error_log(sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $result_array['ErrorCode'], $result_array['ErrorMessage']));
 										}
 										$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $result_array['ErrorCode'], $result_array['ErrorMessage']);
 									}
 									else{
-										if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+										if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 											error_log('Unknown error');
 										}
 										$errors[] = __( 'Unknown error', 'tmsm-aquos-spa-booking' );
@@ -245,14 +245,14 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 								$headers = 'Auto-Submitted: auto-generated; Content-Type: text/html; charset=UTF-8;';
 								$email_sent = wp_mail( $email, $subject, $message, $headers );
-								if ( defined( 'WP_DEBUG' ) && WP_DEBUG && !$email_sent) {
+								if (  TMSM_AQUOS_SPA_BOOKING_DEBUG && !$email_sent) {
 									error_log('Error email sent');
 								}
 
 							}
 							// Success, send confirmation email to customer
 							else{
-								if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+								if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 									error_log('Triggering action woocommerce_order_action_send_appointment_confirmation');
 								}
 

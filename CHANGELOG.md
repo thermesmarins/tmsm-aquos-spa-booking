@@ -1,3 +1,5 @@
+* Add debug variable for development
+
 ### 1.0.3: June 8th, 2020
 * Fix version number
 

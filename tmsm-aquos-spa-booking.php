@@ -39,6 +39,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'TMSM_AQUOS_SPA_BOOKING_VERSION', '1.0.3' );
+define( 'TMSM_AQUOS_SPA_BOOKING_DEBUG', false );
 
 if(! defined('TMSM_AQUOS_SPA_BOOKING_TEMPLATES')){
 	define( 'TMSM_AQUOS_SPA_BOOKING_TEMPLATES', plugin_dir_path( __FILE__ ) );

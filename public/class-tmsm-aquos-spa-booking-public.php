@@ -495,23 +495,23 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		// Check security
 		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) ) {
 			$errors[] = __('Token security is not valid', 'tmsm-aquos-spa-booking');
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log('Token security is not valid');
 			}
 		}
 		else {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log( 'Token security is valid' );
 			}
 		}
 		if(check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'nonce' ) === false){
 			$errors[] = __('Ajax referer is not valid', 'tmsm-aquos-spa-booking');
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log('Ajax referer is not valid');
 			}
 		}
 		else{
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log( 'Ajax referer is valid' );
 			}
 		}
@@ -541,19 +541,19 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$errors = array(); // Array to hold validation errors
 		$jsondata   = array(); // Array to pass back data
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			error_log('ajax_products');
 		}
 
 		// Check security
 		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_category_id)) {
 			$errors[] = __('Token security not valid', 'tmsm-aquos-spa-booking');
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log('Ajax security not OK');
 			}
 		}
 		else{
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log('Ajax security OK');
 			}
 
@@ -605,7 +605,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$jsondata['success'] = true;
 		}
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			//error_log('json data:');
 			//error_log(print_r($jsondata, true));
 		}
@@ -722,7 +722,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$jsondata['success'] = true;
 		}
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			error_log('json data:');
 			error_log(print_r($jsondata, true));
 		}
@@ -813,7 +813,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$selected_times = $priorities;
 
 
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log('$diff_priorities: '.$diff_priorities);
 				error_log('$count_priorities: '.$count_priorities);
 				error_log('$count_notpriorities: '.$count_notpriorities);
@@ -1725,7 +1725,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			}
 
 		}
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			error_log('$attributes:');
 			error_log(print_r($attributes, true));
 		}
@@ -1797,7 +1797,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$errors[] = __('Product doesnt not exist', 'tmsm-aquos-spa-booking');
 		}
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			//error_log('$variations:');
 			//error_log(print_r($variations, true));
 		}
@@ -1928,7 +1928,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			}
 		}
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			//error_log('$products:');
 			//error_log(print_r($products, true));
 		}
@@ -1968,7 +1968,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$errors   = array(); // Array to hold validation errors
 		$jsondata = array(); // Array to pass back data
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			error_log( 'ajax_times' );
 		}
 
@@ -1995,7 +1995,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurltimes' );
 		if ( ! empty( $settings_webserviceurl ) ) {
 
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log( 'url before:' . $settings_webserviceurl );
 			}
 
@@ -2014,7 +2014,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			// Replace keywords in url
 			$settings_webserviceurl = preg_replace( $patterns, $replacements, $settings_webserviceurl );
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log( 'url after:' . $settings_webserviceurl );
 			}
 
@@ -2032,7 +2032,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			else{
 				$result_array = json_decode( $result, true );
 
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 					error_log( var_export( $result_array, true ) );
 				}
 
@@ -2069,7 +2069,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		//$jsondata['success'] = true;
 		//$jsondata['errors'] = $errors;
 
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			error_log('$errors:');
 			error_log(print_r($errors, true));
 			//error_log('$times:');
@@ -2087,7 +2087,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *                       
 	 */
 	public function change_order_status_appointment (int $order_id, WC_Order $order){
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			error_log('change_order_status_appointment for order '.$order_id);
 		}
 
