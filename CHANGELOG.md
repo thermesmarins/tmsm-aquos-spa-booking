@@ -1,3 +1,5 @@
+* Check WooCommerce cart exists before calling it
+
 ### 1.0.5: June 8th, 2020
 * Check if appointment confirmation email was sent
 

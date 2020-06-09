@@ -241,6 +241,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * Booking Page Shortcode
 	 *
 	 * @since    1.0.0
+	 *
+	 * @param $atts
+	 *
+	 * @return string|void
 	 */
 	public function booking_page($atts) {
 		$atts = shortcode_atts( array(
@@ -248,6 +252,13 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		), $atts, 'tmsm-aquos-spa-booking' );
 
 
+		if(is_admin()){
+			return;
+		}
+
+		if(empty(WC()->cart)){
+			return;
+		}
 		// Check if cart has products other than appointments
 		$cart_has_products = false;
 		if(!empty(WC()->cart->get_cart_contents())){
