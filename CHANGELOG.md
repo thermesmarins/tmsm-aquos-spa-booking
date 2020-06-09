@@ -1,3 +1,4 @@
+### 1.0.6: June 99th, 2020
 * Check WooCommerce cart exists before calling it
 
 ### 1.0.5: June 8th, 2020
