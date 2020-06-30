@@ -1915,12 +1915,29 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					}
 				}
 
+
+
+
+				if($product->is_type( 'variable' ) && $product instanceof WC_Product_Variable) {
+					$min_price_regular = $product->get_variation_regular_price( 'min', true );
+					$min_price_sale    = $product->get_variation_sale_price( 'min', true );
+					$max_price = $product->get_variation_price( 'max', true );
+					$min_price = $product->get_variation_price( 'min', true );
+
+					$price = ( $min_price_sale == $min_price_regular ) ?
+						wc_price( $min_price_regular ) :
+						'<del>' . wc_price( $min_price_regular ) . '</del>' . '<ins>' . wc_price( $min_price_sale ) . '</ins>';
+				}
+				else{
+					$price = $product->get_price_html();
+				}
+
 				// Construct product data
 				$products[] = [
 					'id' => esc_js($product->get_id()),
 					'permalink' => esc_js($product->get_permalink()),
 					'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-					'price' => html_entity_decode(wp_strip_all_tags($product->get_price_html())),
+					'price' => html_entity_decode(wp_strip_all_tags($price)),
 					'sku' => esc_js($product->get_sku()),
 					'name' => esc_js($product->get_name()),
 					'variable' => esc_js($product->is_type( 'variable' )),

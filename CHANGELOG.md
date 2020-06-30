@@ -1,3 +1,5 @@
+* Display from price only for variable products
+
 ### 1.0.7: June 30th, 2020
 * Fix checking cart contents when on "order-pay" page
 
