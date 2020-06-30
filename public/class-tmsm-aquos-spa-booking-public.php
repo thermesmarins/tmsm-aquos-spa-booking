@@ -1516,10 +1516,47 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function the_title( $title, $id ) {
 
-		if ( $id === intval( get_option( 'woocommerce_checkout_page_id' ) ) ) {
+		if ( is_checkout() && $id === intval( get_option( 'woocommerce_checkout_page_id' ) ) ) {
 			$title = __( 'Appointment', 'tmsm-aquos-spa-booking' );
 		}
 
+		if ( is_order_received_page() && get_the_ID() === $id ) {
+			$title = "Thank you for your order!";
+		}
+		//echo 'is_order_received_page():'.is_order_received_page();
+		//echo '$id:'.$id;
+		//echo 'intval( get_option( \'woocommerce_checkout_page_id\' )):'.intval( get_option( 'woocommerce_checkout_page_id' ));
+		if ( is_order_received_page() && $id == intval( get_option( 'woocommerce_checkout_page_id' )) ) {
+			$title = "Thank you for your order!";
+		}
+
+		if ( is_order_received_page()){
+			$title.='-orp';
+		}
+
+		if ( $id == intval( get_option( 'woocommerce_checkout_page_id' ))){
+			$title.='-opt';
+		}
+
+		return $title;
+	}
+
+	/**
+	 * Filters the WooCommerce page "order received" title.
+	 *
+	 * @param string $title The post title.
+	 * @param string $endpoint
+	 *
+	 * @return string
+	 */
+	public function woocommerce_endpoint_order_received_title( $title, $endpoint ) {
+		global $wp;
+
+		$order_id  = absint( $wp->query_vars['order-received'] );
+
+		if ( is_order_received_page() && get_the_ID() == intval( get_option( 'woocommerce_checkout_page_id' )) && $this->order_has_appointmentonly($order_id)) {
+			$title = __( 'Appointment booked', 'tmsm-aquos-spa-booking' );
+		}
 		return $title;
 	}
 

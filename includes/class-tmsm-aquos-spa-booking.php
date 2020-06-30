@@ -230,6 +230,7 @@ class Tmsm_Aquos_Spa_Booking {
 
 		// Checkout Page Customization
 		$this->loader->add_filter( 'the_title', $plugin_public, 'the_title', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_endpoint_order-received_title', $plugin_public, 'woocommerce_endpoint_order_received_title', 50, 2 );
 		$this->loader->add_filter( 'body_class', $plugin_public, 'body_class', 10, 2 );
 		$this->loader->add_filter( 'woocommerce_order_button_text', $plugin_public, 'woocommerce_order_button_text', 20, 1 );
 

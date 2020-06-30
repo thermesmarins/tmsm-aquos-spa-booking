@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-06-30 14:58+0200\n"
-"PO-Revision-Date: 2020-06-30 14:58+0200\n"
+"POT-Creation-Date: 2020-06-30 16:06+0200\n"
+"PO-Revision-Date: 2020-06-30 16:07+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -107,7 +107,7 @@ msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:230
 msgid "Customer:"
-msgstr "Client : %s"
+msgstr "Client :"
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:235
 #, php-format
