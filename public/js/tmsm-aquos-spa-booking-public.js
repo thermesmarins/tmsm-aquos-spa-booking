@@ -495,7 +495,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
   TmsmAquosSpaBookingApp.AttributeModel = BaseModel.extend( {
     action: 'tmsm-aquos-spa-booking-attributes',
     defaults: {
-      label: null
+      label: null,
+      description: null,
+      is_voucher: null,
       //events: new TmsmAquosSpaBookingApp.TermsCollection
     }
   } );
@@ -564,6 +566,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       var $list = this.$( this.listElement ).empty();
 
       this.collection.each( function( model ) {
+        model.attributes.is_voucher = TmsmAquosSpaBookingApp.havevoucherList.selectedValue;
         //console.log('attribute model:');
         //console.log(model);
         var item = new TmsmAquosSpaBookingApp.AttributesListItemView( { model: model } );

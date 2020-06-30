@@ -444,7 +444,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<# _.each( data.terms, function(term, index) { #>
 
 			<label class="radio-inline radio-inline-{{ data.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> style="display:none"<# } #>>
-			<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked="checked"<# } #>>{{term.name}}
+			<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked="checked"<# } #>>{{term.name}} <# if ( data.is_voucher == '0' && term.description ) { #>({{term.description}})<# } #>
 			</label>
 			<# }) #>
 
@@ -1918,6 +1918,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 
 
+				// Don't display range price for variable products
 				if($product->is_type( 'variable' ) && $product instanceof WC_Product_Variable) {
 					$min_price_regular = $product->get_variation_regular_price( 'min', true );
 					$min_price_sale    = $product->get_variation_sale_price( 'min', true );
