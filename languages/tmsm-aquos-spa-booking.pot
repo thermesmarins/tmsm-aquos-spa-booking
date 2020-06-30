@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-06-30 14:45+0200\n"
+"POT-Creation-Date: 2020-06-30 14:57+0200\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -562,6 +562,11 @@ msgstr ""
 
 #: public/class-tmsm-aquos-spa-booking-public.php:2155
 msgid "No time slot available for this day and this product"
+msgstr ""
+
+#: public/class-tmsm-aquos-spa-booking-public.php:2206
+msgid ""
+"You will receive a text message two days before the appointment."
 msgstr ""
 
 #: templates/emails/plain/tmsm-aquos-spa-booking-appointment.php:13
