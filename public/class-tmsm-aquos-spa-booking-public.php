@@ -1031,22 +1031,26 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return mixed
 	 */
 	function woocommerce_available_payment_gateways_cashondelivery( $available_gateways ) {
-		global $woocommerce;
 
 		$settings_acceptcashondelivery = get_option( 'tmsm_aquos_spa_booking_acceptcashondelivery', 'yes' );
 		$settings_acceptonlinepayment = get_option( 'tmsm_aquos_spa_booking_acceptonlinepayment', 'no' );
 
 		// Check cart content: if all products are appointments
 		$all_appointments = true;
-		foreach ( $woocommerce->cart->cart_contents as $key => $values ) {
-			if(empty($values['appointment'])){
-				$all_appointments = false;
-				break;
-			}
+
+		$order_id = absint( get_query_var( 'order-pay' ) );
+
+		// Checking if we are on the order-pay page, we can parse the order
+		if(!empty($order_id)){
+			$appointmentsonly = $this->order_has_appointmentonly($order_id);
+		}
+		// if not, we are on the checkout page, we can parse the cart
+		else{
+			$appointmentsonly = self::cart_has_appointmentonly();
 		}
 
 		// All products are appointments, allow accepted methods
-		if($all_appointments === true){
+		if($appointmentsonly === true){
 
 			if($settings_acceptcashondelivery === 'no'){
 				unset($available_gateways['cod']);
@@ -1087,7 +1091,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		if ( ! empty( $order ) ) {
 
-
 			foreach ( $order->get_items() as $order_item_id => $order_item_data) {
 
 				// Has appointment
@@ -1098,6 +1101,35 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			}
 		}
 		return $has_appointment;
+	}
+
+	/**
+	 * If Order has appointments only
+	 *
+	 * @param WC_Order|int $order
+	 *
+	 * @return bool
+	 */
+	private function order_has_appointmentonly($order){
+
+		$order_id = WC_Order_Factory::get_order_id( $order );
+
+		$order = wc_get_order($order_id);
+
+		$appointmentonly = true;
+
+		if ( ! empty( $order ) ) {
+
+			foreach ( $order->get_items() as $order_item_id => $order_item_data) {
+
+				// Has appointment
+				if(empty($order_item_data['_appointment'])){
+					$appointmentonly = false;
+				}
+
+			}
+		}
+		return $appointmentonly;
 	}
 
 	/**
@@ -1119,6 +1151,24 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		return ($count > 0);
 	}
 
+	/**
+	 * If Cart has appointments only
+	 *
+	 * @return bool
+	 */
+	private static function cart_has_appointmentonly(){
+
+		$cart_items = WC()->cart->get_cart_contents();
+
+		$appointmentonly = true;
+		foreach ( $cart_items as $key => $values ) {
+			if(empty($values['appointment'])){
+				$appointmentonly = false;
+			}
+		}
+
+		return $appointmentonly;
+	}
 
 	/**
 	 * If Cart has at least one appointment
