@@ -2193,6 +2193,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$background_process->save()->dispatch();
 	}
 
+	/**
+	 * Rename phone field description
+	 *
+	 * @param $fields
+	 *
+	 * @return mixed
+	 */
+	function billing_fields_phone( $fields ) {
 
+		if(self::cart_has_appointment()){
+			$fields['billing_phone']['description']  = __( 'You will receive a text message two days before the appointment.', 'tmsm-aquos-spa-booking' );
+		}
+
+		return $fields;
+	}
 
 }
