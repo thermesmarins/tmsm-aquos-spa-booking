@@ -320,7 +320,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<a href="#" id="tmsm-aquos-spa-booking-attributes-cancel" class="'.self::button_class_default().'">' . __( 'Reset your options', 'tmsm-aquos-spa-booking' ) . '</a>
 			<a href="#" id="tmsm-aquos-spa-booking-attributes-confirm" class="'.self::button_class_primary().'">' . __( 'Confirm your options', 'tmsm-aquos-spa-booking' ) . '</a>
 			</p>
+			<div style="display:none"> 
 			<select id="tmsm-aquos-spa-booking-variations-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			</div>
 			</div>
 			</div>
 			
