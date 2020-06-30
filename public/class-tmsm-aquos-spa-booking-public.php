@@ -1753,7 +1753,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$product_categories = get_terms( 'product_cat', [
 			'hide_empty' => true,
 			'child_of' => !empty($settings_maincategory) ? $settings_maincategory: 0,
-			'orderby'    => 'parent',
+			'orderby'    => 'menu_order',
 		]);
 
 		return $product_categories;

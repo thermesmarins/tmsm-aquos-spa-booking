@@ -2,6 +2,7 @@
 * Display price contained in attribute description (only if no voucher)
 * Rename "Your order" by "Your appointments" when appointment only
 * Rename order received page title
+* Sort product categories by manual order
 
 ### 1.0.7: June 30th, 2020
 * Fix checking cart contents when on "order-pay" page
