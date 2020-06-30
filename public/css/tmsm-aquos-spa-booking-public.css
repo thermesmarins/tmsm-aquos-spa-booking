@@ -145,3 +145,7 @@ li.tmsm-aquos-spa-booking-time-item {
 .radio-inline-pa_format-bon-cadeau{
   display: none !important;
 }
+
+#order_review_heading + #order_review_heading{
+  display: none;
+}

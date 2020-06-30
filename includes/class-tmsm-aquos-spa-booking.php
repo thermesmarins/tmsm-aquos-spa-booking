@@ -253,6 +253,8 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'wp_ajax_nopriv_tmsm-aquos-spa-booking-addtocart', $plugin_public, 'ajax_addtocart' );
 
 
+		$this->loader->add_action( 'woocommerce_checkout_before_order_review_heading', $plugin_public, 'woocommerce_checkout_before_order_review_heading', 200 );
+
 		// Checkout: set virtual, and set payments gateways
 		$this->loader->add_action( 'woocommerce_before_calculate_totals', $plugin_public, 'woocommerce_before_calculate_totals_appointment', 20 );
 		$this->loader->add_filter( 'woocommerce_cart_needs_shipping', $plugin_public, 'woocommerce_cart_needs_shipping', 10, 1 );

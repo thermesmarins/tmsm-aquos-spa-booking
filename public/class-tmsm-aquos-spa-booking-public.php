@@ -1010,6 +1010,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 	}
 
+	public function woocommerce_checkout_before_order_review_heading() {
+		global $woocommerce;
+
+		if ( self::cart_has_appointmentonly() ) {
+		?>
+		<h3 id="order_review_heading"><?php esc_html_e( 'Your appointments', 'tmsm-aquos-spa-booking' ); ?></h3>
+		<?php
+		}
+	}
+
 	/**
 	 * Check if Cart needs Shipping
 	 *

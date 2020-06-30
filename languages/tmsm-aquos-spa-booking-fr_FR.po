@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-05-28 14:58+0200\n"
-"PO-Revision-Date: 2020-05-28 15:00+0200\n"
+"POT-Creation-Date: 2020-06-30 14:45+0200\n"
+"PO-Revision-Date: 2020-06-30 14:47+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -25,31 +25,31 @@ msgid "Appointment"
 msgstr "Rendez-vous"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:131
-#: public/class-tmsm-aquos-spa-booking-public.php:896
-#: public/class-tmsm-aquos-spa-booking-public.php:1410
-#: public/class-tmsm-aquos-spa-booking-public.php:1496
+#: public/class-tmsm-aquos-spa-booking-public.php:905
+#: public/class-tmsm-aquos-spa-booking-public.php:1520
+#: public/class-tmsm-aquos-spa-booking-public.php:1606
 msgid "Appointment"
 msgstr "Rendez-vous"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:134
-#: public/class-tmsm-aquos-spa-booking-public.php:904
+#: public/class-tmsm-aquos-spa-booking-public.php:913
 msgid "Has Voucher"
 msgstr "Bon cadeau"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:135
-#: public/class-tmsm-aquos-spa-booking-public.php:905
-#: public/class-tmsm-aquos-spa-booking-public.php:978
+#: public/class-tmsm-aquos-spa-booking-public.php:914
+#: public/class-tmsm-aquos-spa-booking-public.php:987
 msgid "Yes"
 msgstr "Oui"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:135
-#: public/class-tmsm-aquos-spa-booking-public.php:905
-#: public/class-tmsm-aquos-spa-booking-public.php:978
+#: public/class-tmsm-aquos-spa-booking-public.php:914
+#: public/class-tmsm-aquos-spa-booking-public.php:987
 msgid "No"
 msgstr "Non"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:138
-#: public/class-tmsm-aquos-spa-booking-public.php:912
+#: public/class-tmsm-aquos-spa-booking-public.php:921
 msgid "Aquos ID"
 msgstr "ID de produit Aquos"
 
@@ -74,62 +74,65 @@ msgstr ""
 "Un item par ligne, écrire l’identifiant Aquos séparé par un *. Le résultat "
 "devrait être : nom du produit * identifiant de produit"
 
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:180
-#: public/class-tmsm-aquos-spa-booking-public.php:2004
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:177
+#: public/class-tmsm-aquos-spa-booking-public.php:2121
 msgid "Web service is not available"
 msgstr "Le web service n’est pas disponible"
 
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:205
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:207
-#: public/class-tmsm-aquos-spa-booking-public.php:2027
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:202
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:204
+#: public/class-tmsm-aquos-spa-booking-public.php:2144
 #, php-format
 msgid "Error code %s: %s"
 msgstr "Code erreur %s : %s"
 
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:213
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:228
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:210
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:225
 msgid "Unknown error"
 msgstr "Erreur inconnue"
 
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:228
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:225
 #, php-format
 msgid "%s: TMSM Aquos Spa Booking submission error %s"
 msgstr "%s: TMSM Aquos Spa Booking erreur d’inscription %s"
 
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:227
+#, php-format
+msgid ""
+"An error occured while submitting appointment data to the Aquos web service "
+"on %s"
+msgstr ""
+"Une erreur s’est produite lors de la soumission des données de rendez-vous "
+"vers le web service Aquos sur %s"
+
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:230
-#, php-format
-msgid "Customer %s"
-msgstr "Client %s"
+msgid "Customer:"
+msgstr "Client : %s"
 
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:232
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:235
 #, php-format
-msgid "Address: %s"
-msgstr "Adresse : %s"
+msgid "Order: %s"
+msgstr "Commande : %s"
 
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:234
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:237
 #, php-format
-msgid "Email: %s"
-msgstr "Email : %s"
-
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:236
-#, php-format
-msgid "Treatment: %s"
-msgstr "Soin sélectionné : %s"
-
-#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:238
-#, php-format
-msgid "Appointment: %s"
-msgstr "Rendez-vous : %s"
+msgid "Appointment: %s on %s"
+msgstr "Rendez-vous : %s à %s"
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:240
 #, php-format
-msgid "URL called: %s"
-msgstr "URL appelée : %s"
+msgid "Errors: %s"
+msgstr "Code erreur : %s"
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:242
 #, php-format
-msgid "Errors: %s"
-msgstr "Code erreur : %s"
+msgid "Web Service Request: %s"
+msgstr "Requête du Web Service : %s"
+
+#: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:244
+#, php-format
+msgid "Aquos Product ID: %s"
+msgstr "ID de produit Aquos : %s"
 
 #: includes/class-tmsm-aquos-spa-booking-email-appointment.php:33
 msgid "Order Email for Appointment"
@@ -329,7 +332,7 @@ msgstr "Message dans la page de commande reçue"
 msgid "Message in order email"
 msgstr "Message dans l’email de commande"
 
-#: includes/vendors/wp-background-process.php:445
+#: includes/vendors/wp-background-process.php:434
 #, php-format
 msgid "Every %d Minutes"
 msgstr "Toutes les %d minutes"
@@ -348,18 +351,18 @@ msgid "Select a product"
 msgstr "Sélectionner un produit"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:113
-#: public/class-tmsm-aquos-spa-booking-public.php:297
-#: public/class-tmsm-aquos-spa-booking-public.php:306
-#: public/class-tmsm-aquos-spa-booking-public.php:320
-#: public/class-tmsm-aquos-spa-booking-public.php:337
+#: public/class-tmsm-aquos-spa-booking-public.php:307
+#: public/class-tmsm-aquos-spa-booking-public.php:316
+#: public/class-tmsm-aquos-spa-booking-public.php:332
+#: public/class-tmsm-aquos-spa-booking-public.php:349
 msgid "Loading"
 msgstr "Chargement"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:130
-#: public/class-tmsm-aquos-spa-booking-public.php:289
-#: public/class-tmsm-aquos-spa-booking-public.php:298
-#: public/class-tmsm-aquos-spa-booking-public.php:313
-#: public/class-tmsm-aquos-spa-booking-public.php:321
+#: public/class-tmsm-aquos-spa-booking-public.php:299
+#: public/class-tmsm-aquos-spa-booking-public.php:308
+#: public/class-tmsm-aquos-spa-booking-public.php:324
+#: public/class-tmsm-aquos-spa-booking-public.php:333
 msgid "No selection"
 msgstr "Aucune sélection"
 
@@ -413,17 +416,17 @@ msgctxt "Title for run now icon"
 msgid "Run event now."
 msgstr "Exécuter l’évènement maintenant."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:156
-#: public/class-tmsm-aquos-spa-booking-public.php:277
+#: public/class-tmsm-aquos-spa-booking-public.php:155
+#: public/class-tmsm-aquos-spa-booking-public.php:287
 msgid "I have a voucher"
 msgstr "J’ai un bon cadeau"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:161
-#: public/class-tmsm-aquos-spa-booking-public.php:280
+#: public/class-tmsm-aquos-spa-booking-public.php:160
+#: public/class-tmsm-aquos-spa-booking-public.php:290
 msgid "I don't have any voucher"
 msgstr "Je n’ai pas de bon cadeau"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:264
+#: public/class-tmsm-aquos-spa-booking-public.php:274
 #, php-format
 msgid ""
 "Your cart contains products other than appointments, please <a href=\"%s"
@@ -433,89 +436,93 @@ msgstr ""
 "href=\"%s\">vider votre panier ou compléter votre commande</a> avant de "
 "réserver un rendez-vous."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:273
+#: public/class-tmsm-aquos-spa-booking-public.php:283
 msgid "Do you have a voucher?"
 msgstr "Avez-vous un bon cadeau ?"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:288
+#: public/class-tmsm-aquos-spa-booking-public.php:298
 msgid "Pick your treatments category:"
 msgstr "Choisir la catégorie de soins :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:296
+#: public/class-tmsm-aquos-spa-booking-public.php:306
 msgid "Pick your treatment:"
 msgstr "Choisir le soin :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:304
+#: public/class-tmsm-aquos-spa-booking-public.php:314
 msgid "Pick your variation:"
 msgstr "Choisir les options :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:307
+#: public/class-tmsm-aquos-spa-booking-public.php:317
 msgid "No options to pick"
 msgstr "Aucune option disponible"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:310
+#: public/class-tmsm-aquos-spa-booking-public.php:320
 msgid "Reset your options"
 msgstr "Réinitialiser les  options"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:311
+#: public/class-tmsm-aquos-spa-booking-public.php:321
 msgid "Confirm your options"
 msgstr "Confirmer les options"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:319
+#: public/class-tmsm-aquos-spa-booking-public.php:331
 msgid "Pick your choice:"
 msgstr "Choisir parmi :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:327
+#: public/class-tmsm-aquos-spa-booking-public.php:339
 msgid "Pick your date:"
 msgstr "Choisir la date :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:335
+#: public/class-tmsm-aquos-spa-booking-public.php:347
 msgid "Pick your time:"
 msgstr "Choisir l’heure :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:338
+#: public/class-tmsm-aquos-spa-booking-public.php:350
 msgid "No time results for this date"
 msgstr "Aucun créneau horaire pour ce jour"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:346
+#: public/class-tmsm-aquos-spa-booking-public.php:358
 msgid "Cancel"
 msgstr "Annuler"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:348
+#: public/class-tmsm-aquos-spa-booking-public.php:360
 msgid "Add this appointment"
 msgstr "Ajouter ce rendez-vous"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:381
+#: public/class-tmsm-aquos-spa-booking-public.php:393
 msgid "Change time"
 msgstr "Changer l’heure"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:502
+#: public/class-tmsm-aquos-spa-booking-public.php:510
 msgid "Token security is not valid"
 msgstr "Jeton de sécurité non valide"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:513
+#: public/class-tmsm-aquos-spa-booking-public.php:521
 msgid "Ajax referer is not valid"
 msgstr "Le référant ajax n’est pas valide"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:682
+#: public/class-tmsm-aquos-spa-booking-public.php:688
 msgid "Product not found"
 msgstr "Le produit n’a pas été trouvé"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:696
+#: public/class-tmsm-aquos-spa-booking-public.php:702
 #, php-format
 msgctxt "date+time"
 msgid "%s at %s"
 msgstr "%s à %s"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:974
+#: public/class-tmsm-aquos-spa-booking-public.php:983
 msgid "Appointment:"
 msgstr "Rendez-vous :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:978
+#: public/class-tmsm-aquos-spa-booking-public.php:987
 msgid "Has Voucher:"
 msgstr "Bon cadeau :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1157
+#: public/class-tmsm-aquos-spa-booking-public.php:1018
+msgid "Your appointments"
+msgstr "Vos rendez-vous"
+
+#: public/class-tmsm-aquos-spa-booking-public.php:1258
 msgid ""
 "Submission failed, booking service has been notified and will contact you "
 "shortly."
@@ -523,7 +530,7 @@ msgstr ""
 "Échec de l’inscription du rendez-vous, le service réservation a été prévenu "
 "et vous contactera rapidement pour confirmer."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1380
+#: public/class-tmsm-aquos-spa-booking-public.php:1490
 #, php-format
 msgid ""
 "The product %s has been removed from cart since it has expired. Please try "
@@ -532,40 +539,40 @@ msgstr ""
 "Le produit %s a été retiré du panier puisqu’il a expiré. Veuillez essayer de "
 "prendre rendez-vous à nouveau."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1427
+#: public/class-tmsm-aquos-spa-booking-public.php:1537
 msgid "Book this appointment"
 msgstr "Confirmer ce rendez-vous"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1561
+#: public/class-tmsm-aquos-spa-booking-public.php:1671
 msgid "Once Only"
 msgstr "Une fois"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1691
-#: public/class-tmsm-aquos-spa-booking-public.php:1762
+#: public/class-tmsm-aquos-spa-booking-public.php:1797
+#: public/class-tmsm-aquos-spa-booking-public.php:1865
 msgid "Product is not variable"
 msgstr "Le produit n’est pas variable"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1767
+#: public/class-tmsm-aquos-spa-booking-public.php:1870
 msgid "Product doesnt not exist"
 msgstr "Le produit n’existe pas"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1950
+#: public/class-tmsm-aquos-spa-booking-public.php:2067
 msgid "This product is not bookable"
 msgstr "Le produit n’est pas réservable"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1953
+#: public/class-tmsm-aquos-spa-booking-public.php:2070
 msgid "Product information is missing"
 msgstr "L’information sur le produit est manquante"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1956
+#: public/class-tmsm-aquos-spa-booking-public.php:2073
 msgid "Date is missing"
 msgstr "La date est manquante"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1959
+#: public/class-tmsm-aquos-spa-booking-public.php:2076
 msgid "Product category is missing"
 msgstr "La catégorie de produit est manquante"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2038
+#: public/class-tmsm-aquos-spa-booking-public.php:2155
 msgid "No time slot available for this day and this product"
 msgstr "Aucun créneau horaire disponible pour ce jour et ce soin"
 
@@ -581,6 +588,26 @@ msgid ""
 "Just to let you know &mdash; we've received your order #%s, and it is now "
 "being processed:"
 msgstr "Merci, votre commande n°%s est bien reçue :"
+
+#, php-format
+#~ msgid "Address: %s"
+#~ msgstr "Adresse : %s"
+
+#, php-format
+#~ msgid "Email: %s"
+#~ msgstr "Email : %s"
+
+#, php-format
+#~ msgid "Treatment: %s"
+#~ msgstr "Soin sélectionné : %s"
+
+#, php-format
+#~ msgid "Appointment: %s"
+#~ msgstr "Rendez-vous : %s"
+
+#, php-format
+#~ msgid "URL called: %s"
+#~ msgstr "URL appelée : %s"
 
 #~ msgid "Thanks for using {site_address}!"
 #~ msgstr "Merci de naviguer sur {site_address}"
@@ -599,10 +626,6 @@ msgstr "Merci, votre commande n°%s est bien reçue :"
 
 #~ msgid "Book"
 #~ msgstr "Réserver"
-
-#, php-format
-#~ msgid "Appointment: %s at %s"
-#~ msgstr "Rendez-vous : %s à %s"
 
 #~ msgid "Confirm this appointment"
 #~ msgstr "Confirmer ce rendez-vous"
