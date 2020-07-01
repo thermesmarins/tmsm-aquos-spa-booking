@@ -705,7 +705,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			);
 			$quantity = 1;
 			$variation_id = $product_id;
-			$variation = array();
+
+			$variation_data = array();
+			$variation = wc_get_product($variation_id);
+			if( $variation instanceof WC_Product_Variation) {
+				$variation_data = $variation->get_variation_attributes();
+
+				// Add all attributes except (hardcoded) voucher attribute
+				unset($variation_data['attribute_pa_format-bon-cadeau']);
+			}
+
 			$cart_item_data = [
 				'has_voucher' => $is_voucher,
 				'appointment' => $appointment,
@@ -718,7 +727,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				//'price' => 12 // if I want to force a price in the cart
 			];
 
-			$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $cart_item_data);
+			$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_data, $cart_item_data);
 
 			//$redirect = wc_get_cart_url();
 			$redirect = wc_get_checkout_url();
