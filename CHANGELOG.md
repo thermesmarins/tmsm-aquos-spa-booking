@@ -1,3 +1,4 @@
+### 1.0.8: July 1st, 2020
 * Display from price only for variable products
 * Display price contained in attribute description (only if no voucher)
 * Rename "Your order" by "Your appointments" when appointment only
