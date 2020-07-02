@@ -1529,24 +1529,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$title = __( 'Appointment', 'tmsm-aquos-spa-booking' );
 		}
 
-		if ( is_order_received_page() && get_the_ID() === $id ) {
-			$title = "Thank you for your order!";
-		}
-		//echo 'is_order_received_page():'.is_order_received_page();
-		//echo '$id:'.$id;
-		//echo 'intval( get_option( \'woocommerce_checkout_page_id\' )):'.intval( get_option( 'woocommerce_checkout_page_id' ));
-		if ( is_order_received_page() && $id == intval( get_option( 'woocommerce_checkout_page_id' )) ) {
-			$title = "Thank you for your order!";
-		}
-
-		if ( is_order_received_page()){
-			$title.='-orp';
-		}
-
-		if ( $id == intval( get_option( 'woocommerce_checkout_page_id' ))){
-			$title.='-opt';
-		}
-
 		return $title;
 	}
 

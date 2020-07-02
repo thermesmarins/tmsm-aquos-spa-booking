@@ -1,4 +1,5 @@
 * Add all variation data attributes when adding to cart, allows the customer to see the complete product information
+* Remove debug test
 
 ### 1.0.8: July 1st, 2020
 * Display from price only for variable products
