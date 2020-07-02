@@ -1,3 +1,4 @@
+### 1.1.0: July 2nd, 2020
 * Hide Aquos Product ID in frontend
 * Allow translation of Appointments in statuses navigation
 * Fix sorting times
