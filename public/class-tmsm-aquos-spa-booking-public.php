@@ -845,18 +845,30 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				error_log(print_r($not_priorities, true));
 			}
 
+
+
 			// Complete with non priorities
 			if($diff_priorities > 0){
-				for ($cpt_priorities = 0; $cpt_priorities <= $diff_priorities; $cpt_priorities++){
-					if(isset($not_priorities[$cpt_priorities])){
-						$selected_times[] = $not_priorities[$cpt_priorities];
-					}
+
+				// Get random numbers inside not priorities
+				$range_random_numbers = range( 0, ( $count_notpriorities - 1 ) );
+				shuffle($range_random_numbers);
+				$random_numbers = array_slice($range_random_numbers, 0 , $diff_priorities);
+
+				foreach($random_numbers as $random_number){
+					$selected_times[] = $not_priorities[$random_number];
 				}
+
 			}
 			else{
 				// Select only priorities, do nothing more
 			}
 		}
+
+		// Sort by hour+minutes
+		usort($selected_times, function($a, $b) {
+			return strnatcmp($a['hourminutes'], $b['hourminutes']);
+		});
 
 		return $selected_times;
 	}
@@ -2191,8 +2203,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 			error_log('$errors:');
 			error_log(print_r($errors, true));
-			//error_log('$times:');
-			//error_log(print_r($times, true));
+			error_log('$times:');
+			error_log(print_r($times, true));
 		}
 
 		return $times;
