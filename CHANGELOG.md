@@ -1,3 +1,5 @@
+* Hide Aquos Product ID in frontend
+
 ### 1.0.9: July 2nd, 2020
 * Add all variation data attributes when adding to cart, allows the customer to see the complete product information
 * Remove debug test
