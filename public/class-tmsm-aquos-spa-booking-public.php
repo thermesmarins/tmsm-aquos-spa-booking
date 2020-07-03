@@ -85,6 +85,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function enqueue_scripts() {
 
+		// Disable MailChimp for WooCommerce Javascript when ordering appointments
+		if(self::cart_has_appointment()){
+			wp_dequeue_script('mailchimp-woocommerce');
+		}
+
+
 		wp_deregister_script('bootstrap-datepicker');
 		wp_enqueue_script( 'bootstrap-datepicker', '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js', array( 'jquery', 'bootstrap' ), null, true );
 
