@@ -837,6 +837,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			}
 
 			$diff_priorities = 4 - $count_priorities;
+
+			// We don't want non-priorities
+			$diff_priorities = 0;
+
 			$selected_times = $priorities;
 
 

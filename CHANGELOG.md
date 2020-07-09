@@ -1,3 +1,7 @@
+* Code refactoring
+* Code formatting
+* Change of plans: do not show non-priorities for now
+
 ### 1.1.0: July 2nd, 2020
 * Hide Aquos Product ID in frontend
 * Allow translation of Appointments in statuses navigation
