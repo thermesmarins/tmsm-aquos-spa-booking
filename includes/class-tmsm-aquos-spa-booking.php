@@ -203,13 +203,13 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
 
 		// Html Templates
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'havevoucher_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_category_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_variation_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'product_attribute_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'time_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'choice_template' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_havevoucher' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_product_category' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_product' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_product_variation' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_product_attribute' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_time' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_choice' );
 
 		// Cart Items
 		$this->loader->add_filter( 'woocommerce_add_cart_item_data', $plugin_public, 'woocommerce_add_cart_item_data_appointment', 10, 3 );
@@ -270,7 +270,7 @@ class Tmsm_Aquos_Spa_Booking {
 		// Order Status Appointment for Voucher (free)
 		$this->loader->add_filter( 'woocommerce_payment_complete_order_status', $plugin_public, 'order_status_appointment_voucher', 60, 3 );
 
-		$this->loader->add_action( 'woocommerce_order_status_appointment', $plugin_public, 'change_order_status_appointment', 80, 2 );
+		$this->loader->add_action( 'woocommerce_order_status_appointment', $plugin_public, 'order_status_changed_to_appointment', 80, 2 );
 
 	}
 
