@@ -1,3 +1,4 @@
+### 1.1.1: July 9th, 2020
 * Code refactoring
 * Code formatting
 * Change of plans: do not show non-priorities for now
