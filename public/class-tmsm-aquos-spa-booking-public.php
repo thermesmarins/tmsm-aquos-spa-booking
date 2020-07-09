@@ -395,7 +395,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-time">
-			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-hour="{{ data.hour }}" data-minutes="{{ data.minutes }}" data-hourminutes="{{ data.hourminutes }}" data-priority="{{ data.priority }}">{{ data.hourminutes }} <# if ( TmsmAquosSpaBookingApp.role == "1" && data.priority == 1) { #> *<# } #></a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
+			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-hour="{{ data.hour }}" data-minutes="{{ data.minutes }}" data-hourminutes="{{ data.hourminutes }}" data-priority="{{ data.priority }}">{{ data.hourminutes }} <# if ( TmsmAquosSpaBookingApp.role == "1" && data.priority == 1) { #> <!--*--><# } #></a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
 		</script>
 		<?php
 	}
