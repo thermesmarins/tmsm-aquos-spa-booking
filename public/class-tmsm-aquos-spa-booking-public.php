@@ -1997,9 +1997,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					$max_price = $product->get_variation_price( 'max', true );
 					$min_price = $product->get_variation_price( 'min', true );
 
-					$price = ( $min_price_sale == $min_price_regular ) ?
-						wc_price( $min_price_regular ) :
-						'<del>' . wc_price( $min_price_regular ) . '</del>' . '<ins>' . wc_price( $min_price_sale ) . '</ins>';
+					$price = ( $min_price_sale == $min_price_regular ) ? wc_price( $min_price_regular ) : wc_price( $min_price_sale ) ;
 				}
 				else{
 					$price = $product->get_price_html();
