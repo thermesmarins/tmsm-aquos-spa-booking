@@ -106,28 +106,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$enddate = new \DateTime();
 		$enddate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 ). ' days');
 
-		// Params
-		$params = [
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'locale'   => $this->get_locale(),
-			'security' => wp_create_nonce( 'tmsm-aquos-spa-booking-nonce-action' ),
-			'i18n'     => [
-				'fromprice'          => _x( 'From', 'price', 'tmsm-aquos-spa-booking' ),
-				'selectcategory'          => __( 'Select a category', 'tmsm-aquos-spa-booking' ),
-				'selectproduct'          => __( 'Select a product', 'tmsm-aquos-spa-booking' ),
-				'loading'          => __( 'Loading', 'tmsm-aquos-spa-booking' ),
-			],
-			'options'  => [
-				'daysrangefrom' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 )),
-				'daysrangeto' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 )),
-				'enddate' => $enddate->format('Y-m-d'),
-				'startdate' => $startdate->format('Y-m-d'),
-			],
-		];
-
-		wp_localize_script( $this->plugin_name, 'tmsm_aquos_spa_booking_params', $params);
-
-
 		// Add initial data to CronPixie JS object so it can be rendered without fetch.
 		// Also add translatable strings for JS as well as reference settings.
 		$data = array(

@@ -1,3 +1,5 @@
+* Remove unused params
+
 ### 1.1.2: July 15th, 2020
 * Option choice was displayed even if there was only voucher attribute
 
