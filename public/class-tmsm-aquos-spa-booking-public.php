@@ -2000,9 +2000,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 
 
+				$product_has_attributes_otherthan_voucher = false;
 
 				// Don't display range price for variable products
 				if($product->is_type( 'variable' ) && $product instanceof WC_Product_Variable) {
+
+					// Not variable if only has voucher attribute
+					if(is_array($product->get_attributes())){
+						foreach($product->get_attributes() as $attribute_key => $attribute_value){
+							if($attribute_key !== 'pa_format-bon-cadeau'){
+								$product_has_attributes_otherthan_voucher = true;
+							}
+						}
+				    }
+
 					$min_price_regular = $product->get_variation_regular_price( 'min', true );
 					$min_price_sale    = $product->get_variation_sale_price( 'min', true );
 					$max_price = $product->get_variation_price( 'max', true );
@@ -2025,6 +2036,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					'sku' => esc_js($product->get_sku()),
 					'name' => esc_js($product->get_name()),
 					'variable' => esc_js($product->is_type( 'variable' )),
+					'attributes_otherthan_voucher' => esc_js($product_has_attributes_otherthan_voucher),
 					'choices' => json_encode($aquos_items),
 				];
 

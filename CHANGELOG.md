@@ -1,3 +1,5 @@
+* Option choice was displayed even if there was only voucher attribute
+
 ### 1.1.1: July 9th, 2020
 * Code refactoring
 * Code formatting

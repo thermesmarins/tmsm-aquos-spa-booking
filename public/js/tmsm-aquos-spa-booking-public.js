@@ -314,6 +314,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       name: null,
       thumbnail: null,
       variable: null,
+      attributes_otherthan_voucher: null,
       choices: null,
       is_voucher: null,
       price: null,
@@ -393,7 +394,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log('selectedValue: '+this.selectedValue);
 
       this.selectedIsVariable = $(event.target).children("option:selected").attr('data-variable');
+      this.selectedHasAttributesOtherthanVoucher = $(event.target).children("option:selected").attr('data-attributes_otherthan_voucher');
       console.log('selectedIsVariable: '+this.selectedIsVariable);
+      console.log('selectedHasAttributesOtherthanVoucher: '+this.selectedHasAttributesOtherthanVoucher);
 
       var choices = JSON.parse($(event.target).children("option:selected").attr('data-choices'));
       this.selectedHasChoices = (choices.length !== 0);
@@ -418,7 +421,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.choicesList.element());
       }
       else{
-        if(this.selectedIsVariable){
+        if(this.selectedIsVariable && this.selectedHasAttributesOtherthanVoucher){
           // Go to variations
           TmsmAquosSpaBookingApp.productvariations.fetch({ data: {
               product: this.selectedValue,
@@ -469,6 +472,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         value: this.model.get('id'),
         'data-sku': this.model.get('sku'),
         'data-variable': this.model.get('variable'),
+        'data-attributes_otherthan_voucher': this.model.get('attributes_otherthan_voucher'),
         'data-choices': this.model.get('choices')
     };
     },
@@ -961,6 +965,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     el: '#tmsm-aquos-spa-booking-choices-container',
     selectedValue: null,
     selectedIsVariable: null,
+    selectedHasAttributesOtherthanVoucher: null,
     selectElement: '#tmsm-aquos-spa-booking-choices-select',
     loadingElement: '#tmsm-aquos-spa-booking-choices-loading',
     buttonElement: '[data-id=tmsm-aquos-spa-booking-choices-select]',
