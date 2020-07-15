@@ -1,3 +1,6 @@
+* CSS optimization for mobile
+* Handle no product ID before calling web service
+
 ### 1.1.3: July 15th, 2020
 * Remove unused params
 * Remove regular price when on sale

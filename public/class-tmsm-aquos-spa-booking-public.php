@@ -741,6 +741,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	}
 
 	/**
+	 * Send a response to ajax request, as JSON.
+	 *
+	 * @param mixed $response
+	 */
+	private function ajax_return( $response = true ) {
+		echo json_encode( $response );
+		exit;
+	}
+
+	/**
 	 * Sort Times By Priority
 	 *
 	 * @param array $times
@@ -1695,15 +1705,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$background_process->save()->dispatch();
 	}
 
-	/**
-	 * Send a response to ajax request, as JSON.
-	 *
-	 * @param mixed $response
-	 */
-	private function ajax_return( $response = true ) {
-		echo json_encode( $response );
-		exit;
-	}
 
 	/**
 	 * Returns list of cron schedules.
@@ -2143,7 +2144,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		// Call web service
 		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurltimes' );
-		if ( ! empty( $settings_webserviceurl ) ) {
+		if ( ! empty( $settings_webserviceurl ) && ! empty( $aquos_id ) && ! empty( $date ) ) {
 
 			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 				error_log( 'url before:' . $settings_webserviceurl );
