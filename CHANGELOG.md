@@ -1,3 +1,4 @@
+### 1.1.5: July 16th, 2020
 * Stop encoding apostrophes before sending to web service
 
 ### 1.1.4: July 15th, 2020
