@@ -1,3 +1,5 @@
+* Stop encoding apostrophes before sending to web service
+
 ### 1.1.4: July 15th, 2020
 * CSS optimization for mobile
 * Handle no product ID before calling web service
