@@ -2150,6 +2150,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				error_log( 'url before:' . $settings_webserviceurl );
 			}
 
+
+			$aquos_id_array = explode('+', $aquos_id);
+			$ignoredproducts = get_option( 'tmsm_aquos_spa_booking_ignoredproducts' );
+			$ignoredproducts_array = explode('+', $ignoredproducts);
+
+			if(count($ignoredproducts_array) > 0){
+				$aquos_id_array = array_diff($aquos_id_array, $ignoredproducts_array);
+				$aquos_id = implode('+',  $aquos_id_array );
+			}
+
 			$patterns     = [
 				'/{date}/',
 				'/{product_id}/',

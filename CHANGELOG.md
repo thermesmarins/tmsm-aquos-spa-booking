@@ -1,4 +1,6 @@
-* New field to specify ignored products on web service call
+* New field to specify ignored products
+* Exclude ignored product on get times web service
+* Exclude ignored product on insert appointment web service
 
 ### 1.1.5: July 16th, 2020
 * Stop encoding apostrophes before sending to web service
