@@ -118,6 +118,17 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						'desc'     => ''.
 						              '<p class="description">'.
 						              __( 'The ID of the product category. Leave 0 if all categories can be booked.', 'tmsm-aquos-spa-booking'). '</p>',
+						'default' => '',
+						'class'  => 'regular-text',
+					),
+
+					array(
+						'type'     => 'text',
+						'id'       => 'tmsm_aquos_spa_booking_ignoredproducts',
+						'name'     => __( 'Aquos products ignored when booking', 'tmsm-aquos-spa-booking' ),
+						'desc'     => ''.
+						              '<p class="description">'.
+						              __( 'Aquos product IDs separated by comma. Those products can’t be booked.', 'tmsm-aquos-spa-booking'). '</p>',
 						'default' => 0,
 						'class'  => 'regular-text',
 					),

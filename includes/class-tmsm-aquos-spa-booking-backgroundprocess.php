@@ -136,9 +136,21 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							$appointment_date = sanitize_text_field( str_replace( '-', '', trim($order_item_data['_appointment_date'] )) );
 							$appointment_time = sanitize_text_field($order_item_data['_appointment_time']);
 
+							$ignoredproducts_array = explode(',', get_option( 'tmsm_aquos_spa_booking_ignoredproducts' ));
+
+							$aquos_id = $order_item_data['_aquos_id'];
+							$aquos_id_array = explode(',', $aquos_id);
+							$ignoredproducts = get_option( 'tmsm_aquos_spa_booking_ignoredproducts' );
+							$ignoredproducts_array = explode(',', $ignoredproducts);
+
+							if(count($ignoredproducts_array) > 0){
+								$aquos_id_array = array_diff($aquos_id_array, $ignoredproducts_array);
+								$aquos_id = implode(',',  $aquos_id_array );
+							}
+
 							$replacements = [
 								$appointment_date,
-								sanitize_text_field(trim(str_replace(',', '+', $order_item_data['_aquos_id']))),
+								sanitize_text_field(trim(str_replace(',', '+', $aquos_id))),
 								( is_multisite() ? get_current_blog_id() : 0 ),
 								sanitize_text_field($order_item_data['_appointment_time']),
 								urlencode($order->get_meta('_billing_title') == '1') ? 'M.' : 'Mme',

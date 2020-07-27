@@ -1,3 +1,5 @@
+* New field to specify ignored products on web service call
+
 ### 1.1.5: July 16th, 2020
 * Stop encoding apostrophes before sending to web service
 
