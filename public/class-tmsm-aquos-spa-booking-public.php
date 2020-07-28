@@ -903,6 +903,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$cart_item_data['aquos_id'] = $aquos_id;
 		}
 
+		// For regular products with Aquos ID
+		if(empty($cart_item_data['appointment'])){
+			$cart_item_data['aquos_id'] = get_post_meta( $variation_id ?? $product_id, '_aquos_id', true );
+		}
 		return $cart_item_data;
 	}
 
@@ -917,7 +921,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	function woocommerce_get_item_data_appointment( $item_data, $cart_item ) {
 
-		//print_r($cart_item);
 		if ( !empty( $cart_item['appointment'] ) ) {
 			$item_data[] = array(
 				'key'     => __( 'Appointment', 'tmsm-aquos-spa-booking' ),
@@ -962,7 +965,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		$variation_id = isset( $values['variation_id'] ) && ! empty( $values['variation_id'] ) ? $values['variation_id'] : $values['product_id'];
 
-		if ( ! empty( $values['appointment'] ) ) {
+		if ( ! empty( $values['appointment'] ) ) { // Products with appointment
 			$item->add_meta_data( '_appointment_date', $values['appointment_date'], true );
 			$item->add_meta_data( '_appointment_time', $values['appointment_time'], true );
 			$item->add_meta_data( '_appointment', $values['appointment'], true );
@@ -976,6 +979,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$order->set_shipping_city('');
 			$order->set_shipping_country('');
 			$order->add_meta_data('_appointment', 'yes', true);
+		}
+		else{ // Regular products
+			if(!empty($values['aquos_id'])){
+				$item->add_meta_data( '_aquos_id', $values['aquos_id'], true );
+			}
+
 		}
 
 	}
