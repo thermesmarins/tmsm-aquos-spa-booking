@@ -1,3 +1,4 @@
+### 1.1.7: July 28th, 2020
 * New setting field to specify excluded WooCommerce product categories
 
 ### 1.1.6: July 27th, 2020
