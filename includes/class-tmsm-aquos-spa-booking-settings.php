@@ -123,6 +123,17 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 					),
 
 					array(
+						'type'     => 'number',
+						'id'       => 'tmsm_aquos_spa_booking_excludedproductcat',
+						'name'     => __( 'WooCommerce Product Excluded Category IDs', 'tmsm-aquos-spa-booking' ),
+						'desc'     => ''.
+						              '<p class="description">'.
+						              __( 'The IDs of excluded product categories. Separated by comma.', 'tmsm-aquos-spa-booking'). '</p>',
+						'default' => '',
+						'class'  => 'regular-text',
+					),
+
+					array(
 						'type'     => 'text',
 						'id'       => 'tmsm_aquos_spa_booking_ignoredproducts',
 						'name'     => __( 'Aquos products ignored when booking', 'tmsm-aquos-spa-booking' ),

@@ -1,5 +1,7 @@
+* New setting field to specify excluded WooCommerce product categories
+
 ### 1.1.6: July 27th, 2020
-* New field to specify ignored products
+* New setting field to specify ignored products
 * Exclude ignored product on get times web service
 * Exclude ignored product on insert appointment web service
 

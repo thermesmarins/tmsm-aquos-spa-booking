@@ -1763,8 +1763,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		// Get "product_cat" Terms With Parent as an Option
 		$settings_maincategory  = get_option( 'tmsm_aquos_spa_booking_productcat', 0 );
+		$settings_excludedcategories  = get_option( 'tmsm_aquos_spa_booking_excludedproductcat', '' );
 		$product_categories = get_terms( 'product_cat', [
 			'hide_empty' => true,
+			'exclude' => $settings_excludedcategories,
 			'child_of' => !empty($settings_maincategory) ? $settings_maincategory: 0,
 			'orderby'    => 'menu_order',
 		]);
