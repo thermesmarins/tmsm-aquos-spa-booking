@@ -1,5 +1,6 @@
 * Plugin files for icon and banner 
 * Update FR translation
+* Check $contact_page_id is defined
 
 ### 1.1.7: July 28th, 2020
 * New setting field to specify excluded WooCommerce product categories

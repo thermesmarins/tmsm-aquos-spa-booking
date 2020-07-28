@@ -1306,6 +1306,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			// Prepare data for markup
 			$image = null;
 			$address = null;
+			$contact_page_id = null;
 			if(class_exists('WPSEO_Options') && !empty(WPSEO_Options::get( 'company_logo' ))){
 				$image = WPSEO_Options::get( 'company_logo' );
 			}
