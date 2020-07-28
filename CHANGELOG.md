@@ -1,3 +1,4 @@
+### 1.1.8: July 28th, 2020
 * Plugin files for icon and banner 
 * Update FR translation
 * Check $contact_page_id is defined
