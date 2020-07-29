@@ -17,7 +17,7 @@
 
 <?php
 $args = [
-'status' => 'publish',
+'status' => 'all',
 'posts_per_page' => '-1',
 ];
 $products = wc_get_products($args);
@@ -28,6 +28,7 @@ foreach($products as $product){
 		$output= '';
 		$output .= '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
 		$output .= ' — '.$product->product_type;
+		$output .= ' — '.$product->status;
 		$output .= '<br>';
 		$counter_variations_without_id = 0;
 		foreach($product->get_available_variations() as $variation_data){

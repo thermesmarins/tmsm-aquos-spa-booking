@@ -1,3 +1,5 @@
+* Info screen now displays draft products
+
 ### 1.1.9: July 29th, 2020
 * Settings screen containing all products with an empty Aquos ID
 
