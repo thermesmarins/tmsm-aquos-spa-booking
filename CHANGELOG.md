@@ -1,3 +1,4 @@
+### 1.2.0: July 29th, 2020
 * Info screen now displays draft products
 * Update FR translation
 
