@@ -1,3 +1,4 @@
+### 1.1.9: July 29th, 2020
 * Settings screen containing all products with an empty Aquos ID
 
 ### 1.1.8: July 28th, 2020
