@@ -49,7 +49,8 @@ foreach($products as $product){
 	else{
 		if(empty($product->get_meta('_aquos_id'))){
 			echo '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
-			echo ' — '.$product->product_type;
+			$output .= ' — '.$product->product_type;
+			$output .= ' — '.$product->status;
 			echo '<br>';
 			echo '<br>';
 		}
