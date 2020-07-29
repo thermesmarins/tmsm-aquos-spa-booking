@@ -168,10 +168,11 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return array
 	 */
-	function woocommerce_get_settings_pages_aquosspabooking($settings) {
+	function woocommerce_get_settings_pages($settings) {
 		$settings[] = include( plugin_dir_path( dirname( __FILE__ ) ) .'includes/class-tmsm-aquos-spa-booking-settings.php' );
 		return $settings; // Return
 	}
+
 
 	/**
 	 * Add Aquos ID Field to Inventory Product Data Tab
