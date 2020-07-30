@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-07-29 15:54+0200\n"
+"POT-Creation-Date: 2020-07-30 15:23+0200\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -58,13 +58,11 @@ msgid "No"
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:138
-#: public/class-tmsm-aquos-spa-booking-public.php:942
-msgid "Aquos ID"
+msgid "Aquos Product ID"
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:185
-#: admin/class-tmsm-aquos-spa-booking-admin.php:255
-msgid "Aquos Product ID"
+msgid "Aquos Product ID (for appointments)"
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:188
@@ -72,13 +70,17 @@ msgid "If empty, the product won't be bookable."
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:196
-msgid "Aquos Package Items (with IDs)"
+msgid "Aquos Products IDs (for appointment packages)"
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:200
 msgid ""
 "One item per line, write the Aquos product ID separated by an *. "
 "Result should be: product name * product id"
+msgstr ""
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:255
+msgid "Aquos Product ID (for appointments and purchase)"
 msgstr ""
 
 #: admin/partials/tmsm-aquos-spa-booking-admin-display.php:16
@@ -520,6 +522,10 @@ msgstr ""
 #, php-format
 msgctxt "date+time"
 msgid "%s at %s"
+msgstr ""
+
+#: public/class-tmsm-aquos-spa-booking-public.php:942
+msgid "Aquos ID"
 msgstr ""
 
 #: public/class-tmsm-aquos-spa-booking-public.php:1010

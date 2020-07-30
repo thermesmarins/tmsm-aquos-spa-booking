@@ -135,7 +135,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				$meta->display_value = ( $meta->value ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
 			}
 			if($meta->key == '_aquos_id' && !empty($meta->value)){
-				$meta->display_key = __('Aquos ID', 'tmsm-aquos-spa-booking');
+				$meta->display_key = __('Aquos Product ID', 'tmsm-aquos-spa-booking');
 			}
 
 		}
@@ -182,7 +182,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		woocommerce_wp_text_input(
 			array(
 				'id'          => '_aquos_id',
-				'label'       => __( 'Aquos Product ID', 'tmsm-aquos-spa-booking' ),
+				'label'       => __( 'Aquos Product ID (for appointments)', 'tmsm-aquos-spa-booking' ),
 				'placeholder' => '',
 				'desc_tip'    => 'true',
 				'description' => __( 'If empty, the product won\'t be bookable.', 'tmsm-aquos-spa-booking' )
@@ -193,7 +193,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		woocommerce_wp_textarea_input(
 			array(
 				'id'          => '_aquos_items_ids',
-				'label'       => __( 'Aquos Package Items (with IDs)', 'tmsm-aquos-spa-booking' ),
+				'label'       => __( 'Aquos Products IDs (for appointment packages)', 'tmsm-aquos-spa-booking' ),
 				'placeholder' => '',
 				'desc_tip'    => 'true',
 				'rows'    => 8,
@@ -252,7 +252,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		woocommerce_wp_text_input( array(
 				'id' => '_aquos_id[' . $loop . ']',
 				'wrapper_class' => 'form-row',
-				'label' => __( 'Aquos Product ID', 'tmsm-aquos-spa-booking' ),
+				'label' => __( 'Aquos Product ID (for appointments and purchase)', 'tmsm-aquos-spa-booking' ),
 				'value' => get_post_meta( $variation->ID, '_aquos_id', true )
 			)
 		);

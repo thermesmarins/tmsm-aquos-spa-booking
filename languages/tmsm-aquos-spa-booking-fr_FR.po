@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-07-29 15:54+0200\n"
-"PO-Revision-Date: 2020-07-29 15:54+0200\n"
+"POT-Creation-Date: 2020-07-30 15:20+0200\n"
+"PO-Revision-Date: 2020-07-30 15:20+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -57,22 +57,20 @@ msgid "No"
 msgstr "Non"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:138
-#: public/class-tmsm-aquos-spa-booking-public.php:942
-msgid "Aquos ID"
+msgid "Aquos Product ID"
 msgstr "ID de produit Aquos"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:185
-#: admin/class-tmsm-aquos-spa-booking-admin.php:255
-msgid "Aquos Product ID"
-msgstr "ID de produit Aquos"
+msgid "Aquos Product ID (for appointments)"
+msgstr "ID de produit Aquos (pour les rendez-vous)"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:188
 msgid "If empty, the product won't be bookable."
 msgstr "Si vide, le produit ne sera pas réservable."
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:196
-msgid "Aquos Package Items (with IDs)"
-msgstr "Items de forfait (avec identifiants)"
+msgid "Aquos Products IDs (for appointment packages)"
+msgstr "IDs de produit Aquos (pour les forfaits offrant le choix)"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:200
 msgid ""
@@ -81,6 +79,10 @@ msgid ""
 msgstr ""
 "Un item par ligne, écrire l’identifiant Aquos séparé par un *. Le résultat "
 "devrait être : nom du produit * identifiant de produit"
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:255
+msgid "Aquos Product ID (for appointments and purchase)"
+msgstr "ID de produit Aquos (pour les rendez-vous et les achats)"
 
 #: admin/partials/tmsm-aquos-spa-booking-admin-display.php:16
 msgid "These products don’t have an Aquos ID meta data"
@@ -531,6 +533,10 @@ msgctxt "date+time"
 msgid "%s at %s"
 msgstr "%s à %s"
 
+#: public/class-tmsm-aquos-spa-booking-public.php:942
+msgid "Aquos ID"
+msgstr "ID de produit Aquos"
+
 #: public/class-tmsm-aquos-spa-booking-public.php:1010
 msgid "Appointment:"
 msgstr "Rendez-vous :"
@@ -617,6 +623,9 @@ msgid ""
 "Just to let you know &mdash; we've received your order #%s, and it is now "
 "being processed:"
 msgstr "Merci, votre commande n°%s est bien reçue :"
+
+#~ msgid "Aquos Package Items (with IDs)"
+#~ msgstr "Items de forfait (avec identifiants)"
 
 #~ msgctxt "price"
 #~ msgid "From"
