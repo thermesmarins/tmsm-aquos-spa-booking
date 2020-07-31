@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-07-30 15:23+0200\n"
+"POT-Creation-Date: 2020-07-31 13:58+0200\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -84,7 +84,16 @@ msgid "Aquos Product ID (for appointments and purchase)"
 msgstr ""
 
 #: admin/partials/tmsm-aquos-spa-booking-admin-display.php:16
-msgid "These products don’t have an Aquos ID meta data"
+msgid "These published products don’t have an Aquos ID meta data"
+msgstr ""
+
+#: admin/partials/tmsm-aquos-spa-booking-admin-display.php:60
+#: admin/partials/tmsm-aquos-spa-booking-admin-display.php:109
+msgid "No product"
+msgstr ""
+
+#: admin/partials/tmsm-aquos-spa-booking-admin-display.php:64
+msgid "These draft products don’t have an Aquos ID meta data"
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:189

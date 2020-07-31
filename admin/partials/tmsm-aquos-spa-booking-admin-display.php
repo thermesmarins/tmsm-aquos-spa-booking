@@ -13,14 +13,16 @@
  */
 ?>
 
-	<h2><?php echo __( 'These products don’t have an Aquos ID meta data', 'tmsm-aquos-spa-booking' ); ?></h2>
+	<h2><?php echo __( 'These published products don’t have an Aquos ID meta data', 'tmsm-aquos-spa-booking' ); ?></h2>
 
 <?php
 $args = [
-'status' => 'all',
+'status' => 'publish',
 'posts_per_page' => '-1',
 ];
 $products = wc_get_products($args);
+
+$counter_products = 0;
 foreach($products as $product){
 
 	if ($product->product_type === 'variable') {
@@ -28,7 +30,6 @@ foreach($products as $product){
 		$output= '';
 		$output .= '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
 		$output .= ' — '.$product->product_type;
-		$output .= ' — '.$product->status;
 		$output .= '<br>';
 		$counter_variations_without_id = 0;
 		foreach($product->get_available_variations() as $variation_data){
@@ -49,10 +50,61 @@ foreach($products as $product){
 	else{
 		if(empty($product->get_meta('_aquos_id'))){
 			echo '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
-			$output .= ' — '.$product->product_type;
-			$output .= ' — '.$product->status;
+			echo ' — '.$product->product_type;
 			echo '<br>';
 			echo '<br>';
 		}
 	}
+}
+if($counter_products === 0){
+	echo __( 'No product', 'tmsm-aquos-spa-booking' );
+}
+?>
+
+<h2><?php echo __( 'These draft products don’t have an Aquos ID meta data', 'tmsm-aquos-spa-booking' ); ?></h2>
+
+<?php
+$args = [
+'status' => 'draft',
+'posts_per_page' => '-1',
+];
+$products = wc_get_products($args);
+$counter_products = 0;
+foreach($products as $product){
+
+	if ($product->product_type === 'variable') {
+
+		$output= '';
+		$output .= '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
+		$output .= ' — '.$product->product_type;
+		$output .= '<br>';
+		$counter_variations_without_id = 0;
+		foreach($product->get_available_variations() as $variation_data){
+
+			$variation = wc_get_product($variation_data['variation_id']);
+			if(empty($variation->get_meta('_aquos_id'))){
+				$output .=  '&nbsp;&nbsp;&nbsp;- '.$variation->get_title();
+				$output .=  ' ('.$variation->get_attribute_summary().')';
+				$output .=  '<br>';
+				$counter_variations_without_id++;
+			}
+		}
+		$output .= '<br>';
+		if($counter_variations_without_id > 0){
+			$counter_products ++;
+			echo $output;
+		}
+	}
+	else{
+		if(empty($product->get_meta('_aquos_id'))){
+			$counter_products ++;
+			echo '<a href="' . get_edit_post_link( $product->get_id() ) . '">' . $product->get_title() . '</a>';
+			echo ' — '.$product->product_type;
+			echo '<br>';
+			echo '<br>';
+		}
+	}
+}
+if($counter_products === 0){
+	echo __( 'No product', 'tmsm-aquos-spa-booking' );
 }

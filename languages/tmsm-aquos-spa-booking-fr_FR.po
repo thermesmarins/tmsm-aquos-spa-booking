@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-07-30 15:20+0200\n"
-"PO-Revision-Date: 2020-07-30 15:20+0200\n"
+"POT-Creation-Date: 2020-07-31 13:58+0200\n"
+"PO-Revision-Date: 2020-07-31 13:58+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -85,8 +85,17 @@ msgid "Aquos Product ID (for appointments and purchase)"
 msgstr "ID de produit Aquos (pour les rendez-vous et les achats)"
 
 #: admin/partials/tmsm-aquos-spa-booking-admin-display.php:16
-msgid "These products don’t have an Aquos ID meta data"
-msgstr "Ces produits ou variations n’ont pas d’identifiant Aquos"
+msgid "These published products don’t have an Aquos ID meta data"
+msgstr "Ces produits publiés n’ont pas d’identifiant Aquos"
+
+#: admin/partials/tmsm-aquos-spa-booking-admin-display.php:60
+#: admin/partials/tmsm-aquos-spa-booking-admin-display.php:109
+msgid "No product"
+msgstr "Aucun produit"
+
+#: admin/partials/tmsm-aquos-spa-booking-admin-display.php:64
+msgid "These draft products don’t have an Aquos ID meta data"
+msgstr "Ces produits en brouillon n’ont pas d’identifiant Aquos"
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:189
 #: public/class-tmsm-aquos-spa-booking-public.php:2203
@@ -633,9 +642,6 @@ msgstr "Merci, votre commande n°%s est bien reçue :"
 
 #~ msgid "Select a category"
 #~ msgstr "Sélectionner une catégorie"
-
-#~ msgid "Select a product"
-#~ msgstr "Sélectionner un produit"
 
 #, php-format
 #~ msgid "Address: %s"

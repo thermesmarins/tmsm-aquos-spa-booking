@@ -1,5 +1,5 @@
-* Info screen: add post status to all products
 * Renamed fields for better understanding
+* Info screen now has two parts: publish products and draft products
 
 ### 1.2.0: July 29th, 2020
 * Info screen now displays draft products
