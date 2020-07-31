@@ -1,3 +1,4 @@
+### 1.2.1: July 31st, 2020
 * Renamed fields for better understanding
 * Info screen now has two parts: publish products and draft products
 
