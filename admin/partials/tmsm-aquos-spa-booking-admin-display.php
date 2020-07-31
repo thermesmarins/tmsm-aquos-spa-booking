@@ -44,11 +44,13 @@ foreach($products as $product){
 		}
 		$output .= '<br>';
 		if($counter_variations_without_id > 0){
+			$counter_products ++;
 			echo $output;
 		}
 	}
 	else{
 		if(empty($product->get_meta('_aquos_id'))){
+			$counter_products ++;
 			echo '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
 			echo ' — '.$product->product_type;
 			echo '<br>';
