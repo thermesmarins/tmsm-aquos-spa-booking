@@ -725,6 +725,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 		else {
 			$jsondata['success'] = true;
+
+			wc_add_notice( sprintf( __( 'Your appointment was added. <a href="%s">Do you want to add another one?</a>', 'tmsm-aquaos-spa-booking' ), wc_get_raw_referer() ? wp_validate_redirect( wc_get_raw_referer(), false ) : wc_get_page_permalink( 'shop' ) ) );
+
 		}
 
 		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {

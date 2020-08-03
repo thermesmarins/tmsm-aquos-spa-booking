@@ -1,4 +1,5 @@
 * Fix Info screen product counter
+* Checkout notice for customers willing to add another appointment
 
 ### 1.2.1: July 31st, 2020
 * Renamed fields for better understanding
