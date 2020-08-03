@@ -1,3 +1,4 @@
+### 1.2.2: August 3rd, 2020
 * Fix Info screen product counter
 * Checkout notice for customers willing to add another appointment
 
