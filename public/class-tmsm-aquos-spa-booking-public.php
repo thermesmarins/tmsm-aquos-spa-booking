@@ -388,7 +388,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<# if (data.parent !== <?php echo esc_html(get_option( 'tmsm_aquos_spa_booking_productcat', 0 )) ?>) { #>
 			-&nbsp;&nbsp;
 			<# } #>
-			{{ data.name }} ({{ data.count }})
+			{{ data.name }}
 		</script>
 		<?php
 	}
