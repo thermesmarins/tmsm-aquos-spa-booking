@@ -141,7 +141,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							$aquos_id = $order_item_data['_aquos_id'];
 							$aquos_id_array = explode('+', $aquos_id);
 							$ignoredproducts = get_option( 'tmsm_aquos_spa_booking_ignoredproducts' );
-							$ignoredproducts_array = explode('+', $ignoredproducts);
+							$ignoredproducts_array = explode(',', $ignoredproducts);
 
 							if(count($ignoredproducts_array) > 0){
 								$aquos_id_array = array_diff($aquos_id_array, $ignoredproducts_array);

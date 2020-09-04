@@ -1,4 +1,5 @@
 * Remove product count in product list
+* Fix ignored products are separated by comma, not + sign
 
 ### 1.2.2: August 3rd, 2020
 * Fix Info screen product counter
