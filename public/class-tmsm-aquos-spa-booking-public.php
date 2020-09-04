@@ -2171,7 +2171,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$ignoredproducts_array = explode(',', $ignoredproducts);
 
 
-
 			if(count($ignoredproducts_array) > 0){
 				$aquos_id_array = array_diff($aquos_id_array, $ignoredproducts_array);
 
