@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-08-03 15:51+0200\n"
+"POT-Creation-Date: 2020-09-07 11:51+0200\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -97,13 +97,13 @@ msgid "These draft products don’t have an Aquos ID meta data"
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:189
-#: public/class-tmsm-aquos-spa-booking-public.php:2206
+#: public/class-tmsm-aquos-spa-booking-public.php:2208
 msgid "Web service is not available"
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:214
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:216
-#: public/class-tmsm-aquos-spa-booking-public.php:2229
+#: public/class-tmsm-aquos-spa-booking-public.php:2231
 #, php-format
 msgid "Error code %s: %s"
 msgstr ""
@@ -606,11 +606,11 @@ msgstr ""
 msgid "Product category is missing"
 msgstr ""
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2240
+#: public/class-tmsm-aquos-spa-booking-public.php:2242
 msgid "No time slot available for this day and this product"
 msgstr ""
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2269
+#: public/class-tmsm-aquos-spa-booking-public.php:2271
 msgid ""
 "You will receive a text message two days before the appointment."
 msgstr ""

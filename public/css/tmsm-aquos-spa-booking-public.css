@@ -47,6 +47,7 @@
 }
 #tmsm-aquos-spa-booking-cancel{
   float: left;
+  display: none !important;
 }
 #tmsm-aquos-spa-booking-confirm{
   float: right;
@@ -77,11 +78,6 @@
   display: none;
 }
 
-#tmsm-aquos-spa-booking-attributes-container input[type="radio"] {
-  -webkit-appearance: checkbox; /* Chrome, Safari, Opera */
-  -moz-appearance: checkbox;    /* Firefox */
-  -ms-appearance: checkbox;     /* not currently supported */
-}
 
 li.tmsm-aquos-spa-booking-time-item {
   display: inline-block;

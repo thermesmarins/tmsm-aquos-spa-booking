@@ -1,4 +1,6 @@
 * Fix "Your appointment was added" translation
+* Hide "Cancel" button
+* Remove CSS radio to checkbox override
 
 ### 1.2.3: September 4th, 2020
 * Remove product count in product list
