@@ -1,3 +1,5 @@
+* Fix "Your appointment was added" translation
+
 ### 1.2.3: September 4th, 2020
 * Remove product count in product list
 * Fix ignored products are separated by comma, not + sign
