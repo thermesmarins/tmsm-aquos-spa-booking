@@ -179,6 +179,16 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 */
 	public function woocommerce_product_options_inventory_product_data_fields(){
 		echo '<div class="options_group">';
+
+		woocommerce_wp_checkbox(
+			array(
+				'id'          => '_bookable',
+				'label'       => __( 'Bookable', 'tmsm-aquos-spa-booking' ),
+				'description' => __( 'Check this box if the product is bookable.', 'tmsm-aquos-spa-booking' ),
+				//'value'         => $product_object->get_sold_individually( 'edit' ) ? 'yes' : 'no',
+			)
+		);
+
 		woocommerce_wp_text_input(
 			array(
 				'id'          => '_aquos_id',
@@ -237,6 +247,10 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 		if ( isset( $_POST['_aquos_items_ids'] ) ) :
 			update_post_meta( $post_id, '_aquos_items_ids', sanitize_textarea_field( $_POST['_aquos_items_ids'] ) );
+		endif;
+
+		if ( isset( $_POST['_bookable'] ) ) :
+			update_post_meta( $post_id, '_bookable', sanitize_textarea_field( $_POST['_bookable'] )  );
 		endif;
 
 	}

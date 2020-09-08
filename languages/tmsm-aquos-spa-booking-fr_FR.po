@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-09-07 11:51+0200\n"
-"PO-Revision-Date: 2020-09-07 11:51+0200\n"
+"POT-Creation-Date: 2020-09-08 14:51+0200\n"
+"PO-Revision-Date: 2020-09-08 14:52+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -60,19 +60,27 @@ msgstr "Non"
 msgid "Aquos Product ID"
 msgstr "ID de produit Aquos"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:185
+#: admin/class-tmsm-aquos-spa-booking-admin.php:186
+msgid "Bookable"
+msgstr "Réservable"
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:187
+msgid "Check this box if the product is bookable."
+msgstr "Cocher cette case si le produit est réservable via ResaSpa"
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:195
 msgid "Aquos Product ID (for appointments)"
 msgstr "ID de produit Aquos (pour les rendez-vous)"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:188
+#: admin/class-tmsm-aquos-spa-booking-admin.php:198
 msgid "If empty, the product won't be bookable."
 msgstr "Si vide, le produit ne sera pas réservable."
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:196
+#: admin/class-tmsm-aquos-spa-booking-admin.php:206
 msgid "Aquos Products IDs (for appointment packages)"
 msgstr "IDs de produit Aquos (pour les forfaits offrant le choix)"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:200
+#: admin/class-tmsm-aquos-spa-booking-admin.php:210
 msgid ""
 "One item per line, write the Aquos product ID separated by an *. Result "
 "should be: product name * product id"
@@ -80,7 +88,7 @@ msgstr ""
 "Un item par ligne, écrire l’identifiant Aquos séparé par un *. Le résultat "
 "devrait être : nom du produit * identifiant de produit"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:255
+#: admin/class-tmsm-aquos-spa-booking-admin.php:269
 msgid "Aquos Product ID (for appointments and purchase)"
 msgstr "ID de produit Aquos (pour les rendez-vous et les achats)"
 
@@ -686,9 +694,6 @@ msgstr "Merci, votre commande n°%s est bien reçue :"
 
 #~ msgid "No product in this category"
 #~ msgstr "Aucun produit dans cette catégorie"
-
-#~ msgid "Book"
-#~ msgstr "Réserver"
 
 #~ msgid "Confirm this appointment"
 #~ msgstr "Confirmer ce rendez-vous"
