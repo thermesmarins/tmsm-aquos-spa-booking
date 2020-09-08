@@ -202,6 +202,9 @@ class Tmsm_Aquos_Spa_Booking {
 
 		$this->loader->add_action( 'init', $plugin_public, 'register_shortcodes' );
 
+		// Bookable meta field
+		$this->loader->add_filter( 'woocommerce_product_data_store_cpt_get_products_query', $plugin_public, 'woocommerce_product_data_store_cpt_get_products_query_bookable', 10, 3 );
+
 		// Html Templates
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_havevoucher' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_product_category' );

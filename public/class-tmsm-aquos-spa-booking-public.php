@@ -169,6 +169,30 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 
 	/**
+	 * Modify WP_Query with _bookable meta field
+	 *
+	 * @param $wp_query_args
+	 * @param $query_vars
+	 * @param $data_store_cpt
+	 *
+	 * @return mixed
+	 */
+	public function woocommerce_product_data_store_cpt_get_products_query_bookable($wp_query_args, $query_vars, $data_store_cpt){
+
+		$meta_key = '_bookable'; // The custom meta_key
+
+		if ( ! empty( $query_vars[$meta_key] ) ) {
+			$wp_query_args['meta_query'][] = array(
+				'key'     => $meta_key,
+				'value'   => esc_attr( $query_vars[$meta_key] ),
+				'compare' => '=', // <=== Here you can set other comparison arguments
+			);
+		}
+
+		return $wp_query_args;
+	}
+
+	/**
 	 * Button Class Default
 	 *
 	 * @return string
@@ -1960,6 +1984,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			'limit' => -1,
 			'orderby' => 'name',
 			'order' => 'ASC',
+			'_bookable' => 'yes',
 		);
 		if(!empty($product_category_id)){
 			$product_category = get_term( $product_category_id, 'product_cat');

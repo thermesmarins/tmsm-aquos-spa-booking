@@ -2,6 +2,7 @@
 * Hide "Cancel" button
 * Remove CSS radio to checkbox override
 * Add "Bookable" checkbox for products
+* Filter frontend products, display only products with _bookable meta key = yes
 
 ### 1.2.3: September 4th, 2020
 * Remove product count in product list
