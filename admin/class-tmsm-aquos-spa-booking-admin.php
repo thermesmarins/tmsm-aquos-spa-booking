@@ -249,9 +249,12 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			update_post_meta( $post_id, '_aquos_items_ids', sanitize_textarea_field( $_POST['_aquos_items_ids'] ) );
 		endif;
 
-		if ( isset( $_POST['_bookable'] ) ) :
+		if ( isset( $_POST['_bookable'] ) ) {
 			update_post_meta( $post_id, '_bookable', sanitize_textarea_field( $_POST['_bookable'] )  );
-		endif;
+		}
+		else{
+			delete_post_meta($post_id, '_bookable');
+		}
 
 	}
 
