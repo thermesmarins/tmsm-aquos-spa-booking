@@ -1,3 +1,4 @@
+### 1.2.4: September 9th, 2020
 * Fix "Your appointment was added" translation
 * Hide "Cancel" button
 * Remove CSS radio to checkbox override
