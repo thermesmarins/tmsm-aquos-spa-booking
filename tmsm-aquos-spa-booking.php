@@ -16,7 +16,7 @@
  * Plugin Name:       TMSM Aquos Spa Booking
  * Plugin URI:        http://github.com/thermesmarins/tmsm-aquos-spa-booking
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.2.3
+ * Version:           1.2.4
  * Author:            Nicolas Mollet
  * Author URI:        https://github.com/nicomollet
  * Requires PHP:      7.2
