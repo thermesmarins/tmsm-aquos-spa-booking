@@ -1,3 +1,4 @@
+### 1.2.5: October 1st, 2020
 * New setting: contact page that is clickable when no time slot is available
 
 ### 1.2.4: September 9th, 2020
