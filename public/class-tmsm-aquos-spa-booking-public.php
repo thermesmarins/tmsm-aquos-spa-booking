@@ -354,7 +354,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<h3>' . __( 'Pick your time:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<p id="tmsm-aquos-spa-booking-date-display"></p>
 			<p id="tmsm-aquos-spa-booking-times-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
-			<p id="tmsm-aquos-spa-booking-times-error" style="display: none">' . __( 'No time results for this date', 'tmsm-aquos-spa-booking' ) . '</p>
+			<p id="tmsm-aquos-spa-booking-times-error" style="display: none">' . __( 'No time results for this date.', 'tmsm-aquos-spa-booking' ) . ( !empty(get_option( 'tmsm_aquos_spa_booking_contactpage', '' )) ? '<br>'.sprintf(__( '<a href="#" id="tmsm-aquos-spa-booking-times-anotherdate">Select another date</a> or <a href="%s">contact us</a> for more information.', 'tmsm-aquos-spa-booking' ), get_permalink(get_option( 'tmsm_aquos_spa_booking_contactpage', '' ))): ''). '</p>
 			<ul id="tmsm-aquos-spa-booking-times-list" class="list-unstyled"></ul>
 			</div>
 			</div>

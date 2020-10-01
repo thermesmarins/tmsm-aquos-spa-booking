@@ -1185,6 +1185,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     listElement: '#tmsm-aquos-spa-booking-times-list',
     loadingElement: '#tmsm-aquos-spa-booking-times-loading',
     errorElement: '#tmsm-aquos-spa-booking-times-error',
+    anotherDateElement: '#tmsm-aquos-spa-booking-times-anotherdate',
     selectButtons: '.tmsm-aquos-spa-booking-time-button',
     cancelButtons: '.tmsm-aquos-spa-booking-time-change-label',
 
@@ -1196,7 +1197,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     events : {
       'click .tmsm-aquos-spa-booking-time-button' : 'selectTime',
-      'click .tmsm-aquos-spa-booking-time-change-label' : 'cancelTime'
+      'click .tmsm-aquos-spa-booking-time-change-label' : 'cancelTime',
+      'click #tmsm-aquos-spa-booking-times-anotherdate' : 'changeDate'
     },
     loading: function(){
       console.log('TimesListView loading');
@@ -1256,6 +1258,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.selectedValue = null;
 
       TmsmAquosSpaBookingApp.selectedData.set('hourminutes', null);
+    },
+
+    changeDate: function(event){
+      event.preventDefault();
+      TmsmAquosSpaBookingApp.dateList.reset();
+      TmsmAquosSpaBookingApp.timesList.reset();
+      TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
     },
 
     reset: function (){

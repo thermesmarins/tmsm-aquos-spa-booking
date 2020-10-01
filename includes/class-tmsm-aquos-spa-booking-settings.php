@@ -67,6 +67,12 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 					include( plugin_dir_path( dirname( __FILE__ ) ) .'admin/partials/tmsm-aquos-spa-booking-admin-display.php' );
 				}
 				else{
+					$pages = [];
+					$pages[''] = __( 'Select a contact page', 'tmsm-aquos-spa-booking' );
+					foreach(get_pages(['sort_column' => 'post_title', 'hierarchical' => false ]) as $page){
+						$pages[$page->ID] = $page->post_title;
+					}
+
 					$settings = array(
 
 						array(
@@ -165,6 +171,15 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 							'name'     => __( 'Accept Online Payment', 'tmsm-aquos-spa-booking' ),
 							'desc'     => '<p class="description">'.__( 'Accept Online Payment for the Bookable Products.', 'tmsm-aquos-spa-booking'  ).'</p>',
 							'default'  => 'no',
+						),
+
+
+						array(
+							'type'     => 'select',
+							'id'       => 'tmsm_aquos_spa_booking_contactpage',
+							'name'     => __( 'Contact Page', 'tmsm-aquos-spa-booking' ),
+							'default'  => 'no',
+							'options' => $pages,
 						),
 
 						array(
