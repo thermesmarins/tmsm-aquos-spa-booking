@@ -1165,6 +1165,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
   TmsmAquosSpaBookingApp.TimeModel = BaseModel.extend( {
     action: 'tmsm-aquos-spa-booking-times',
     defaults: {
+      date: null,
       hour: null,
       minute: null,
       priority: null,
@@ -1226,10 +1227,22 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log(this.collection);
       console.log('TimesListView collection length: ' + this.collection.length);
 
-
-
+      var i = 0;
       this.collection.each( function( model ) {
+        i++;
+        if(i===1){
+          $( '.tmpl-tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date+'"]').empty();
+        }
         var item = new TmsmAquosSpaBookingApp.TimesListItemView( { model: model } );
+        if($( '.tmpl-tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date+'"]').length > 0){
+          $( '.tmpl-tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date+'"]').append(item.render().$el.context.outerHTML);
+        }
+        else{
+          console.log('tmpl-tmsm-aquos-spa-booking-weekday-times not added for '+model.attributes.date);
+        }
+        //
+        //$( '.tmpl-tmsm-aquos-spa-booking-weekday-times[data-date=\''+model.attributes.date+'\']').append(item.render().$el);
+
         $list.append( item.render().$el );
       }, this );
 
@@ -1313,7 +1326,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
   TmsmAquosSpaBookingApp.WeekDayModel = BaseModel.extend( {
     action: 'tmsm-aquos-spa-booking-weekday',
     defaults: {
-      date: null,
+      date_label: null,
+      date_computed: null,
     }
   } );
 
@@ -1375,7 +1389,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         console.log('i:'+i);
         console.log(moment().add(i, 'days').format('dddd Do MMMM'));
 
-        this.collection.push( {date: moment().add(i, 'days').format('dddd Do MMMM')});
+        this.collection.push( {
+          date_label: moment().add(i, 'days').format('dddd Do MMMM'),
+          date_computed: moment().add(i, 'days').format('YYYY-MM-DD')
+        });
       }
 
       console.log('WeekDayListView collection:');

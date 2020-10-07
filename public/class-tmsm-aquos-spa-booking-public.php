@@ -405,7 +405,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-weekday">
-			{{ data.date }}
+			{{ data.date_label }}
+			<ul class="tmpl-tmsm-aquos-spa-booking-weekday-times" data-date="{{ data.date_computed }}">
+
+			</ul>
 		</script>
 		<?php
 	}
@@ -417,7 +420,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-time">
-			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-hour="{{ data.hour }}" data-minutes="{{ data.minutes }}" data-hourminutes="{{ data.hourminutes }}" data-priority="{{ data.priority }}">{{ data.hourminutes }} <# if ( TmsmAquosSpaBookingApp.role == "1" && data.priority == 1) { #> <!--*--><# } #></a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
+			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-date="{{ data.date }}" data-hour="{{ data.hour }}" data-minutes="{{ data.minutes }}" data-hourminutes="{{ data.hourminutes }}" data-priority="{{ data.priority }}">{{ data.hourminutes }} <# if ( TmsmAquosSpaBookingApp.role == "1" && data.priority == 1) { #> <!--*--><# } #></a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
 		</script>
 		<?php
 	}
@@ -2160,6 +2163,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$productvariation_id = sanitize_text_field( $_REQUEST['productvariation'] );
 		$choice_id           = sanitize_text_field( $_REQUEST['choice'] );
 		$date                = sanitize_text_field( $_REQUEST['date'] );
+		$date_with_dash      = $date;
 		$times               = [];
 
 		$product = wc_get_product( $product_id );
@@ -2264,6 +2268,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					foreach($result_array['Schedules'] as $schedule){
 						$schedule_hourminutes = explode(':', $schedule['Hour']);
 						$times[] = [
+						'date' => $date_with_dash,
 						'hour' => $schedule_hourminutes[0],
 						'minutes' => $schedule_hourminutes[1],
 						'hourminutes' => $schedule['Hour'],
