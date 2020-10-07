@@ -211,6 +211,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_product' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_product_variation' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_product_attribute' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_weekday' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_time' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'template_choice' );
 

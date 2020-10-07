@@ -1190,6 +1190,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     cancelButtons: '.tmsm-aquos-spa-booking-time-change-label',
 
     initialize: function() {
+
       console.log('TimesListView initialize');
       this.hide();
       this.listenTo( this.collection, 'sync', this.render );
@@ -1198,8 +1199,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     events : {
       'click .tmsm-aquos-spa-booking-time-button' : 'selectTime',
       'click .tmsm-aquos-spa-booking-time-change-label' : 'cancelTime',
-      'click #tmsm-aquos-spa-booking-times-anotherdate' : 'changeDate'
+      'click #tmsm-aquos-spa-booking-times-anotherdate' : 'changeDate',
+      'click .previous': 'previous',
+      'click .next': 'next',
     },
+
     loading: function(){
       console.log('TimesListView loading');
       $( this.errorElement ).hide();
@@ -1289,6 +1293,113 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     tagName: 'li',
     className: 'tmsm-aquos-spa-booking-time-item',
     template: wp.template( 'tmsm-aquos-spa-booking-time' ),
+
+    initialize: function() {
+      this.listenTo( this.model, 'change', this.render );
+      this.listenTo( this.model, 'destroy', this.remove );
+    },
+
+    render: function() {
+      var html = this.template( this.model.toJSON() );
+      this.$el.html( html );
+      return this;
+    },
+
+  } );
+
+  /**
+   * WeekDay
+   */
+  TmsmAquosSpaBookingApp.WeekDayModel = BaseModel.extend( {
+    action: 'tmsm-aquos-spa-booking-weekday',
+    defaults: {
+      date: null,
+    }
+  } );
+
+  TmsmAquosSpaBookingApp.WeekDayCollection = BaseCollection.extend( {
+    action: 'tmsm-aquos-spa-booking-weekday',
+    model: TmsmAquosSpaBookingApp.WeekDayModel,
+
+  } );
+
+  TmsmAquosSpaBookingApp.WeekDayListView = Backbone.View.extend( {
+    el: '#tmsm-aquos-spa-booking-date-container',
+    listElement: '#tmsm-aquos-spa-booking-weekdays-list',
+    daysPage: 1,
+
+    templateHelpers: {
+      moment: moment // <-- this is the reference to the moment in your view
+    },
+
+    initialize: function() {
+      console.log("moment", moment().format());
+
+      console.log('WeekDayListView initialize');
+      this.listenTo( this.collection, 'sync', this.render );
+    },
+
+    events : {
+      'click #tmsm-aquos-spa-booking-weekdays-previous': 'previous',
+      'click #tmsm-aquos-spa-booking-weekdays-next': 'next',
+    },
+
+    previous: function(event){
+      console.log('WeekDayListView previous');
+
+      event.preventDefault();
+      this.page = this.page - 1;
+      this.render();
+    },
+
+    next: function(event){
+      console.log('WeekDayListView next');
+
+      event.preventDefault();
+      this.page = this.page + 1;
+
+      this.render();
+    },
+
+    render: function() {
+      console.log('WeekDayListView render');
+      var $list = this.$( this.listElement ).html('').empty().val('');
+
+      var i = 0;
+
+      for (i = (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+(this.daysPage-1) * 7); i < (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+7+(this.daysPage-1) * 7); i++) {
+
+
+        console.log('i:'+i);
+        console.log(moment().add(i, 'days').format('MMM Do YY'));
+
+        this.collection.push( {date: moment().add(i, 'days').format('MMM Do YY')});
+      }
+
+      console.log('WeekDayListView collection:');
+      console.log(this.collection);
+
+
+      console.log('WeekDayListView collection length: ' + this.collection.length);
+
+
+
+      this.collection.each( function( model ) {
+        console.log('WeekDayListView each');
+        console.log(model);
+        var item = new TmsmAquosSpaBookingApp.WeekDayListItemView( { model: model } );
+        $list.append( item.render().$el );
+      }, this );
+
+      return this;
+    },
+
+  } );
+
+  TmsmAquosSpaBookingApp.WeekDayListItemView = Backbone.View.extend( {
+    tagName: 'li',
+    className: 'tmsm-aquos-spa-booking-weekday-item',
+    template: wp.template( 'tmsm-aquos-spa-booking-weekday' ),
 
     initialize: function() {
       this.listenTo( this.model, 'change', this.render );
@@ -1515,6 +1626,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     TmsmAquosSpaBookingApp.times.reset( TmsmAquosSpaBookingApp.data.times );
     TmsmAquosSpaBookingApp.timesList = new TmsmAquosSpaBookingApp.TimesListView( { collection: TmsmAquosSpaBookingApp.times } );
     TmsmAquosSpaBookingApp.timesList.render();
+
+    TmsmAquosSpaBookingApp.weekdays = new TmsmAquosSpaBookingApp.WeekDayCollection();
+    TmsmAquosSpaBookingApp.weekdays.reset( TmsmAquosSpaBookingApp.data.times );
+    TmsmAquosSpaBookingApp.weekdaysList = new TmsmAquosSpaBookingApp.WeekDayListView( { collection: TmsmAquosSpaBookingApp.weekdays } );
+    TmsmAquosSpaBookingApp.weekdaysList.render();
 
     TmsmAquosSpaBookingApp.selectedData = new TmsmAquosSpaBookingApp.SelectedDataModel();
     TmsmAquosSpaBookingApp.selectedDataList = new TmsmAquosSpaBookingApp.SelectedDataView( { model: TmsmAquosSpaBookingApp.selectedData } );

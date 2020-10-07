@@ -152,6 +152,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'productvariations' => array(),
 				'choices' => array(),
 				'times' => array(),
+				'weekdays' => array(),
 			),
 		);
 		wp_localize_script( $this->plugin_name, 'TmsmAquosSpaBookingApp', $data );
@@ -346,6 +347,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<h3>' . __( 'Pick your date:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default">
 			</div>
+			<ul id="tmsm-aquos-spa-booking-weekdays-list" class="nav nav-tabs nav-justified">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '
+			</ul>
+			<button class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-weekdays-next">' . __( 'Next', 'tmsm-aquos-spa-booking' ) . '</button>	
+			<button class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-weekdays-previous">' . __( 'Previous', 'tmsm-aquos-spa-booking' ) .                 '</button>
 			</div>
 			</div>
 			
@@ -356,6 +361,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<p id="tmsm-aquos-spa-booking-times-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
 			<p id="tmsm-aquos-spa-booking-times-error" style="display: none">' . __( 'No time results for this date.', 'tmsm-aquos-spa-booking' ) . ( !empty(get_option( 'tmsm_aquos_spa_booking_contactpage', '' )) ? '<br>'.sprintf(__( '<a href="#" id="tmsm-aquos-spa-booking-times-anotherdate">Select another date</a> or <a href="%s">contact us</a> for more information.', 'tmsm-aquos-spa-booking' ), get_permalink(get_option( 'tmsm_aquos_spa_booking_contactpage', '' ))): ''). '</p>
 			<ul id="tmsm-aquos-spa-booking-times-list" class="list-unstyled"></ul>
+			
+
+			
 			</div>
 			</div>
 			
@@ -391,7 +399,19 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 
 	/**
-	 * Date Template
+	 * Weekday Template
+	 */
+	public function template_weekday(){
+		?>
+
+		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-weekday">
+			{{ data.date }}
+		</script>
+		<?php
+	}
+
+	/**
+	 * Time Template
 	 */
 	public function template_time(){
 		?>
