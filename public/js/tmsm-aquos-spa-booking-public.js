@@ -1348,7 +1348,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log('WeekDayListView previous');
 
       event.preventDefault();
-      this.page = this.page - 1;
+      this.daysPage = this.daysPage - 1;
       this.render();
     },
 
@@ -1356,29 +1356,30 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log('WeekDayListView next');
 
       event.preventDefault();
-      this.page = this.page + 1;
+      this.daysPage = this.daysPage + 1;
 
       this.render();
     },
 
     render: function() {
-      console.log('WeekDayListView render');
-      var $list = this.$( this.listElement ).html('').empty().val('');
+      console.log('WeekDayListView render empty');
+      var $list = this.$( this.listElement ).empty().val('');
 
+      this.collection.reset();
+      
       var i = 0;
 
       for (i = (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+(this.daysPage-1) * 7); i < (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+7+(this.daysPage-1) * 7); i++) {
 
 
         console.log('i:'+i);
-        console.log(moment().add(i, 'days').format('MMM Do YY'));
+        console.log(moment().add(i, 'days').format('dddd Do MMMM'));
 
-        this.collection.push( {date: moment().add(i, 'days').format('MMM Do YY')});
+        this.collection.push( {date: moment().add(i, 'days').format('dddd Do MMMM')});
       }
 
       console.log('WeekDayListView collection:');
       console.log(this.collection);
-
 
       console.log('WeekDayListView collection length: ' + this.collection.length);
 
