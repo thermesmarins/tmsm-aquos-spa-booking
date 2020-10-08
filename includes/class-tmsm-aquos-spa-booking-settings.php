@@ -183,6 +183,17 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						),
 
 						array(
+							'type'     => 'select',
+							'id'       => 'tmsm_aquos_spa_booking_dateselection',
+							'name'     => __( 'Date Selection', 'tmsm-aquos-spa-booking' ),
+							'default'  => 'calendar',
+							'options' => [
+								'calendar' => __( 'Calendar View', 'tmsm-aquos-spa-booking' ),
+								'weekdays' => __( 'Week Days View', 'tmsm-aquos-spa-booking' ),
+								],
+						),
+
+						array(
 							'type'     => 'number',
 							'id'       => 'tmsm_aquos_spa_booking_daysrangefrom',
 							'name'     => __( 'Calendar Days Range From', 'tmsm-aquos-spa-booking' ),

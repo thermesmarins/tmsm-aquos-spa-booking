@@ -1376,38 +1376,58 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     render: function() {
-      console.log('WeekDayListView render empty');
+      console.log('WeekDayListView render');
       var $list = this.$( this.listElement ).empty().val('');
 
       this.collection.reset();
       
       var i = 0;
 
-      for (i = (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+(this.daysPage-1) * 7); i < (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+7+(this.daysPage-1) * 7); i++) {
+      if(TmsmAquosSpaBookingApp.productsList.selectedValue){
+        console.log('WeekDayListView starting');
+        for (i = (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+(this.daysPage-1) * 7); i < (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+7+(this.daysPage-1) * 7); i++) {
 
 
-        console.log('i:'+i);
-        console.log(moment().add(i, 'days').format('dddd Do MMMM'));
+          console.log('i:'+i);
+          console.log(moment().add(i, 'days').format('dddd Do MMMM'));
 
-        this.collection.push( {
-          date_label: moment().add(i, 'days').format('dddd Do MMMM'),
-          date_computed: moment().add(i, 'days').format('YYYY-MM-DD')
-        });
+          this.collection.push( {
+            date_label: moment().add(i, 'days').format('dddd Do MMMM'),
+            date_computed: moment().add(i, 'days').format('YYYY-MM-DD')
+          });
+        }
+
+        console.log('WeekDayListView collection:');
+        console.log(this.collection);
+
+        console.log('WeekDayListView collection length: ' + this.collection.length);
+
+
+
+        this.collection.each( function( model ) {
+
+
+          //console.log('WeekDayListView each');
+          //console.log(model);
+          var item = new TmsmAquosSpaBookingApp.WeekDayListItemView( { model: model } );
+          $list.append( item.render().$el );
+
+          console.log('WeekDayListView fetch:');
+          TmsmAquosSpaBookingApp.times.fetch({
+            data: {
+              productcategory: TmsmAquosSpaBookingApp.productCategoriesList.selectedValue,
+              product: TmsmAquosSpaBookingApp.productsList.selectedValue,
+              productvariation: TmsmAquosSpaBookingApp.productVariationsList.selectedValue,
+              choice: TmsmAquosSpaBookingApp.choicesList.selectedValue,
+              date: model.attributes.date_computed
+            }
+          });
+
+        }, this );
+
+
+
       }
-
-      console.log('WeekDayListView collection:');
-      console.log(this.collection);
-
-      console.log('WeekDayListView collection length: ' + this.collection.length);
-
-
-
-      this.collection.each( function( model ) {
-        console.log('WeekDayListView each');
-        console.log(model);
-        var item = new TmsmAquosSpaBookingApp.WeekDayListItemView( { model: model } );
-        $list.append( item.render().$el );
-      }, this );
 
       return this;
     },
