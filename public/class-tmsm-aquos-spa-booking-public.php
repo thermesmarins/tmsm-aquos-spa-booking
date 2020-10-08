@@ -110,6 +110,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		// Also add translatable strings for JS as well as reference settings.
 		$data = array(
 			'strings'      => array(
+				'loading'    => __( 'Loading', 'tmsm-aquos-spa-booking' ),
+				'notimeslot'    => __( 'No timeslot', 'tmsm-aquos-spa-booking' ),
 				'no_selection'    => __( 'No selection', 'tmsm-aquos-spa-booking' ),
 				'no_events'    => _x( '(none)', 'no event to show', 'tmsm-aquos-spa-booking' ),
 				'due'          => _x( 'due', 'label for when cron event date', 'tmsm-aquos-spa-booking' ),
@@ -350,8 +352,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			<ul id="tmsm-aquos-spa-booking-weekdays-list" class="nav nav-tabs nav-justified" style="'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'weekdays'?'display:none;':'').'">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '
 			</ul>
-			<button class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-weekdays-previous" style="'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'weekdays'?'display:none;':'').'">' . __( 'Previous Dates', 'tmsm-aquos-spa-booking' ) .                 '</button>
-			<button class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-weekdays-next" style="'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'weekdays'?'display:none;':'').'">' . __( 'Next Dates', 'tmsm-aquos-spa-booking' ) . '</button>	
+			<button class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-weekdays-previous" style="display:none;">' . __( 'Previous Dates', 'tmsm-aquos-spa-booking' ) .                 '</button>
+			<button class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-weekdays-next" style="display:none;">' . __( 'Next Dates', 'tmsm-aquos-spa-booking' ) . '</button>	
 			</div>
 			</div>
 			
@@ -406,11 +408,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-weekday">
-			{{ data.date_label }}
-			<ul class="tmpl-tmsm-aquos-spa-booking-weekday-times" data-date="{{ data.date_computed }}">
-
+			{{ data.date_label_firstline }} <span class="secondline">{{ data.date_label_secondline }}</span>
+			<ul class="tmsm-aquos-spa-booking-weekday-times list-unstyled" data-date="{{ data.date_computed }}" >
+				<li>{{ TmsmAquosSpaBookingApp.strings.loading }}</li>
 			</ul>
 		</script>
+
 		<?php
 	}
 
@@ -421,7 +424,13 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		?>
 
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-time">
+			<# if ( data.hourminutes != null) { #>
 			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_primary(); ?> tmsm-aquos-spa-booking-time" href="#" data-date="{{ data.date }}" data-hour="{{ data.hour }}" data-minutes="{{ data.minutes }}" data-hourminutes="{{ data.hourminutes }}" data-priority="{{ data.priority }}">{{ data.hourminutes }} <# if ( TmsmAquosSpaBookingApp.role == "1" && data.priority == 1) { #> <!--*--><# } #></a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
+			<# } else { #>
+				{{  TmsmAquosSpaBookingApp.strings.notimeslot }}
+			<# } #>
+
+
 		</script>
 		<?php
 	}
@@ -2291,6 +2300,13 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		if ( count( $times ) == 0 ) {
 			$errors[] = __( 'No time slot available for this day and this product', 'tmsm-aquos-spa-booking' );
+			$times[] = [
+				'date' => $date_with_dash,
+				'hour' => null,
+				'minutes' => null,
+				'hourminutes' => null,
+				'priority' => null,
+			];
 		}
 
 		//$jsondata['times'] = $times;

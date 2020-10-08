@@ -600,9 +600,16 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     confirm: function(event){
 
+      console.log('AttributesListView confirm');
+      
       TmsmAquosSpaBookingApp.timesList.reset();
 
       TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
+
+      if(TmsmAquosSpaBookingApp.calendar.dateselection == 'weekdays'){
+        TmsmAquosSpaBookingApp.weekdaysList.render();
+      }
+
     },
 
     checkattributes: function(){
@@ -1026,6 +1033,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
 
 
+      if(TmsmAquosSpaBookingApp.calendar.dateselection == 'weekdays'){
+        TmsmAquosSpaBookingApp.weekdaysList.render();
+      }
     },
 
     reset: function (){
@@ -1231,17 +1241,17 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.collection.each( function( model ) {
         i++;
         if(i===1){
-          $( '.tmpl-tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date+'"]').empty();
+          $( '.tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date+'"]').empty();
         }
         var item = new TmsmAquosSpaBookingApp.TimesListItemView( { model: model } );
-        if($( '.tmpl-tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date+'"]').length > 0){
-          $( '.tmpl-tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date+'"]').append(item.render().$el.context.outerHTML);
+        if ($('.tmsm-aquos-spa-booking-weekday-times[data-date="' + model.attributes.date + '"]').length > 0) {
+          $( '.tmsm-aquos-spa-booking-weekday-times[data-date="' + model.attributes.date + '"]').append(item.render().$el.context.outerHTML);
         }
         else{
-          console.log('tmpl-tmsm-aquos-spa-booking-weekday-times not added for '+model.attributes.date);
+          console.log('tmsm-aquos-spa-booking-weekday-times not added for '+model.attributes.date);
         }
         //
-        //$( '.tmpl-tmsm-aquos-spa-booking-weekday-times[data-date=\''+model.attributes.date+'\']').append(item.render().$el);
+        //$( '.tmsm-aquos-spa-booking-weekday-times[data-date=\''+model.attributes.date+'\']').append(item.render().$el);
 
         $list.append( item.render().$el );
       }, this );
@@ -1380,7 +1390,27 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       var $list = this.$( this.listElement ).empty().val('');
 
       this.collection.reset();
-      
+
+      if(this.daysPage === 1){
+        $('#tmsm-aquos-spa-booking-weekdays-previous').hide();
+        console.log('premiere page je cache previous');
+      }
+      else{
+        $('#tmsm-aquos-spa-booking-weekdays-previous').show();
+        console.log('autre page jaffiche previous');
+      }
+
+      console.log('(TmsmAquosSpaBookingApp.calendar.daysrangeto / 7):'+(TmsmAquosSpaBookingApp.calendar.daysrangeto / 7));
+      console.log('this.daysPage:'+(this.daysPage));
+      if((TmsmAquosSpaBookingApp.calendar.daysrangeto / 7) < this.daysPage){
+        $('#tmsm-aquos-spa-booking-weekdays-next').hide();
+        console.log('derniere page je cache next');
+      }
+      else{
+        $('#tmsm-aquos-spa-booking-weekdays-next').show();
+        console.log('autre page jaffiche next');
+      }
+
       var i = 0;
 
       if(TmsmAquosSpaBookingApp.productsList.selectedValue){
@@ -1392,7 +1422,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           console.log(moment().add(i, 'days').format('dddd Do MMMM'));
 
           this.collection.push( {
-            date_label: moment().add(i, 'days').format('dddd Do MMMM'),
+            date_label: moment().add(i, 'days').format('dddd Do MMMM'),
+            date_label_secondline: moment().add(i, 'days').format('MMMM'),
+            date_label_firstline: moment().add(i, 'days').format('dddd Do'),
             date_computed: moment().add(i, 'days').format('YYYY-MM-DD')
           });
         }
@@ -1424,6 +1456,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           });
 
         }, this );
+
 
 
 

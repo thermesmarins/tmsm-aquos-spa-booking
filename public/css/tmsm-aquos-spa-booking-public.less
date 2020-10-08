@@ -80,30 +80,21 @@ li.tmsm-aquos-spa-booking-time-item {
 #tmsm-aquos-spa-booking-choices-container,
 #tmsm-aquos-spa-booking-date-container,
 #tmsm-aquos-spa-booking-times-container {
-  border: 3px solid black;
-  min-height: 50vh;
-  vertical-align: middle;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 40px;
-  padding: 10px;
+    border: 3px solid black;
+    min-height: 50vh;
+    vertical-align: middle;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    padding: 10px;
+    @media (min-width: 600px) {
+        padding: 20px;
+        margin-bottom: 100px;
+    }
 }
-@media (min-width: 600px) {
-  #tmsm-aquos-spa-booking-voucher-container,
-  #tmsm-aquos-spa-booking-categories-container,
-  #tmsm-aquos-spa-booking-products-container,
-  #tmsm-aquos-spa-booking-variations-container,
-  #tmsm-aquos-spa-booking-attributes-container,
-  #tmsm-aquos-spa-booking-choices-container,
-  #tmsm-aquos-spa-booking-date-container,
-  #tmsm-aquos-spa-booking-times-container {
-    padding: 20px;
-    height: 50vh;
-    margin-bottom: 100px;
-  }
-}
+
 
 #tmsm-aquos-spa-booking-voucher-container:before,
 #tmsm-aquos-spa-booking-categories-container:before,
@@ -175,16 +166,21 @@ li.tmsm-aquos-spa-booking-time-item {
 }
 
 
-#tmsm-aquos-spa-booking-date-inner{
-  display: block;
-  width: 80%;
+.tmsm-aquos-spa-booking-form-calendar{
+    #tmsm-aquos-spa-booking-date-inner{
+        display: block;
+        width: 80%;
+    }
 }
+
 #tmsm-aquos-spa-booking-date-inner table{
   width: 100%;
 }
+
 #tmsm-aquos-spa-booking-date-inner .datepicker-inline{
   width: 100%;
 }
+
 .tmsm-aquos-spa-booking-time-listitem{
   margin-bottom: 8px;
 }
@@ -199,4 +195,19 @@ li.tmsm-aquos-spa-booking-time-item {
 
 .variation-IDdeproduitAquos{
   display: none;
+}
+
+.tmsm-aquos-spa-booking-weekday-item{
+    font-weight: bold;
+    padding-bottom: 20px;
+    &.secondline{
+        @media (max-width: 600px) {
+            display: block;
+        }
+    }
+}
+
+.tmsm-aquos-spa-booking-weekday-times{
+    padding-top: 10px;
+    font-weight: normal;
 }
