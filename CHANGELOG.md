@@ -1,3 +1,5 @@
+* New setting: date selection (calendar or week days)
+
 ### 1.2.5: October 1st, 2020
 * New setting: contact page that is clickable when no time slot is available
 
