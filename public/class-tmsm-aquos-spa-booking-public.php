@@ -347,7 +347,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			
 			<div id="tmsm-aquos-spa-booking-date-container" >
 			<div id="tmsm-aquos-spa-booking-date-inner">
-			<h3>' . __( 'Pick your date:', 'tmsm-aquos-spa-booking' ) . '</h3>
+			'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'calendar' ? '<h3>' . __( 'Pick your timeslot:', 'tmsm-aquos-spa-booking' ) . '</h3>' : '<h3>' . __( 'Pick your date:', 'tmsm-aquos-spa-booking' ) . '</h3>' ).'
 			<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default" style="'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'calendar'?'display:none;':'').'">
 			</div>
 			<ul id="tmsm-aquos-spa-booking-weekdays-list" class="nav nav-tabs nav-justified" style="'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'weekdays'?'display:none;':'').'">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '

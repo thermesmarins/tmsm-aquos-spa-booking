@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-10-08 15:06+0200\n"
-"PO-Revision-Date: 2020-10-08 15:07+0200\n"
+"POT-Creation-Date: 2020-10-09 08:58+0200\n"
+"PO-Revision-Date: 2020-10-09 08:59+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -422,7 +422,7 @@ msgstr "Chargement"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:114
 msgid "No timeslot"
-msgstr "Aucun créneau disponible ce jour"
+msgstr "Aucune disponibilité"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:115
 #: public/class-tmsm-aquos-spa-booking-public.php:310
@@ -533,6 +533,10 @@ msgstr "Confirmer les options"
 #: public/class-tmsm-aquos-spa-booking-public.php:342
 msgid "Pick your choice:"
 msgstr "Choisir parmi :"
+
+#: public/class-tmsm-aquos-spa-booking-public.php:350
+msgid "Pick your timeslot:"
+msgstr "Choisir la date et l’heure :"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:350
 msgid "Pick your date:"

@@ -2,7 +2,12 @@
   min-width: 150px;
 }
 .tmsm-aquos-spa-booking-time {
-  min-width: 100px;
+  min-width: 50px;
+}
+@media (min-width: 992px) {
+  .tmsm-aquos-spa-booking-time {
+    min-width: 100px;
+  }
 }
 .tmsm-aquos-spa-booking-time.selected + .tmsm-aquos-spa-booking-time-change-label {
   display: inline-block;
@@ -175,8 +180,17 @@ li.tmsm-aquos-spa-booking-time-item {
   font-weight: bold;
   padding-bottom: 20px;
 }
-@media (max-width: 600px) {
-  .tmsm-aquos-spa-booking-weekday-item.secondline {
+@media (min-width: 768px) and (max-width: 992px) {
+  .tmsm-aquos-spa-booking-weekday-item {
+    font-size: 80%;
+  }
+  .tmsm-aquos-spa-booking-weekday-item .btn {
+    padding: 3px 6px;
+    font-size: 80%;
+  }
+}
+@media (min-width: 768px) {
+  .tmsm-aquos-spa-booking-weekday-item .secondline {
     display: block;
   }
 }
