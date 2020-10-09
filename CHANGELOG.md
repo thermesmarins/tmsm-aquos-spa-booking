@@ -1,3 +1,5 @@
+### 1.2.6: October 9th, 2020
+* New date view by week days
 * New setting: date selection (calendar or week days)
 
 ### 1.2.5: October 1st, 2020
