@@ -412,6 +412,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       TmsmAquosSpaBookingApp.productAttributesList.reset();
       TmsmAquosSpaBookingApp.productVariationsList.reset();
 
+
+
       if(this.selectedHasChoices){
         // Go to choices
         TmsmAquosSpaBookingApp.data.choices = choices;
@@ -440,9 +442,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
           TmsmAquosSpaBookingApp.selectedData.set('productvariation', this.selectedValue);
           TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
+
+
         }
       }
-
+      if(TmsmAquosSpaBookingApp.calendar.dateselection == 'weekdays'){
+        TmsmAquosSpaBookingApp.weekdaysList.render();
+      }
 
     },
 
@@ -1364,6 +1370,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     events : {
+      'click .tmsm-aquos-spa-booking-time-button' : 'selectTime',
       'click #tmsm-aquos-spa-booking-weekdays-previous': 'previous',
       'click #tmsm-aquos-spa-booking-weekdays-next': 'next',
     },
@@ -1463,6 +1470,18 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       }
 
       return this;
+    },
+    selectTime: function(event){
+      event.preventDefault();
+      console.log('WeekDayListView selectTime');
+      this.selectedValue = $(event.target).data('hourminutes');
+      var date = $(event.target).data('date');
+      console.log('WeekDayListView selectedValue: '+ this.selectedValue);
+      //$( this.selectButtons ).hide().removeClass('disabled').removeClass('selected').addClass('not-selected');
+      //$(event.target).show().addClass('selected').removeClass('not-selected').find('.tmsm-aquos-spa-booking-time').addClass('disabled');
+
+      TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
+      TmsmAquosSpaBookingApp.selectedData.set('date', date);
     },
 
   } );
