@@ -1,3 +1,4 @@
+### 1.2.7: October 13th, 2020
 * Fix OptinMonster momentjs conflict
 * WeekDay selecting time adds a disabled state
 * Fix missing momentjs dependency
