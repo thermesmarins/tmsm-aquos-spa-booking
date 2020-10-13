@@ -1,3 +1,5 @@
+* Fix missing momentjs dependency
+
 ### 1.2.6: October 9th, 2020
 * New date view by week days
 * New setting: date selection (calendar or week days)
