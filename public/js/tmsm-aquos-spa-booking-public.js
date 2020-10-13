@@ -1356,6 +1356,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
   TmsmAquosSpaBookingApp.WeekDayListView = Backbone.View.extend( {
     el: '#tmsm-aquos-spa-booking-date-container',
     listElement: '#tmsm-aquos-spa-booking-weekdays-list',
+    selectButtons: '.tmsm-aquos-spa-booking-time-button',
     daysPage: 1,
 
     templateHelpers: {
@@ -1363,9 +1364,14 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     initialize: function() {
-      console.log("moment", moment().format());
 
       console.log('WeekDayListView initialize');
+
+      moment.locale(TmsmAquosSpaBookingApp.locale);
+      console.log("moment", moment().format());
+      console.log("moment locale: "+ moment.locale());
+
+      console.log("moment fromnow: "+ moment().fromNow());
       this.listenTo( this.collection, 'sync', this.render );
     },
 
@@ -1427,12 +1433,14 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
           console.log('i:'+i);
           console.log(moment().add(i, 'days').format('dddd Do MMMM'));
+          //moment.locale(TmsmAquosSpaBookingApp.locale);
+          var m = moment();
 
           this.collection.push( {
-            date_label: moment().add(i, 'days').format('dddd Do MMMM'),
-            date_label_secondline: moment().add(i, 'days').format('MMMM'),
-            date_label_firstline: moment().add(i, 'days').format('dddd Do'),
-            date_computed: moment().add(i, 'days').format('YYYY-MM-DD')
+            date_label: m.add(i, 'days').format('dddd Do MMMM'),
+            date_label_secondline: m.add(i, 'days').format('MMMM'),
+            date_label_firstline: m.add(i, 'days').format('dddd Do'),
+            date_computed: m.add(i, 'days').format('YYYY-MM-DD')
           });
         }
 
@@ -1464,9 +1472,6 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
         }, this );
 
-
-
-
       }
 
       return this;
@@ -1477,8 +1482,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.selectedValue = $(event.target).data('hourminutes');
       var date = $(event.target).data('date');
       console.log('WeekDayListView selectedValue: '+ this.selectedValue);
-      //$( this.selectButtons ).hide().removeClass('disabled').removeClass('selected').addClass('not-selected');
-      //$(event.target).show().addClass('selected').removeClass('not-selected').find('.tmsm-aquos-spa-booking-time').addClass('disabled');
+      $( this.selectButtons ).removeClass('disabled').removeClass('selected').addClass('not-selected');
+      $(event.target).addClass('disabled').removeClass('not-selected');
 
       TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
       TmsmAquosSpaBookingApp.selectedData.set('date', date);
@@ -1733,10 +1738,20 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
   };
 
   $( document ).ready( function() {
+
     TmsmAquosSpaBookingApp.init();
+
   } );
 
 
 
 
 })(jQuery, TmsmAquosSpaBookingApp);
+
+// OptinMonster compatibility
+document.addEventListener('om.Scripts.init', function(evt) {
+  window._omapp.scripts.moment.status = 'loaded';
+  window._omapp.scripts.moment.object = window.moment ? window.moment : null;
+  window._omapp.scripts.momentTz.status = 'loaded';
+  window._omapp.scripts.momentTz.object = window.moment ? window.moment.tz : null;
+});
