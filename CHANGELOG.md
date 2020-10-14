@@ -1,3 +1,4 @@
+### 1.2.8: October 14th, 2020
 * Fix dates in week view were not listed properly (3 by 3)
 
 ### 1.2.7: October 13th, 2020
