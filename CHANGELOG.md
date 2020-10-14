@@ -1,3 +1,5 @@
+* Fix dates in week view were not listed properly (3 by 3)
+
 ### 1.2.7: October 13th, 2020
 * Fix OptinMonster momentjs conflict
 * WeekDay selecting time adds a disabled state

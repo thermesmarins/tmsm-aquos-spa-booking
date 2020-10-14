@@ -1433,14 +1433,12 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
           console.log('i:'+i);
           console.log(moment().add(i, 'days').format('dddd Do MMMM'));
-          //moment.locale(TmsmAquosSpaBookingApp.locale);
-          var m = moment();
 
           this.collection.push( {
-            date_label: m.add(i, 'days').format('dddd Do MMMM'),
-            date_label_secondline: m.add(i, 'days').format('MMMM'),
-            date_label_firstline: m.add(i, 'days').format('dddd Do'),
-            date_computed: m.add(i, 'days').format('YYYY-MM-DD')
+            date_label: moment().add(i, 'days').format('dddd Do MMMM'),
+            date_label_secondline: moment().add(i, 'days').format('MMMM'),
+            date_label_firstline: moment().add(i, 'days').format('dddd Do'),
+            date_computed: moment().add(i, 'days').format('YYYY-MM-DD')
           });
         }
 
