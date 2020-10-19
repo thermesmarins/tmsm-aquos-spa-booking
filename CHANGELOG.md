@@ -1,3 +1,7 @@
+### 1.2.9: October 19th, 2020
+* Remove commas when calling the web service endpoint
+* Do not execute frontend javascript in backend
+
 ### 1.2.8: October 14th, 2020
 * Fix dates in week view were not listed properly (3 by 3)
 
