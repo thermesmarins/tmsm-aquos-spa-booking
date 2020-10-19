@@ -85,80 +85,83 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function enqueue_scripts() {
 
-		// Disable MailChimp for WooCommerce Javascript when ordering appointments
-		if(self::cart_has_appointment()){
-			wp_dequeue_script('mailchimp-woocommerce');
-		}
+		if(!is_admin()){
+			// Disable MailChimp for WooCommerce Javascript when ordering appointments
+			if(self::cart_has_appointment()){
+				wp_dequeue_script('mailchimp-woocommerce');
+			}
 
-		wp_deregister_script('bootstrap-datepicker');
-		wp_enqueue_script( 'bootstrap-datepicker', '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js', array( 'jquery', 'bootstrap' ), null, true );
+			wp_deregister_script('bootstrap-datepicker');
+			wp_enqueue_script( 'bootstrap-datepicker', '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js', array( 'jquery', 'bootstrap' ), null, true );
 
-		if ( $this->get_locale() !== 'en' ) {
-			wp_deregister_script( 'bootstrap-datepicker-' . $this->get_locale() );
-			wp_enqueue_script( 'bootstrap-datepicker-' . $this->get_locale(), 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.' . $this->get_locale() . '.min.js',
-				array( 'jquery', 'bootstrap', 'bootstrap-datepicker' ), null, true );
-		}
+			if ( $this->get_locale() !== 'en' ) {
+				wp_deregister_script( 'bootstrap-datepicker-' . $this->get_locale() );
+				wp_enqueue_script( 'bootstrap-datepicker-' . $this->get_locale(), 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.' . $this->get_locale() . '.min.js',
+					array( 'jquery', 'bootstrap', 'bootstrap-datepicker' ), null, true );
+			}
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public'.( ! current_user_can('administrator') ?'.min' : '' ).'.js', array( 'jquery', 'moment', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public'.( ! current_user_can('administrator') ?'.min' : '' ).'.js', array( 'jquery', 'moment', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
 
-		$startdate = new \DateTime();
-		$startdate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 ). ' days');
-		$enddate = new \DateTime();
-		$enddate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 ). ' days');
+			$startdate = new \DateTime();
+			$startdate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 ). ' days');
+			$enddate = new \DateTime();
+			$enddate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 ). ' days');
 
-		// Add initial data to CronPixie JS object so it can be rendered without fetch.
-		// Also add translatable strings for JS as well as reference settings.
-		$data = array(
-			'strings'      => array(
-				'loading'    => __( 'Loading', 'tmsm-aquos-spa-booking' ),
-				'notimeslot'    => __( 'No timeslot', 'tmsm-aquos-spa-booking' ),
-				'no_selection'    => __( 'No selection', 'tmsm-aquos-spa-booking' ),
-				'no_events'    => _x( '(none)', 'no event to show', 'tmsm-aquos-spa-booking' ),
-				'due'          => _x( 'due', 'label for when cron event date', 'tmsm-aquos-spa-booking' ),
-				'now'          => _x( 'now', 'cron event is due now', 'tmsm-aquos-spa-booking' ),
-				'passed'       => _x( 'passed', 'cron event is over due', 'tmsm-aquos-spa-booking' ),
-				'weeks_abrv'   => _x( 'w', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
-				'days_abrv'    => _x( 'd', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
-				'hours_abrv'   => _x( 'h', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
-				'minutes_abrv' => _x( 'm', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
-				'seconds_abrv' => _x( 's', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
-				'run_now'      => _x( 'Run event now.', 'Title for run now icon', 'tmsm-aquos-spa-booking' ),
-			),
-			'calendar'  => [
-				'dateselection' => esc_js(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )),
-				'daysrangefrom' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 )),
-				'daysrangeto' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 )),
-				'enddate' => $enddate->format('Y-m-d'),
-				'startdate' => $startdate->format('Y-m-d'),
-			],
-			'role'   => current_user_can('edit_posts'),
-			'locale'   => $this->get_locale(),
-			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-			'nonce'        => wp_create_nonce( 'tmsm-aquos-spa-booking-nonce-action' ),
-			'data'         => array(
-				'havevoucher' => [
-					'yes' => [
-						'name' => __( 'I have a voucher', 'tmsm-aquos-spa-booking' ),
-						'slug' => 'yes',
-						'value' => 1,
-					],
-					'no' => [
-						'name' => __( 'I don\'t have any voucher', 'tmsm-aquos-spa-booking' ),
-						'slug' => 'no',
-						'value' => 0,
-					],
+			// Add initial data to CronPixie JS object so it can be rendered without fetch.
+			// Also add translatable strings for JS as well as reference settings.
+			$data = array(
+				'strings'      => array(
+					'loading'    => __( 'Loading', 'tmsm-aquos-spa-booking' ),
+					'notimeslot'    => __( 'No timeslot', 'tmsm-aquos-spa-booking' ),
+					'no_selection'    => __( 'No selection', 'tmsm-aquos-spa-booking' ),
+					'no_events'    => _x( '(none)', 'no event to show', 'tmsm-aquos-spa-booking' ),
+					'due'          => _x( 'due', 'label for when cron event date', 'tmsm-aquos-spa-booking' ),
+					'now'          => _x( 'now', 'cron event is due now', 'tmsm-aquos-spa-booking' ),
+					'passed'       => _x( 'passed', 'cron event is over due', 'tmsm-aquos-spa-booking' ),
+					'weeks_abrv'   => _x( 'w', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+					'days_abrv'    => _x( 'd', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+					'hours_abrv'   => _x( 'h', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+					'minutes_abrv' => _x( 'm', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+					'seconds_abrv' => _x( 's', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
+					'run_now'      => _x( 'Run event now.', 'Title for run now icon', 'tmsm-aquos-spa-booking' ),
+				),
+				'calendar'  => [
+					'dateselection' => esc_js(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )),
+					'daysrangefrom' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 )),
+					'daysrangeto' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 )),
+					'enddate' => $enddate->format('Y-m-d'),
+					'startdate' => $startdate->format('Y-m-d'),
 				],
-				//'schedules' => $this->_get_schedules(),
-				'productcategories' => $this->_get_product_categories(),
-				'products' => $this->_get_products(),
-				'productattributes' => array(),
-				'productvariations' => array(),
-				'choices' => array(),
-				'times' => array(),
-				'weekdays' => array(),
-			),
-		);
-		wp_localize_script( $this->plugin_name, 'TmsmAquosSpaBookingApp', $data );
+				'role'   => current_user_can('edit_posts'),
+				'locale'   => $this->get_locale(),
+				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+				'nonce'        => wp_create_nonce( 'tmsm-aquos-spa-booking-nonce-action' ),
+				'data'         => array(
+					'havevoucher' => [
+						'yes' => [
+							'name' => __( 'I have a voucher', 'tmsm-aquos-spa-booking' ),
+							'slug' => 'yes',
+							'value' => 1,
+						],
+						'no' => [
+							'name' => __( 'I don\'t have any voucher', 'tmsm-aquos-spa-booking' ),
+							'slug' => 'no',
+							'value' => 0,
+						],
+					],
+					//'schedules' => $this->_get_schedules(),
+					'productcategories' => $this->_get_product_categories(),
+					'products' => $this->_get_products(),
+					'productattributes' => array(),
+					'productvariations' => array(),
+					'choices' => array(),
+					'times' => array(),
+					'weekdays' => array(),
+				),
+			);
+			wp_localize_script( $this->plugin_name, 'TmsmAquosSpaBookingApp', $data );
+		}
+
 	}
 
 

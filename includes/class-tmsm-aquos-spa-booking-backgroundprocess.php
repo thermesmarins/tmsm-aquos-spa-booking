@@ -154,17 +154,17 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								( is_multisite() ? get_current_blog_id() : 0 ),
 								sanitize_text_field($order_item_data['_appointment_time']),
 								urlencode($order->get_meta('_billing_title') == '1') ? 'M.' : 'Mme',
-								urlencode(sanitize_text_field(trim($order->get_billing_first_name()))) ?? '',
-								urlencode(sanitize_text_field(trim($order->get_billing_last_name()))) ?? '',
-								urlencode(sanitize_text_field(trim($order->get_billing_email()))) ?? '',
+								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_first_name()))) ?? '',
+								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_last_name()))) ?? '',
+								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_email()))) ?? '',
 								$order_item_data['_has_voucher'] ?? '0',
 								str_replace( '-', '', $order->get_meta( '_billing_birthdate' ) ) ?? '',
-								urlencode(sanitize_text_field(trim($order->get_billing_address_1(). ' '.$order->get_billing_address_2()))),
-								sanitize_text_field(trim($order->get_billing_postcode())) ?? '',
-								urlencode(sanitize_text_field(trim($order->get_billing_city()))) ?? '',
-								urlencode(sanitize_text_field(trim($order->get_billing_phone()))) ?? '',
-								urlencode(sanitize_text_field(trim($order->get_customer_note())) ?? ''),
-								urlencode(sanitize_text_field( get_bloginfo( 'name' ) )) ?? '',
+								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_address_1(). ' '.$order->get_billing_address_2()))),
+								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_postcode()))) ?? '',
+								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_city()))) ?? '',
+								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_phone()))) ?? '',
+								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_customer_note()))) ?? '',
+								self::sanitize_for_webservice(sanitize_text_field( get_bloginfo( 'name' ) )) ?? '',
 							];
 
 							// Replace keywords in url
@@ -281,6 +281,19 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Custom sanitize for web service data insertion
+	 */
+	static function sanitize_for_webservice($string) {
+
+		//return str_replace(' ', '+', $string); // needed when not using urlencode, if not webdeb app doesn't not recognize the app location
+		$string = str_replace( ',', '', $string ); // needed by webdev, if not triggers forbidden
+		$string = urlencode( $string );
+
+		return $string;
+
 	}
 
 	/**
