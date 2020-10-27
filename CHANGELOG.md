@@ -1,3 +1,4 @@
+### 1.3.0: October 27th, 2020
 * Weekdays view optimizations, button placement, alignment, scrollto, button appearance
 
 ### 1.2.9: October 19th, 2020
