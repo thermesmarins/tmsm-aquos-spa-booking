@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
 "POT-Creation-Date: 2020-10-09 08:58+0200\n"
-"PO-Revision-Date: 2020-10-09 08:59+0200\n"
+"PO-Revision-Date: 2020-10-22 09:29+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -528,7 +528,7 @@ msgstr "Enlever les options"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:332
 msgid "Confirm your options"
-msgstr "Confirmer les options"
+msgstr "Continuer"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:342
 msgid "Pick your choice:"

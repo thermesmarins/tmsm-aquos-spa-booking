@@ -1,3 +1,5 @@
+* Weekdays view optimizations, button placement, alignment, scrollto, button appearance
+
 ### 1.2.9: October 19th, 2020
 * Remove commas when calling the web service endpoint
 * Do not execute frontend javascript in backend

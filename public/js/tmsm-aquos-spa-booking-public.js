@@ -1357,6 +1357,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     el: '#tmsm-aquos-spa-booking-date-container',
     listElement: '#tmsm-aquos-spa-booking-weekdays-list',
     selectButtons: '.tmsm-aquos-spa-booking-time-button',
+    addAppointmentButton: '#tmsm-aquos-spa-booking-confirm',
     daysPage: 1,
 
     templateHelpers: {
@@ -1405,22 +1406,22 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.collection.reset();
 
       if(this.daysPage === 1){
-        $('#tmsm-aquos-spa-booking-weekdays-previous').hide();
+        $('#tmsm-aquos-spa-booking-weekdays-previous').attr('disabled', true);
         console.log('premiere page je cache previous');
       }
       else{
-        $('#tmsm-aquos-spa-booking-weekdays-previous').show();
+        $('#tmsm-aquos-spa-booking-weekdays-previous').attr('disabled', false);
         console.log('autre page jaffiche previous');
       }
 
       console.log('(TmsmAquosSpaBookingApp.calendar.daysrangeto / 7):'+(TmsmAquosSpaBookingApp.calendar.daysrangeto / 7));
       console.log('this.daysPage:'+(this.daysPage));
       if((TmsmAquosSpaBookingApp.calendar.daysrangeto / 7) < this.daysPage){
-        $('#tmsm-aquos-spa-booking-weekdays-next').hide();
+        $('#tmsm-aquos-spa-booking-weekdays-next').attr('disabled', true);
         console.log('derniere page je cache next');
       }
       else{
-        $('#tmsm-aquos-spa-booking-weekdays-next').show();
+        $('#tmsm-aquos-spa-booking-weekdays-next').attr('disabled', false);
         console.log('autre page jaffiche next');
       }
 
@@ -1480,8 +1481,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.selectedValue = $(event.target).data('hourminutes');
       var date = $(event.target).data('date');
       console.log('WeekDayListView selectedValue: '+ this.selectedValue);
-      $( this.selectButtons ).removeClass('disabled').removeClass('selected').addClass('not-selected');
-      $(event.target).addClass('disabled').removeClass('not-selected');
+      $( this.selectButtons ).removeClass('btn-primary').removeClass('disabled').removeClass('selected').addClass('not-selected');
+      $(event.target).addClass('btn-primary').addClass('disabled').removeClass('not-selected');
+
+      console.warn($(this.addAppointmentButton));
+      TmsmAquosSpaBookingApp.animateTransition($(this.addAppointmentButton));
 
       TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
       TmsmAquosSpaBookingApp.selectedData.set('date', date);
