@@ -1,4 +1,5 @@
 * Load JS only if #tmsm-aquos-spa-booking-form is present in the page
+* New date setting datebeforeforbidden to forbid date selection before this date
 
 ### 1.3.0: October 27th, 2020
 * Weekdays view optimizations, button placement, alignment, scrollto, button appearance

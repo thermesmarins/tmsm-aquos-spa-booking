@@ -102,8 +102,27 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public'.( !(in_array('administrator',  wp_get_current_user()->roles) || TMSM_AQUOS_SPA_BOOKING_DEBUG === true) ?'.min' : '' ).'.js', array( 'jquery', 'moment', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
 
+
+			$datebeforeforbidden = DateTime::createFromFormat('Y-m-d', get_option( 'tmsm_aquos_spa_booking_datebeforeforbidden', '' ));
+
+			$today = new \DateTime();
+
 			$startdate = new \DateTime();
 			$startdate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 ). ' days');
+
+			if($datebeforeforbidden > $startdate){
+				$startdate = $datebeforeforbidden;
+			}
+
+			error_log('$startdate after');
+			error_log(print_r($startdate, true));
+
+			$interval = $today->diff($startdate);
+			error_log('$interval->format(\'%R%a days\'):'.$interval->format('%a days'));
+
+			$daysrangefrom = $interval->format('%a');
+
+
 			$enddate = new \DateTime();
 			$enddate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 ). ' days');
 
@@ -127,7 +146,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				),
 				'calendar'  => [
 					'dateselection' => esc_js(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )),
-					'daysrangefrom' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 )),
+					'daysrangefrom' => esc_js($daysrangefrom),
 					'daysrangeto' => esc_js(get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 )),
 					'enddate' => $enddate->format('Y-m-d'),
 					'startdate' => $startdate->format('Y-m-d'),

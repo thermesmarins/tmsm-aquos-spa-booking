@@ -210,6 +210,14 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						),
 
 						array(
+							'type'     => 'text',
+							'id'       => 'tmsm_aquos_spa_booking_datebeforeforbidden',
+							'name'     => __( 'Calendar Days Before Forbidden', 'tmsm-aquos-spa-booking' ),
+							'desc'     => '<p class="description">'.__( 'Users can\'t book before this date, format YYYY-MM-DD. Leave empty for no restriction', 'tmsm-aquos-spa-booking'  ).'</p>',
+							'default'  => '',
+						),
+
+						array(
 							'type'     => 'number',
 							'id'       => 'tmsm_aquos_spa_booking_cartexpirehours',
 							'name'     => __( 'Cart Products Expires', 'tmsm-aquos-spa-booking' ),

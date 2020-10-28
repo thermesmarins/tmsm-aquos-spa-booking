@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2020-10-27 11:27+0100\n"
+"POT-Creation-Date: 2020-10-28 17:06+0100\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -380,22 +380,32 @@ msgid ""
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:215
-msgid "Cart Products Expires"
+msgid "Calendar Days Before Forbidden"
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:216
-msgid "Hours"
+msgid ""
+"Users can't book before this date, format YYYY-MM-DD. Leave empty "
+"for no restriction"
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:223
+msgid "Cart Products Expires"
+msgstr ""
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:224
+msgid "Hours"
+msgstr ""
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:231
 msgid "Cancellation Policy"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:229
+#: includes/class-tmsm-aquos-spa-booking-settings.php:237
 msgid "Message in order received page"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:235
+#: includes/class-tmsm-aquos-spa-booking-settings.php:243
 msgid "Message in order email"
 msgstr ""
 
