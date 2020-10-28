@@ -1741,7 +1741,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
   $( document ).ready( function() {
 
-    TmsmAquosSpaBookingApp.init();
+    if($('#tmsm-aquos-spa-booking-form').length > 0){
+      TmsmAquosSpaBookingApp.init();
+    }
 
   } );
 

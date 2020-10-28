@@ -1,3 +1,5 @@
+* Load JS only if #tmsm-aquos-spa-booking-form is present in the page
+
 ### 1.3.0: October 27th, 2020
 * Weekdays view optimizations, button placement, alignment, scrollto, button appearance
 
