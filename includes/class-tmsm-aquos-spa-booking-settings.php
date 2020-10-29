@@ -221,7 +221,7 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 							'type'     => 'number',
 							'id'       => 'tmsm_aquos_spa_booking_cartexpireminutes',
 							'name'     => __( 'Cart Products Expires', 'tmsm-aquos-spa-booking' ),
-							'desc'     => '<p class="description">'.__( 'Hours', 'tmsm-aquos-spa-booking'  ).'</p>',
+							'desc'     => '<p class="description">'.__( 'Minutes', 'tmsm-aquos-spa-booking'  ).'</p>',
 							'default'  => 60,
 						),
 
