@@ -289,6 +289,9 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 	static function sanitize_for_webservice($string) {
 
 		//return str_replace(' ', '+', $string); // needed when not using urlencode, if not webdeb app doesn't not recognize the app location
+		$string = str_replace( '/', '', $string ); // needed by webdev, if not triggers forbidden
+		$string = str_replace( '(', '', $string ); // needed by webdev, if not triggers forbidden
+		$string = str_replace( ')', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = str_replace( ',', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = urlencode( $string );
 

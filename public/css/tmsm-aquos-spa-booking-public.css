@@ -28,6 +28,14 @@
 #tmsm-aquos-spa-booking-confirm-container {
   text-align: center;
   padding-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+@media (min-width: 600px) {
+  #tmsm-aquos-spa-booking-confirm-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 #tmsm-aquos-spa-booking-cancel {
   float: left;
