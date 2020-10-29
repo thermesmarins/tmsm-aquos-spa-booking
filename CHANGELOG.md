@@ -1,3 +1,4 @@
+### 1.3.2: October 29th, 2020
 * Fix styling on mobile
 * Sanitize values sent to Web Service
 * Changed expire hours to expire minutes
