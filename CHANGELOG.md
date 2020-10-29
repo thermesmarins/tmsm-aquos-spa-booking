@@ -1,3 +1,5 @@
+* Fix styling on mobile
+
 ### 1.3.1: October 28th, 2020
 * Load JS only if #tmsm-aquos-spa-booking-form is present in the page
 * New date setting datebeforeforbidden to forbid date selection before this date
