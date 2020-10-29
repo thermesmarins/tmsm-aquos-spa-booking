@@ -1598,7 +1598,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 				if(!empty($cart_item['appointment']) && !empty($cart_item['timestamp_added'])){
 					$_product = $cart_item['data'];
-					if( time() > ( $cart_item['timestamp_added'] + 3600 * get_option( 'tmsm_aquos_spa_booking_cartexpirehours', 2 ))){
+					if( time() > ( $cart_item['timestamp_added'] + 60 * get_option( 'tmsm_aquos_spa_booking_cartexpireminutes', 60 ))){
 						WC()->cart->remove_cart_item( $cart_item_key );
 						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'tmsm-aquos-spa-booking' ), $_product->get_name() ), 'notice' );
 					}

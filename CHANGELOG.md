@@ -1,5 +1,6 @@
 * Fix styling on mobile
 * Sanitize values sent to Web Service
+* Changed expire hours to expire minutes
 
 ### 1.3.1: October 28th, 2020
 * Load JS only if #tmsm-aquos-spa-booking-form is present in the page

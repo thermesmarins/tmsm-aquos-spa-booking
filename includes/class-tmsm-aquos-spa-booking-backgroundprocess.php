@@ -234,7 +234,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 								$blogname = esc_html( get_bloginfo( 'name' ) );
 								$email    = stripslashes( get_option( 'admin_email' ) );
-								$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking submission error %s', 'tmsm-aquos-spa-booking' ), $blogname, $result_array['ErrorCode'] ?? __( 'Unknown error', 'tmsm-aquos-spa-booking' ));
+								$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking submission (error %s) for order #%s', 'tmsm-aquos-spa-booking' ), $blogname, $result_array['ErrorCode'] ?? __( 'Unknown error', 'tmsm-aquos-spa-booking' ), $order_id);
 
 								$message  = sprintf(__( 'An error occured while submitting appointment data to the Aquos web service on %s', 'tmsm-aquos-spa-booking' ), $blogname);
 
