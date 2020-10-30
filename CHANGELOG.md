@@ -1,3 +1,5 @@
+* Check cart items if any appointment has expired on appointment form
+
 ### 1.3.3: October 30th, 2020
 * Check if appointments have expired, if expired the order can't be processed
 
