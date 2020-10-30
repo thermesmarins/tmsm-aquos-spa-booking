@@ -102,8 +102,6 @@ if ( ! class_exists( 'WP_Background_Process' ) ) {
 		 */
 		public function save() {
 
-			//error_log(print_r($this->data, true));
-
 			$key = $this->generate_key();
 
 			if ( ! empty( $this->data ) ) {

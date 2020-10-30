@@ -1,3 +1,5 @@
+* Check if appointments have expired, if expired the order can't be processed
+
 ### 1.3.2: October 29th, 2020
 * Fix styling on mobile
 * Sanitize values sent to Web Service

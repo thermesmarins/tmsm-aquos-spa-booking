@@ -114,12 +114,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$startdate = $datebeforeforbidden;
 			}
 
-			error_log('$startdate after');
-			error_log(print_r($startdate, true));
-
 			$interval = $today->diff($startdate);
-			error_log('$interval->format(\'%R%a days\'):'.$interval->format('%a days'));
-
 			$daysrangefrom = $interval->format('%a');
 
 
@@ -612,85 +607,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$this->ajax_checksecurity();
 		$this->ajax_return( $this->_get_products() );
 
-		/*
-		$security = sanitize_text_field( $_POST['security'] );
-		$product_category_id = sanitize_text_field( $_POST['productcategory'] );
-
-		$errors = array(); // Array to hold validation errors
-		$jsondata   = array(); // Array to pass back data
-
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
-			error_log('ajax_products');
-		}
-
-		// Check security
-		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) || empty($product_category_id)) {
-			$errors[] = __('Token security not valid', 'tmsm-aquos-spa-booking');
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
-				error_log('Ajax security not OK');
-			}
-		}
-		else{
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
-				error_log('Ajax security OK');
-			}
-
-			check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'security' );
-
-			$product_category = get_term( $product_category_id, 'product_cat');
-			$args = array(
-				'category' => $product_category->slug,
-				'return'  => 'ids',
-				'limit' => -1,
-				'orderby' => 'name',
-			);
-			$products_ids = wc_get_products( $args );
-			$products = [];
-			if(!empty($products_ids)){
-				foreach($products_ids as $key => $product_id){
-					$product = wc_get_product($product_id);
-
-					$products[$product->get_id()] = [
-						'id' => esc_js($product->get_id()),
-						'permalink' => esc_js($product->get_permalink()),
-						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-						'price' => html_entity_decode(wp_strip_all_tags($product->get_price_html())),
-						'sku' => esc_js($product->get_sku()),
-						'name' => esc_js($product->get_name()),
-						'variable' => esc_js($product->is_type( 'variable' )),
-					];
-
-
-
-
-
-				}
-			}
-			else{
-				$errors[] = __('No product in this category', 'tmsm-aquos-spa-booking');
-			}
-
-			$jsondata['products'] = $products;
-		}
-
-
-		// Return a response
-		if( ! empty($errors) ) {
-			$jsondata['success'] = false;
-			$jsondata['errors']  = $errors;
-		}
-		else {
-			$jsondata['success'] = true;
-		}
-
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
-			//error_log('json data:');
-			//error_log(print_r($jsondata, true));
-		}
-
-		wp_send_json($jsondata);
-		wp_die();*/
-
 	}
 
 	/**
@@ -699,6 +615,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @since    1.0.0
 	 */
 	public function ajax_product_variations() {
+
 		$this->ajax_checksecurity();
 		$this->ajax_return( $this->_get_product_variations() );
 
@@ -710,8 +627,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @since    1.0.0
 	 */
 	public function ajax_times() {
+
 		$this->ajax_checksecurity();
 		$this->ajax_return( $this->_get_times() );
+
 	}
 
 
@@ -1593,6 +1512,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * Remove Appointments that are expired, too old = 2 hours
 	 */
 	public function woocommerce_check_cart_items_expire(){
+
+
 		if( is_cart() || is_checkout() ) {
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 
@@ -1600,7 +1521,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					$_product = $cart_item['data'];
 					if( time() > ( $cart_item['timestamp_added'] + 60 * get_option( 'tmsm_aquos_spa_booking_cartexpireminutes', 60 ))){
 						WC()->cart->remove_cart_item( $cart_item_key );
-						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'tmsm-aquos-spa-booking' ), $_product->get_name() ), 'notice' );
+						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'tmsm-aquos-spa-booking' ), $_product->get_name() ), 'error' );
+
 					}
 				}
 
@@ -2114,65 +2036,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					'attributes_otherthan_voucher' => esc_js($product_has_attributes_otherthan_voucher),
 					'choices' => json_encode($aquos_items),
 				];
-
-				/*if(!$product->is_type( 'variable' )){
-
-					$aquos_id = get_post_meta( $product_id, '_aquos_id', true);
-					if(empty($aquos_id)){
-						continue;
-					}
-
-					$sku = substr( $product->get_sku(), 0, 2 ) === 'E-' ? substr( $product->get_sku(), 2 ) : $product->get_sku();
-					error_log($product->get_sku());
-					error_log($sku);
-
-					$product_and_variations[$sku] = [
-						'id' => esc_js($product->get_id()),
-						'permalink' => esc_js($product->get_permalink()),
-						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-						'price' => html_entity_decode(wp_strip_all_tags($product->get_price_html())),
-						'sku' => esc_js($product->get_sku()),
-						'name' => esc_js($product->get_name()),
-					];
-				}
-				else{
-					if($product->is_type( 'variable' ) ){
-						foreach ( $product->get_available_variations() as $variation_data ) {
-
-							$variation = wc_get_product( $variation_data['variation_id'] );
-
-							if(empty($variation)){
-								continue;
-							}
-
-							$variation_name = esc_js($variation->get_name(). (wc_get_formatted_variation($variation, true, false, true ) ? ' ㅡ '.wc_get_formatted_variation($variation, true, false, true ): '') );
-
-							if($variation->get_attribute('format-bon-cadeau')){
-								error_log($variation->get_attribute('format-bon-cadeau'));
-								$variation_name = str_replace(', '.$variation->get_attribute('format-bon-cadeau'), '', $variation_name);
-							}
-
-							$aquos_id = get_post_meta( $variation->get_id(), '_aquos_id', true);
-							if(empty($aquos_id)){
-								continue;
-							}
-							$sku = substr( $variation->get_sku(), 0, 2 ) === 'E-' ? substr( $variation->get_sku(), 2 ) : $variation->get_sku();
-							error_log($variation->get_sku());
-							error_log($sku);
-
-							$product_and_variations[$sku] = [
-								'id' => esc_js($variation->get_id()),
-								'permalink' => esc_js($variation->get_permalink()),
-								'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-								'price' => html_entity_decode(wp_strip_all_tags($variation->get_price_html())),
-								'sku' => esc_js($variation->get_sku()),
-								'name' => $variation_name,
-							];
-
-						}
-					}
-				}*/
-
 
 			}
 		}
