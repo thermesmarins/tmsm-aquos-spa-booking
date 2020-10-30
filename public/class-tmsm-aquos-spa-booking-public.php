@@ -297,6 +297,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				}
 			}
 		}
+
+		// Check cart items if any appointment has expired
+		do_action( 'woocommerce_check_cart_items' );
+
 		$output = '';
 		if($cart_has_products){
 			$output = '<p id="tmsm-aquos-spa-booking-emptycartfirst" class="'.self::alert_class_error().'" >'.sprintf(__( 'Your cart contains products other than appointments, please <a href="%s">empty your cart or complete the order</a> before booking an appointment.', 'tmsm-aquos-spa-booking' ), wc_get_cart_url()).'</p>';
