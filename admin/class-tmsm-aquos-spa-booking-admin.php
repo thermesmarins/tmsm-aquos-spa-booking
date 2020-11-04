@@ -169,9 +169,12 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 * @return array
 	 */
 	function woocommerce_get_settings_pages($settings) {
+
+
 		$settings[] = include( plugin_dir_path( dirname( __FILE__ ) ) .'includes/class-tmsm-aquos-spa-booking-settings.php' );
 		return $settings; // Return
 	}
+
 
 
 	/**
@@ -208,6 +211,15 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				'desc_tip'    => 'true',
 				'rows'    => 8,
 				'description' => __( 'One item per line, write the Aquos product ID separated by an *. Result should be: product name * product id', 'tmsm-aquos-spa-booking' )
+			)
+		);
+		echo '</div>';
+		echo '<div class="options_group">';
+		woocommerce_wp_text_input(
+			array(
+				'id'          => '_aquos_price',
+				'label'       => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ),
+				'custom_attributes' => ['disabled' => 'disabled']
 			)
 		);
 		echo '</div>';
@@ -273,5 +285,14 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				'value' => get_post_meta( $variation->ID, '_aquos_id', true )
 			)
 		);
+		woocommerce_wp_text_input( array(
+				'id' => '_aquos_id[' . $loop . ']',
+				'wrapper_class' => 'form-row',
+				'label' => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ),
+				'value' => get_post_meta( $variation->ID, '_aquos_price', true ),
+				'custom_attributes' => ['disabled' => 'disabled']
+			)
+		);
+
 	}
 }

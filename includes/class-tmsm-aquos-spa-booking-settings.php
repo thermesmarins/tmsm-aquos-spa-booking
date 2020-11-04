@@ -47,6 +47,7 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 				$sections = array(
 					''         => __( 'Settings', 'tmsm-aquos-spa-booking' ),
 					'info'         => __( 'Info', 'tmsm-aquos-spa-booking' ),
+					'regenerateprices'         => __( 'Regenerates Aquos Prices', 'tmsm-aquos-spa-booking' ),
 				);
 
 				return $sections;
@@ -61,9 +62,64 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 			 */
 			public function get_settings( $current_section = '' ) {
 
+				$meta_key_aquos_price = '_aquos_price';
+
 				$settings = [];
 
+				if($current_section == 'regenerateprices'){
+					global $wpdb;
+
+					echo __( 'This page regenerates the Aquos Price Meta Data needed for the web service synchronization.', 'tmsm-aquos-spa-booking' );
+					echo "\n";
+					echo "\n";
+
+					$wpdb->delete( $wpdb->postmeta, [ 'meta_key' => $meta_key_aquos_price ] );
+
+					$results = $wpdb->get_results("SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value != '' ");
+
+					if(!empty($results)){
+						$count_meta = count( $results );
+
+						echo sprintf(__( 'Parsing %d products', 'tmsm-aquos-spa-booking' ), $count_meta);
+						echo "\n";
+
+						foreach ( $results as $result ) {
+
+							if(TMSM_AQUOS_SPA_BOOKING_DEBUG){
+								echo $meta_key_aquos_price.' = ';
+							}
+
+							$aquos_price = [];
+							$aquos_ids   = explode( '+', $result->meta_value );
+							foreach ( $aquos_ids as $aquos_id ) {
+								$price = self::get_product_price_from_aquos_or_product_id( $aquos_id, $result->post_id );
+								$aquos_price[] = $price;
+								if($price == 0){
+									echo sprintf(__( 'Price not found for product %s', 'tmsm-aquos-spa-booking' ), $result->post_id);
+									echo "\n";
+								}
+							}
+							$result->aquos_price = join( '+', $aquos_price );
+
+							if(TMSM_AQUOS_SPA_BOOKING_DEBUG){
+								print_r( $result );
+							}
+
+							// Insert the values
+							$wpdb->query($wpdb->prepare(" INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ( %d, %s, %s ) ",
+								$result->post_id,
+								$meta_key_aquos_price,
+								$result->aquos_price
+							)
+							);
+							echo "\n";
+							echo "\n";
+						}
+					}
+
+				}
 				if($current_section == 'info'){
+
 					include( plugin_dir_path( dirname( __FILE__ ) ) .'admin/partials/tmsm-aquos-spa-booking-admin-display.php' );
 				}
 				else{
@@ -281,6 +337,50 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 
 				$settings = $this->get_settings( $current_section );
 				WC_Admin_Settings::save_fields( $settings );
+			}
+
+			/**
+			 * Get Price From Aquos or Product ID
+			 *
+			 * @param int $aquos_id
+			 * @param int $product_id
+			 *
+			 * @return int
+			 */
+			function get_product_price_from_aquos_or_product_id(int $aquos_id, $product_id){
+
+				$price = 0;
+
+				switch ( $aquos_id ) {
+					case 338: // Parcours Aquatonic (Nantes/Rennes)
+						$price = 20;
+						break;
+					case 368: // Parcours Aquatonic (Paris)
+						$price = 29;
+						break;
+					case 191: // Modelage nuque et cuir chevelu or Modelage dos d'accueil (Nantes/Rennes)
+						$price = 18;
+						break;
+					case 470: // Accès Espace Bien-être en complément d'un soin (Paris)
+						$price = 30;
+						break;
+					case 495: // Balnéo privative en duo (Paris)
+						$price = 39;
+						break;
+					case 847: // Supplément French Manucure (Paris)
+						$price = 5;
+						break;
+
+					default:
+						$product = wc_get_product($product_id);
+						if(!empty($product)){
+							$price = $product->get_price();
+						}
+
+						break;
+				}
+
+				return $price;
 			}
 		}
 
