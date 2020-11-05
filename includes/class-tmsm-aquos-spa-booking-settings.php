@@ -45,9 +45,9 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 			public function get_sections() {
 
 				$sections = array(
-					''         => __( 'Settings', 'tmsm-aquos-spa-booking' ),
-					'info'         => __( 'Info', 'tmsm-aquos-spa-booking' ),
-					'regenerateprices'         => __( 'Regenerates Aquos Prices', 'tmsm-aquos-spa-booking' ),
+					''                 => __( 'Settings', 'tmsm-aquos-spa-booking' ),
+					'info'             => __( 'Info', 'tmsm-aquos-spa-booking' ),
+					'regenerateprices' => __( 'Regenerates Aquos Prices', 'tmsm-aquos-spa-booking' ),
 				);
 
 				return $sections;
@@ -70,8 +70,8 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 					global $wpdb;
 
 					echo __( 'This page regenerates the Aquos Price Meta Data needed for the web service synchronization.', 'tmsm-aquos-spa-booking' );
-					echo "\n";
-					echo "\n";
+					echo "<br>";
+					echo "<br>";
 
 					$wpdb->delete( $wpdb->postmeta, [ 'meta_key' => $meta_key_aquos_price ] );
 
@@ -81,13 +81,12 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						$count_meta = count( $results );
 
 						echo sprintf(__( 'Parsing %d products', 'tmsm-aquos-spa-booking' ), $count_meta);
-						echo "\n";
+						echo "<br>";
+						echo "<br>";
 
 						foreach ( $results as $result ) {
 
-							if(TMSM_AQUOS_SPA_BOOKING_DEBUG){
-								echo $meta_key_aquos_price.' = ';
-							}
+							echo 'product id '.$result->post_id . ' / ';
 
 							$aquos_price = [];
 							$aquos_ids   = explode( '+', $result->meta_value );
@@ -96,13 +95,30 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 								$aquos_price[] = $price;
 								if($price == 0){
 									echo sprintf(__( 'Price not found for product %s', 'tmsm-aquos-spa-booking' ), $result->post_id);
-									echo "\n";
+									echo ' / ';
 								}
 							}
 							$result->aquos_price = join( '+', $aquos_price );
+							echo 'detailed price '.$result->aquos_price . ' / ';
 
-							if(TMSM_AQUOS_SPA_BOOKING_DEBUG){
-								print_r( $result );
+							// Checking if calculated price matches product price
+							$product = wc_get_product($result->post_id);
+							$product_price = 0;
+							if(!empty($product)){
+								$product_price = $product->get_price();
+							}
+							$calculated_price = 0;
+							foreach($aquos_price as $item_price){
+								$calculated_price+=$item_price;
+							}
+							echo 'calculated price '.$calculated_price . ' / ';
+
+							if($calculated_price != $product_price){
+								echo 'NON MATCHING PRICE!';
+							}
+
+							if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+								//print_r( $result );
 							}
 
 							// Insert the values
@@ -112,13 +128,13 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 								$result->aquos_price
 							)
 							);
-							echo "\n";
-							echo "\n";
+							echo "<br>";
+							echo "<br>";
 						}
 					}
 
 				}
-				if($current_section == 'info'){
+				elseif($current_section == 'info'){
 
 					include( plugin_dir_path( dirname( __FILE__ ) ) .'admin/partials/tmsm-aquos-spa-booking-admin-display.php' );
 				}
@@ -373,8 +389,23 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 
 					default:
 						$product = wc_get_product($product_id);
+
 						if(!empty($product)){
+
 							$price = $product->get_price();
+							echo 'product_price='.$price . ' / ';
+
+							$parent_id = $product->get_parent_id();
+							if(!empty($parent_id)){
+								echo 'found parent product '.$parent_id. ' / ';
+								$parent_product = wc_get_product($parent_id);
+								if(!empty($parent_product)){
+									$price = $parent_product->get_price();
+									echo 'parent price '.$price. ' / ';
+								}
+							}
+
+
 						}
 
 						break;

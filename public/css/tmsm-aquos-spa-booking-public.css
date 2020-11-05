@@ -189,7 +189,8 @@ li.tmsm-aquos-spa-booking-time-item {
 #order_review_heading + #order_review_heading {
   display: none;
 }
-.variation-IDdeproduitAquos {
+.variation-IDdeproduitAquos,
+.variation-PrixpourAquos {
   display: none;
 }
 .tmsm-aquos-spa-booking-weekday-item {

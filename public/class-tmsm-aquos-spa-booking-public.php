@@ -572,23 +572,23 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		// Check security
 		if ( empty( $security ) || ! wp_verify_nonce( $security, 'tmsm-aquos-spa-booking-nonce-action' ) ) {
 			$errors[] = __('Token security is not valid', 'tmsm-aquos-spa-booking');
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 				error_log('Token security is not valid');
 			}
 		}
 		else {
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 				error_log( 'Token security is valid' );
 			}
 		}
 		if(check_ajax_referer( 'tmsm-aquos-spa-booking-nonce-action', 'nonce' ) === false){
 			$errors[] = __('Ajax referer is not valid', 'tmsm-aquos-spa-booking');
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 				error_log('Ajax referer is not valid');
 			}
 		}
 		else{
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 				error_log( 'Ajax referer is valid' );
 			}
 		}
@@ -735,7 +735,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		}
 
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 			error_log('json data:');
 			error_log(print_r($jsondata, true));
 		}
@@ -840,7 +840,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$selected_times = $priorities;
 
 
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 				error_log('$diff_priorities: '.$diff_priorities);
 				error_log('$count_priorities: '.$count_priorities);
 				error_log('$count_notpriorities: '.$count_notpriorities);
@@ -914,6 +914,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		// For regular products with Aquos ID
 		if(empty($cart_item_data['appointment'])){
 			$cart_item_data['aquos_id'] = get_post_meta( $variation_id ?? $product_id, '_aquos_id', true );
+			$cart_item_data['aquos_price'] = get_post_meta( $variation_id ?? $product_id, '_aquos_price', true );
 		}
 		return $cart_item_data;
 	}
@@ -953,6 +954,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			);
 		}
 
+		if ( !empty( $cart_item['aquos_price'] ) ) {
+			$item_data[] = array(
+				'key'     => __( 'Aquos Price', 'tmsm-aquos-spa-booking' ),
+				'value'   => wc_clean( $cart_item['aquos_price'] ),
+				'display' => '',
+			);
+		}
+
 		return $item_data;
 	}
 
@@ -980,6 +989,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$item->add_meta_data( '_has_voucher', $values['has_voucher'], true );
 			$item->add_meta_data( '_aquos_id', $values['aquos_id'], true );
 
+
 			$order->set_shipping_first_name('');
 			$order->set_shipping_last_name('');
 			$order->set_shipping_address_1('');
@@ -991,6 +1001,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		else{ // Regular products
 			if(!empty($values['aquos_id'])){
 				$item->add_meta_data( '_aquos_id', $values['aquos_id'], true );
+			}
+			if(!empty($values['_aquos_price'])){
+				$item->add_meta_data( '_aquos_price', $values['aquos_price'], true );
 			}
 
 		}
@@ -1711,7 +1724,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 */
 	public function order_status_changed_to_appointment(int $order_id, WC_Order $order){
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 			error_log('change_order_status_appointment for order '.$order_id);
 		}
 
@@ -1871,7 +1884,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			}
 
 		}
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 			error_log('$attributes:');
 			error_log(print_r($attributes, true));
 		}
@@ -1943,7 +1956,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$errors[] = __('Product doesnt not exist', 'tmsm-aquos-spa-booking');
 		}
 
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 			//error_log('$variations:');
 			//error_log(print_r($variations, true));
 		}
@@ -2044,7 +2057,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			}
 		}
 
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 			//error_log('$products:');
 			//error_log(print_r($products, true));
 		}
@@ -2085,7 +2098,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$errors   = array(); // Array to hold validation errors
 		$jsondata = array(); // Array to pass back data
 
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 			error_log( 'ajax_times' );
 		}
 
@@ -2112,7 +2125,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurltimes' );
 		if ( ! empty( $settings_webserviceurl ) && ! empty( $aquos_id ) && ! empty( $date ) ) {
 
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 				error_log( 'url before:' . $settings_webserviceurl );
 			}
 
@@ -2143,7 +2156,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			// Replace keywords in url
 			$settings_webserviceurl = preg_replace( $patterns, $replacements, $settings_webserviceurl );
-			if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 				error_log( 'url after:' . $settings_webserviceurl );
 			}
 
@@ -2161,7 +2174,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			else{
 				$result_array = json_decode( $result, true );
 
-				if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+				if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 					error_log( var_export( $result_array, true ) );
 				}
 
@@ -2206,7 +2219,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		//$jsondata['success'] = true;
 		//$jsondata['errors'] = $errors;
 
-		if (  TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 			error_log('$errors:');
 			error_log(print_r($errors, true));
 			error_log('$times:');

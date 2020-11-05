@@ -1,5 +1,7 @@
+### 1.3.4: November 5th, 2020
 * Check cart items if any appointment has expired on appointment form
 * New field _aquos_price needed to pass exact price to web service
+* New settings page to generate prices needed for web service synchonization
 
 ### 1.3.3: October 30th, 2020
 * Check if appointments have expired, if expired the order can't be processed
