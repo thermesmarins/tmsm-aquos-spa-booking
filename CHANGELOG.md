@@ -1,3 +1,4 @@
+### 1.3.5: November 5th, 2020
 * Handle special hard coded prices
 * Update translations
 
