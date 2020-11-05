@@ -1,3 +1,6 @@
+* Handle special hard coded prices
+* Update translations
+
 ### 1.3.4: November 5th, 2020
 * Check cart items if any appointment has expired on appointment form
 * New field _aquos_price needed to pass exact price to web service

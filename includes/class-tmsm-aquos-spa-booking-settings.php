@@ -374,7 +374,10 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 					case 368: // Parcours Aquatonic (Paris)
 						$price = 29;
 						break;
-					case 191: // Modelage nuque et cuir chevelu or Modelage dos d'accueil (Nantes/Rennes)
+					case 191: // Modelage nuque et cuir chevelu (Nantes/Rennes)
+						$price = 18;
+						break;
+					case 538: // Modelage dos d'accueil (Nantes/Rennes)
 						$price = 18;
 						break;
 					case 470: // Accès Espace Bien-être en complément d'un soin (Paris)
