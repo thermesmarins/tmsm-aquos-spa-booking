@@ -1,3 +1,5 @@
+* Fix Appointment Processed value was No instead of Yes in backend 
+
 ### 1.3.5: November 5th, 2020
 * Handle special hard coded prices
 * Update translations
