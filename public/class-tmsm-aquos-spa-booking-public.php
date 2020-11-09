@@ -1221,6 +1221,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$cart_items = WC()->cart->get_cart_contents();
 
 		$appointmentonly = true;
+		if ( count( $cart_items ) === 0 ) {
+			$appointmentonly = false;
+		}
 		foreach ( $cart_items as $key => $values ) {
 			if(empty($values['appointment'])){
 				$appointmentonly = false;
@@ -1568,7 +1571,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function the_title( $title, $id ) {
 
-		if ( is_checkout() && $id === intval( get_option( 'woocommerce_checkout_page_id' ) ) ) {
+		if ( is_checkout() && self::cart_has_appointmentonly() && $id === intval( get_option( 'woocommerce_checkout_page_id' ) ) ) {
 			$title = __( 'Appointment', 'tmsm-aquos-spa-booking' );
 		}
 

@@ -79,6 +79,7 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 
 					if(!empty($results)){
 						$count_meta = count( $results );
+						$errors_nb = 0;
 
 						echo sprintf(__( 'Parsing %d products', 'tmsm-aquos-spa-booking' ), $count_meta);
 						echo "<br>";
@@ -114,7 +115,27 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 							echo 'calculated price '.$calculated_price . ' / ';
 
 							if($calculated_price != $product_price){
-								echo 'NON MATCHING PRICE!';
+								echo 'NON MATCHING PRICE with '.$product_price . ' / ';
+
+								if(!empty($product)){
+									echo 'product is '. $product->get_status() . ' / ';
+									$parent = wc_get_product($product->get_parent_id());
+									if(!empty($parent)){
+										echo 'variation is '.  $parent->get_status(). ' / ';
+									}
+								}
+
+								if(!empty($product) && ! $product->get_status() == 'published'){
+									//echo 'product is draft '. $product->get_status() . ' / ';
+								}
+								if(!empty($product) && $product->is_type('variation') ){
+									$parent = wc_get_product($product->get_parent_id());
+									if(!empty($parent) && ! $parent->get_status() == 'published'){
+										//echo 'variation is draft / ';
+									}
+								}
+
+								$errors_nb ++;
 							}
 
 							if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
@@ -131,6 +152,8 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 							echo "<br>";
 							echo "<br>";
 						}
+
+						echo sprintf(__( '%d matching price errors', 'tmsm-aquos-spa-booking' ), $errors_nb);
 					}
 
 				}
@@ -365,53 +388,133 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 			 */
 			function get_product_price_from_aquos_or_product_id(int $aquos_id, $product_id){
 
+				global $wpdb;
+
 				$price = 0;
 
-				switch ( $aquos_id ) {
-					case 338: // Parcours Aquatonic (Nantes/Rennes)
-						$price = 20;
-						break;
-					case 368: // Parcours Aquatonic (Paris)
-						$price = 29;
-						break;
-					case 191: // Modelage nuque et cuir chevelu (Nantes/Rennes)
-						$price = 18;
-						break;
-					case 538: // Modelage dos d'accueil (Nantes/Rennes)
-						$price = 18;
-						break;
-					case 470: // Accès Espace Bien-être en complément d'un soin (Paris)
-						$price = 30;
-						break;
-					case 495: // Balnéo privative en duo (Paris)
-						$price = 39;
-						break;
-					case 847: // Supplément French Manucure (Paris)
-						$price = 5;
-						break;
+				if(is_multisite() && get_current_blog_id() === 6) { // Rennes
+					switch ( $aquos_id ) {
+						case 338: // Parcours Aquatonic
+							$price = 20;
+							break;
+						case 191: // Modelage nuque et cuir chevelu
+							$price = 18;
+							break;
+						case 538: // Modelage dos d'accueil
+							$price = 18;
+							break;
+						case 427: // Une nuit Oceania
+							$price = 80;
+							break;
+					}
+				}
+				if(is_multisite() && get_current_blog_id() === 8) { // Nantes
+					switch ( $aquos_id ) {
+						case 338: // Parcours Aquatonic
+							$price = 23;
+							break;
+						case 191: // Modelage nuque et cuir chevelu
+							$price = 18;
+							break;
+						case 538: // Modelage dos d'accueil
+							$price = 18;
+							break;
+					}
+				}
+				if ( is_multisite() && get_current_blog_id() === 9 ) { // Paris
+					switch ( $aquos_id ) {
+						case 368: // Parcours Aquatonic (Paris)
+							$price = 29;
+							break;
+						case 470: // Accès Espace Bien-être en complément d'un soin
+							$price = 30;
+							break;
+						case 495: // Balnéo privative en duo
+							$price = 39;
+							break;
+						case 847: // Supplément French Manucure
+							$price = 5;
+							break;
+					}
+				}
 
-					default:
-						$product = wc_get_product($product_id);
+				if( $price == 0 ){
+					echo 'findind product with aquos id '.$aquos_id.' / ';
 
-						if(!empty($product)){
+					$results = $wpdb->get_results(
+						$wpdb->prepare(
+							"SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value = '%s'", $aquos_id
+						)
+					);
+					//echo "SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_price' AND meta_value = " .$aquos_id . ' / ';
 
-							$price = $product->get_price();
-							echo 'product_price='.$price . ' / ';
+					// Variable price procucts (like e-check)
+					if ( count( $results ) > 4 ) {
+						$product = wc_get_product( $product_id );
+						$price   = $product->get_price();
+						echo 'product price variable '.$price . ' / ';
+					}
 
-							$parent_id = $product->get_parent_id();
-							if(!empty($parent_id)){
-								echo 'found parent product '.$parent_id. ' / ';
-								$parent_product = wc_get_product($parent_id);
-								if(!empty($parent_product)){
-									$price = $parent_product->get_price();
-									echo 'parent price '.$price. ' / ';
-								}
-							}
+					// Other cases
+					else{
 
+						$result = null;
 
+						// Take only the first result
+						if ( is_array( $results ) && count( $results ) > 0 ) {
+							$result = $results[0];
 						}
 
-						break;
+						//print_r($results);
+						if(!empty($result)){
+							echo 'finding product with post_id '.$result->post_id . ' / ';
+							$product = wc_get_product($result->post_id);
+
+							if(!empty($product)){
+
+								$price = $product->get_price();
+								echo 'product price '.$price . ' / ';
+
+								/*$parent_id = $product->get_parent_id();
+								if(!empty($parent_id)){
+									echo 'found parent product '.$parent_id. ' / ';
+									$parent_product = wc_get_product($parent_id);
+									if(!empty($parent_product)){
+										$price = $parent_product->get_price();
+										echo 'parent price '.$price. ' / ';
+									}
+								}*/
+
+
+							}
+						}
+					}
+
+
+
+
+					/*$product = wc_get_product($product_id);
+
+					if(!empty($product)){
+
+						$price = $product->get_price();
+						echo 'product price '.$price . ' / ';
+
+						$parent_id = $product->get_parent_id();
+						if(!empty($parent_id)){
+							echo 'found parent product '.$parent_id. ' / ';
+							$parent_product = wc_get_product($parent_id);
+							if(!empty($parent_product)){
+								$price = $parent_product->get_price();
+								echo 'parent price '.$price. ' / ';
+							}
+						}
+
+
+					}*/
+				}
+				else{
+					echo 'hard coded price '.$price . ' for '.$aquos_id. ' / ';
 				}
 
 				return $price;

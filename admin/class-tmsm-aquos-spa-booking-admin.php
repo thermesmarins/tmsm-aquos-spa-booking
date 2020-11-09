@@ -139,7 +139,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			}
 			if($meta->key == '_appointment_processed' && !empty($meta->value)){
 				$meta->display_key = __('Appointment Processed to Aquos', 'tmsm-aquos-spa-booking');
-				$meta->display_value = ( $meta->value ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
+				$meta->display_value = ( $meta->value == 'yes' ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
 			}
 			if($meta->key == '_aquos_price' && !empty($meta->value)){
 				$meta->display_key = __('Aquos Price', 'tmsm-aquos-spa-booking');
