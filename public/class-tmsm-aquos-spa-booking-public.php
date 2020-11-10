@@ -1744,6 +1744,28 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 
 	/**
+	 * Do actions when fee lines are added to order
+	 *
+	 * @param WC_Order_Item_Fee $item
+	 * @param string $fee_key
+	 * @param $fee
+	 * @param WC_Order $order
+	 */
+	public function order_fee_item_metadata_giftwrap($item, $fee_key, $fee, $order){
+
+		if ( $fee->name == __( 'Order gift wrap', 'tmsm-woocommerce-order-gift-wrap' ) ) {
+
+			$aquos_id = get_option( 'tmsm_aquos_spa_booking_ordergiftwrapaquosid', '' );
+
+			if ( ! empty( $aquos_id ) ) {
+				$item->add_meta_data( '_aquos_id', $aquos_id, true );
+			}
+
+		}
+
+	}
+
+	/**
 	 * Returns list of cron schedules.
 	 *
 	 * @return array

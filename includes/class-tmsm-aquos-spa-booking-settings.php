@@ -115,7 +115,7 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 							echo 'calculated price '.$calculated_price . ' / ';
 
 							if($calculated_price != $product_price){
-								echo 'NON MATCHING PRICE with '.$product_price . ' / ';
+								echo '<b>NON MATCHING PRICE with '.$product_price . '</b> / ';
 
 								if(!empty($product)){
 									echo 'product is '. $product->get_status() . ' / ';
@@ -237,6 +237,17 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 							'desc'     => ''.
 							              '<p class="description">'.
 							              __( 'The IDs of excluded product categories. Separated by comma.', 'tmsm-aquos-spa-booking'). '</p>',
+							'default' => '',
+							'class'  => 'regular-text',
+						),
+
+						array(
+							'type'     => 'number',
+							'id'       => 'tmsm_aquos_spa_booking_ordergiftwrapaquosid',
+							'name'     => __( 'Order Gift Wrap Aquos ID', 'tmsm-aquos-spa-booking' ),
+							'desc'     => ''.
+							              '<p class="description">'.
+							              __( 'The ID of order gift wrap in Aquos', 'tmsm-aquos-spa-booking'). '</p>',
 							'default' => '',
 							'class'  => 'regular-text',
 						),
