@@ -1,3 +1,4 @@
+### 1.3.6: November 5th, 2020
 * Fix Appointment Processed value was No instead of Yes in backend 
 * New setting for Order Gift Wrap Aquos ID 
 * New settings page to calculate product meta "aquos_price" which is detailed pricing of a product with variations 
