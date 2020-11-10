@@ -1002,7 +1002,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			if(!empty($values['aquos_id'])){
 				$item->add_meta_data( '_aquos_id', $values['aquos_id'], true );
 			}
-			if(!empty($values['_aquos_price'])){
+			if(!empty($values['aquos_price'])){
 				$item->add_meta_data( '_aquos_price', $values['aquos_price'], true );
 			}
 
@@ -1756,7 +1756,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		if ( $fee->name == __( 'Order gift wrap', 'tmsm-woocommerce-order-gift-wrap' ) ) {
 
 			$aquos_id = get_option( 'tmsm_aquos_spa_booking_ordergiftwrapaquosid', '' );
-
 			if ( ! empty( $aquos_id ) ) {
 				$item->add_meta_data( '_aquos_id', $aquos_id, true );
 			}
