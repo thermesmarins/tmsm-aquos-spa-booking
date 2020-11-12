@@ -1,3 +1,5 @@
+* Remove Cash on Delivery for other types of orders when shipping is not needed
+
 ### 1.3.6: November 5th, 2020
 * Fix Appointment Processed value was No instead of Yes in backend 
 * New setting for Order Gift Wrap Aquos ID 

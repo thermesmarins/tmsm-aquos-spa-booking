@@ -1127,7 +1127,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 		// If at least one product is not an appointment, then remove cod
 		else{
-			unset($available_gateways['cod']);
+			if ( ! WC()->cart->needs_shipping() ) {
+				unset($available_gateways['cod']);
+			}
 		}
 
 		return $available_gateways;
