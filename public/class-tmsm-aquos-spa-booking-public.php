@@ -1114,11 +1114,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			if($settings_acceptcashondelivery === 'no'){
 				unset($available_gateways['cod']);
+				unset($available_gateways['paymentonsite']);
 			}
 			if($settings_acceptonlinepayment === 'no' && $settings_acceptcashondelivery === 'yes'){
 				if(!empty($available_gateways)){
 					foreach ($available_gateways as $available_gateway_key => $available_gateway){
-						if($available_gateway_key !== 'cod'){
+						if($available_gateway_key !== 'cod' || $available_gateway_key !== 'paymentonsite'){
 							unset($available_gateways[$available_gateway_key]);
 						}
 					}
@@ -1127,8 +1128,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 		// If at least one product is not an appointment, then remove cod
 		else{
+
+			// If products are virtual, do not allow delivery or on site payments
 			if ( ! WC()->cart->needs_shipping() ) {
 				unset($available_gateways['cod']);
+				unset($available_gateways['paymentonsite']);
 			}
 		}
 

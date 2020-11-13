@@ -224,6 +224,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								}
 							}
 							curl_close( $ch );
+							sleep(2);
 
 
 							// Notify admin if errors
