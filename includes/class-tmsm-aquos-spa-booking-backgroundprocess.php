@@ -220,6 +220,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 											error_log('Unknown error');
 										}
 										$errors[] = __( 'Unknown error', 'tmsm-aquos-spa-booking' );
+										$errors[] = print_r($result_array, true);
 									}
 								}
 							}
@@ -294,6 +295,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 		$string = str_replace( '(', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = str_replace( ')', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = str_replace( ',', '', $string ); // needed by webdev, if not triggers forbidden
+		$string = str_replace( '.', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = urlencode( $string );
 
 		return $string;

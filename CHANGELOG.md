@@ -2,6 +2,8 @@
 * Create delay between 2 web service calls when adding appointment 
 * If products are virtual, do not allow delivery or on site payments
 * Consider new "Payment On Site" gateway
+* Debug more on Unknown Error
+* Sanitize dot characters when sent to Web Service
 
 ### 1.3.6: November 5th, 2020
 * Fix Appointment Processed value was No instead of Yes in backend 
