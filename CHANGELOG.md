@@ -1,3 +1,4 @@
+### 1.3.7: November 23rd, 2020
 * Remove Cash on Delivery for other types of orders when shipping is not needed
 * Create delay between 2 web service calls when adding appointment 
 * If products are virtual, do not allow delivery or on site payments
