@@ -1718,6 +1718,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	function order_status_appointment_voucher( $status, $order_id, $order ) {
 
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+			error_log('order '.$order_id.' order_status_appointment_voucher');
+		}
+
 		if ( self::order_has_appointment( $order ) ) {
 			$status = 'wc-appointment';
 		}
@@ -1734,7 +1738,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function order_status_changed_to_appointment(int $order_id, WC_Order $order){
 		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-			error_log('change_order_status_appointment for order '.$order_id);
+			error_log('order '.$order_id.' change_order_status_appointment');
 		}
 
 		WC()->cart->empty_cart();
