@@ -272,12 +272,12 @@ class Tmsm_Aquos_Spa_Booking {
 		// Order Status Appointment for COD (not free)
 		$this->loader->add_filter( 'woocommerce_cod_process_payment_order_status', $plugin_public, 'order_status_appointment_cod', 20, 2 );
 		// Order Status Appointment for Voucher (free)
-		$this->loader->add_filter( 'woocommerce_payment_complete_order_status', $plugin_public, 'order_status_appointment_voucher', 60, 3 );
+		$this->loader->add_filter( 'woocommerce_payment_complete_order_status', $plugin_public, 'order_status_appointment_voucher', 600, 3 );
 
 		$this->loader->add_action( 'woocommerce_order_status_appointment', $plugin_public, 'order_status_changed_to_appointment', 80, 2 );
 
 		$this->loader->add_action( 'woocommerce_checkout_create_order_fee_item', $plugin_public, 'order_fee_item_metadata_giftwrap', 80, 4 );
-
+		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'create_order_line_item_with_coupon', 50, 4 );
 	}
 
 	/**

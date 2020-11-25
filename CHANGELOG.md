@@ -1,3 +1,6 @@
+* Handling of payment gateways "onsite" or "cod" in different conditions
+* When using coupon on checkout, prices (aquos_price) need to reflect the discount in the item meta data
+
 ### 1.3.7: November 23rd, 2020
 * Remove Cash on Delivery for other types of orders when shipping is not needed
 * Create delay between 2 web service calls when adding appointment 

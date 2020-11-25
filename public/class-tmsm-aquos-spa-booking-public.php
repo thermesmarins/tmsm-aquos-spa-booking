@@ -1119,7 +1119,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			if($settings_acceptonlinepayment === 'no' && $settings_acceptcashondelivery === 'yes'){
 				if(!empty($available_gateways)){
 					foreach ($available_gateways as $available_gateway_key => $available_gateway){
-						if($available_gateway_key !== 'cod' || $available_gateway_key !== 'paymentonsite'){
+						if( !in_array($available_gateway_key, [ 'cod', 'paymentonsite'] ) ){
 							unset($available_gateways[$available_gateway_key]);
 						}
 					}
@@ -1223,6 +1223,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return bool
 	 */
 	private static function cart_has_appointmentonly(){
+
+		//return true; // for tests
 
 		$cart_items = WC()->cart->get_cart_contents();
 
@@ -2263,7 +2265,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		return $times;
 	}
 
-
 	/**
 	 * Rename phone field description
 	 *
@@ -2280,4 +2281,45 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		return $fields;
 	}
 
+	/**
+	 * Update order item's meta aquos_price if product was discounted with a coupon
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WC_Order_Item_Product $item
+	 * @param string                $cart_item_key
+	 * @param array                 $values
+	 * @param WC_Order              $order
+	 */
+	public function create_order_line_item_with_coupon( $item, $cart_item_key, $values, $order ) {
+
+		// Product was discounted with a coupon
+		if($item->get_total() != $item->get_subtotal() && $item->get_subtotal() > $item->get_total() ){
+
+			$discount = 100 - ( $item->get_total() * 100 / $item->get_subtotal() );
+			if($discount > 0 && $discount < 100){
+				$aquos_prices = $item->get_meta('_aquos_price', true);
+
+				// Store old aquos price as item meta
+				$item->add_meta_data( '_aquos_price_regular', $aquos_prices, true );
+
+				$aquos_prices_array = explode('+', $aquos_prices);
+
+				if(is_array($aquos_prices_array)){
+					$aquos_prices_array_new = [];
+					foreach ($aquos_prices_array as $aquos_price){
+						$aquos_prices_array_new[] = $aquos_price - ( $aquos_price * $discount / 100 );
+					}
+
+					$aquos_prices_new = join('+', $aquos_prices_array_new);
+
+					// Store new aquos price and replace old price
+					$aquos_prices = $item->update_meta_data('_aquos_price', $aquos_prices_new);
+				}
+
+			}
+
+		}
+
+	}
 }
