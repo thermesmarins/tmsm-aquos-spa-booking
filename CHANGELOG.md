@@ -1,3 +1,4 @@
+### 1.3.9: December 14th, 2020
 * Sanitize plus characters when sent to Web Service
 
 ### 1.3.8: November 25rd, 2020
