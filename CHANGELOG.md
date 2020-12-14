@@ -1,3 +1,5 @@
+* Sanitize plus characters when sent to Web Service
+
 ### 1.3.8: November 25rd, 2020
 * Handling of payment gateways "onsite" or "cod" in different conditions
 * When using coupon on checkout, prices (aquos_price) need to reflect the discount in the item meta data

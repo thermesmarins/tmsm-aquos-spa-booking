@@ -294,6 +294,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 		$string = str_replace( '/', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = str_replace( '(', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = str_replace( ')', '', $string ); // needed by webdev, if not triggers forbidden
+		$string = str_replace( '+', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = str_replace( ',', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = str_replace( '.', '', $string ); // needed by webdev, if not triggers forbidden
 		$string = urlencode( $string );
