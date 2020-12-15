@@ -1,3 +1,4 @@
+### 1.4.0: December 15th, 2020
 * Tool to see if products miss the _aquos_id field
 
 ### 1.3.9: December 14th, 2020
