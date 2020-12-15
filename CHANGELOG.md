@@ -1,3 +1,5 @@
+* Tool to see if products miss the _aquos_id field
+
 ### 1.3.9: December 14th, 2020
 * Sanitize plus characters when sent to Web Service
 

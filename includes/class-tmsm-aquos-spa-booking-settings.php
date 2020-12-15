@@ -69,8 +69,45 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 				if($current_section == 'regenerateprices'){
 					global $wpdb;
 
-					echo __( 'This page regenerates the Aquos Price Meta Data needed for the web service synchronization.', 'tmsm-aquos-spa-booking' );
 					echo "<br>";
+					echo __( 'This section finds if Aquos IDs are missing for the web service synchronization.', 'tmsm-aquos-spa-booking' );
+					echo "<br>";
+					$products = wc_get_products(['numberposts' => -1, 'post_status' => 'publish']);
+					foreach($products as $product){
+
+
+
+
+						if ($product->get_type() == "variable") {
+							foreach ($product->get_available_variations() as $variation) {
+
+									$aquos_id = get_post_meta($variation['variation_id'], '_aquos_id', true);
+
+									if(empty($aquos_id)){
+										echo $product->get_title() . " - ".$variation['sku'];
+										echo ' variation ID '.$product->get_id().' / aquos_id missing';
+									}
+
+							}
+						}
+						else{
+							$aquos_id = get_post_meta($product->get_id(), '_aquos_id', true);
+							if(empty($aquos_id)){
+								echo "<br>";
+								echo $product->get_name();
+								echo ' product ID '.$product->get_id().' / aquos_id missing';
+							}
+						}
+
+					}
+
+
+
+
+					echo "<br>";
+					echo "<br>";
+					echo "<br>";
+					echo __( 'This page regenerates the Aquos Price Meta Data needed for the web service synchronization.', 'tmsm-aquos-spa-booking' );
 					echo "<br>";
 
 					$wpdb->delete( $wpdb->postmeta, [ 'meta_key' => $meta_key_aquos_price ] );
