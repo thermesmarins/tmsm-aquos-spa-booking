@@ -395,7 +395,9 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				}
 				$calculated_price = 0;
 				foreach($aquos_price as $item_price){
-					$calculated_price+=$item_price;
+					if(!empty($item_price)){
+						$calculated_price+=$item_price;
+					}
 				}
 				$non_matching_prices[$result->post_id] .= 'calculated price '.$calculated_price . ' / ';
 
