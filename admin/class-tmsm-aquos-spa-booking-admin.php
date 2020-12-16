@@ -204,6 +204,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				'label'       => __( 'Aquos Product ID (for appointments)', 'tmsm-aquos-spa-booking' ),
 				'placeholder' => '',
 				'desc_tip'    => 'true',
+				'required'    => 'true',
 				'description' => __( 'If empty, the product won\'t be bookable.', 'tmsm-aquos-spa-booking' )
 			)
 		);
@@ -241,6 +242,11 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 * @return void
 	 */
 	function woocommerce_save_product_variation( $variation_id, $i ) {
+
+		// Make Aquos ID field required on saving
+		if ( isset( $_POST['_aquos_id'][ $i ] ) && empty( $_POST['_aquos_id'][ $i ])) {
+			WC_Admin_Meta_Boxes::add_error( __( 'Aquos ID is a required field', 'tmsm-aquos-spa-booking' ) );
+		}
 
 		if ( isset( $_POST['_aquos_id'][$i] ) ) :
 			update_post_meta( $variation_id, '_aquos_id', sanitize_text_field( $_POST['_aquos_id'][$i] ) );
@@ -288,11 +294,12 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				'id' => '_aquos_id[' . $loop . ']',
 				'wrapper_class' => 'form-row',
 				'label' => __( 'Aquos Product ID (for appointments and purchase)', 'tmsm-aquos-spa-booking' ),
-				'value' => get_post_meta( $variation->ID, '_aquos_id', true )
+				'value' => get_post_meta( $variation->ID, '_aquos_id', true ),
+				'custom_attributes' => ['required' => 'required'],
 			)
 		);
 		woocommerce_wp_text_input( array(
-				'id' => '_aquos_id[' . $loop . ']',
+				'id' => '_aquos_price[' . $loop . ']',
 				'wrapper_class' => 'form-row',
 				'label' => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ),
 				'value' => get_post_meta( $variation->ID, '_aquos_price', true ),

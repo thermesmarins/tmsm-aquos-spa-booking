@@ -84,6 +84,7 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 									$aquos_id = get_post_meta($variation['variation_id'], '_aquos_id', true);
 
 									if(empty($aquos_id)){
+										echo "<br>";
 										echo $product->get_title() . " - ".$variation['sku'];
 										echo ' variation ID '.$product->get_id().' / aquos_id missing';
 									}
