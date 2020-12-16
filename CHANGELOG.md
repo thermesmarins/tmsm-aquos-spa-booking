@@ -1,3 +1,4 @@
+### 1.5.0: December 16th, 2020
 * Alert when Aquos ID field is empty in a variation
 * Cron action to regenerate prices and check price consistency and missing aquos ids, executed daily at midnight
 
