@@ -23,14 +23,18 @@
 class Tmsm_Aquos_Spa_Booking_Activator {
 
 	/**
-	 * Short Description. (use period)
+	 * Activate the plugin.
 	 *
 	 * Long Description.
 	 *
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		if ( ! wp_next_scheduled( 'tmsm_aquos_spa_booking_cronaction' ) ) {
+			$midnight = strtotime( 'tomorrow midnight' );
+			$midnight_plus10minutes = $midnight + 60 * 10;
+			wp_schedule_event( $midnight_plus10minutes, 'daily', 'tmsm_aquos_spa_booking_cronaction' );
+		}
 	}
 
 }

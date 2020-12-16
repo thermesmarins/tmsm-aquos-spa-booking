@@ -23,14 +23,14 @@
 class Tmsm_Aquos_Spa_Booking_Deactivator {
 
 	/**
-	 * Short Description. (use period)
+	 * Desactive the plugin
 	 *
 	 * Long Description.
 	 *
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		wp_clear_scheduled_hook('tmsm_aquos_spa_booking_cronaction');
 	}
 
 }

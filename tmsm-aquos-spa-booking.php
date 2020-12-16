@@ -19,7 +19,7 @@
  * Version:           1.4.0
  * Author:            Nicolas Mollet
  * Author URI:        https://github.com/nicomollet
- * Requires PHP:      7.2
+ * Requires PHP:      7.1
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       tmsm-aquos-spa-booking

@@ -184,6 +184,9 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'woocommerce_save_product_variation', $plugin_admin, 'woocommerce_save_product_variation', 10, 2 );
 		$this->loader->add_action( 'woocommerce_variation_options_pricing', $plugin_admin, 'woocommerce_variation_options_pricing', 10, 3 );
 
+		// Regenerate Aquos Prices
+		$this->loader->add_action( 'tmsm_aquos_spa_booking_cronaction', $plugin_admin, 'regenerate_aquos_prices', 10, 1 );
+
 	}
 
 	/**
