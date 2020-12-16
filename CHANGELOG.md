@@ -1,3 +1,5 @@
+* Alert when Aquos ID field is empty in a variation
+
 ### 1.4.0: December 15th, 2020
 * Tool to see if products miss the _aquos_id field
 
