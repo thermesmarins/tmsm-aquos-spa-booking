@@ -476,7 +476,11 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 				$message = $output;
 
-				$headers = 'Auto-Submitted: auto-generated; Content-Type: text/html; charset=UTF-8;';
+				$headers = [
+					'Auto-Submitted: auto-generated',
+					'Content-Type: text/html',
+					'Charset=UTF-8'
+				];
 				$email_sent = wp_mail( $email, $subject, $message, $headers );
 				if (  TMSM_AQUOS_SPA_BOOKING_DEBUG && !$email_sent) {
 					error_log('Error email sent');

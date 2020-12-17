@@ -1,4 +1,5 @@
 * Fix PHP notice
+* Fix email headers
 
 ### 1.5.0: December 16th, 2020
 * Alert when Aquos ID field is empty in a variation
