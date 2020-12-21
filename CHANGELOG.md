@@ -1,3 +1,4 @@
+* Sanitize 3 consecutive dot characters when sent to Web Service (had to enable again single dots for emails)
 * Fix PHP notice
 * Fix email headers
 
