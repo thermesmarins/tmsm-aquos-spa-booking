@@ -198,16 +198,17 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			)
 		);
 
-		woocommerce_wp_text_input(
-			array(
-				'id'          => '_aquos_id',
-				'label'       => __( 'Aquos Product ID (for appointments)', 'tmsm-aquos-spa-booking' ),
-				'placeholder' => '',
-				'desc_tip'    => 'true',
-				'required'    => 'true',
-				'description' => __( 'If empty, the product won\'t be bookable.', 'tmsm-aquos-spa-booking' )
-			)
-		);
+			woocommerce_wp_text_input(
+				array(
+					'id'          => '_aquos_id',
+					'label'       => __( 'Aquos Product ID (for appointments for products with options like course)', 'tmsm-aquos-spa-booking' ),
+					'placeholder' => '',
+					'desc_tip'    => 'true',
+					'required'    => 'true',
+					'description' => __( 'If empty, the product won\'t be bookable for products with options', 'tmsm-aquos-spa-booking' )
+				)
+			);
+
 		echo '</div>';
 		echo '<div class="options_group">';
 		woocommerce_wp_textarea_input(
@@ -221,12 +222,12 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			)
 		);
 		echo '</div>';
-		echo '<div class="options_group">';
+		echo '<div class="options_group hide_if_variable">';
 		woocommerce_wp_text_input(
 			array(
 				'id'          => '_aquos_price',
 				'label'       => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ),
-				'custom_attributes' => ['disabled' => 'disabled']
+				'custom_attributes' => ['disabled' => 'disabled'],
 			)
 		);
 		echo '</div>';

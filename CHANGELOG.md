@@ -1,3 +1,5 @@
+* Explicit description of _aquos_id field in some cases of products with options
+
 ### 1.5.1: December 21st, 2020
 * Sanitize 3 consecutive dot characters when sent to Web Service (had to enable again single dots for emails)
 * Fix PHP notice
