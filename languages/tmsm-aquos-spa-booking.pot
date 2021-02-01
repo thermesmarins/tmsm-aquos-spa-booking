@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2021-02-01 12:43+0100\n"
+"POT-Creation-Date: 2021-02-01 12:55+0100\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -82,13 +82,12 @@ msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:204
 msgid ""
-"Aquos Product ID (for appointments for products with options like "
-"course)"
+"Aquos Product ID (for appointments for products without choice "
+"and without options like course)"
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:208
-msgid ""
-"If empty, the product won't be bookable for products with options"
+msgid "If empty, the product won't be bookable"
 msgstr ""
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:217

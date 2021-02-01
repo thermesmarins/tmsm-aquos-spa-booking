@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2021-02-01 12:43+0100\n"
-"PO-Revision-Date: 2021-02-01 12:46+0100\n"
+"POT-Creation-Date: 2021-02-01 12:55+0100\n"
+"PO-Revision-Date: 2021-02-01 12:55+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -81,16 +81,15 @@ msgstr "Cocher cette case si le produit est réservable via ResaSpa."
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:204
 msgid ""
-"Aquos Product ID (for appointments for products with options like course)"
+"Aquos Product ID (for appointments for products without choice and without "
+"options like course)"
 msgstr ""
-"ID de produit Aquos (pour les rendez-vous de produits avec options comme le "
-"parcours)"
+"ID de produit Aquos (pour les rendez-vous de produits sans choix et sans "
+"option comme le parcours)"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:208
-msgid "If empty, the product won't be bookable for products with options"
-msgstr ""
-"Si vide, le produit ne sera pas réservable pour les produits avec options "
-"comme le parcours"
+msgid "If empty, the product won't be bookable"
+msgstr "Si vide, le produit ne sera pas réservable"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:217
 msgid "Aquos Products IDs (for appointment packages)"

@@ -201,11 +201,11 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			woocommerce_wp_text_input(
 				array(
 					'id'          => '_aquos_id',
-					'label'       => __( 'Aquos Product ID (for appointments for products with options like course)', 'tmsm-aquos-spa-booking' ),
+					'label'       => __( 'Aquos Product ID (for appointments for products without choice and without options like course)', 'tmsm-aquos-spa-booking' ),
 					'placeholder' => '',
 					'desc_tip'    => 'true',
 					'required'    => 'true',
-					'description' => __( 'If empty, the product won\'t be bookable for products with options', 'tmsm-aquos-spa-booking' )
+					'description' => __( 'If empty, the product won\'t be bookable', 'tmsm-aquos-spa-booking' )
 				)
 			);
 
