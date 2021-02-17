@@ -23,6 +23,11 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 	 */
 	protected $action = 'tmsm_asb_bp';
 
+	/*
+	 * For logging purposes
+	 */
+	private $logger = false;
+
 	/**
 	 * Initiate new background process.
 	 */
@@ -38,6 +43,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 		parent::__construct();
 	}
+
 
 	public function trigger( $order_id ) {
 
@@ -173,6 +179,8 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								error_log( 'url after:' . $settings_webserviceurl );
 							}
 
+
+
 							// Connect with cURL
 							$ch = curl_init();
 							curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
@@ -190,6 +198,22 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							}
 							else{
 								$result_array = json_decode( $result, true );
+
+								$logger = wc_get_logger();
+
+								$logger->info(
+									'WebService Request: '. $settings_webserviceurl,
+									array(
+										'source' => 'tmsm-aquos-spa-booking',
+									)
+								);
+
+								$logger->info(
+									wc_print_r( $result_array, true ),
+									array(
+										'source' => 'tmsm-aquos-spa-booking',
+									)
+								);
 
 								// Debug response
 								if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
