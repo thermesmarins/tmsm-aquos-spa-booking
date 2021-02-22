@@ -1,3 +1,7 @@
+### 1.5.3: February 22nd, 2021
+* Better trace Web Service calls
+
+### 1.5.2: February 17th, 2021
 * Explicit description of _aquos_id field in some cases of products without choice and with option like course
 * Trace Web Service calls
 

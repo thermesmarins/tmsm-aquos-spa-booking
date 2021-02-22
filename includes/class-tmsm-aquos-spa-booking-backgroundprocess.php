@@ -190,6 +190,15 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							$errors = [];
 							$result_array = [];
 
+							$logger = wc_get_logger();
+
+							$logger->info(
+								'WebService Request: '. $settings_webserviceurl,
+								array(
+									'source' => 'tmsm-aquos-spa-booking',
+								)
+							);
+
 							if(empty($result)){
 								if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 									error_log('Web service is not available');
@@ -198,15 +207,6 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							}
 							else{
 								$result_array = json_decode( $result, true );
-
-								$logger = wc_get_logger();
-
-								$logger->info(
-									'WebService Request: '. $settings_webserviceurl,
-									array(
-										'source' => 'tmsm-aquos-spa-booking',
-									)
-								);
 
 								$logger->info(
 									wc_print_r( $result_array, true ),
