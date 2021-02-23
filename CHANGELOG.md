@@ -1,3 +1,6 @@
+### 1.5.4: February 23nd, 2021
+* Remove web service urls called in error emails
+
 ### 1.5.3: February 22nd, 2021
 * Better trace Web Service calls
 
