@@ -277,7 +277,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 								$message .= sprintf(__( 'Errors: %s', 'tmsm-aquos-spa-booking' ), implode(', ', $errors));
 								$message .= "\r\n";
-								$message .= sprintf(__( 'Web Service Request: %s', 'tmsm-aquos-spa-booking' ), $settings_webserviceurl);
+								$message .= sprintf(__( 'Web Service Request: %s', 'tmsm-aquos-spa-booking' ), str_replace('https://', '', $settings_webserviceurl ) );
 								$message .= "\r\n";
 								$message .= sprintf(__( 'Aquos Product ID: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['_aquos_id']);
 
