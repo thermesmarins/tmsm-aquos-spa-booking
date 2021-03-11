@@ -590,6 +590,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     cancel: function (event){
       event.preventDefault();
       console.log('AttributesListView cancel');
+
+      TmsmAquosSpaBookingApp.courseParticipants = 0;
+
       this.$('input').attr('checked', false).removeAttr('checked').prop('checked', false);
       this.$('input.checked-default').attr('checked', true).prop('checked', true);
       TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
@@ -597,6 +600,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
     reset: function (event){
       console.log('AttributesListView reset');
+
+      TmsmAquosSpaBookingApp.courseParticipants = 0;
+
       this.$('input').attr('checked', false).removeAttr('checked').prop('checked', false);
       this.$('input.checked-default').attr('checked', true).prop('checked', true);
       TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
@@ -717,14 +723,22 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log($(event.target));
       console.log($(event.target).val());
 
+      TmsmAquosSpaBookingApp.courseParticipants = 0;
 
 
+      if($.inArray( $(event.target).val(), [ "avec-parcours-aquatonic", "pa1", "avec-parcours-aquatonic-1-personne" ] )){
+        TmsmAquosSpaBookingApp.courseParticipants = 1;
+      }
+
+      if($.inArray( $(event.target).val(), [ "pa2", "avec-parcours-aquatonic-2-personnes" ] )){
+        TmsmAquosSpaBookingApp.courseParticipants = 2;
+      }
+
+      console.log(' TmsmAquosSpaBookingApp.courseParticipants' +  TmsmAquosSpaBookingApp.courseParticipants);
 
       TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
       //TmsmAquosSpaBookingApp.productAttributesList.loading();
       //TmsmAquosSpaBookingApp.productAttributesList.render();
-
-
 
       /*
       //var variations = form.findMatchingVariations( form.variationData, checkAttributes );
@@ -1678,6 +1692,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
    * Set initial data into view and start recurring display updates.
    */
   TmsmAquosSpaBookingApp.init = function() {
+
+    TmsmAquosSpaBookingApp.courseParticipants = 0;
 
     TmsmAquosSpaBookingApp.havevoucherList = new TmsmAquosSpaBookingApp.HavevoucherListView( );
 
