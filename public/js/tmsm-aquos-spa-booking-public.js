@@ -592,6 +592,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log('AttributesListView cancel');
 
       TmsmAquosSpaBookingApp.courseParticipants = 0;
+      TmsmAquosSpaBookingApp.selectedData.set('course_participants', TmsmAquosSpaBookingApp.courseParticipants);
 
       this.$('input').attr('checked', false).removeAttr('checked').prop('checked', false);
       this.$('input.checked-default').attr('checked', true).prop('checked', true);
@@ -734,7 +735,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         TmsmAquosSpaBookingApp.courseParticipants = 2;
       }
 
-      console.log(' TmsmAquosSpaBookingApp.courseParticipants' +  TmsmAquosSpaBookingApp.courseParticipants);
+      console.log(' TmsmAquosSpaBookingApp.courseParticipants: ' +  TmsmAquosSpaBookingApp.courseParticipants);
+
+      TmsmAquosSpaBookingApp.selectedData.set('course_participants', TmsmAquosSpaBookingApp.courseParticipants);
 
       TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
       //TmsmAquosSpaBookingApp.productAttributesList.loading();
@@ -1488,10 +1491,22 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       $(event.target).addClass('btn-primary').addClass('disabled').removeClass('not-selected');
 
       console.warn($(this.addAppointmentButton));
-      TmsmAquosSpaBookingApp.animateTransition($(this.addAppointmentButton));
-
       TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
       TmsmAquosSpaBookingApp.selectedData.set('date', date);
+
+      // Has participants, show course time selection
+      if(TmsmAquosSpaBookingApp.selectedData.get('course_participants') > 0 && TmsmAquosSpaBookingApp.courseplugin){
+        console.log('Has participants, show course time selection');
+
+      }
+      else{
+        TmsmAquosSpaBookingApp.animateTransition($(this.addAppointmentButton));
+
+      }
+
+
+
+
     },
 
   } );
@@ -1525,6 +1540,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       productvariation: null,
       date: null,
       hourminutes: null,
+      course_participants: null,
+      course_hourminutes: null,
       is_voucher: null
     },
 
