@@ -735,7 +735,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         TmsmAquosSpaBookingApp.courseParticipants = 2;
       }
 
-      console.log(' TmsmAquosSpaBookingApp.courseParticipants: ' +  TmsmAquosSpaBookingApp.courseParticipants);
+      console.info(' TmsmAquosSpaBookingApp.courseParticipants: ' +  TmsmAquosSpaBookingApp.courseParticipants);
 
       TmsmAquosSpaBookingApp.selectedData.set('course_participants', TmsmAquosSpaBookingApp.courseParticipants);
 
@@ -1496,8 +1496,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       // Has participants, show course time selection
       if(TmsmAquosSpaBookingApp.selectedData.get('course_participants') > 0 && TmsmAquosSpaBookingApp.courseplugin){
-        console.log('Has participants, show course time selection');
-
+        console.info('Has participants, show course time selection');
+        TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.courseTimesList.element());
       }
       else{
         TmsmAquosSpaBookingApp.animateTransition($(this.addAppointmentButton));
@@ -1529,6 +1529,167 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
   } );
 
+
+  /**
+   * Course Time
+   */
+  TmsmAquosSpaBookingApp.CourseTimeModel = BaseModel.extend( {
+    action: 'tmsm-aquos-spa-booking-course-times',
+    defaults: {
+      date: null,
+      hour: null,
+      minute: null,
+      priority: null,
+      hourminutes: null,
+    }
+  } );
+
+
+  TmsmAquosSpaBookingApp.CourseTimesCollection = BaseCollection.extend( {
+    action: 'tmsm-aquos-spa-booking-course-times',
+    model: TmsmAquosSpaBookingApp.CourseTimeModel,
+
+  } );
+
+  TmsmAquosSpaBookingApp.CourseTimesListView = Backbone.View.extend( {
+    el: '#tmsm-aquos-spa-booking-course-times-container',
+    selectedValue: null,
+    listElement: '#tmsm-aquos-spa-booking-course-times-list',
+    loadingElement: '#tmsm-aquos-spa-booking-course-times-loading',
+    errorElement: '#tmsm-aquos-spa-booking-course-times-error',
+    anotherDateElement: '#tmsm-aquos-spa-booking-course-times-anotherdate',
+    selectButtons: '.tmsm-aquos-spa-booking-course-time-button',
+    cancelButtons: '.tmsm-aquos-spa-booking-course-time-change-label',
+
+    initialize: function() {
+
+      console.log('CourseTimesListView initialize');
+      this.hide();
+      this.listenTo( this.collection, 'sync', this.render );
+    },
+
+    events : {
+      'click .tmsm-aquos-spa-booking-course-time-button' : 'selectTime',
+      'click .tmsm-aquos-spa-booking-course-time-change-label' : 'cancelTime',
+      //'click #tmsm-aquos-spa-booking-course-times-anotherdate' : 'changeDate',
+      'click .previous': 'previous',
+      'click .next': 'next',
+    },
+
+    loading: function(){
+      console.log('CourseTimesListView loading');
+      $( this.errorElement ).hide();
+      $( this.loadingElement ).show();
+      $( this.listElement ).hide();
+    },
+    loaded: function(){
+      console.log('CourseTimesListView loaded');
+      $( this.loadingElement ).hide();
+      $( this.listElement ).show();
+    },
+
+    render: function() {
+      console.log('CourseTimesListView render');
+      var $list = this.$( this.listElement ).empty().val('');
+
+      $list.hide();
+
+      console.log('CourseTimesListView collection:');
+      console.log(this.collection);
+      console.log('CourseTimesListView collection length: ' + this.collection.length);
+
+      var i = 0;
+      this.collection.each( function( model ) {
+        i++;
+        if(i===1){
+          $( '.tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date+'"]').empty();
+        }
+        var item = new TmsmAquosSpaBookingApp.TimesListItemView( { model: model } );
+        //if ($('.tmsm-aquos-spa-booking-weekday-course-times[data-date="' + model.attributes.date + '"]').length > 0) {
+          //$( '.tmsm-aquos-spa-booking-weekday-course-times[data-date="' + model.attributes.date + '"]').append(item.render().$el.context.outerHTML);
+        //}
+        //else{
+          //console.log('tmsm-aquos-spa-booking-weekday-times not added for '+model.attributes.date);
+        //}
+        //
+        //$( '.tmsm-aquos-spa-booking-weekday-times[data-date=\''+model.attributes.date+'\']').append(item.render().$el);
+
+        $list.append( item.render().$el );
+      }, this );
+
+      this.loaded();
+
+      if(this.collection.length === 0){
+        $( this.errorElement ).show();
+      }
+      else{
+        $( this.errorElement ).hide();
+      }
+
+      return this;
+    },
+
+    selectTime: function(event){
+      event.preventDefault();
+      console.log('CourseTimeListView selectTime');
+      this.selectedValue = $(event.target).data('hourminutes');
+      console.log('CourseTimeListView selectedValue: '+ this.selectedValue);
+      $( this.selectButtons ).hide().removeClass('disabled').removeClass('selected').addClass('not-selected');
+      $(event.target).show().addClass('selected').removeClass('not-selected').find('.tmsm-aquos-spa-booking-course-time').addClass('disabled');
+
+      TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
+    },
+
+    cancelTime: function(event){
+      event.preventDefault();
+      $( this.selectButtons ).show().removeClass('disabled').removeClass('selected').addClass('not-selected');
+      this.selectedValue = null;
+
+      TmsmAquosSpaBookingApp.selectedData.set('hourminutes', null);
+    },
+
+    changeDate: function(event){
+      event.preventDefault();
+      //TmsmAquosSpaBookingApp.dateList.reset();
+      TmsmAquosSpaBookingApp.courseTimesList.reset();
+      //TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
+    },
+
+    reset: function (){
+      this.selectedValue = null;
+      TmsmAquosSpaBookingApp.selectedData.set('hourminutes', null);
+      this.hide();
+    },
+
+    element: function (){
+      return this.$el;
+    },
+    hide: function (){
+      this.$el.hide();
+    },
+    show: function (){
+      this.$el.show();
+    }
+  } );
+
+
+  TmsmAquosSpaBookingApp.CourseTimesListItemView = Backbone.View.extend( {
+    tagName: 'li',
+    className: 'tmsm-aquos-spa-booking-course-time-item',
+    template: wp.template( 'tmsm-aquos-spa-booking-course-time' ),
+
+    initialize: function() {
+      this.listenTo( this.model, 'change', this.render );
+      this.listenTo( this.model, 'destroy', this.remove );
+    },
+
+    render: function() {
+      var html = this.template( this.model.toJSON() );
+      this.$el.html( html );
+      return this;
+    },
+
+  } );
 
   /**
    * Selected Data
@@ -1750,6 +1911,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     TmsmAquosSpaBookingApp.weekdays.reset( TmsmAquosSpaBookingApp.data.times );
     TmsmAquosSpaBookingApp.weekdaysList = new TmsmAquosSpaBookingApp.WeekDayListView( { collection: TmsmAquosSpaBookingApp.weekdays } );
     TmsmAquosSpaBookingApp.weekdaysList.render();
+
+
+    TmsmAquosSpaBookingApp.coursetimes = new TmsmAquosSpaBookingApp.CourseTimesCollection();
+    TmsmAquosSpaBookingApp.coursetimes.reset( TmsmAquosSpaBookingApp.data.coursetimes );
+    TmsmAquosSpaBookingApp.courseTimesList = new TmsmAquosSpaBookingApp.CourseTimesListView( { collection: TmsmAquosSpaBookingApp.coursetimes } );
+    TmsmAquosSpaBookingApp.courseTimesList.render();
+
 
     TmsmAquosSpaBookingApp.selectedData = new TmsmAquosSpaBookingApp.SelectedDataModel();
     TmsmAquosSpaBookingApp.selectedDataList = new TmsmAquosSpaBookingApp.SelectedDataView( { model: TmsmAquosSpaBookingApp.selectedData } );

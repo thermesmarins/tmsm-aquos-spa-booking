@@ -100,7 +100,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					array( 'jquery', 'bootstrap', 'bootstrap-datepicker' ), null, true );
 			}
 
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public'.( !(in_array('administrator',  wp_get_current_user()->roles) || TMSM_AQUOS_SPA_BOOKING_DEBUG === true) ?'.min' : '' ).'.js', array( 'jquery', 'moment', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public'.( !(in_array('administrator',  wp_get_current_user()->roles) || (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG)) ?'.min' : '' ).'.js', array( 'jquery', 'moment', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
 
 
 			$datebeforeforbidden = DateTime::createFromFormat('Y-m-d', get_option( 'tmsm_aquos_spa_booking_datebeforeforbidden', '' ));
@@ -394,11 +394,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-course-times-container" style="'.(!class_exists('Tmsm_Aquatonic_Course_Booking')?'display:none;':'').'">
 				<div id="tmsm-aquos-spa-booking-course-times-inner">
 					<h3>' . __( 'Pick your course time:', 'tmsm-aquos-spa-booking' ) . '</h3>
-					<div id="tmsm-aquatonic-course-slots-container">
-						<div id="tmsm-aquatonic-course-booking-weekdays-list">
-						
-						</div>
-					
+					<p id="tmsm-aquos-spa-booking-course-times-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
+					<p id="tmsm-aquos-spa-booking-course-times-error" style="display: none">' . __( 'No time results for this date.', 'tmsm-aquos-spa-booking' ) . '</p>
+					<ul id="tmsm-aquos-spa-booking-course-times-list" class="list-unstyled"></ul>
 					</div>
 				</div>
 			</div>
@@ -461,6 +459,24 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-time">
 			<# if ( data.hourminutes != null) { #>
 			<a class="tmsm-aquos-spa-booking-time-button <?php echo self::button_class_default(); ?> tmsm-aquos-spa-booking-time" href="#" data-date="{{ data.date }}" data-hour="{{ data.hour }}" data-minutes="{{ data.minutes }}" data-hourminutes="{{ data.hourminutes }}" data-priority="{{ data.priority }}">{{ data.hourminutes }} <# if ( TmsmAquosSpaBookingApp.role == "1" && data.priority == 1) { #> <!--*--><# } #></a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
+			<# } else { #>
+				{{  TmsmAquosSpaBookingApp.strings.notimeslot }}
+			<# } #>
+
+
+		</script>
+		<?php
+	}
+
+	/**
+	 * Course Time Template
+	 */
+	public function template_course_time(){
+		?>
+
+		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-course-time">
+			<# if ( data.hourminutes != null) { #>
+			<a class="tmsm-aquos-spa-booking-course-time-button <?php echo self::button_class_default(); ?> tmsm-aquos-spa-booking-course-time" href="#" data-date="{{ data.date }}" data-hour="{{ data.hour }}" data-minutes="{{ data.minutes }}" data-hourminutes="{{ data.hourminutes }}" data-priority="{{ data.priority }}">{{ data.hourminutes }} <# if ( TmsmAquosSpaBookingApp.role == "1" && data.priority == 1) { #> <!--*--><# } #></a> <a href="#" class="tmsm-aquos-spa-booking-time-change-label"><?php echo __( 'Change time', 'tmsm-aquos-spa-booking' ); ?></a>
 			<# } else { #>
 				{{  TmsmAquosSpaBookingApp.strings.notimeslot }}
 			<# } #>
@@ -1215,6 +1231,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return bool
 	 */
 	private static function cart_has_appointment(){
+
+
+		if(is_admin()){
+			return false;
+		}
+
+		if(empty(WC()->cart)){
+			return false;
+		}
 
 		$cart_items = WC()->cart->get_cart_contents();
 
