@@ -1,4 +1,5 @@
 * Check if WC cart exists
+* Fix product get_type() incorrectly called
 
 ### 1.5.4: February 23nd, 2021
 * Remove web service urls called in error emails

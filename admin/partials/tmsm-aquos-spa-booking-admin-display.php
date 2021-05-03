@@ -25,11 +25,11 @@ $products = wc_get_products($args);
 $counter_products = 0;
 foreach($products as $product){
 
-	if ($product->product_type === 'variable') {
+	if ($product->get_type() === 'variable') {
 
 		$output= '';
 		$output .= '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
-		$output .= ' — '.$product->product_type;
+		$output .= ' — '.$product->get_type();
 		$output .= '<br>';
 		$counter_variations_without_id = 0;
 		foreach($product->get_available_variations() as $variation_data){
@@ -52,7 +52,7 @@ foreach($products as $product){
 		if(empty($product->get_meta('_aquos_id'))){
 			$counter_products ++;
 			echo '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
-			echo ' — '.$product->product_type;
+			echo ' — '.$product->get_type();
 			echo '<br>';
 			echo '<br>';
 		}
@@ -74,11 +74,11 @@ $products = wc_get_products($args);
 $counter_products = 0;
 foreach($products as $product){
 
-	if ($product->product_type === 'variable') {
+	if ($product->get_type() === 'variable') {
 
 		$output= '';
 		$output .= '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_title().'</a>';
-		$output .= ' — '.$product->product_type;
+		$output .= ' — '.$product->get_type();
 		$output .= '<br>';
 		$counter_variations_without_id = 0;
 		foreach($product->get_available_variations() as $variation_data){
@@ -101,7 +101,7 @@ foreach($products as $product){
 		if(empty($product->get_meta('_aquos_id'))){
 			$counter_products ++;
 			echo '<a href="' . get_edit_post_link( $product->get_id() ) . '">' . $product->get_title() . '</a>';
-			echo ' — '.$product->product_type;
+			echo ' — '.$product->get_type();
 			echo '<br>';
 			echo '<br>';
 		}
