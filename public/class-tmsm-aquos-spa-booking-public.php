@@ -1119,47 +1119,48 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	function woocommerce_available_payment_gateways_cashondelivery( $available_gateways ) {
 
-		$settings_acceptcashondelivery = get_option( 'tmsm_aquos_spa_booking_acceptcashondelivery', 'yes' );
-		$settings_acceptonlinepayment = get_option( 'tmsm_aquos_spa_booking_acceptonlinepayment', 'no' );
+		if(! empty(WC()->cart)) {
 
-		// Check cart content: if all products are appointments
-		$all_appointments = true;
+			$settings_acceptcashondelivery = get_option( 'tmsm_aquos_spa_booking_acceptcashondelivery', 'yes' );
+			$settings_acceptonlinepayment  = get_option( 'tmsm_aquos_spa_booking_acceptonlinepayment', 'no' );
 
-		$order_id = absint( get_query_var( 'order-pay' ) );
+			// Check cart content: if all products are appointments
+			$all_appointments = true;
 
-		// Checking if we are on the order-pay page, we can parse the order
-		if(!empty($order_id)){
-			$appointmentsonly = $this->order_has_appointmentonly($order_id);
-		}
-		// if not, we are on the checkout page, we can parse the cart
-		else{
-			$appointmentsonly = self::cart_has_appointmentonly();
-		}
+			$order_id = absint( get_query_var( 'order-pay' ) );
 
-		// All products are appointments, allow accepted methods
-		if($appointmentsonly === true){
-
-			if($settings_acceptcashondelivery === 'no'){
-				unset($available_gateways['cod']);
-				unset($available_gateways['paymentonsite']);
+			// Checking if we are on the order-pay page, we can parse the order
+			if ( ! empty( $order_id ) ) {
+				$appointmentsonly = $this->order_has_appointmentonly( $order_id );
+			} // if not, we are on the checkout page, we can parse the cart
+			else {
+				$appointmentsonly = self::cart_has_appointmentonly();
 			}
-			if($settings_acceptonlinepayment === 'no' && $settings_acceptcashondelivery === 'yes'){
-				if(!empty($available_gateways)){
-					foreach ($available_gateways as $available_gateway_key => $available_gateway){
-						if( !in_array($available_gateway_key, [ 'cod', 'paymentonsite'] ) ){
-							unset($available_gateways[$available_gateway_key]);
+
+			// All products are appointments, allow accepted methods
+			if ( $appointmentsonly === true ) {
+
+				if ( $settings_acceptcashondelivery === 'no' ) {
+					unset( $available_gateways['cod'] );
+					unset( $available_gateways['paymentonsite'] );
+				}
+				if ( $settings_acceptonlinepayment === 'no' && $settings_acceptcashondelivery === 'yes' ) {
+					if ( ! empty( $available_gateways ) ) {
+						foreach ( $available_gateways as $available_gateway_key => $available_gateway ) {
+							if ( ! in_array( $available_gateway_key, [ 'cod', 'paymentonsite' ] ) ) {
+								unset( $available_gateways[ $available_gateway_key ] );
+							}
 						}
 					}
 				}
-			}
-		}
-		// If at least one product is not an appointment, then remove cod
-		else{
+			} // If at least one product is not an appointment, then remove cod
+			else {
 
-			// If products are virtual, do not allow delivery or on site payments
-			if ( ! WC()->cart->needs_shipping() ) {
-				unset($available_gateways['cod']);
-				unset($available_gateways['paymentonsite']);
+				// If products are virtual, do not allow delivery or on site payments
+				if ( ! WC()->cart->needs_shipping() ) {
+					unset( $available_gateways['cod'] );
+					unset( $available_gateways['paymentonsite'] );
+				}
 			}
 		}
 
@@ -1262,6 +1263,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		//return true; // for tests
 
+		if(empty(WC()->cart)){
+			return false;
+		}
+
 		$cart_items = WC()->cart->get_cart_contents();
 
 		$appointmentonly = true;
@@ -1284,13 +1289,17 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	private static function cart_has_atleastonevoucher(){
 
-		$cart_items = WC()->cart->get_cart_contents();
+		if ( ! empty( WC()->cart ) ) {
 
-		$count = 0;
-		foreach($cart_items as $cart_item){
-			if(!empty($cart_item['has_voucher'])){
-				$count ++;
+			$cart_items = WC()->cart->get_cart_contents();
+
+			$count = 0;
+			foreach($cart_items as $cart_item){
+				if(!empty($cart_item['has_voucher'])){
+					$count ++;
+				}
 			}
+
 		}
 
 		return ($count > 0);
@@ -1303,14 +1312,19 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	private static function cart_has_voucheronly(){
 
-		$cart_items = WC()->cart->get_cart_contents();
-
 		$count = 0;
-		foreach($cart_items as $cart_item){
-			if(!empty($cart_item['has_voucher'])){
-				$count ++;
+
+		if ( ! empty( WC()->cart ) ) {
+			$cart_items = WC()->cart->get_cart_contents();
+
+
+			foreach($cart_items as $cart_item){
+				if(!empty($cart_item['has_voucher'])){
+					$count ++;
+				}
 			}
 		}
+
 
 		return ($count == count( $cart_items ));
 	}
@@ -1323,16 +1337,19 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	function woocommerce_thankyou_order_received_text_appointment( $thankyou, $order ) {
 
-		WC()->cart->empty_cart();
+		if ( ! empty( WC()->cart ) ) {
+			WC()->cart->empty_cart();
 
-		if ( self::order_has_appointment( $order ) === true ) {
-			$message = get_option( 'tmsm_aquos_spa_booking_thankyou', false );
+			if ( self::order_has_appointment( $order ) === true ) {
+				$message = get_option( 'tmsm_aquos_spa_booking_thankyou', false );
 
-			if ( ! empty( $message ) ) {
-				$thankyou .= '<br><br>' . nl2br(esc_html( $message ));
+				if ( ! empty( $message ) ) {
+					$thankyou .= '<br><br>' . nl2br(esc_html( $message ));
+				}
+
 			}
-
 		}
+
 
 		return $thankyou;
 
