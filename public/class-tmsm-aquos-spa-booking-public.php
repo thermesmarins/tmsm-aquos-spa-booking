@@ -1578,17 +1578,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	public function body_class($classes, $class){
 		global $post;
 
-		$pages = [intval(get_option( 'woocommerce_checkout_page_id' )), intval(get_option( 'woocommerce_cart_page_id' ))];
+		if ( ! empty( $post ) && ! empty( $post->ID ) ) {
+			$pages = [intval(get_option( 'woocommerce_checkout_page_id' )), intval(get_option( 'woocommerce_cart_page_id' ))];
 
-		if(in_array($post->ID, $pages) && self::cart_has_appointment()){
-			$classes[] = 'tmsm-aquos-spa-booking-checkout-has-appointments';
+			if(in_array($post->ID, $pages) && self::cart_has_appointment()){
+				$classes[] = 'tmsm-aquos-spa-booking-checkout-has-appointments';
+			}
+			if(in_array($post->ID, $pages) && self::cart_has_atleastonevoucher()){
+				$classes[] = 'tmsm-aquos-spa-booking-checkout-has-atleastonevoucher';
+			}
+			if(in_array($post->ID, $pages) && self::cart_has_voucheronly()){
+				$classes[] = 'tmsm-aquos-spa-booking-checkout-has-voucheronly';
+			}
 		}
-		if(in_array($post->ID, $pages) && self::cart_has_atleastonevoucher()){
-			$classes[] = 'tmsm-aquos-spa-booking-checkout-has-atleastonevoucher';
-		}
-		if(in_array($post->ID, $pages) && self::cart_has_voucheronly()){
-			$classes[] = 'tmsm-aquos-spa-booking-checkout-has-voucheronly';
-		}
+
 
 		return $classes;
 	}
