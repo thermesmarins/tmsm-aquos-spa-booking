@@ -149,7 +149,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'role'   => current_user_can('edit_posts'),
 				'locale'   => $this->get_locale(),
 				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-				'courseplugin'        => class_exists('Tmsm_Aquatonic_Course_Booking') ,
+				'courseplugin'        => (class_exists('Tmsm_Aquatonic_Course_Booking') && get_option( 'tmsm_aquos_spa_booking_enablecourseintegration', 'no' ) === 'yes' ),
 				'nonce'        => wp_create_nonce( 'tmsm-aquos-spa-booking-nonce-action' ),
 				'data'         => array(
 					'havevoucher' => [

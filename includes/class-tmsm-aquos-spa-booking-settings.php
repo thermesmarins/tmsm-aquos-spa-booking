@@ -192,6 +192,12 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 							'default'  => 'no',
 						),
 
+						array(
+							'type'     => 'checkbox',
+							'id'       => 'tmsm_aquos_spa_booking_enablecourseintegration',
+							'name'     => __( 'Enable Course Booking Integration', 'tmsm-aquos-spa-booking' ),
+							'default'  => 'no',
+						),
 
 						array(
 							'type'     => 'select',

@@ -1268,7 +1268,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         }
         var item = new TmsmAquosSpaBookingApp.TimesListItemView( { model: model } );
         if ($('.tmsm-aquos-spa-booking-weekday-times[data-date="' + model.attributes.date + '"]').length > 0) {
-          $( '.tmsm-aquos-spa-booking-weekday-times[data-date="' + model.attributes.date + '"]').append(item.render().$el.context.outerHTML);
+          //$( '.tmsm-aquos-spa-booking-weekday-times[data-date="' + model.attributes.date + '"]').append(item.render().$el.context.outerHTML);
+          $( '.tmsm-aquos-spa-booking-weekday-times[data-date="' + model.attributes.date + '"]').append(item.render().el.outerHTML);
         }
         else{
           console.log('tmsm-aquos-spa-booking-weekday-times not added for '+model.attributes.date);
