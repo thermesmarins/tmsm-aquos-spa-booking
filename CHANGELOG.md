@@ -1,3 +1,5 @@
+* Prevent appointments at same date and time to be added twice to cart
+
 ### 1.6.0: May 4th, 2021
 * Check if WC cart exists
 * Fix product get_type() incorrectly called

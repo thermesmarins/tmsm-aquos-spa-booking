@@ -736,7 +736,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'appointment_date' => $date,
 				'appointment_time' => $hourminutes,
 				'aquos_id' => $aquos_id,
-				'timestamp_added' => time(),
+				//'timestamp_added' => time(),
 				'virtual' => 1,
 				'_virtual' => 1,
 				//'price' => 12 // if I want to force a price in the cart
@@ -1612,6 +1612,22 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		return $item_needs_processing;
+	}
+
+	/**
+	 * No more than 1 appointment in the cart (for same appointment time and product)
+	 *
+	 * @param string $cart_item_key contains the id of the cart item.
+	 * @param int    $quantity contains the quantity of the item.
+	 * @param int    $old_quantity contains the original quantity of the item.
+	 * @param WC_Cart $cart The current cart object
+	 */
+	function woocommerce_after_cart_item_quantity_update( $cart_item_key, $quantity, $old_quantity, $cart ){
+
+		if( !empty($cart->cart_contents[ $cart_item_key ]['appointment'])){
+			$cart->cart_contents[ $cart_item_key ]['quantity'] = 1;
+		}
+
 	}
 
 	/**
