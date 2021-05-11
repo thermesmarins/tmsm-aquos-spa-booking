@@ -1,3 +1,4 @@
+### 1.6.1: May 11th, 2021
 * Prevent appointments at same date and time to be added twice to cart
 
 ### 1.6.0: May 4th, 2021
