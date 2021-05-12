@@ -1,3 +1,6 @@
+* New admin email "Appointment Message" sent when appointment has failed or when the customer leaves a customer note
+* Appointments emails gets the status of the appointment: it says "Appointment error" when the web service gives an error
+
 ### 1.6.1: May 11th, 2021
 * Prevent appointments at same date and time to be added twice to cart
 

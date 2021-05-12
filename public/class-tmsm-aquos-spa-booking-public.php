@@ -1062,6 +1062,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Has Voucher:', 'tmsm-aquos-spa-booking' ) . '</strong> '. ($item['_has_voucher'] == 1 ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
 		}
 
+		//if ( isset($item['_appointment_processed'])) {
+		//	$strings[]           = '<strong class="wc-item-meta-label">' . __( 'Appointment Processed:', 'tmsm-aquos-spa-booking' ) . '</strong> '. ($item['_appointment_processed'] === 'yes' ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
+		//}
+
+		if ( isset($item['_appointment_error']) && $item['_appointment_error'] === 'yes') {
+			$strings[]           = '<strong class="wc-item-meta-label" style="color:#ca4444">' . __( 'Appointment has an error', 'tmsm-aquos-spa-booking' ) . '</strong>' ;
+		}
+
 		if ( $strings != [] ) {
 			$html .= $args['before'] . implode( $args['separator'], $strings ) . $args['after'];
 		}

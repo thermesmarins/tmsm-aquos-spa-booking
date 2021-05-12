@@ -10,7 +10,12 @@ echo esc_html( wp_strip_all_tags( $email_heading ) );
 echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
 /* translators: %s: Customer first name */
-echo sprintf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ) . "\n\n";
+?>
+<p><?php printf( esc_html__( 'You’ve received the following appointment with a message from %s:', 'tmsm-woocommerce-paymentonsite-status' ), $order->get_formatted_billing_full_name() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+
+	<p><?php printf( esc_html__( 'Message from the customer: %s', 'tmsm-aquos-spa-booking' ), esc_html($order->get_customer_note()) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+
+<?php
 /* translators: %s: Order number */
 
 /*

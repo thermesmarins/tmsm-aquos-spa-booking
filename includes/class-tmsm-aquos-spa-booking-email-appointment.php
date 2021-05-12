@@ -86,7 +86,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 		public function trigger( $order_id, $order = false ) {
 
 			// Check if email was sent
-			if(get_post_meta($order_id, '_appointment_sent', true) !== 'yes'){
+			if(get_post_meta($order_id, '_appointment_confirmation_sent', true) !== 'yes'){
 
 				$this->setup_locale();
 
@@ -106,7 +106,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 					$success = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 
 					if( $success ) {
-						update_post_meta($order_id, '_appointment_sent', 'yes');
+						update_post_meta($order_id, '_appointment_confirmation_sent', 'yes');
 					}
 				}
 
