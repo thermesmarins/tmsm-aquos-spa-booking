@@ -1,3 +1,5 @@
+* Disabled the old appointment error email 
+
 ### 1.7.0: May 12th, 2021
 * New admin email "Appointment Message" sent when appointment has failed or when the customer leaves a customer note
 * Appointments emails gets the status of the appointment: it says "Appointment error" when the web service gives an error

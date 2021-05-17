@@ -274,6 +274,9 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								wc_update_order_item_meta($order_item_id, '_appointment_error', 'yes');
 								update_post_meta($order_id, '_appointment_error', 'yes');
 
+
+								/*
+								// Send an email to admin when error
 								$blogname = esc_html( get_bloginfo( 'name' ) );
 								$email    = stripslashes( get_option( 'admin_email' ) );
 								$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking submission (error %s) for order #%s', 'tmsm-aquos-spa-booking' ), $blogname, $result_array['ErrorCode'] ?? __( 'Unknown error', 'tmsm-aquos-spa-booking' ), $order_id);
@@ -303,7 +306,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								$email_sent = wp_mail( $email, $subject, $message, $headers );
 								if (  TMSM_AQUOS_SPA_BOOKING_DEBUG && !$email_sent) {
 									error_log('Error email sent');
-								}
+								}*/
 
 								$order->add_order_note( $note, false, false);
 
