@@ -1,3 +1,4 @@
+### 1.7.1: May 177th, 2021
 * Disabled the old appointment error email 
 
 ### 1.7.0: May 12th, 2021
