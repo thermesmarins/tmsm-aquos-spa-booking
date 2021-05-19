@@ -324,6 +324,8 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 				error_log('Triggering action woocommerce_order_action_send_appointment_message');
 			}
 
+			sleep(5);
+
 			do_action( 'woocommerce_order_action_send_appointment_confirmation', $order->get_id() );
 			do_action( 'woocommerce_order_action_send_appointment_message', $order->get_id() );
 		}
