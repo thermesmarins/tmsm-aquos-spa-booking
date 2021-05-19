@@ -1,6 +1,7 @@
+### 1.7.2: May 19th, 2021
 * Delay sending the message/error appointment email
 
-### 1.7.1: May 177th, 2021
+### 1.7.1: May 17th, 2021
 * Disabled the old appointment error email 
 
 ### 1.7.0: May 12th, 2021
