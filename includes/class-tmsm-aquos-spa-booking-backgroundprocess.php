@@ -274,6 +274,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								wc_update_order_item_meta($order_item_id, '_appointment_error', 'yes');
 								update_post_meta($order_id, '_appointment_error', 'yes');
 
+								$note .= sprintf(__( 'Appointment: %s on %s has not inserted because of error: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name'], $order_item_data['_appointment'], implode(', ', $errors));
 
 								/*
 								// Send an email to admin when error
@@ -293,8 +294,6 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								$message .= "\r\n";
 								$message .= sprintf(__( 'Appointment: %s on %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name'], $order_item_data['_appointment']);
 								$message .= "\r\n\r\n";
-
-								$note .= sprintf(__( 'Appointment: %s on %s has not inserted because of error: %s', 'tmsm-aquos-spa-booking' ), $order_item_data['name'], $order_item_data['_appointment'], implode(', ', $errors));
 
 								$message .= sprintf(__( 'Errors: %s', 'tmsm-aquos-spa-booking' ), implode(', ', $errors));
 								$message .= "\r\n";
