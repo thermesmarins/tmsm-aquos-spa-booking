@@ -1,3 +1,6 @@
+### 1.7.3: June 11th, 2021
+* Update pricing
+
 ### 1.7.2: May 19th, 2021
 * Delay sending the message/error appointment email
 
