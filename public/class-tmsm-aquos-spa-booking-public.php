@@ -91,14 +91,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				wp_dequeue_script('mailchimp-woocommerce');
 			}
 
-			wp_deregister_script('bootstrap-datepicker');
+			/*wp_deregister_script('bootstrap-datepicker');
 			wp_enqueue_script( 'bootstrap-datepicker', '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js', array( 'jquery', 'bootstrap' ), null, true );
 
 			if ( $this->get_locale() !== 'en' ) {
 				wp_deregister_script( 'bootstrap-datepicker-' . $this->get_locale() );
 				wp_enqueue_script( 'bootstrap-datepicker-' . $this->get_locale(), 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.' . $this->get_locale() . '.min.js',
 					array( 'jquery', 'bootstrap', 'bootstrap-datepicker' ), null, true );
-			}
+			}*/
 
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public'.( !(in_array('administrator',  wp_get_current_user()->roles) || (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG)) ?'.min' : '' ).'.js', array( 'jquery', 'moment', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
 
