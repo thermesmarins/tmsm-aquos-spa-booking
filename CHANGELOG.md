@@ -1,5 +1,6 @@
 * Fix error message was absent after removing error email
 * Removed Datepicker scripts from JS queue
+* Fix error message was absent in some cases 
 
 ### 1.7.2: May 19th, 2021
 * Delay sending the message/error appointment email
