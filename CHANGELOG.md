@@ -1,7 +1,10 @@
-### 1.7.3: June 15th, 2021
+### 1.7.4: June 15th, 2021
 * Fix error message was absent after removing error email
 * Removed Datepicker scripts from JS queue
-* Fix error message was absent in some cases 
+* Fix error message was absent in some cases
+
+### 1.7.3: June 11th, 2021
+Update pricing
 
 ### 1.7.2: May 19th, 2021
 * Delay sending the message/error appointment email
