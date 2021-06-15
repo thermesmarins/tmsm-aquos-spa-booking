@@ -1,3 +1,4 @@
+### 1.7.3: June 15th, 2021
 * Fix error message was absent after removing error email
 * Removed Datepicker scripts from JS queue
 * Fix error message was absent in some cases 
