@@ -1,3 +1,5 @@
+* Optimization preventing passing many days pages too fast (possibly causing serveur load)
+
 ### 1.7.4: June 15th, 2021
 * Fix error message was absent after removing error email
 * Removed Datepicker scripts from JS queue

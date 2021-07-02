@@ -1419,29 +1419,21 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     render: function() {
       console.log('WeekDayListView render');
+
+      var tmpDaysPage = this.daysPage;
+
       var $list = this.$( this.listElement ).empty().val('');
 
       this.collection.reset();
 
-      if(this.daysPage === 1){
-        $('#tmsm-aquos-spa-booking-weekdays-previous').attr('disabled', true);
-        console.log('premiere page je cache previous');
-      }
-      else{
-        $('#tmsm-aquos-spa-booking-weekdays-previous').attr('disabled', false);
-        console.log('autre page jaffiche previous');
-      }
+      $('#tmsm-aquos-spa-booking-weekdays-previous').attr('disabled', true);
+      $('#tmsm-aquos-spa-booking-weekdays-next').attr('disabled', true);
 
-      if((TmsmAquosSpaBookingApp.calendar.daysrangeto / 7) < this.daysPage){
-        $('#tmsm-aquos-spa-booking-weekdays-next').attr('disabled', true);
-      }
-      else{
-        $('#tmsm-aquos-spa-booking-weekdays-next').attr('disabled', false);
-      }
 
       var i = 0;
 
       if(TmsmAquosSpaBookingApp.productsList.selectedValue){
+        var loaded_days = 1;
         for (i = (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+(this.daysPage-1) * 7); i < (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+7+(this.daysPage-1) * 7); i++) {
 
           this.collection.push( {
@@ -1473,7 +1465,22 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
               productvariation: TmsmAquosSpaBookingApp.productVariationsList.selectedValue,
               choice: TmsmAquosSpaBookingApp.choicesList.selectedValue,
               date: model.attributes.date_computed
+            },
+            complete: function(xhr) {
+              console.log('complete fetch');
+
+              loaded_days++;
+              if(loaded_days == 7){
+                console.warn('ALl days loaded ****************');
+                console.warn('tmpDaysPage: ' + tmpDaysPage);
+
+                $('#tmsm-aquos-spa-booking-weekdays-previous').attr('disabled', (tmpDaysPage === 1) );
+
+                $('#tmsm-aquos-spa-booking-weekdays-next').attr('disabled', ( (TmsmAquatonicCourseApp.data.daysrangeto / 7) < tmpDaysPage ) );
+
+              }
             }
+
           });
 
         }, this );
