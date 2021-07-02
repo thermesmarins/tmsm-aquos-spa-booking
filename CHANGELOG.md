@@ -1,3 +1,4 @@
+### 1.7.5: July 2nd, 2021
 * Optimization preventing passing many days pages too fast (possibly causing serveur load)
 
 ### 1.7.4: June 15th, 2021
