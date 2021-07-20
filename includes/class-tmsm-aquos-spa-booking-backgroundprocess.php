@@ -198,6 +198,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							$ch = curl_init();
 							curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
 							curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+							curl_setopt( $ch, CURLOPT_TIMEOUT, 10 );
 							curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
 							$result = curl_exec( $ch );
 							$errors = [];
