@@ -1,3 +1,4 @@
+### 1.7.6: July 20th, 2021
 * Curl limit timetout to 10 seconds
 
 ### 1.7.5: July 2nd, 2021
@@ -9,7 +10,7 @@
 * Fix error message was absent in some cases
 
 ### 1.7.3: June 11th, 2021
-Update pricing
+* Update pricing
 
 ### 1.7.2: May 19th, 2021
 * Delay sending the message/error appointment email
