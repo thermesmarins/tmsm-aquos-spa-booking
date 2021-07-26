@@ -167,6 +167,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								$aquos_id = implode('+',  $aquos_id_array );
 							}
 
+
 							$replacements = [
 								$appointment_date,
 								sanitize_text_field(trim(str_replace(',', '+', $aquos_id))),
@@ -177,7 +178,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_last_name()))) ?? '',
 								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_email()))) ?? '',
 								$order_item_data['_has_voucher'] ?? '0',
-								str_replace( '-', '', $order->get_meta( '_billing_birthdate' ) ) ?? '',
+								str_replace( ['-', '/'], '', $order->get_meta( '_billing_birthdate' ) ) ?? '',
 								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_address_1(). ' '.$order->get_billing_address_2()))),
 								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_postcode()))) ?? '',
 								self::sanitize_for_webservice(sanitize_text_field(trim($order->get_billing_city()))) ?? '',

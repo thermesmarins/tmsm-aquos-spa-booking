@@ -1,3 +1,5 @@
+* Remove slashes in birthdate format
+
 ### 1.7.6: July 20th, 2021
 * Curl limit timetout to 10 seconds
 
