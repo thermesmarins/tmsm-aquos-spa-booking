@@ -1032,6 +1032,26 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			if(!empty($values['aquos_price'])){
 				$item->add_meta_data( '_aquos_price', $values['aquos_price'], true );
 			}
+			if(empty($values['aquos_price']) && empty($values['aquos_id'])){
+				$item->add_meta_data( '_aquos_error', 'id and price not defined', true );
+
+
+				$blogname = esc_html( get_bloginfo( 'name' ) );
+				$email    = stripslashes( get_option( 'admin_email' ) );
+				$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking price/id missing for order %s', 'tmsm-aquos-spa-booking' ), $blogname, $order->get_id());
+
+				$message = '';
+				$message .= 'item:' . print_r( $item, true );
+				$message .= 'values:' . print_r( $values, true );
+
+				$headers = [
+					'Auto-Submitted: auto-generated',
+					'Content-Type: text/html',
+					'Charset=UTF-8'
+				];
+				$email_sent = wp_mail( $email, $subject, $message, $headers );
+
+			}
 
 		}
 

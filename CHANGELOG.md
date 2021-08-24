@@ -1,4 +1,5 @@
 * Remove slashes in birthdate format
+* Debug order line item doesn't have price or id
 
 ### 1.7.6: July 20th, 2021
 * Curl limit timetout to 10 seconds
