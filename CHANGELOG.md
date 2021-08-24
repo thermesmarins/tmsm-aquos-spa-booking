@@ -1,3 +1,4 @@
+### 1.7.7: August 24th, 2021
 * Remove slashes in birthdate format
 * Debug order line item doesn't have price or id
 
