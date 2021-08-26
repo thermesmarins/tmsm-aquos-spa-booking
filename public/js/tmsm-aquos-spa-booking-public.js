@@ -1476,7 +1476,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
                 $('#tmsm-aquos-spa-booking-weekdays-previous').attr('disabled', (tmpDaysPage === 1) );
 
-                $('#tmsm-aquos-spa-booking-weekdays-next').attr('disabled', ( (TmsmAquatonicCourseApp.data.daysrangeto / 7) < tmpDaysPage ) );
+                $('#tmsm-aquos-spa-booking-weekdays-next').attr('disabled', ( (TmsmAquosSpaBookingApp.data.daysrangeto / 7) < tmpDaysPage ) );
 
               }
             }
