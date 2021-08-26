@@ -1,3 +1,4 @@
+### 1.7.8: August 25th, 2021
 * Fix wrong setting variable
 
 ### 1.7.7: August 24th, 2021
@@ -5,7 +6,7 @@
 * Debug order line item doesn't have price or id
 
 ### 1.7.6: July 20th, 2021
-* Curl limit timetout to 10 seconds
+* Curl limit timeout to 10 seconds
 
 ### 1.7.5: July 2nd, 2021
 * Optimization preventing passing many days pages too fast (possibly causing server load)
