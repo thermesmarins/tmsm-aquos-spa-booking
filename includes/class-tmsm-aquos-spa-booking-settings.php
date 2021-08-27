@@ -91,6 +91,20 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 						),
 
 						array(
+							'type'     => 'number',
+							'id'       => 'tmsm_aquos_spa_booking_aquossiteid',
+							'name'     => __( 'Aquos Site ID', 'tmsm-aquos-spa-booking' ),
+							'class'  => 'small-text',
+						),
+
+						array(
+							'type'     => 'text',
+							'id'       => 'tmsm_aquos_spa_booking_aquossecret',
+							'name'     => __( 'Aquos Secret', 'tmsm-aquos-spa-booking' ),
+							'class'  => 'small-text',
+						),
+
+						array(
 							'type'     => 'url',
 							'id'       => 'tmsm_aquos_spa_booking_webserviceurltimes',
 							'name'     => __( 'Web Service URL for times', 'tmsm-aquos-spa-booking' ),
