@@ -224,7 +224,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 								if ( $response_code >= 400 ) {
 									error_log( sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquos-spa-booking' ), absint( $response_code ) ) );
-									$errors[] = __( 'Web service is not available', 'tmsm-aquos-spa-booking' );
+									$errors[] = sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquos-spa-booking' ), absint( $response_code ) );
 								}
 
 								if ( is_wp_error( $response ) ) {

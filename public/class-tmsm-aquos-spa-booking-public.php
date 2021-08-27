@@ -2147,67 +2147,69 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 
-		// Call web service
+		// Prepare web service data
 		$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurltimes' );
-		if ( ! empty( $settings_webserviceurl ) && ! empty( $aquos_id ) && ! empty( $date ) ) {
+		$settings_aquossiteid = get_option( 'tmsm_aquos_spa_booking_aquossiteid' );
+		if ( ! empty( $settings_webserviceurl ) && isset( $settings_aquossiteid ) && ! empty( $aquos_id ) && ! empty( $date ) ) {
 
 			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 				error_log( 'url before:' . $settings_webserviceurl );
 			}
 
-
 			$aquos_id_array = explode('+', $aquos_id);
 			$ignoredproducts = get_option( 'tmsm_aquos_spa_booking_ignoredproducts' );
 			$ignoredproducts_array = explode(',', $ignoredproducts);
-
 
 			if(count($ignoredproducts_array) > 0){
 				$aquos_id_array = array_diff($aquos_id_array, $ignoredproducts_array);
 
 				$aquos_id = implode('+',  $aquos_id_array );
 			}
-
-			$patterns     = [
-				'/{date}/',
-				'/{product_id}/',
-				'/{site_id}/',
-				'/{site_name}/'
-			];
-			$replacements = [
-				esc_html( str_replace( '-', '', $date ) ),
-				esc_html( str_replace( ',', '+', $aquos_id ) ),
-				( is_multisite() ? get_current_blog_id() : 0 ),
-				esc_html( get_bloginfo( 'name' ) ),
-			];
-
-			// Replace keywords in url
-			$settings_webserviceurl = preg_replace( $patterns, $replacements, $settings_webserviceurl );
-			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-				error_log( 'url after:' . $settings_webserviceurl );
+			$aquos_id_array_formatted = [];
+			foreach($aquos_id_array as $aquos_id) {
+				$aquos_id_array_formatted[] = ['id_product' => $aquos_id];
 			}
 
-			// Connect with cURL
-			$ch = curl_init();
-			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, true );
-			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-			curl_setopt( $ch, CURLOPT_TIMEOUT, 10 );
-			curl_setopt( $ch, CURLOPT_URL, $settings_webserviceurl );
-			$result = curl_exec( $ch );
-			curl_close( $ch );
+			$data = [
+				'id_site'       => $settings_aquossiteid,
+				'date'          => esc_html( str_replace( '-', '', $date ) ),
+				'list_products' => $aquos_id_array_formatted,
+			];
 
-			if(empty($result)){
+			$body = json_encode($data);
+
+			$headers = [
+				'Content-Type' => 'application/json; charset=utf-8',
+				'X-Signature' => $this->aquos_generate_signature( $body ),
+				'Cache-Control' => 'no-cache',
+			];
+
+			$response = wp_remote_post(
+				$settings_webserviceurl,
+				array(
+					'headers'     => $headers,
+					'body'        => $body,
+					'data_format' => 'body',
+				)
+			);
+			$response_code = wp_remote_retrieve_response_code( $response );
+			$response_data = json_decode( wp_remote_retrieve_body( $response ) );
+
+			$errors = [];
+
+			if(empty($response)){
 				$errors[] = __( 'Web service is not available', 'tmsm-aquos-spa-booking' );
 			}
 			else{
-				$result_array = json_decode( $result, true );
 
-				if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-					error_log( var_export( $result_array, true ) );
+				if ( $response_code >= 400 ) {
+					error_log( sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquos-spa-booking' ), absint( $response_code ) ) );
+					$errors[] = sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquos-spa-booking' ), absint( $response_code ) );
 				}
 
-				if(!empty($result_array['Status']) && $result_array['Status'] == 'true'){
+				if(!empty($response_data->Status) && $response_data->Status == 'true'){
 
-					foreach($result_array['Schedules'] as $schedule){
+					foreach($response->Schedules as $schedule){
 						$schedule_hourminutes = explode(':', $schedule['Hour']);
 						$times[] = [
 						'date' => $date_with_dash,
@@ -2219,8 +2221,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					}
 				}
 				else{
-					if(!empty($result_array['ErrorCode']) && !empty($result_array['ErrorMessage'])){
-						$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $result_array['ErrorCode'], $result_array['ErrorMessage']);
+					if(!empty($response_data->ErrorCode) && !empty($response_data->ErrorMessage)){
+						$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $response_data->ErrorCode, $response_data->ErrorMessage);
 					}
 				}
 			}
@@ -2254,6 +2256,32 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 		return $times;
+	}
+
+	/**
+	 * Aquos: generate signature
+	 *
+	 * @param string $payload
+	 *
+	 * @return string
+	 */
+	private function aquos_generate_signature( $payload ) {
+		$hash_algo = 'sha256';
+
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+		return base64_encode( hash_hmac( $hash_algo, $payload, wp_specialchars_decode( $this->aquos_secret(), ENT_QUOTES ), true ) );
+	}
+
+	/**
+	 * Aquos: returns secret
+	 *
+	 * @return string
+	 */
+	private function aquos_secret() {
+
+		$secret = get_option('tmsm_aquos_spa_booking_aquossecret');
+
+		return $secret;
 	}
 
 	/**
