@@ -1,3 +1,4 @@
+### 2.0.1: August 30th, 2021
 * Update translations
 
 ### 2.0.0: August 30th, 2021
