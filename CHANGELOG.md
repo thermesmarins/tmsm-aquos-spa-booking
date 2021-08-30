@@ -1,3 +1,5 @@
+* Update translations
+
 ### 2.0.0: August 30th, 2021
 * Web services now called with POST instead of GET
 
