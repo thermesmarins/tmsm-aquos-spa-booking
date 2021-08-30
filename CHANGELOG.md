@@ -1,3 +1,5 @@
+* Web services now called with POST instead of GET
+
 ### 1.7.8: August 25th, 2021
 * Fix wrong setting variable
 

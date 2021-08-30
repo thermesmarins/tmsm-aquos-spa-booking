@@ -2196,33 +2196,62 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$response_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 			$errors = [];
+			$logger = wc_get_logger();
+
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+				error_log( 'response_data' );
+				error_log( print_r($response_data, true) );
+			}
 
 			if(empty($response)){
 				$errors[] = __( 'Web service is not available', 'tmsm-aquos-spa-booking' );
+				$logger->error(
+					__( 'Web service is not available', 'tmsm-aquos-spa-booking' ),
+					array(
+						'source' => 'tmsm-aquos-spa-booking',
+					)
+				);
 			}
 			else{
 
 				if ( $response_code >= 400 ) {
 					error_log( sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquos-spa-booking' ), absint( $response_code ) ) );
 					$errors[] = sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquos-spa-booking' ), absint( $response_code ) );
+					$logger->error(
+						sprintf( __( 'Error: Delivery URL returned response code: %s', 'tmsm-aquos-spa-booking' ), absint( $response_code ) ),
+						array(
+							'source' => 'tmsm-aquos-spa-booking',
+						)
+					);
+				}
+
+				if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+					error_log( 'response_data' );
+					error_log( print_r($response_data, true) );
 				}
 
 				if(!empty($response_data->Status) && $response_data->Status == 'true'){
 
-					foreach($response->Schedules as $schedule){
-						$schedule_hourminutes = explode(':', $schedule['Hour']);
+					foreach($response_data->Schedules as $schedule){
+						$schedule_hourminutes = explode(':', $schedule->Hour);
 						$times[] = [
 						'date' => $date_with_dash,
 						'hour' => $schedule_hourminutes[0],
 						'minutes' => $schedule_hourminutes[1],
-						'hourminutes' => $schedule['Hour'],
-						'priority' => $schedule['Priority'],
+						'hourminutes' => $schedule->Hour,
+						'priority' => $schedule->Priority,
 						];
 					}
 				}
 				else{
 					if(!empty($response_data->ErrorCode) && !empty($response_data->ErrorMessage)){
 						$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $response_data->ErrorCode, $response_data->ErrorMessage);
+						$logger->error(
+							sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $response_data->ErrorCode, $response_data->ErrorMessage),
+							array(
+								'source' => 'tmsm-aquos-spa-booking',
+							)
+						);
 					}
 				}
 			}

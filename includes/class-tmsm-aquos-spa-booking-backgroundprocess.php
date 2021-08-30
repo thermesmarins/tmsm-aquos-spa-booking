@@ -199,11 +199,9 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							$logger = wc_get_logger();
 
 							$logger->info(
-								'TMSM Aquos Spa Booking Request: '. $settings_webserviceurl,
+								'TMSM Aquos Spa Booking Request: '. $settings_webserviceurl . ' ' . wc_print_r($data, true),
 								array(
-									'url' => $settings_webserviceurl,
 									'source' => 'tmsm-aquos-spa-booking',
-									'body' => $body,
 								)
 							);
 
@@ -260,7 +258,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							// Notify admin if errors
 							if(!empty($errors)) {
 
-								$logger->info(
+								$logger->error(
 									wc_print_r($errors, true),
 									array(
 										'source' => 'tmsm-aquos-spa-booking',
