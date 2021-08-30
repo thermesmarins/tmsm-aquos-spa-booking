@@ -1,3 +1,4 @@
+### 2.0.0: August 30th, 2021
 * Web services now called with POST instead of GET
 
 ### 1.7.8: August 25th, 2021
