@@ -1,3 +1,4 @@
+### 2.0.2: August 30th, 2021
 * Fix logs
 * Fix Aquos site ID check
 
