@@ -1,3 +1,6 @@
+* Fix logs
+* Fix Aquos site ID check
+
 ### 2.0.1: August 30th, 2021
 * Update translations
 

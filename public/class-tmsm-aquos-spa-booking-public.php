@@ -1733,7 +1733,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			error_log('order '.$order_id.' change_order_status_appointment');
 		}
 
-		WC()->cart->empty_cart();
+		if ( ! is_admin() ) {
+			WC()->cart->empty_cart();
+		}
 
 		//$background_process = new Tmsm_Aquos_Spa_Booking_Background_Process();
 		$background_process = $GLOBALS['tmsm_asb_bp'];

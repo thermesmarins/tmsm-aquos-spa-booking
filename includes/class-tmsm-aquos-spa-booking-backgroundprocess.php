@@ -89,15 +89,14 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 	protected function task( $item ) {
 		global $wp_actions;
 
+		$order_id = $item['order_id'];
+
 		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-			error_log('Tmsm_Aquos_Spa_Booking_Background_Process task:');
+			error_log('Tmsm_Aquos_Spa_Booking_Background_Process task with order id: ' . $order_id);
 			error_log(print_r($item, true));
 		}
 
-		$order_id = $item['order_id'];
-
 		$order = wc_get_order($order_id);
-
 
 		if ( ! empty( $order ) ) {
 			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
@@ -128,11 +127,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 						// Prepare web service params
 						$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurlsubmit' );
 						$settings_aquossiteid = get_option( 'tmsm_aquos_spa_booking_aquossiteid' );
-						if ( ! empty( $settings_webserviceurl ) && ! empty( $settings_aquossiteid ) ) {
-
-							if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-								error_log( 'url before:' . $settings_webserviceurl );
-							}
+						if ( ! empty( $settings_webserviceurl ) && isset( $settings_aquossiteid ) ) {
 
 							$appointment_date = sanitize_text_field( str_replace( '-', '', trim($order_item_data['_appointment_date'] )) );
 							$appointment_time = sanitize_text_field($order_item_data['_appointment_time']);
@@ -198,17 +193,17 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 
 							$logger = wc_get_logger();
 
-							$logger->info(
-								'TMSM Aquos Spa Booking Request: '. $settings_webserviceurl . ' ' . wc_print_r($data, true),
-								array(
-									'source' => 'tmsm-aquos-spa-booking',
-								)
-							);
+							if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+								$logger->info(
+									'TMSM Aquos Spa Booking Request: '. $settings_webserviceurl . ' ' . wc_print_r($data, true),
+									array(
+										'source' => 'tmsm-aquos-spa-booking',
+									)
+								);
+							}
 
 							if(empty($response)){
-								if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-									error_log('Web service is not available');
-								}
+								error_log( __( 'Web service is not available', 'tmsm-aquos-spa-booking' ) );
 								$errors[] = __( 'Web service is not available', 'tmsm-aquos-spa-booking' );
 							}
 							else{
@@ -239,16 +234,11 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								}
 								// Some error detected
 								else{
-									if(!empty($response_data->ErrorCode) && !empty($response_data->ErrorMessage)){
-										if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-											error_log(sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $response_data->ErrorCode, $response_data->ErrorMessage));
-										}
-										$errors[] = sprintf(__( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $response_data->ErrorCode, $response_data->ErrorMessage);
-									}
-									else{
-										if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-											error_log('Unknown error');
-										}
+									if ( ! empty( $response_data->ErrorCode ) && ! empty( $response_data->ErrorMessage ) ) {
+										error_log( sprintf( __( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $response_data->ErrorCode, $response_data->ErrorMessage ) );
+										$errors[] = sprintf( __( 'Error code %s: %s', 'tmsm-aquos-spa-booking' ), $response_data->ErrorCode, $response_data->ErrorMessage );
+									} else {
+										error_log( __( 'Unknown error', 'tmsm-aquos-spa-booking' ) );
 										$errors[] = __( 'Unknown error', 'tmsm-aquos-spa-booking' );
 									}
 								}
