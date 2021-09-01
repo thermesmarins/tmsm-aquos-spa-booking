@@ -1261,21 +1261,24 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	private static function cart_has_appointment(){
 
-
-		if(is_admin()){
-			return false;
-		}
-
-		if(empty(WC()->cart)){
-			return false;
-		}
-
-		$cart_items = WC()->cart->get_cart_contents();
-
 		$count = 0;
-		foreach($cart_items as $cart_item){
-			if(!empty($cart_item['appointment'])){
-				$count ++;
+
+		if(class_exists( 'woocommerce' )){
+			if(is_admin()){
+				return false;
+			}
+
+			if(empty(WC()->cart)){
+				return false;
+			}
+
+			$cart_items = WC()->cart->get_cart_contents();
+
+
+			foreach($cart_items as $cart_item){
+				if(!empty($cart_item['appointment'])){
+					$count ++;
+				}
 			}
 		}
 
@@ -1550,7 +1553,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function the_title( $title, $id ) {
 
-		if ( is_checkout() && self::cart_has_appointmentonly() && $id === intval( get_option( 'woocommerce_checkout_page_id' ) ) ) {
+		if ( class_exists( 'woocommerce' ) && is_checkout() && self::cart_has_appointmentonly() && $id === intval( get_option( 'woocommerce_checkout_page_id' ) ) ) {
 			$title = __( 'Appointment', 'tmsm-aquos-spa-booking' );
 		}
 
@@ -1997,98 +2000,102 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return array
 	 */
 	private function _get_products() {
-
-		$product_category_id = null;
-
-		if(isset($_REQUEST['productcategory'])){
-			$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
-		}
-
-		$args = array(
-			'return'  => 'ids',
-			'limit' => -1,
-			'orderby' => 'name',
-			'order' => 'ASC',
-			'_bookable' => 'yes',
-		);
-		if(!empty($product_category_id)){
-			$product_category = get_term( $product_category_id, 'product_cat');
-			$args['category'] = $product_category->slug;
-		}
-
-		$products_ids = wc_get_products( $args );
 		$products = [];
-		if(!empty($products_ids)){
-			foreach($products_ids as $key => $product_id){
-				$product = wc_get_product($product_id);
 
-				if( ($product->is_type( 'simple' ) && empty(get_post_meta( $product_id, '_aquos_id', true))) && ! get_post_meta( $product_id, '_aquos_items_ids', true) ){
-					continue;
-				}
+		if( class_exists( 'woocommerce' ) ){
+			$product_category_id = null;
 
-				// Construct json data for product choices
-				$aquos_items = [];
-				if(!empty($product->get_meta( '_aquos_items_ids' ))){
-					$aquos_items = preg_split('/\r\n|\r|\n/', esc_attr($product->get_meta( '_aquos_items_ids' )));
-					foreach($aquos_items as &$aquos_item){
+			if(isset($_REQUEST['productcategory'])){
+				$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
+			}
 
-						$tmp_aquos_item = $aquos_item;
-						$tmp_aquos_item_array = explode('*', $tmp_aquos_item);
-						$aquos_item = [
-							'name' => trim($tmp_aquos_item_array[0]),
-							'aquos_id' => trim($tmp_aquos_item_array[1]),
-						];
+			$args = array(
+				'return'  => 'ids',
+				'limit' => -1,
+				'orderby' => 'name',
+				'order' => 'ASC',
+				'_bookable' => 'yes',
+			);
+			if(!empty($product_category_id)){
+				$product_category = get_term( $product_category_id, 'product_cat');
+				$args['category'] = $product_category->slug;
+			}
 
+			$products_ids = wc_get_products( $args );
+
+			if(!empty($products_ids)){
+				foreach($products_ids as $key => $product_id){
+					$product = wc_get_product($product_id);
+
+					if( ($product->is_type( 'simple' ) && empty(get_post_meta( $product_id, '_aquos_id', true))) && ! get_post_meta( $product_id, '_aquos_items_ids', true) ){
+						continue;
 					}
-				}
+
+					// Construct json data for product choices
+					$aquos_items = [];
+					if(!empty($product->get_meta( '_aquos_items_ids' ))){
+						$aquos_items = preg_split('/\r\n|\r|\n/', esc_attr($product->get_meta( '_aquos_items_ids' )));
+						foreach($aquos_items as &$aquos_item){
+
+							$tmp_aquos_item = $aquos_item;
+							$tmp_aquos_item_array = explode('*', $tmp_aquos_item);
+							$aquos_item = [
+								'name' => trim($tmp_aquos_item_array[0]),
+								'aquos_id' => trim($tmp_aquos_item_array[1]),
+							];
+
+						}
+					}
 
 
 
-				$product_has_attributes_otherthan_voucher = false;
+					$product_has_attributes_otherthan_voucher = false;
 
-				// Don't display range price for variable products
-				if($product->is_type( 'variable' ) && $product instanceof WC_Product_Variable) {
+					// Don't display range price for variable products
+					if($product->is_type( 'variable' ) && $product instanceof WC_Product_Variable) {
 
-					// Not variable if only has voucher attribute
-					if(is_array($product->get_attributes())){
-						foreach($product->get_attributes() as $attribute_key => $attribute_value){
-							if($attribute_key !== 'pa_format-bon-cadeau'){
-								$product_has_attributes_otherthan_voucher = true;
+						// Not variable if only has voucher attribute
+						if(is_array($product->get_attributes())){
+							foreach($product->get_attributes() as $attribute_key => $attribute_value){
+								if($attribute_key !== 'pa_format-bon-cadeau'){
+									$product_has_attributes_otherthan_voucher = true;
+								}
 							}
 						}
-				    }
 
-					$min_price_regular = $product->get_variation_regular_price( 'min', true );
-					$min_price_sale    = $product->get_variation_sale_price( 'min', true );
-					$max_price = $product->get_variation_price( 'max', true );
-					$min_price = $product->get_variation_price( 'min', true );
+						$min_price_regular = $product->get_variation_regular_price( 'min', true );
+						$min_price_sale    = $product->get_variation_sale_price( 'min', true );
+						$max_price = $product->get_variation_price( 'max', true );
+						$min_price = $product->get_variation_price( 'min', true );
 
-					$price = ( $min_price_sale == $min_price_regular ) ? wc_price( $min_price_regular ) : wc_price( $min_price_sale ) ;
+						$price = ( $min_price_sale == $min_price_regular ) ? wc_price( $min_price_regular ) : wc_price( $min_price_sale ) ;
+					}
+					else{
+						$price = $product->get_price_html();
+					}
+
+					// Construct product data
+					$products[] = [
+						'id' => esc_js($product->get_id()),
+						'permalink' => esc_js($product->get_permalink()),
+						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+						'price' => html_entity_decode(wp_strip_all_tags($price)),
+						'sku' => esc_js($product->get_sku()),
+						'name' => esc_js($product->get_name()),
+						'variable' => esc_js($product->is_type( 'variable' )),
+						'attributes_otherthan_voucher' => esc_js($product_has_attributes_otherthan_voucher),
+						'choices' => json_encode($aquos_items),
+					];
+
 				}
-				else{
-					$price = $product->get_price_html();
-				}
+			}
 
-				// Construct product data
-				$products[] = [
-					'id' => esc_js($product->get_id()),
-					'permalink' => esc_js($product->get_permalink()),
-					'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-					'price' => html_entity_decode(wp_strip_all_tags($price)),
-					'sku' => esc_js($product->get_sku()),
-					'name' => esc_js($product->get_name()),
-					'variable' => esc_js($product->is_type( 'variable' )),
-					'attributes_otherthan_voucher' => esc_js($product_has_attributes_otherthan_voucher),
-					'choices' => json_encode($aquos_items),
-				];
-
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+				//error_log('$products:');
+				//error_log(print_r($products, true));
 			}
 		}
 
-		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-			//error_log('$products:');
-			//error_log(print_r($products, true));
-		}
 		return $products;
 	}
 
