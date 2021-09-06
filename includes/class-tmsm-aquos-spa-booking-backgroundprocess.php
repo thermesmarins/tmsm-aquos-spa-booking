@@ -184,6 +184,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 									'headers'     => $headers,
 									'body'        => $body,
 									'data_format' => 'body',
+									'timeout' => 10,
 								)
 							);
 							$response_code = wp_remote_retrieve_response_code( $response );

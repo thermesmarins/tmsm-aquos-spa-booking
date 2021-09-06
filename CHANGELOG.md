@@ -1,3 +1,5 @@
+* wp_remote_post timeout now 10 seconds (instead of default 5 seconds)
+
 ### 2.0.2: August 30th, 2021
 * Fix logs
 * Fix Aquos site ID check
