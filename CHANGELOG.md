@@ -1,5 +1,3 @@
-* Free values can't be above capacity nor below 0
-
 ### 2.0.3: September 6th, 2021
 * wp_remote_post timeout now 10 seconds (instead of default 5 seconds)
 * Check WooCommerce is activated
