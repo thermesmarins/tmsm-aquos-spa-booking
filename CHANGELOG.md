@@ -1,3 +1,4 @@
+### 2.0.4: September 21st, 2021
 * Check cart items can't contain products and appointments
 
 ### 2.0.3: September 6th, 2021
