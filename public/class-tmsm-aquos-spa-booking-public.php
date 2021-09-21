@@ -1511,14 +1511,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	}
 
 	/**
-	 * Remove Appointments that are expired, too old = 2 hours
+	 * Check cart items
 	 */
-	public function woocommerce_check_cart_items_expire(){
-
+	public function woocommerce_check_cart_items(){
 
 		if( is_cart() || is_checkout() ) {
+
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 
+				// Remove Appointments that are expired, too old = 2 hours
 				if(!empty($cart_item['appointment']) && !empty($cart_item['timestamp_added'])){
 					$_product = $cart_item['data'];
 					if( time() > ( $cart_item['timestamp_added'] + 60 * get_option( 'tmsm_aquos_spa_booking_cartexpireminutes', 60 ))){
@@ -1528,7 +1529,15 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					}
 				}
 
+				// Remove appointments in cart if other products are present in the cart
+				if ( self::cart_has_appointment() && ! self::cart_has_appointmentonly() && ! empty( $cart_item['appointment'] ) ) {
+					WC()->cart->remove_cart_item( $cart_item_key );
+					wc_add_notice( __( 'The cart can\'t have both appointments and products, appointments are now removed from the cart.',
+						'tmsm-aquos-spa-booking' ), 'error' );
+				}
+
 			}
+
 		}
 	}
 

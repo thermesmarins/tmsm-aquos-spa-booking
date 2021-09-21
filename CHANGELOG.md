@@ -1,3 +1,5 @@
+* Check cart items can't contain products and appointments
+
 ### 2.0.3: September 6th, 2021
 * wp_remote_post timeout now 10 seconds (instead of default 5 seconds)
 * Check WooCommerce is activated
