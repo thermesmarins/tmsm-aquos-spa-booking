@@ -1,3 +1,4 @@
+### 2.0.5: October 1st, 2021
 * Fix bug erasing _aquos_id after seeing variations
 
 ### 2.0.4: September 21st, 2021
