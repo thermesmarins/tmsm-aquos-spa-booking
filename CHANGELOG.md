@@ -1,3 +1,5 @@
+* Fix bug erasing _aquos_id after seeing variations
+
 ### 2.0.4: September 21st, 2021
 * Check cart items can't contain products and appointments
 

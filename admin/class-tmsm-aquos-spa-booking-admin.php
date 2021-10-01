@@ -187,6 +187,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 * Add Aquos ID Field to Inventory Product Data Tab
 	 */
 	public function woocommerce_product_options_inventory_product_data_fields(){
+		global $thepostid, $post;
+
 		echo '<div class="options_group">';
 
 		woocommerce_wp_checkbox(
@@ -198,16 +200,17 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			)
 		);
 
-			woocommerce_wp_text_input(
-				array(
-					'id'          => '_aquos_id',
-					'label'       => __( 'Aquos Product ID (for appointments for products without choice and without options like course)', 'tmsm-aquos-spa-booking' ),
-					'placeholder' => '',
-					'desc_tip'    => 'true',
-					'required'    => 'true',
-					'description' => __( 'If empty, the product won\'t be bookable', 'tmsm-aquos-spa-booking' )
-				)
-			);
+		woocommerce_wp_text_input(
+			array(
+				'id'          => '_aquos_id_product',
+				'label'       => __( 'Aquos Product ID (for appointments for products without choice and without options like course)', 'tmsm-aquos-spa-booking' ),
+				'placeholder' => '',
+				'value' => get_post_meta( $thepostid, '_aquos_id', true ),
+				'desc_tip'    => 'true',
+				'required'    => 'true',
+				'description' => __( 'If empty, the product won\'t be bookable', 'tmsm-aquos-spa-booking' )
+			)
+		);
 
 		echo '</div>';
 		echo '<div class="options_group">';
@@ -266,8 +269,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 */
 	function woocommerce_process_product_save_options( $post_id ) {
 
-		if ( isset( $_POST['_aquos_id'] ) ) :
-			update_post_meta( $post_id, '_aquos_id', sanitize_text_field( $_POST['_aquos_id'] ) );
+		if ( isset( $_POST['_aquos_id_product'] ) ) :
+			update_post_meta( $post_id, '_aquos_id', sanitize_text_field( $_POST['_aquos_id_product'] ) );
 		endif;
 
 		if ( isset( $_POST['_aquos_items_ids'] ) ) :
@@ -483,8 +486,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					'Charset=UTF-8'
 				];
 				$email_sent = wp_mail( $email, $subject, $message, $headers );
-				if (  TMSM_AQUOS_SPA_BOOKING_DEBUG && !$email_sent) {
-					error_log('Error email sent');
+				if ( TMSM_AQUOS_SPA_BOOKING_DEBUG && ! $email_sent ) {
+					error_log( 'Error email not sent' );
 				}
 			}
 		}
