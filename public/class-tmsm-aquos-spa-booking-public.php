@@ -922,6 +922,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		$appointment_time = sanitize_text_field(filter_input( INPUT_POST, 'appointment_time' ));
 		$aquos_id = sanitize_text_field(filter_input( INPUT_POST, 'aquos_id' ));
 
+		$check_aquosid = '';
+
 		if ( !empty( $has_voucher ) ) {
 			$cart_item_data['has_voucher'] = $has_voucher;
 		}
@@ -936,12 +938,35 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 		if ( !empty( $aquos_id ) ) {
 			$cart_item_data['aquos_id'] = $aquos_id;
+			$check_aquosid .= 'POST data exists. ';
 		}
 
 		// For regular products with Aquos ID
 		if(empty($cart_item_data['appointment'])){
 			$cart_item_data['aquos_id'] = get_post_meta( $variation_id ?? $product_id, '_aquos_id', true );
 			$cart_item_data['aquos_price'] = get_post_meta( $variation_id ?? $product_id, '_aquos_price', true );
+			$check_aquosid .= 'is not an appointment. ';
+			$check_aquosid .= get_post_meta( $variation_id ?? $product_id, '_aquos_id', true ) ? 'post_meta exists. ' : 'post_meta empty. ';
+		}
+
+		// Aquos ID empty, it shouldn't, email admin
+		if( empty($cart_item_data['aquos_id'])){
+			$blogname = esc_html( get_bloginfo( 'name' ) );
+			$email    = stripslashes( get_option( 'admin_email' ) );
+			$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking price/id missing for variation/product %s', 'tmsm-aquos-spa-booking' ), $blogname, ($variation_id ?? $product_id ) );
+
+			$message = '';
+			$message .= 'variation_id:' . $variation_id;
+			$message .= 'product_id:' . $product_id;
+			$message .= 'check_aquosid:' . $check_aquosid;
+			$message .= 'cart_item_data:' . print_r( $cart_item_data, true );
+
+			$headers = [
+				'Auto-Submitted: auto-generated',
+				'Content-Type: text/html',
+				'Charset=UTF-8'
+			];
+			$email_sent = wp_mail( $email, $subject, $message, $headers );
 		}
 		return $cart_item_data;
 	}

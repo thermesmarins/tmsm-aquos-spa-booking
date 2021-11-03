@@ -1,3 +1,5 @@
+* Check Aquos ID when empty
+
 ### 2.0.5: October 1st, 2021
 * Fix bug erasing _aquos_id after seeing variations
 
