@@ -1,3 +1,4 @@
+### 2.0.6: November 3rd, 2021
 * Check Aquos ID when empty
 
 ### 2.0.5: October 1st, 2021
