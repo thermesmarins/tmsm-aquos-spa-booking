@@ -53,6 +53,9 @@
 .tmsm-aquos-spa-booking-checkout-has-appointments .woocommerce-form-coupon-toggle {
   display: none;
 }
+.tmsm-aquos-spa-booking-checkout-has-appointments .variation-Choisissezleformatdeboncadeau {
+  display: none;
+}
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .product-price,
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .product-subtotal,
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .cart_totals h2,

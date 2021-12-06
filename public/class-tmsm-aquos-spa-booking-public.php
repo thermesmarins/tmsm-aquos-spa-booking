@@ -2108,15 +2108,31 @@ class Tmsm_Aquos_Spa_Booking_Public {
 						$price = $product->get_price_html();
 					}
 
+
+					// Get variation ID of voucher variation
+					$product_has_only_attribute_voucher_variation_id = null;
+					if($product_has_attributes_otherthan_voucher === false && $product->is_type( 'variable' )){
+						$avail_vars = $product->get_available_variations();
+
+						foreach ($avail_vars as $v){
+							//error_log(print_r($v, true));
+							if ($v["attributes"]["attribute_pa_format-bon-cadeau"] == 'e-bon-cadeau'){
+								$product_has_only_attribute_voucher_variation_id = $v['variation_id'];
+								error_log('$product_has_only_attribute_voucher_variation_id: ' . $product_has_only_attribute_voucher_variation_id);
+							}
+						}
+					}
+
 					// Construct product data
 					$products[] = [
-						'id' => esc_js($product->get_id()),
+						'id' => $product_has_only_attribute_voucher_variation_id ?? esc_js($product->get_id()),
 						'permalink' => esc_js($product->get_permalink()),
 						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
 						'price' => html_entity_decode(wp_strip_all_tags($price)),
 						'sku' => esc_js($product->get_sku()),
 						'name' => esc_js($product->get_name()),
 						'variable' => esc_js($product->is_type( 'variable' )),
+						'voucher_variation_id' => $product_has_only_attribute_voucher_variation_id,
 						'attributes_otherthan_voucher' => esc_js($product_has_attributes_otherthan_voucher),
 						'choices' => json_encode($aquos_items),
 					];

@@ -21,3 +21,8 @@ TODO
 * Map products with Aquos ID
 * Display duration of treatment
 
+TESTING
+-------
+* Bulles Aq: product with choice
+* Duo de Bulles: product with only voucher attribute
+* Modelage corps 40min: product with attribute (other than voucher)

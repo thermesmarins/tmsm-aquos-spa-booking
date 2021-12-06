@@ -315,6 +315,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       thumbnail: null,
       variable: null,
       attributes_otherthan_voucher: null,
+      voucher_variation_id: null,
       choices: null,
       is_voucher: null,
       price: null,
@@ -395,6 +396,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       this.selectedIsVariable = $(event.target).children("option:selected").attr('data-variable');
       this.selectedHasAttributesOtherthanVoucher = $(event.target).children("option:selected").attr('data-attributes_otherthan_voucher');
+      this.voucher_variation_id = $(event.target).children("option:selected").attr('data-voucher_variation_id');
       console.log('selectedIsVariable: '+this.selectedIsVariable);
       console.log('selectedHasAttributesOtherthanVoucher: '+this.selectedHasAttributesOtherthanVoucher);
 
@@ -414,7 +416,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
 
 
+      // Product has choices
       if(this.selectedHasChoices){
+        console.warn('CASE 1');
         // Go to choices
         TmsmAquosSpaBookingApp.data.choices = choices;
         TmsmAquosSpaBookingApp.choices.reset( TmsmAquosSpaBookingApp.data.choices );
@@ -423,7 +427,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.choicesList.element());
       }
       else{
+
+        // Product has attributes (other than voucher)
         if(this.selectedIsVariable && this.selectedHasAttributesOtherthanVoucher){
+          console.warn('CASE 2');
           // Go to variations
           TmsmAquosSpaBookingApp.productvariations.fetch({ data: {
               product: this.selectedValue,
@@ -438,11 +445,23 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productAttributesList.element());
         }
         else{
+          console.log('product_id: ' + this.selectedValue);
+          console.log('voucher_variation_id: ' + this.voucher_variation_id);
+          console.warn('CASE 3');
           // Set product data
           TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
-          TmsmAquosSpaBookingApp.selectedData.set('productvariation', this.selectedValue);
+          //TmsmAquosSpaBookingApp.selectedData.set('productvariation', this.selectedValue);
+          TmsmAquosSpaBookingApp.selectedData.set('productvariation', this.voucher_variation_id);
           TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
 
+          if(this.voucher_variation_id !== null){
+
+            TmsmAquosSpaBookingApp.selectedData.set('product', null);
+            TmsmAquosSpaBookingApp.selectedData.set('product', this.voucher_variation_id);
+            TmsmAquosSpaBookingApp.selectedData.set('productvariation', null);
+            TmsmAquosSpaBookingApp.selectedData.unset('productvariation');
+
+          }
 
         }
       }
@@ -479,6 +498,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         'data-sku': this.model.get('sku'),
         'data-variable': this.model.get('variable'),
         'data-attributes_otherthan_voucher': this.model.get('attributes_otherthan_voucher'),
+        'data-voucher_variation_id': this.model.get('voucher_variation_id'),
         'data-choices': this.model.get('choices')
     };
     },
@@ -887,6 +907,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.$( this.selectElement ).empty().val('');
       this.selectedValue = null;
       TmsmAquosSpaBookingApp.selectedData.set('productvariation', null);
+      TmsmAquosSpaBookingApp.selectedData.unset('productvariation');
       this.hide();
     },
     matchattributes: function(){
