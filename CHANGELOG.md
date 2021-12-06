@@ -1,3 +1,6 @@
+### 2.0.7: December 6th, 2021
+* Fix bug preventing appointment of treatment with only voucher as product attribute
+
 ### 2.0.6: November 3rd, 2021
 * Check Aquos ID when empty
 
