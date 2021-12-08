@@ -30,9 +30,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         options.data.action = this.action;
       }
 
-      console.log('sync action: '+options.data.action);
-      console.log('sync options: ');
-      console.log(options);
+      //console.log('sync action: '+options.data.action);
+      //console.log('sync options: ');
+      //console.log(options);
 
 
       return Backbone.sync( method, object, options );
@@ -104,14 +104,14 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     selectedValue: null,
 
     initialize: function() {
-      console.log('HavevoucherListView initialize');
+      //console.log('HavevoucherListView initialize');
       this.listenTo( this.collection, 'sync', this.render );
       this.render();
     },
 
     render: function() {
 
-      console.log('HavevoucherListView render');
+      //console.log('HavevoucherListView render');
 
       var $list = $( 'ul#tmsm-aquos-spa-booking-voucher-list' ).empty();
 
@@ -126,7 +126,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     reset: function (event){
-      console.log('AttributesListView reset');
+      //console.log('AttributesListView reset');
       this.$('input').attr('checked', false).removeAttr('checked').prop('checked', false);
       this.selectedValue = null;
     },
@@ -148,7 +148,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     template: wp.template( 'tmsm-aquos-spa-booking-havevoucher' ),
 
     initialize: function() {
-      console.log('HavevoucherListItemView initialize');
+      //console.log('HavevoucherListItemView initialize');
 
       this.selectedValue = null;
 
@@ -167,16 +167,17 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     select: function(event){
-      console.log('HavevoucherListItemView select');
+      //console.log('HavevoucherListItemView select');
       TmsmAquosSpaBookingApp.havevoucherList.selectedValue = $(event.target).val();
 
       TmsmAquosSpaBookingApp.productAttributesList.reset();
-      TmsmAquosSpaBookingApp.productsList.reset();
+      //TmsmAquosSpaBookingApp.productsList.reset();
       TmsmAquosSpaBookingApp.dateList.reset();
       TmsmAquosSpaBookingApp.timesList.reset();
       TmsmAquosSpaBookingApp.selectedData.set('is_voucher', TmsmAquosSpaBookingApp.havevoucherList.selectedValue);
 
-      TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productCategoriesList.element());
+      //TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productCategoriesList.element());
+      TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productsList.element());
 
       $('#tmsm-aquos-spa-booking-cancel').show();
       //$('#tmsm-aquos-spa-booking-selected-hasvoucher').val($(event.target).val());
@@ -221,7 +222,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       //$( 'select#tmsm-aquos-spa-booking-categories-select' ).val('');
       var $list = this.$( this.selectElement ).empty().val('');
       if (typeof $list.selectpicker === "function") {
-        console.log('ProductCategoriesListView selectpicker refresh 1');
+        //console.log('ProductCategoriesListView selectpicker refresh 1');
         $list.selectpicker('refresh');
       }
 
@@ -231,7 +232,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         $list.append( item.render().$el );
       }, this );
       if (typeof $list.selectpicker === "function") {
-        console.log('ProductCategoriesListView selectpicker refresh 2');
+        //console.log('ProductCategoriesListView selectpicker refresh 2');
         $list.selectpicker('refresh');
       }
 
@@ -239,10 +240,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     change: function(event){
-      console.log('ProductCategoriesListView change');
+      //console.log('ProductCategoriesListView change');
       TmsmAquosSpaBookingApp.productsList.loading();
       this.selectedValue = $(event.target).val();
-      console.log('selectedValue: '+this.selectedValue);
+      //console.log('selectedValue: '+this.selectedValue);
       TmsmAquosSpaBookingApp.productAttributesList.reset();
       TmsmAquosSpaBookingApp.dateList.reset();
       TmsmAquosSpaBookingApp.timesList.reset();
@@ -319,6 +320,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       choices: null,
       is_voucher: null,
       price: null,
+      category: null,
     }
   } );
 
@@ -341,7 +343,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     initialize: function() {
       this.hide();
       console.log('ProductsListView initialize');
-      $( this.selectElement ).empty().val('');
+      ///$( this.selectElement ).empty().val('');
       this.listenTo( this.collection, 'sync', this.render );
     },
 
@@ -372,13 +374,40 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log('ProductsListView collection:');
       console.log(this.collection);
 
+      var $categories = [];
       //$list.append( '<option>'+TmsmAquosSpaBookingApp.strings.no_selection+'</option>' );
       this.collection.each( function( model ) {
+          if(model.attributes.category && !$categories[model.attributes.category]){
+            $categories[model.attributes.category] = $('<optgroup>', {
+              label: model.attributes.category,
+            });
+            $list.append($categories[model.attributes.category]);
+          }
+
         model.attributes.is_voucher = TmsmAquosSpaBookingApp.havevoucherList.selectedValue;
         var item = new TmsmAquosSpaBookingApp.ProductsListItemView( { model: model } );
-        $list.append( item.render().$el );
+        //if(model.attributes.category){
+        //  $list.append( "<optgroup>"+model.attributes.category+"</optgroup>" );
+        //}
+        console.log('ProductsListView append');
+        console.log(item);
+
+        //$list.append( item.render().$el );
+        if($categories[model.attributes.category]){
+          $categories[model.attributes.category].append( item.render().$el );
+        }
+
+
       }, this );
+
+      console.log('ProductsListView append list');
+      console.log($categories);
+      $.each($categories, function( index, value ) {
+        $list.append( $categories[index] );
+      });
+
       if (typeof $list.selectpicker === 'function') {
+        console.log('ProductsListView selectpicker refresh');
         $list.selectpicker('refresh');
       }
       this.loaded();
@@ -392,20 +421,20 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       TmsmAquosSpaBookingApp.productAttributesList.reset();
       TmsmAquosSpaBookingApp.productAttributesList.loading();
 
-      console.log('selectedValue: '+this.selectedValue);
+      //console.log('selectedValue: '+this.selectedValue);
 
       this.selectedIsVariable = $(event.target).children("option:selected").attr('data-variable');
       this.selectedHasAttributesOtherthanVoucher = $(event.target).children("option:selected").attr('data-attributes_otherthan_voucher');
       this.voucher_variation_id = $(event.target).children("option:selected").attr('data-voucher_variation_id');
-      console.log('selectedIsVariable: '+this.selectedIsVariable);
-      console.log('selectedHasAttributesOtherthanVoucher: '+this.selectedHasAttributesOtherthanVoucher);
+      //console.log('selectedIsVariable: '+this.selectedIsVariable);
+      //console.log('selectedHasAttributesOtherthanVoucher: '+this.selectedHasAttributesOtherthanVoucher);
 
       var choices = JSON.parse($(event.target).children("option:selected").attr('data-choices'));
       this.selectedHasChoices = (choices.length !== 0);
       console.warn('selectedChoices: ');
-      console.log(choices);
-      console.log(choices.length);
-      console.log('selectedHasChoices: '+this.selectedHasChoices);
+      //console.log(choices);
+      //console.log(choices.length);
+      //console.log('selectedHasChoices: '+this.selectedHasChoices);
 
       TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
       TmsmAquosSpaBookingApp.dateList.reset();
@@ -445,8 +474,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productAttributesList.element());
         }
         else{
-          console.log('product_id: ' + this.selectedValue);
-          console.log('voucher_variation_id: ' + this.voucher_variation_id);
+          //console.log('product_id: ' + this.selectedValue);
+          //console.log('voucher_variation_id: ' + this.voucher_variation_id);
           console.warn('CASE 3');
           // Set product data
           TmsmAquosSpaBookingApp.selectedData.set('product', this.selectedValue);
@@ -496,6 +525,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       return {
         value: this.model.get('id'),
         'data-sku': this.model.get('sku'),
+        'data-category': this.model.get('category'),
         'data-variable': this.model.get('variable'),
         'data-attributes_otherthan_voucher': this.model.get('attributes_otherthan_voucher'),
         'data-voucher_variation_id': this.model.get('voucher_variation_id'),
@@ -547,7 +577,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     listElement: '#tmsm-aquos-spa-booking-attributes-list',
 
     initialize: function() {
-      console.log('AttributesListView initialize');
+      //console.log('AttributesListView initialize');
       this.hide();
       this.listenTo( this.collection, 'sync', this.render );
     },
@@ -558,7 +588,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     loading: function(){
-      console.log('AttributesListView loading');
+      //console.log('AttributesListView loading');
       $( this.emptyElement ).hide();
       $( this.loadingElement ).show();
       $( this.cancelElement ).hide();
@@ -575,13 +605,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       if ( typeof TmsmAquosSpaBookingApp.productVariationsList !== 'undefined' ) {
         if(TmsmAquosSpaBookingApp.productVariationsList.matchattributes()){
-          console.log('AttributesListView loaded');
+          //console.log('AttributesListView loaded');
           $( this.emptyElement ).hide();
 
 
         }
         else{
-          console.log('AttributesListView error');
+          //console.log('AttributesListView error');
           $( this.emptyElement ).show();
           $( this.cancelElement ).hide();
           $( this.confirmElement ).hide();
@@ -591,7 +621,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       }
     },
     render: function() {
-      console.log('AttributesListView render');
+      //console.log('AttributesListView render');
       $( this.loadingElement ).show();
       var $list = this.$( this.listElement ).empty();
 
@@ -609,7 +639,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
     cancel: function (event){
       event.preventDefault();
-      console.log('AttributesListView cancel');
+      //console.log('AttributesListView cancel');
 
       TmsmAquosSpaBookingApp.courseParticipants = 0;
       TmsmAquosSpaBookingApp.selectedData.set('course_participants', TmsmAquosSpaBookingApp.courseParticipants);
@@ -620,7 +650,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.selectedValue = null;
     },
     reset: function (event){
-      console.log('AttributesListView reset');
+      //console.log('AttributesListView reset');
 
       TmsmAquosSpaBookingApp.courseParticipants = 0;
 
@@ -633,7 +663,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     confirm: function(event){
 
-      console.log('AttributesListView confirm');
+      //console.log('AttributesListView confirm');
       
       TmsmAquosSpaBookingApp.timesList.reset();
 
@@ -646,7 +676,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     checkattributes: function(){
-      console.log('AttributesListView checkattributes');
+      //console.log('AttributesListView checkattributes');
 
       var $attributeGroups     = $( '.tmsm-aquos-spa-booking-attribute' );
       var $attributeFields     = $( '.tmsm-aquos-spa-booking-term' );
@@ -659,11 +689,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       // Does product have attributes?
       if($attributeGroups.length == 0){
-        console.log('AttributesListView no attributes');
+        //console.log('AttributesListView no attributes');
       }
       // Does product have variations?
       if(TmsmAquosSpaBookingApp.productVariationsList.variationsCount == 0){
-        console.log('productVariationsList no variations');
+        //console.log('productVariationsList no variations');
         return false;
       }
       else{
@@ -740,9 +770,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     select: function(event){
-      console.log('AttributesListItemView select');
-      console.log($(event.target));
-      console.log($(event.target).val());
+      //console.log('AttributesListItemView select');
+      //console.log($(event.target));
+      //console.log($(event.target).val());
 
       TmsmAquosSpaBookingApp.courseParticipants = 0;
 
@@ -845,7 +875,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     buttonElement: '[data-id=tmsm-aquos-spa-booking-variations-select]',
 
     initialize: function() {
-      console.log('ProductVariationsListView initialize');
+      //console.log('ProductVariationsListView initialize');
       $( this.emptyElement ).hide();
       $( this.selectElement ).empty().val('');
       this.listenTo( this.collection, 'sync', this.render );
@@ -893,9 +923,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     change: function(event){
-      console.log('ProductVariationListView change');
+      //console.log('ProductVariationListView change');
       this.selectedValue = $(event.target).val();
-      console.log('selectedValue: '+this.selectedValue);
+      //console.log('selectedValue: '+this.selectedValue);
 
       TmsmAquosSpaBookingApp.dateList.reset();
       TmsmAquosSpaBookingApp.timesList.reset();
@@ -911,7 +941,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       this.hide();
     },
     matchattributes: function(){
-      console.log('ProductVariationsListView matchattributes');
+      //console.log('ProductVariationsListView matchattributes');
 
       var checkAttributes = TmsmAquosSpaBookingApp.productAttributesList.checkattributes();
 
@@ -1023,7 +1053,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     initialize: function() {
       this.hide();
-      console.log('ChoicesListView initialize');
+      //console.log('ChoicesListView initialize');
       $( this.selectElement ).empty().val('');
       this.listenTo( this.collection, 'sync', this.render );
     },
@@ -1032,13 +1062,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       'change select' : 'change'
     },
     loading: function(){
-      console.log('ChoicesListView loading');
+      //console.log('ChoicesListView loading');
       $( this.loadingElement ).show();
       $( this.buttonElement ).hide();
       $( this.selectElement ).hide();
     },
     loaded: function(){
-      console.log('ChoicesListView loaded');
+      //console.log('ChoicesListView loaded');
       $( this.loadingElement ).hide();
       $( this.buttonElement ).show();
       $( this.selectElement ).show();
@@ -1052,8 +1082,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         $list.selectpicker('refresh');
       }
 
-      console.log('ChoicesListView collection:');
-      console.log(this.collection);
+      //console.log('ChoicesListView collection:');
+      //console.log(this.collection);
 
       this.collection.each( function( model ) {
         var item = new TmsmAquosSpaBookingApp.ChoicesListItemView( { model: model } );
@@ -1068,10 +1098,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     change: function(event){
-      console.log('ChoicesListView change');
+      //console.log('ChoicesListView change');
       this.selectedValue = $(event.target).val();
 
-      console.log('selectedValue: '+this.selectedValue);
+      //console.log('selectedValue: '+this.selectedValue);
 
       TmsmAquosSpaBookingApp.selectedData.set('choice', this.selectedValue);
       TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
@@ -1127,7 +1157,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
   // Animate Display
   TmsmAquosSpaBookingApp.animateTransition = function(element){
-    console.log('animateTransition ' + element.attr('id'));
+    //console.log('animateTransition ' + element.attr('id'));
     element.show();
     $('html, body').animate({
       scrollTop: element.offset().top
@@ -1143,7 +1173,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     datePicker: null,
 
     initialize: function() {
-      console.log('DateListView initialize');
+      //console.log('DateListView initialize');
       this.hide();
       this.render();
     },
@@ -1157,9 +1187,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       TmsmAquosSpaBookingApp.timesList.loading();
 
-      console.log('TmsmAquosSpaBookingApp.productsList.selectedValue: '+TmsmAquosSpaBookingApp.productsList.selectedValue);
-      console.log('TmsmAquosSpaBookingApp.productVariationsList.selectedValue: '+TmsmAquosSpaBookingApp.productVariationsList.selectedValue);
-      console.log('TmsmAquosSpaBookingApp.choicesList.selectedValue: '+TmsmAquosSpaBookingApp.choicesList.selectedValue);
+      //console.log('TmsmAquosSpaBookingApp.productsList.selectedValue: '+TmsmAquosSpaBookingApp.productsList.selectedValue);
+      //console.log('TmsmAquosSpaBookingApp.productVariationsList.selectedValue: '+TmsmAquosSpaBookingApp.productVariationsList.selectedValue);
+      //console.log('TmsmAquosSpaBookingApp.choicesList.selectedValue: '+TmsmAquosSpaBookingApp.choicesList.selectedValue);
 
       TmsmAquosSpaBookingApp.times.fetch({
         data: {
@@ -1171,7 +1201,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         }
       });
 
-      console.log('selectedValue: ' + this.selectedValue);
+      //console.log('selectedValue: ' + this.selectedValue);
 
       TmsmAquosSpaBookingApp.selectedData.set('date', this.selectedValue);
 
@@ -1246,7 +1276,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     initialize: function() {
 
-      console.log('TimesListView initialize');
+      //console.log('TimesListView initialize');
       this.hide();
       this.listenTo( this.collection, 'sync', this.render );
     },
@@ -1260,26 +1290,26 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     loading: function(){
-      console.log('TimesListView loading');
+      //console.log('TimesListView loading');
       $( this.errorElement ).hide();
       $( this.loadingElement ).show();
       $( this.listElement ).hide();
     },
     loaded: function(){
-      console.log('TimesListView loaded');
+      //console.log('TimesListView loaded');
       $( this.loadingElement ).hide();
       $( this.listElement ).show();
     },
 
     render: function() {
-      console.log('TimesListView render');
+      //console.log('TimesListView render');
       var $list = this.$( this.listElement ).empty().val('');
 
       $list.hide();
 
-      console.log('TimesListView collection:');
-      console.log(this.collection);
-      console.log('TimesListView collection length: ' + this.collection.length);
+      //console.log('TimesListView collection:');
+      //console.log(this.collection);
+      //console.log('TimesListView collection length: ' + this.collection.length);
 
       var i = 0;
       this.collection.each( function( model ) {
@@ -1293,7 +1323,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           $( '.tmsm-aquos-spa-booking-weekday-times[data-date="' + model.attributes.date + '"]').append(item.render().el.outerHTML);
         }
         else{
-          console.log('tmsm-aquos-spa-booking-weekday-times not added for '+model.attributes.date);
+          //console.log('tmsm-aquos-spa-booking-weekday-times not added for '+model.attributes.date);
         }
         //
         //$( '.tmsm-aquos-spa-booking-weekday-times[data-date=\''+model.attributes.date+'\']').append(item.render().$el);
@@ -1315,9 +1345,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     selectTime: function(event){
       event.preventDefault();
-      console.log('TimeListView selectTime');
+      //console.log('TimeListView selectTime');
       this.selectedValue = $(event.target).data('hourminutes');
-      console.log('TimeListView selectedValue: '+ this.selectedValue);
+      //console.log('TimeListView selectedValue: '+ this.selectedValue);
       $( this.selectButtons ).hide().removeClass('disabled').removeClass('selected').addClass('not-selected');
       $(event.target).show().addClass('selected').removeClass('not-selected').find('.tmsm-aquos-spa-booking-time').addClass('disabled');
 
@@ -1405,13 +1435,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     initialize: function() {
 
-      console.log('WeekDayListView initialize');
+      //console.log('WeekDayListView initialize');
 
       moment.locale(TmsmAquosSpaBookingApp.locale);
-      console.log("moment", moment().format());
-      console.log("moment locale: "+ moment.locale());
+      //console.log("moment", moment().format());
+      //console.log("moment locale: "+ moment.locale());
 
-      console.log("moment fromnow: "+ moment().fromNow());
+      //console.log("moment fromnow: "+ moment().fromNow());
       this.listenTo( this.collection, 'sync', this.render );
     },
 
@@ -1422,7 +1452,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     previous: function(event){
-      console.log('WeekDayListView previous');
+      //console.log('WeekDayListView previous');
 
       event.preventDefault();
       this.daysPage = this.daysPage - 1;
@@ -1430,7 +1460,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     next: function(event){
-      console.log('WeekDayListView next');
+      //console.log('WeekDayListView next');
 
       event.preventDefault();
       this.daysPage = this.daysPage + 1;
@@ -1478,7 +1508,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           var item = new TmsmAquosSpaBookingApp.WeekDayListItemView( { model: model } );
           $list.append( item.render().$el );
 
-          console.log('WeekDayListView fetch:');
+          //console.log('WeekDayListView fetch:');
           TmsmAquosSpaBookingApp.times.fetch({
             data: {
               productcategory: TmsmAquosSpaBookingApp.productCategoriesList.selectedValue,
@@ -1488,12 +1518,12 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
               date: model.attributes.date_computed
             },
             complete: function(xhr) {
-              console.log('complete fetch');
+              //console.log('complete fetch');
 
               loaded_days++;
               if(loaded_days == 7){
-                console.warn('ALl days loaded ****************');
-                console.warn('tmpDaysPage: ' + tmpDaysPage);
+                //console.warn('ALl days loaded ****************');
+                //console.warn('tmpDaysPage: ' + tmpDaysPage);
 
                 $('#tmsm-aquos-spa-booking-weekdays-previous').attr('disabled', (tmpDaysPage === 1) );
 
@@ -1515,17 +1545,17 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log('WeekDayListView selectTime');
       this.selectedValue = $(event.target).data('hourminutes');
       var date = $(event.target).data('date');
-      console.log('WeekDayListView selectedValue: '+ this.selectedValue);
+      //console.log('WeekDayListView selectedValue: '+ this.selectedValue);
       $( this.selectButtons ).removeClass('btn-primary').removeClass('disabled').removeClass('selected').addClass('not-selected');
       $(event.target).addClass('btn-primary').addClass('disabled').removeClass('not-selected');
 
-      console.warn($(this.addAppointmentButton));
+      //console.warn($(this.addAppointmentButton));
       TmsmAquosSpaBookingApp.selectedData.set('hourminutes', this.selectedValue);
       TmsmAquosSpaBookingApp.selectedData.set('date', date);
 
       // Has participants, show course time selection
       if(TmsmAquosSpaBookingApp.selectedData.get('course_participants') > 0 && TmsmAquosSpaBookingApp.courseplugin){
-        console.info('Has participants, show course time selection');
+        //console.info('Has participants, show course time selection');
         TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.courseTimesList.element());
       }
       else{
@@ -1591,8 +1621,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     cancelButtons: '.tmsm-aquos-spa-booking-course-time-change-label',
 
     initialize: function() {
-
-      console.log('CourseTimesListView initialize');
+      //console.log('CourseTimesListView initialize');
       this.hide();
       this.listenTo( this.collection, 'sync', this.render );
     },
@@ -1606,26 +1635,26 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     loading: function(){
-      console.log('CourseTimesListView loading');
+      //console.log('CourseTimesListView loading');
       $( this.errorElement ).hide();
       $( this.loadingElement ).show();
       $( this.listElement ).hide();
     },
     loaded: function(){
-      console.log('CourseTimesListView loaded');
+      //console.log('CourseTimesListView loaded');
       $( this.loadingElement ).hide();
       $( this.listElement ).show();
     },
 
     render: function() {
-      console.log('CourseTimesListView render');
+      //console.log('CourseTimesListView render');
       var $list = this.$( this.listElement ).empty().val('');
 
       $list.hide();
 
-      console.log('CourseTimesListView collection:');
-      console.log(this.collection);
-      console.log('CourseTimesListView collection length: ' + this.collection.length);
+      //console.log('CourseTimesListView collection:');
+      //console.log(this.collection);
+      //console.log('CourseTimesListView collection length: ' + this.collection.length);
 
       var i = 0;
       this.collection.each( function( model ) {
@@ -1660,9 +1689,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
     selectTime: function(event){
       event.preventDefault();
-      console.log('CourseTimeListView selectTime');
+      //console.log('CourseTimeListView selectTime');
       this.selectedValue = $(event.target).data('hourminutes');
-      console.log('CourseTimeListView selectedValue: '+ this.selectedValue);
+      //console.log('CourseTimeListView selectedValue: '+ this.selectedValue);
       $( this.selectButtons ).hide().removeClass('disabled').removeClass('selected').addClass('not-selected');
       $(event.target).show().addClass('selected').removeClass('not-selected').find('.tmsm-aquos-spa-booking-course-time').addClass('disabled');
 
@@ -1745,7 +1774,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     errorElement: '#tmsm-aquos-spa-booking-confirm-error',
 
     initialize: function() {
-      console.log('SelectedDataView initialize');
+      //console.log('SelectedDataView initialize');
       this.hideError();
       this.hideConfirm();
       this.hideCancel();
@@ -1762,7 +1791,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       this.hideError();
 
-      console.log('SelectedDataView cancel');
+      //console.log('SelectedDataView cancel');
 
       TmsmAquosSpaBookingApp.selectedData.clear().set({});
 
@@ -1779,18 +1808,18 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     confirm: function(event) {
       event.preventDefault();
 
-      console.log('SelectedDataView confirm');
+      //console.log('SelectedDataView confirm');
       $(this.errorElement).empty();
       this.showLoading();
       var container = this;
 
       wp.ajax.send('tmsm-aquos-spa-booking-addtocart', {
         success: function(data){
-          console.log('wp.ajax.send success');
-          console.log(data);
+          //console.log('wp.ajax.send success');
+          //console.log(data);
           if(data.redirect){
-            console.log('redirect!');
-            window.location = data.redirect;
+            //console.log('redirect!');
+            //window.location = data.redirect;
           }
           else{
             console.log('no redirect...');
@@ -1798,11 +1827,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           }
         },
         error: function(data){
-          console.log('wp.ajax.send error');
+          /*console.log('wp.ajax.send error');
           console.log(data);
           container.hideLoading();
           console.log('wp.ajax.send error');
-          console.log(data);
+          console.log(data);*/
           if(data.errors){
             container.showError();
             $(container.errorElement).html( data.errors );
@@ -1820,8 +1849,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     change: function (){
-      console.log('SelectedDataView change');
-      console.log(this.model);
+      //console.log('SelectedDataView change');
+      //console.log(this.model);
 
       if(this.canConfirm(this.model.attributes)){
         this.showConfirm();
@@ -1841,11 +1870,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     showLoading: function(){
-      console.log('SelectedDataView showLoading');
+      //console.log('SelectedDataView showLoading');
       $( this.confirmButton ).prop('disabled', true).addClass('btn-disabled');
     },
     hideLoading: function(){
-      console.log('SelectedDataView hideLoading');
+      //console.log('SelectedDataView hideLoading');
       $( this.confirmButton ).prop('disabled', false).removeClass('btn-disabled');
     },
     showError: function(){
@@ -1855,7 +1884,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       $( this.errorElement ).hide();
     },
     showConfirm: function(){
-      console.log('SelectedDataView showConfirm');
+      //console.log('SelectedDataView showConfirm');
       $( this.confirmButton ).show();
     },
     hideConfirm: function(){
@@ -1863,7 +1892,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     showCancel: function(){
-      console.log('SelectedDataView showCancel');
+      //console.log('SelectedDataView showCancel');
       $( this.cancelButton ).show();
     },
     hideCancel: function(){

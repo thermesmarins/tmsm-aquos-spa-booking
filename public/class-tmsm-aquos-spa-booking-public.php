@@ -69,7 +69,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', array(), null, 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/tmsm-aquos-spa-booking-public.css', array(), $this->version, 'all' );
 
 		wp_deregister_style('bootstrap-datepicker');
@@ -101,7 +100,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					array( 'jquery', 'bootstrap', 'bootstrap-datepicker' ), null, true );
 			}*/
 
-			wp_enqueue_script( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array( ), null, true );
+
 
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public'.( !(in_array('administrator',  wp_get_current_user()->roles) || (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG)) ?'.min' : '' ).'.js', array( 'jquery', 'moment', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
 
@@ -332,7 +331,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-categories-container" >
 			<div id="tmsm-aquos-spa-booking-categories-inner">
 			<h3>' . __( 'Pick your treatments category:', 'tmsm-aquos-spa-booking' ) . '</h3>
-			<select id="tmsm-aquos-spa-booking-categories-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '">
+			<select id="tmsm-aquos-spa-booking-categories-select" data-live-search="true"  title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '">
 			</select>
 			</div>
 			</div>
@@ -341,7 +340,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-products-inner">
 			<h3>' . __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<p id="tmsm-aquos-spa-booking-products-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
-			<select id="tmsm-aquos-spa-booking-products-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			<select id="tmsm-aquos-spa-booking-products-select" data-live-search="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
 			
@@ -2057,6 +2056,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$product_category = get_term( $product_category_id, 'product_cat');
 				$args['category'] = $product_category->slug;
 			}
+			else{
+				$product_category = get_term( get_option( 'tmsm_aquos_spa_booking_productcat', 0 ), 'product_cat');
+				$args['category'] = $product_category->slug;
+			}
 
 			$products_ids = wc_get_products( $args );
 
@@ -2126,19 +2129,34 @@ class Tmsm_Aquos_Spa_Booking_Public {
 						}
 					}
 
-					// Construct product data
-					$products[] = [
-						'id' => $product_has_only_attribute_voucher_variation_id ?? esc_js($product->get_id()),
-						'permalink' => esc_js($product->get_permalink()),
-						'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-						'price' => html_entity_decode(wp_strip_all_tags($price)),
-						'sku' => esc_js($product->get_sku()),
-						'name' => esc_js($product->get_name()),
-						'variable' => esc_js($product->is_type( 'variable' )),
-						'voucher_variation_id' => $product_has_only_attribute_voucher_variation_id,
-						'attributes_otherthan_voucher' => esc_js($product_has_attributes_otherthan_voucher),
-						'choices' => json_encode($aquos_items),
-					];
+					// Include product category, filter out excluded category
+					$product_categories = get_the_terms($product->get_id() , 'product_cat' );
+					$product_category_of_main_category_name = null;
+					$product_category_of_main_category_id = null;
+					foreach($product_categories as $product_category){
+						if($product_category->parent ==  get_option( 'tmsm_aquos_spa_booking_productcat', 0 )){
+							$product_category_of_main_category_name = $product_category->name;
+							$product_category_of_main_category_id = $product_category->term_id;
+						}
+					}
+					if($product_category_of_main_category_id != get_option( 'tmsm_aquos_spa_booking_excludedproductcat', 0 )){
+
+						// Construct product data
+						$products[] = [
+							'id' => $product_has_only_attribute_voucher_variation_id ?? esc_js($product->get_id()),
+							'permalink' => esc_js($product->get_permalink()),
+							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
+							'price' => html_entity_decode(wp_strip_all_tags($price)),
+							'sku' => esc_js($product->get_sku()),
+							'name' => esc_js($product->get_name()),
+							'variable' => esc_js($product->is_type( 'variable' )),
+							'voucher_variation_id' => $product_has_only_attribute_voucher_variation_id,
+							'attributes_otherthan_voucher' => esc_js($product_has_attributes_otherthan_voucher),
+							'choices' => json_encode($aquos_items),
+							'category' => esc_js($product_category_of_main_category_name),
+						];
+					}
+
 
 				}
 			}
