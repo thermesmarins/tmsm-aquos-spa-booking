@@ -1,3 +1,5 @@
+* Include Select2 library
+
 ### 2.0.7: December 6th, 2021
 * Fix bug preventing appointment of treatment with only voucher as product attribute
 
