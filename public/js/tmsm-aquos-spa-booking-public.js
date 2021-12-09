@@ -421,13 +421,16 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       TmsmAquosSpaBookingApp.productAttributesList.reset();
       TmsmAquosSpaBookingApp.productAttributesList.loading();
 
-      //console.log('selectedValue: '+this.selectedValue);
+      console.log('selectedValue: ' + this.selectedValue);
+      console.log($(event.target));
+      console.log('selectedTarget children selected: ');
+      console.log($(event.target).children("option:selected"));
 
       this.selectedIsVariable = $(event.target).children("option:selected").attr('data-variable');
       this.selectedHasAttributesOtherthanVoucher = $(event.target).children("option:selected").attr('data-attributes_otherthan_voucher');
       this.voucher_variation_id = $(event.target).children("option:selected").attr('data-voucher_variation_id');
-      //console.log('selectedIsVariable: '+this.selectedIsVariable);
-      //console.log('selectedHasAttributesOtherthanVoucher: '+this.selectedHasAttributesOtherthanVoucher);
+      console.log('selectedIsVariable: '+this.selectedIsVariable);
+      console.log('selectedHasAttributesOtherthanVoucher: '+this.selectedHasAttributesOtherthanVoucher);
 
       var choices = JSON.parse($(event.target).children("option:selected").attr('data-choices'));
       this.selectedHasChoices = (choices.length !== 0);
