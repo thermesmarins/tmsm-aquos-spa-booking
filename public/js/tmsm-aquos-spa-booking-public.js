@@ -167,15 +167,18 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     select: function(event){
-      //console.log('HavevoucherListItemView select');
+      console.log('HavevoucherListItemView select');
       TmsmAquosSpaBookingApp.havevoucherList.selectedValue = $(event.target).val();
 
       TmsmAquosSpaBookingApp.productAttributesList.reset();
-      //TmsmAquosSpaBookingApp.productsList.reset();
+      TmsmAquosSpaBookingApp.productsList.reset();
       TmsmAquosSpaBookingApp.dateList.reset();
       TmsmAquosSpaBookingApp.timesList.reset();
       TmsmAquosSpaBookingApp.selectedData.set('is_voucher', TmsmAquosSpaBookingApp.havevoucherList.selectedValue);
 
+      TmsmAquosSpaBookingApp.productsList.loading();
+      TmsmAquosSpaBookingApp.products.fetch({ data: {
+        } });
       //TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productCategoriesList.element());
       TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productsList.element());
 
@@ -343,7 +346,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     initialize: function() {
       this.hide();
       console.log('ProductsListView initialize');
-      ///$( this.selectElement ).empty().val('');
+      $( this.selectElement ).empty().val('');
       this.listenTo( this.collection, 'sync', this.render );
     },
 
@@ -418,6 +421,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     change: function(event){
       console.log('ProductListView change');
       this.selectedValue = $(event.target).val();
+      $(event.target).find("option[value="+this.selectedValue+"]").prop('selected', true);
+      console.log($(event.target).find("option[value="+this.selectedValue+"]"));
       TmsmAquosSpaBookingApp.productAttributesList.reset();
       TmsmAquosSpaBookingApp.productAttributesList.loading();
 
@@ -426,13 +431,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log('selectedTarget children selected: ');
       console.log($(event.target).children("option:selected"));
 
-      this.selectedIsVariable = $(event.target).children("option:selected").attr('data-variable');
+      this.selectedIsVariable = $(event.target).find("option:selected").attr('data-variable');
       this.selectedHasAttributesOtherthanVoucher = $(event.target).children("option:selected").attr('data-attributes_otherthan_voucher');
-      this.voucher_variation_id = $(event.target).children("option:selected").attr('data-voucher_variation_id');
+      this.voucher_variation_id = $(event.target).find("option:selected").attr('data-voucher_variation_id');
       console.log('selectedIsVariable: '+this.selectedIsVariable);
       console.log('selectedHasAttributesOtherthanVoucher: '+this.selectedHasAttributesOtherthanVoucher);
 
-      var choices = JSON.parse($(event.target).children("option:selected").attr('data-choices'));
+      var choices = JSON.parse($(event.target).find("option:selected").attr('data-choices'));
       this.selectedHasChoices = (choices.length !== 0);
       console.warn('selectedChoices: ');
       //console.log(choices);
@@ -528,6 +533,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       return {
         value: this.model.get('id'),
         'data-sku': this.model.get('sku'),
+        'data-subtext': this.model.get('sku'),
         'data-category': this.model.get('category'),
         'data-variable': this.model.get('variable'),
         'data-attributes_otherthan_voucher': this.model.get('attributes_otherthan_voucher'),
@@ -1811,7 +1817,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     confirm: function(event) {
       event.preventDefault();
 
-      //console.log('SelectedDataView confirm');
+      console.log('SelectedDataView confirm');
       $(this.errorElement).empty();
       this.showLoading();
       var container = this;
@@ -1822,7 +1828,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           //console.log(data);
           if(data.redirect){
             //console.log('redirect!');
-            //window.location = data.redirect;
+            window.location = data.redirect;
           }
           else{
             console.log('no redirect...');

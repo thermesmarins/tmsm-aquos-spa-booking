@@ -340,7 +340,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-products-inner">
 			<h3>' . __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<p id="tmsm-aquos-spa-booking-products-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
-			<select id="tmsm-aquos-spa-booking-products-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			<select id="tmsm-aquos-spa-booking-products-select" data-live-search="true"  title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
 			
@@ -356,7 +356,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<a href="#" id="tmsm-aquos-spa-booking-attributes-confirm" class="'.self::button_class_primary().'">' . __( 'Confirm your options', 'tmsm-aquos-spa-booking' ) . '</a>
 			</p>
 			<div style="display:none"> 
-			<select id="tmsm-aquos-spa-booking-variations-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			<select id="tmsm-aquos-spa-booking-variations-select" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
 			</div>
@@ -365,7 +365,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-choices-inner">
 			<h3>' . __( 'Pick your choice:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<p id="tmsm-aquos-spa-booking-choices-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
-			<select id="tmsm-aquos-spa-booking-choices-select" data-mobile="true" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			<select id="tmsm-aquos-spa-booking-choices-select"  title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
 			
@@ -2217,9 +2217,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		if(empty( $date )){
 			$errors[] = __( 'Date is missing', 'tmsm-aquos-spa-booking' );
 		}
-		if(empty( $product_category_id )){
-			$errors[] = __( 'Product category is missing', 'tmsm-aquos-spa-booking' );
-		}
+		//if(empty( $product_category_id )){
+		//	$errors[] = __( 'Product category is missing', 'tmsm-aquos-spa-booking' );
+		//}
 
 		if ( !empty( $errors ) ) {
 			$jsondata['success'] = false;
