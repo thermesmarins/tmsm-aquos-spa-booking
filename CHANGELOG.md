@@ -1,4 +1,5 @@
-* Include Select2 library
+* Remote product category selection
+* Display products with bootstrap select and live search enabled, sorted by sub category of main booking category
 
 ### 2.0.7: December 6th, 2021
 * Fix bug preventing appointment of treatment with only voucher as product attribute
