@@ -1,3 +1,4 @@
+### 2.0.8: December 9th, 2021
 * Remote product category selection
 * Display products with bootstrap select and live search enabled, sorted by sub category of main booking category
 
