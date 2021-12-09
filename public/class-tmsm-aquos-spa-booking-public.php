@@ -305,7 +305,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		do_action( 'woocommerce_check_cart_items' );
 
 		$output = '';
-
 		if($cart_has_products){
 			$output = '<p id="tmsm-aquos-spa-booking-emptycartfirst" class="'.self::alert_class_error().'" >'.sprintf(__( 'Your cart contains products other than appointments, please <a href="%s">empty your cart or complete the order</a> before booking an appointment.', 'tmsm-aquos-spa-booking' ), wc_get_cart_url()).'</p>';
 		}
@@ -2046,6 +2045,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
 			}
 
+
+			// Order categories
+			$product_categories = get_terms('product_cat' );
+			$product_categories_order = [];
+			foreach($product_categories as $product_category_index => $product_category){
+				$product_categories_order[$product_category->name] = $product_category_index;
+			}
+
+
+			// Products arguments
 			$args = array(
 				'return'  => 'ids',
 				'limit' => -1,
@@ -2062,8 +2071,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$args['category'] = $product_category->slug;
 			}
 
+			// Find products
 			$products_ids = wc_get_products( $args );
-
 			if(!empty($products_ids)){
 				foreach($products_ids as $key => $product_id){
 					$product = wc_get_product($product_id);
@@ -2149,21 +2158,22 @@ class Tmsm_Aquos_Spa_Booking_Public {
 							$product_category_of_main_category_id = $product_category->term_id;
 						}
 					}
-					if($product_category_of_main_category_id != get_option( 'tmsm_aquos_spa_booking_excludedproductcat', 0 )){
 
-						// Construct product data
+					// Construct product data
+					if($product_category_of_main_category_id != get_option( 'tmsm_aquos_spa_booking_excludedproductcat', 0 )){
 						$products[] = [
-							'id' => $product_has_only_attribute_voucher_variation_id ?? esc_js($product->get_id()),
-							'permalink' => esc_js($product->get_permalink()),
-							'thumbnail' => get_the_post_thumbnail_url($product_id) ? get_the_post_thumbnail_url($product_id) : '',
-							'price' => html_entity_decode(wp_strip_all_tags($price)),
-							'sku' => esc_js($product->get_sku()),
-							'name' => esc_js($product->get_name()),
-							'variable' => esc_js($product->is_type( 'variable' )),
-							'voucher_variation_id' => $product_has_only_attribute_voucher_variation_id,
-							'attributes_otherthan_voucher' => esc_js($product_has_attributes_otherthan_voucher),
-							'choices' => json_encode($aquos_items),
-							'category' => esc_js($product_category_of_main_category_name),
+							'id'                           => $product_has_only_attribute_voucher_variation_id ?? esc_js( $product->get_id() ),
+							'permalink'                    => esc_js( $product->get_permalink() ),
+							'thumbnail'                    => get_the_post_thumbnail_url( $product_id ) ? get_the_post_thumbnail_url( $product_id ) : '',
+							'price'                        => html_entity_decode( wp_strip_all_tags( $price ) ),
+							'sku'                          => esc_js( $product->get_sku() ),
+							'name'                         => esc_js( $product->get_name() ),
+							'variable'                     => esc_js( $product->is_type( 'variable' ) ),
+							'voucher_variation_id'         => $product_has_only_attribute_voucher_variation_id,
+							'attributes_otherthan_voucher' => esc_js( $product_has_attributes_otherthan_voucher ),
+							'choices'                      => json_encode( $aquos_items ),
+							'category'                     => esc_js( $product_category_of_main_category_name ),
+							'category-index'               => $product_categories_order[ $product_category_of_main_category_name ],
 						];
 					}
 
@@ -2176,6 +2186,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				//error_log(print_r($products, true));
 			}
 		}
+
+		$products_column_category_index  = array_column($products, 'category-index');
+		$products_column_name  = array_column($products, 'name');
+		array_multisort($products_column_category_index, SORT_ASC, $products_column_name, SORT_ASC, $products);
 
 		return $products;
 	}
