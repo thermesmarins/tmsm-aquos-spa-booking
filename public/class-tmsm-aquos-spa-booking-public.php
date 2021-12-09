@@ -305,6 +305,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		do_action( 'woocommerce_check_cart_items' );
 
 		$output = '';
+
 		if($cart_has_products){
 			$output = '<p id="tmsm-aquos-spa-booking-emptycartfirst" class="'.self::alert_class_error().'" >'.sprintf(__( 'Your cart contains products other than appointments, please <a href="%s">empty your cart or complete the order</a> before booking an appointment.', 'tmsm-aquos-spa-booking' ), wc_get_cart_url()).'</p>';
 		}
@@ -2133,8 +2134,17 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					$product_categories = get_the_terms($product->get_id() , 'product_cat' );
 					$product_category_of_main_category_name = null;
 					$product_category_of_main_category_id = null;
+
+					// Find the sub category of main category
 					foreach($product_categories as $product_category){
 						if($product_category->parent ==  get_option( 'tmsm_aquos_spa_booking_productcat', 0 )){
+							$product_category_of_main_category_name = $product_category->name;
+							$product_category_of_main_category_id = $product_category->term_id;
+						}
+					}
+					// Find if there is a sub category of sub category
+					foreach($product_categories as $product_category){
+						if($product_category->parent ==  $product_category_of_main_category_id){
 							$product_category_of_main_category_name = $product_category->name;
 							$product_category_of_main_category_id = $product_category->term_id;
 						}
