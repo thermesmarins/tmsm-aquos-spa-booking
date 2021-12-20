@@ -2038,6 +2038,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	private function _get_products() {
 		$products = [];
 
+		$is_voucher = sanitize_text_field( $_REQUEST['is_voucher'] );
+
 		if( class_exists( 'woocommerce' ) ){
 			$product_category_id = null;
 
@@ -2045,14 +2047,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
 			}
 
-
 			// Order categories
 			$product_categories = get_terms('product_cat' );
 			$product_categories_order = [];
 			foreach($product_categories as $product_category_index => $product_category){
 				$product_categories_order[$product_category->name] = $product_category_index;
 			}
-
 
 			// Products arguments
 			$args = array(
@@ -2062,6 +2062,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'order' => 'ASC',
 				'_bookable' => 'yes',
 			);
+			if(!$is_voucher){
+				$args['status'] = 'publish';
+			}
+
 			if(!empty($product_category_id)){
 				$product_category = get_term( $product_category_id, 'product_cat');
 				$args['category'] = $product_category->slug;
@@ -2070,6 +2074,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$product_category = get_term( get_option( 'tmsm_aquos_spa_booking_productcat', 0 ), 'product_cat');
 				$args['category'] = $product_category->slug;
 			}
+
+			error_log('$args:');
+			error_log(print_r($args, true));
 
 			// Find products
 			$products_ids = wc_get_products( $args );

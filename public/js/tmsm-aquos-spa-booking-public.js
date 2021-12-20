@@ -178,6 +178,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       TmsmAquosSpaBookingApp.productsList.loading();
       TmsmAquosSpaBookingApp.products.fetch({ data: {
+        'is_voucher': TmsmAquosSpaBookingApp.havevoucherList.selectedValue
         } });
       //TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productCategoriesList.element());
       TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productsList.element());

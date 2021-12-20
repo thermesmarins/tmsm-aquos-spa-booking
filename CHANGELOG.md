@@ -1,3 +1,5 @@
+* Filter published products when "i don't have a voucher"
+
 ### 2.0.9: December 20th, 2021
 * Fix "Case 2" selection
 
