@@ -150,10 +150,15 @@ li.tmsm-aquos-spa-booking-time-item {
   margin-bottom: 40px;
 }
 #tmsm-aquos-spa-booking-form .bootstrap-select .dropdown-header .text {
+  color: #000;
   font-weight: bold;
+  text-transform: uppercase;
 }
 #tmsm-aquos-spa-booking-form .bootstrap-select .text-muted {
   display: none;
+}
+#tmsm-aquos-spa-booking-form .bootstrap-select .dropdown-menu li a.opt {
+  padding-left: 1em;
 }
 @media (min-width: 600px) {
   #tmsm-aquos-spa-booking-form {
