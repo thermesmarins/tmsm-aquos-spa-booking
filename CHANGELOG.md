@@ -1,5 +1,7 @@
+* Fix "Case 2" selection
+
 ### 2.0.8: December 9th, 2021
-* Remote product category selection
+* Removed "product category" selection
 * Display products with bootstrap select and live search enabled, sorted by sub category of main booking category
 
 ### 2.0.7: December 6th, 2021

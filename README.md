@@ -23,6 +23,6 @@ TODO
 
 TESTING
 -------
-* Bulles Aq: product with choice
-* Duo de Bulles: product with only voucher attribute
-* Modelage corps 40min: product with attribute (other than voucher)
+* CASE 1: Bulles Aq: product with choice
+* CASE 2: Modelage corps 40min: product with attribute (other than voucher)
+* CASE 3: Duo de Bulles: product with only voucher attribute

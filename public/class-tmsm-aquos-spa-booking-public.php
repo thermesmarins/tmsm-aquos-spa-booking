@@ -2170,7 +2170,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 							'name'                         => esc_js( $product->get_name() ),
 							'variable'                     => esc_js( $product->is_type( 'variable' ) ),
 							'voucher_variation_id'         => $product_has_only_attribute_voucher_variation_id,
-							'attributes_otherthan_voucher' => esc_js( $product_has_attributes_otherthan_voucher ),
+							'attrotherthanvoucher' => esc_js( $product_has_attributes_otherthan_voucher ),
 							'choices'                      => json_encode( $aquos_items ),
 							'category'                     => esc_js( $product_category_of_main_category_name ),
 							'category-index'               => $product_categories_order[ $product_category_of_main_category_name ],
