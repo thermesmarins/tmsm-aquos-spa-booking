@@ -1,3 +1,4 @@
+### 2.0.9: December 20th, 2021
 * Fix "Case 2" selection
 
 ### 2.0.8: December 9th, 2021
