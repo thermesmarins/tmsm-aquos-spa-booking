@@ -2075,8 +2075,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				$args['category'] = $product_category->slug;
 			}
 
-			error_log('$args:');
-			error_log(print_r($args, true));
+			//error_log('$args:');
+			//error_log(print_r($args, true));
 
 			// Find products
 			$products_ids = wc_get_products( $args );
@@ -2141,7 +2141,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 							//error_log(print_r($v, true));
 							if ($v["attributes"]["attribute_pa_format-bon-cadeau"] == 'e-bon-cadeau'){
 								$product_has_only_attribute_voucher_variation_id = $v['variation_id'];
-								error_log('$product_has_only_attribute_voucher_variation_id: ' . $product_has_only_attribute_voucher_variation_id);
+								//error_log('$product_has_only_attribute_voucher_variation_id: ' . $product_has_only_attribute_voucher_variation_id);
 							}
 						}
 					}
