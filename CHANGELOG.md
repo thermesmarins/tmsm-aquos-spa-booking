@@ -1,3 +1,5 @@
+* Hardcoded price for Nantes: 23>24 for Aquatonic
+
 ### 2.1.0: December 20th, 2021
 * Filter published products when "i don't have a voucher"
 * CSS optimisation

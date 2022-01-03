@@ -526,7 +526,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		if(is_multisite() && get_current_blog_id() === 8) { // Nantes
 			switch ( $aquos_id ) {
 				case 338: // Parcours Aquatonic
-					$price = 23;
+					$price = 24;
 					break;
 				case 191: // Modelage nuque et cuir chevelu
 					$price = 18;
