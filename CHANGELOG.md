@@ -1,3 +1,4 @@
+### 2.1.1: January 3rd, 2022
 * Hardcoded price for Nantes: 23>24 for Aquatonic
 
 ### 2.1.0: December 20th, 2021
