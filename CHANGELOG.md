@@ -1,3 +1,5 @@
+* Hardcoded price for Rennes: 20>21 for Aquatonic
+
 ### 2.1.1: January 3rd, 2022
 * Hardcoded price for Nantes: 23>24 for Aquatonic
 
