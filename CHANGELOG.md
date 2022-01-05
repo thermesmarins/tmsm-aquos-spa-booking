@@ -1,3 +1,4 @@
+### 2.1.3: January 5th, 2022
 * Aquos price generation: only consider published products (and variations of published variable products)
 * Add to cart validation: aquos price must match product/variation price
 * Add to cart validation: aquos ID must be set
