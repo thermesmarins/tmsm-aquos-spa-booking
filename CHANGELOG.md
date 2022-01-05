@@ -1,3 +1,5 @@
+* Aquos price generation: only consider published products (and variations of published variable products)
+
 ### 2.1.2: January 3rd, 2022
 * Hardcoded price for Rennes: 20>21 for Aquatonic
 

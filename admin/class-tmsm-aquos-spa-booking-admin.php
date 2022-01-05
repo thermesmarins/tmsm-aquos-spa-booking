@@ -510,7 +510,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		if(is_multisite() && get_current_blog_id() === 6) { // Rennes
 			switch ( $aquos_id ) {
 				case 338: // Parcours Aquatonic
-					$price = 21;
+					//$price = 20; // 2021
+					$price = 21; // 2022
 					break;
 				case 191: // Modelage nuque et cuir chevelu
 					$price = 18;
@@ -526,7 +527,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		if(is_multisite() && get_current_blog_id() === 8) { // Nantes
 			switch ( $aquos_id ) {
 				case 338: // Parcours Aquatonic
-					$price = 24;
+					//$price = 23; // 2021
+					$price = 24; // 2022
 					break;
 				case 191: // Modelage nuque et cuir chevelu
 					$price = 18;
@@ -539,7 +541,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		if ( is_multisite() && get_current_blog_id() === 9 ) { // Paris
 			switch ( $aquos_id ) {
 				case 368: // Parcours Aquatonic
-					$price = 30;
+					$price = 30; // 2021
 					break;
 				case 470: // Accès Espace Bien-être en complément d'un soin
 					$price = 30;
@@ -554,16 +556,56 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		}
 
 		if( $price == 0 ){
-			//echo 'findind product with aquos id '.$aquos_id.' / ';
 
+			//echo 'finding product with aquos id '.$aquos_id.' / ';
+
+			// Find draft products IDs
+			$products_draft_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT * FROM $wpdb->posts WHERE post_status = 'draft' AND post_type IN ( 'product', 'product_variation')"
+				),
+			);
+			$products_draft_ids = array_flip($products_draft_ids);
+
+			// Find published products
+			$products_published = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT * FROM $wpdb->posts WHERE post_status = 'publish' AND post_type IN ( 'product', 'product_variation')"
+				),
+			);
+
+			// Browser all published products
+			$products_published_ids = [];
+			foreach($products_published as $product_published){
+				// Product has a parent (is a variation)
+				if( ! empty($product_published->post_parent)){
+					// Parent is draft?
+					if(isset($products_draft_ids[$product_published->post_parent])){
+						continue;
+					}
+				}
+				$products_published_ids[] = $product_published->ID;
+			}
+			//$products_published_ids = array_flip($products_published_ids);
+
+			//print_r($products_published_ids);
+			//echo '***';
+
+			// Prepare SQL for finding Aquos ID only for published products
+			$products_published_ids_sql = "'" . implode( "', '", $products_published_ids ) . "'";
+
+			// Find products with "aquos_id"
 			$results = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value = '%s'", $aquos_id
+					//"SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value = '%s'", $aquos_id  // query with all products
+					"SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value = '%s' AND post_id IN ($products_published_ids_sql)", $aquos_id // query with only published products
 				)
 			);
 			//echo "SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_price' AND meta_value = " .$aquos_id . ' / ';
+			//echo $wpdb->prepare(				"SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value = '%s' AND post_id IN ($products_published_ids_sql)", $aquos_id);
+			//echo '***';
 
-			// Variable price procucts (like e-check)
+			// Variable price products (like voucher)
 			if ( count( $results ) > 4 ) {
 				$product = wc_get_product( $product_id );
 				$price   = $product->get_price();
@@ -573,6 +615,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			// Other cases
 			else{
 
+				//echo 'other casess';
+				//print_r($results);
 				$result = null;
 
 				// Take only the first result
