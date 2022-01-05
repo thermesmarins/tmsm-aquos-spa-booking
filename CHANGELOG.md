@@ -1,3 +1,4 @@
+### 2.1.4: January 5th, 2022
 * Booking form style: previous/next buttons
 * Booking form style: loading times with glyphicon
 * Booking form style: center confirm button
