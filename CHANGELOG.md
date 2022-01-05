@@ -1,4 +1,6 @@
 * Aquos price generation: only consider published products (and variations of published variable products)
+* Add to cart validation: aquos price must match product/variation price
+* Add to cart validation: aquos ID must be set
 
 ### 2.1.2: January 3rd, 2022
 * Hardcoded price for Rennes: 20>21 for Aquatonic
