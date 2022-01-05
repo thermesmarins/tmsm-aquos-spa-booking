@@ -1517,6 +1517,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           //console.log(model);
           var item = new TmsmAquosSpaBookingApp.WeekDayListItemView( { model: model } );
           $list.append( item.render().$el );
+          $( '.tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date_computed+'"]').next().show();
 
           //console.log('WeekDayListView fetch:');
           TmsmAquosSpaBookingApp.times.fetch({
@@ -1528,7 +1529,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
               date: model.attributes.date_computed
             },
             complete: function(xhr) {
-              //console.log('complete fetch');
+              console.log('complete fetch');
+              console.log('hide: ' +'.tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date_computed+'"]');
+              $( '.tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date_computed+'"]').next().hide();
+              console.log($( '.tmsm-aquos-spa-booking-weekday-times[data-date="'+model.attributes.date_computed+'"]').next());
 
               loaded_days++;
               if(loaded_days == 7){

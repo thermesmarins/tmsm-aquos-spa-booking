@@ -217,6 +217,23 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	}
 
 	/**
+	 * Button Class No Sate
+	 *
+	 * @return string
+	 */
+	private static function button_class_nostate(){
+		$theme = wp_get_theme();
+		$buttonclass = '';
+		if ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) ) {
+			$buttonclass = 'btn';
+		}
+		if ( 'OceanWP' == $theme->get( 'Name' ) || 'oceanwp' == $theme->get( 'Template' ) ) {
+			$buttonclass = 'button';
+		}
+		return $buttonclass;
+	}
+
+	/**
 	 * Button Class Default
 	 *
 	 * @return string
@@ -372,8 +389,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-date-container" class="'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )=== 'weekdays'?'tmsm-aquos-spa-booking-date-container-weekdays':'').'">
 			<div id="tmsm-aquos-spa-booking-date-inner">
 			'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'calendar' ? '<h3>' . __( 'Pick your treatments timeslot:', 'tmsm-aquos-spa-booking' ) . '</h3>' : '<h3>' . __( 'Pick your treatments date:', 'tmsm-aquos-spa-booking' ) . '</h3>' ).'
-			<button class="' . self::button_class_default() . ' '.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )=== 'calendar'?'hide':'').'" id="tmsm-aquos-spa-booking-weekdays-previous" >' . __( 'Previous Dates', 'tmsm-aquos-spa-booking' ) .                 '</button>
-			<button class="' . self::button_class_default() . ' '.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )=== 'calendar'?'hide':'').'" id="tmsm-aquos-spa-booking-weekdays-next" >' . __( 'Next Dates', 'tmsm-aquos-spa-booking' ) . '</button>	
+			<button class="' . self::button_class_nostate() . ' '.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )=== 'calendar'?'hide':'').'" id="tmsm-aquos-spa-booking-weekdays-previous" >' . __( 'Previous Dates', 'tmsm-aquos-spa-booking' ) .                 '</button>
+			<button class="' . self::button_class_nostate() . ' '.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )=== 'calendar'?'hide':'').'" id="tmsm-aquos-spa-booking-weekdays-next" >' . __( 'Next Dates', 'tmsm-aquos-spa-booking' ) . '</button>	
 			<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default" style="'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'calendar'?'display:none;':'').'">
 			</div>
 			<ul id="tmsm-aquos-spa-booking-weekdays-list" class="nav nav-tabs nav-justified" style="'.(get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' )!== 'weekdays'?'display:none;':'').'">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '
@@ -409,7 +426,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<p id="tmsm-aquos-spa-booking-confirm-error"></p>
 			<button class="' . self::button_class_default() . '" id="tmsm-aquos-spa-booking-cancel">' . __( 'Cancel', 'tmsm-aquos-spa-booking' ) . '</button>
 			
-			<button class="' . self::button_class_primary() . '" id="tmsm-aquos-spa-booking-confirm">'. __( 'Add this appointment', 'tmsm-aquos-spa-booking' ) . '</button>
+			<button class="' . self::button_class_primary() . ' btn-lg text-center" id="tmsm-aquos-spa-booking-confirm">'. __( 'Add this appointment', 'tmsm-aquos-spa-booking' ) . '</button>
 			
 			</div>
 			</form>
@@ -445,8 +462,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		<script type="text/html" id="tmpl-tmsm-aquos-spa-booking-weekday">
 			{{ data.date_label_firstline }} <span class="secondline">{{ data.date_label_secondline }}</span>
 			<ul class="tmsm-aquos-spa-booking-weekday-times list-unstyled" data-date="{{ data.date_computed }}" >
-				<li>{{ TmsmAquosSpaBookingApp.strings.loading }}</li>
 			</ul>
+			<span class="glyphicon glyphicon-refresh glyphicon-spin" title="{{ TmsmAquosSpaBookingApp.strings.loading }}"></span>
 		</script>
 
 		<?php
