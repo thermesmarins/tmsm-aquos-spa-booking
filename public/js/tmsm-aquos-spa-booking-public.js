@@ -226,7 +226,6 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       //$( 'select#tmsm-aquos-spa-booking-categories-select' ).val('');
       var $list = this.$( this.selectElement ).empty().val('');
       if (typeof $list.selectpicker === "function") {
-        //console.log('ProductCategoriesListView selectpicker refresh 1');
         $list.selectpicker('refresh');
       }
 
@@ -236,7 +235,6 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         $list.append( item.render().$el );
       }, this );
       if (typeof $list.selectpicker === "function") {
-        //console.log('ProductCategoriesListView selectpicker refresh 2');
         $list.selectpicker('refresh');
       }
 
@@ -372,6 +370,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       $list.hide();
       if (typeof $list.selectpicker === 'function') {
+        $.fn.selectpicker.Constructor.DEFAULTS.liveSearchPlaceholder = TmsmAquosSpaBookingApp.strings.livesearchplaceholder;
         $list.selectpicker('refresh');
       }
 
