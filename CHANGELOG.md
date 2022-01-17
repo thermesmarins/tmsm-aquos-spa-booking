@@ -1,4 +1,5 @@
 * Bootstrap Select liveSearchPlaceholder customization
+* Fix HTML tag not closed correctly
 
 ### 2.1.4: January 5th, 2022
 * Booking form style: previous/next buttons
@@ -17,7 +18,7 @@
 * Hardcoded price for Nantes: 23>24 for Aquatonic
 
 ### 2.1.0: December 20th, 2021
-* Filter published products when "i don't have a voucher"
+* Filter published products when "I don't have a voucher"
 * CSS optimisation
 
 ### 2.0.9: December 20th, 2021

@@ -37,6 +37,9 @@
     padding-right: 0;
   }
 }
+#tmsm-aquos-spa-booking-confirm {
+  margin-bottom: 200px;
+}
 #tmsm-aquos-spa-booking-cancel {
   float: left;
   display: none !important;

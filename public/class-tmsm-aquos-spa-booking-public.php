@@ -418,7 +418,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					<p id="tmsm-aquos-spa-booking-course-times-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
 					<p id="tmsm-aquos-spa-booking-course-times-error" style="display: none">' . __( 'No time results for this date.', 'tmsm-aquos-spa-booking' ) . '</p>
 					<ul id="tmsm-aquos-spa-booking-course-times-list" class="list-unstyled"></ul>
-					</div>
 				</div>
 			</div>
 			
