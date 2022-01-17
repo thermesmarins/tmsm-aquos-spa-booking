@@ -1,3 +1,4 @@
+### 2.1.5: January 17th, 2022
 * Bootstrap Select liveSearchPlaceholder customization
 * Fix HTML tag not closed correctly
 
