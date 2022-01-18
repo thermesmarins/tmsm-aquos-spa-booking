@@ -37,9 +37,6 @@
     padding-right: 0;
   }
 }
-#tmsm-aquos-spa-booking-confirm {
-  margin-bottom: 200px;
-}
 #tmsm-aquos-spa-booking-cancel {
   float: left;
   display: none !important;
@@ -147,7 +144,7 @@ li.tmsm-aquos-spa-booking-time-item {
   text-align: center;
   margin: auto auto;
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 300px;
 }
 #tmsm-aquos-spa-booking-form .bootstrap-select .dropdown-header .text {
   color: #000;

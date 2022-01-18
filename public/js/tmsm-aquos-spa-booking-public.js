@@ -412,6 +412,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       if (typeof $list.selectpicker === 'function') {
         console.log('ProductsListView selectpicker refresh');
         $list.selectpicker('refresh');
+        //TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productsList.element());
       }
       this.loaded();
 
