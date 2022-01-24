@@ -1461,6 +1461,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       'click #tmsm-aquos-spa-booking-weekdays-next': 'next',
     },
 
+    element: function (){
+      return this.$el;
+    },
+
     previous: function(event){
       //console.log('WeekDayListView previous');
 

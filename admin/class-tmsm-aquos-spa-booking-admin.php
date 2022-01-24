@@ -541,10 +541,10 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		if ( is_multisite() && get_current_blog_id() === 9 ) { // Paris
 			switch ( $aquos_id ) {
 				case 368: // Parcours Aquatonic
-					$price = 31; // 2021
+					$price = 30; // 2021
 					break;
 				case 470: // Accès Espace Bien-être en complément d'un soin
-					$price = 31;
+					$price = 30;
 					break;
 				case 495: // Balnéo privative en duo
 					$price = 39;
