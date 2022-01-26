@@ -359,7 +359,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div id="tmsm-aquos-spa-booking-products-inner">
 			<h3>' . __( 'Pick your treatment:', 'tmsm-aquos-spa-booking' ) . '</h3>
 			<p id="tmsm-aquos-spa-booking-products-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
-			<select id="tmsm-aquos-spa-booking-products-select" data-live-search="true"  title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			<select id="tmsm-aquos-spa-booking-products-select" data-live-search="true" data-size="16" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
 			

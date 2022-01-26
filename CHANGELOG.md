@@ -1,5 +1,6 @@
 * Fix scrolling after selecting a product
-* Hardcoded price for Paris: 30>31 for Aquatonic, 30>31 for EBE 
+* Hardcoded price for Paris: 30>31 for Aquatonic, 30>31 for EBE
+* Booking form style: reduce number of products shown (16) at same time in bootstrap select
 
 ### 2.1.5: January 17th, 2022
 * Bootstrap Select liveSearchPlaceholder customization
