@@ -304,16 +304,22 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				'custom_attributes' => ['required' => 'required'],
 			)
 		);
+		$warning_price = null;
 		$product_to_check_aquosprice = get_post_meta( $variation->ID, '_aquos_price', true );
-		$product_to_check_aquosprice_values   = explode( '+', $product_to_check_aquosprice );
-		$product_to_check_aquosprice_sum   = array_sum($product_to_check_aquosprice_values) ;
+
 		$product = wc_get_product($variation->ID);
-		if($product->get_price() != $product_to_check_aquosprice_sum){
-			$warning_price = ' <span class="notice-error notice-alt">'. sprintf(__( 'Warning %s=%s doesn\'t match %s', 'tmsm-aquos-spa-booking' ), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
+		if($product_to_check_aquosprice){
+			$product_to_check_aquosprice_values   = explode( '+', $product_to_check_aquosprice );
+			$product_to_check_aquosprice_sum   = array_sum($product_to_check_aquosprice_values) ;
+			if($product->get_price() != $product_to_check_aquosprice_sum){
+				$warning_price = ' <span class="notice-error notice-alt">'. sprintf(__( 'Warning %s=%s doesn\'t match %s', 'tmsm-aquos-spa-booking' ), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
+			}
+			else{
+				$warning_price = ' <span class="notice-success notice-alt">'. sprintf(__( '%s=%s matches %s', 'tmsm-aquos-spa-booking' ), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
+			}
 		}
-		else{
-			$warning_price = ' <span class="notice-success notice-alt">'. sprintf(__( '%s=%s matches %s', 'tmsm-aquos-spa-booking' ), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
-		}
+
+
 
 		woocommerce_wp_text_input( array(
 				'id' => '_aquos_price[' . $loop . ']',
@@ -387,85 +393,91 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			//echo sprintf(__( 'Parsing %d products', 'tmsm-aquos-spa-booking' ), $count_meta);
 
 			foreach ( $results as $result ) {
-
-				$non_matching_prices[$result->post_id] = '';
-				$non_matching_prices[$result->post_id] .= 'product id '.$result->post_id . ' / ';
-
-				$aquos_price = [];
-				$aquos_ids   = explode( '+', $result->meta_value );
-				foreach ( $aquos_ids as $aquos_id ) {
-					$price = self::get_product_price_from_aquos_or_product_id( $aquos_id, $result->post_id );
-					$aquos_price[] = $price;
-					if($price == 0){
-						$non_matching_prices[$result->post_id] .= sprintf(__( 'Price not found for product %s', 'tmsm-aquos-spa-booking' ), $result->post_id);
-						$non_matching_prices[$result->post_id] .= ' / ';
-					}
-				}
-				$result->aquos_price = join( '+', $aquos_price );
-				$non_matching_prices[$result->post_id] .= 'detailed price '.$result->aquos_price . ' / ';
-
-				// Checking if calculated price matches product price
 				$product = wc_get_product($result->post_id);
-				$product_price = 0;
-				if(!empty($product)){
-					$product_price = $product->get_price();
-				}
-				$calculated_price = 0;
-				foreach($aquos_price as $item_price){
-					if(!empty($item_price)){
-						$calculated_price+=$item_price;
+				if($product){
+					$non_matching_prices[$result->post_id] = '';
+					$non_matching_prices[$result->post_id] .= 'product id '.$result->post_id . ' / ';
+					if( $product->get_parent_id()){
+						$non_matching_prices[$result->post_id] .= 'it is a variation, parent id '.$product->get_parent_id() . ' / ';
 					}
-				}
-				$non_matching_prices[$result->post_id] .= 'calculated price '.$calculated_price . ' / ';
 
-				if($calculated_price != $product_price){
-					$non_matching_prices[$result->post_id] .= '<b>NON MATCHING PRICE with '.$product_price . '</b> / ';
-
-					if(!empty($product)){
-						$non_matching_prices[$result->post_id] .= 'product is '. $product->get_status() . ' / ';
-						if($product->get_status() === 'draft'){
-							unset($non_matching_prices[$result->post_id]);
+					$aquos_price = [];
+					$aquos_ids   = explode( '+', $result->meta_value );
+					foreach ( $aquos_ids as $aquos_id ) {
+						$price = self::get_product_price_from_aquos_or_product_id( $aquos_id, $result->post_id );
+						$aquos_price[] = $price;
+						if($price == 0){
+							$non_matching_prices[$result->post_id] .= sprintf(__( 'Price not found for product %s', 'tmsm-aquos-spa-booking' ), $result->post_id);
+							$non_matching_prices[$result->post_id] .= ' / ';
 						}
-						else{
-							$parent = wc_get_product($product->get_parent_id());
-							if(!empty($parent)){
-								$non_matching_prices[$result->post_id] .= 'variation is '.  $parent->get_status(). ' / ';
-								$non_matching_prices[$result->post_id] = '<a href="'.get_edit_post_link($parent->get_id()).'">'.$parent->get_name(). '</a> / ' . $non_matching_prices[$result->post_id];
-								if($parent->get_status() === 'draft'){
-									unset($non_matching_prices[$result->post_id]);
+					}
+					$result->aquos_price = join( '+', $aquos_price );
+					$non_matching_prices[$result->post_id] .= 'detailed price '.$result->aquos_price . ' / ';
+
+					// Checking if calculated price matches product price
+
+					$product_price = 0;
+					if(!empty($product)){
+						$product_price = $product->get_price();
+					}
+					$calculated_price = 0;
+					foreach($aquos_price as $item_price){
+						if(!empty($item_price)){
+							$calculated_price+=$item_price;
+						}
+					}
+					$non_matching_prices[$result->post_id] .= 'calculated price '.$calculated_price . ' / ';
+
+					if($calculated_price != $product_price){
+						$non_matching_prices[$result->post_id] .= '<b>NON MATCHING PRICE with '.$product_price . '</b> / ';
+
+						if(!empty($product)){
+							$non_matching_prices[$result->post_id] .= 'product is '. $product->get_status() . ' / ';
+							if($product->get_status() === 'draft'){
+								unset($non_matching_prices[$result->post_id]);
+							}
+							else{
+								$parent = wc_get_product($product->get_parent_id());
+								if(!empty($parent)){
+									$non_matching_prices[$result->post_id] .= 'variation is '.  $parent->get_status(). ' / ';
+									$non_matching_prices[$result->post_id] = '<a href="'.get_edit_post_link($parent->get_id()).'">'.$parent->get_name(). '</a> / ' . $non_matching_prices[$result->post_id];
+									if($parent->get_status() === 'draft'){
+										unset($non_matching_prices[$result->post_id]);
+									}
 								}
+							}
+
+						}
+
+						if(!empty($product) && ! $product->get_status() == 'published'){
+							//echo 'product is draft '. $product->get_status() . ' / ';
+						}
+						if(!empty($product) && $product->is_type('variation') ){
+							$parent = wc_get_product($product->get_parent_id());
+							if(!empty($parent) && ! $parent->get_status() == 'published'){
+								//echo 'variation is draft / ';
 							}
 						}
 
+						$errors_nb ++;
+					}
+					else{
+						unset($non_matching_prices[$result->post_id]);
 					}
 
-					if(!empty($product) && ! $product->get_status() == 'published'){
-						//echo 'product is draft '. $product->get_status() . ' / ';
-					}
-					if(!empty($product) && $product->is_type('variation') ){
-						$parent = wc_get_product($product->get_parent_id());
-						if(!empty($parent) && ! $parent->get_status() == 'published'){
-							//echo 'variation is draft / ';
-						}
+					if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+						//print_r( $result );
 					}
 
-					$errors_nb ++;
-				}
-				else{
-					unset($non_matching_prices[$result->post_id]);
+					// Insert the values
+					$wpdb->query($wpdb->prepare(" INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ( %d, %s, %s ) ",
+						$result->post_id,
+						$meta_key_aquos_price,
+						$result->aquos_price
+					)
+					);
 				}
 
-				if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
-					//print_r( $result );
-				}
-
-				// Insert the values
-				$wpdb->query($wpdb->prepare(" INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ( %d, %s, %s ) ",
-					$result->post_id,
-					$meta_key_aquos_price,
-					$result->aquos_price
-				)
-				);
 
 			}
 
