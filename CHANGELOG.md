@@ -1,5 +1,6 @@
+### 2.1.7: January 31th, 2022
 * Non-matching Aquos price: display warning in variation tabs
-* Non-matching Aquos price: exclude non existing productd
+* Non-matching Aquos price: exclude non existing products
 
 ### 2.1.6: January 26th, 2022
 * Fix scrolling after selecting a product
