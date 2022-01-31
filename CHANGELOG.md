@@ -1,3 +1,5 @@
+* Non-matching Aquos price warning in variation tabs
+
 ### 2.1.6: January 26th, 2022
 * Fix scrolling after selecting a product
 * Hardcoded price for Paris: 30>31 for Aquatonic, 30>31 for EBE

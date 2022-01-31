@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2022-01-14 11:02+0100\n"
-"PO-Revision-Date: 2022-01-14 11:02+0100\n"
+"POT-Creation-Date: 2022-01-31 09:31+0100\n"
+"PO-Revision-Date: 2022-01-31 09:32+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -33,28 +33,28 @@ msgstr[0] "Rendez-vous <span class=\"count\">(%s)</span>"
 msgstr[1] "Rendez-vous <span class=\"count\">(%s)</span>"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:131
-#: public/class-tmsm-aquos-spa-booking-public.php:1075
-#: public/class-tmsm-aquos-spa-booking-public.php:1679
-#: public/class-tmsm-aquos-spa-booking-public.php:1803
+#: public/class-tmsm-aquos-spa-booking-public.php:1074
+#: public/class-tmsm-aquos-spa-booking-public.php:1678
+#: public/class-tmsm-aquos-spa-booking-public.php:1802
 msgid "Appointment"
 msgstr "Rendez-vous"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:134
-#: public/class-tmsm-aquos-spa-booking-public.php:1083
+#: public/class-tmsm-aquos-spa-booking-public.php:1082
 msgid "Has Voucher"
 msgstr "Bon cadeau"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:135
 #: admin/class-tmsm-aquos-spa-booking-admin.php:142
-#: public/class-tmsm-aquos-spa-booking-public.php:1084
-#: public/class-tmsm-aquos-spa-booking-public.php:1195
+#: public/class-tmsm-aquos-spa-booking-public.php:1083
+#: public/class-tmsm-aquos-spa-booking-public.php:1194
 msgid "Yes"
 msgstr "Oui"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:135
 #: admin/class-tmsm-aquos-spa-booking-admin.php:142
-#: public/class-tmsm-aquos-spa-booking-public.php:1084
-#: public/class-tmsm-aquos-spa-booking-public.php:1195
+#: public/class-tmsm-aquos-spa-booking-public.php:1083
+#: public/class-tmsm-aquos-spa-booking-public.php:1194
 msgid "No"
 msgstr "Non"
 
@@ -67,7 +67,7 @@ msgid "Appointment Processed to Aquos"
 msgstr "Rendez-vous enregistré dans Aquos"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:145
-#: public/class-tmsm-aquos-spa-booking-public.php:1099
+#: public/class-tmsm-aquos-spa-booking-public.php:1098
 msgid "Aquos Price"
 msgstr "Prix pour Aquos"
 
@@ -104,7 +104,7 @@ msgstr ""
 "devrait être : nom du produit * identifiant de produit"
 
 #: admin/class-tmsm-aquos-spa-booking-admin.php:232
-#: admin/class-tmsm-aquos-spa-booking-admin.php:308
+#: admin/class-tmsm-aquos-spa-booking-admin.php:321
 msgid "Aquos Product Price (for web service synchronization)"
 msgstr "Prix pour Aquos (pour la synchronisation des ventes)"
 
@@ -112,11 +112,21 @@ msgstr "Prix pour Aquos (pour la synchronisation des ventes)"
 msgid "Aquos ID is a required field"
 msgstr "Le champ ID Aquos est requis"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:300
+#: admin/class-tmsm-aquos-spa-booking-admin.php:302
 msgid "Aquos Product ID (for appointments and purchase)"
 msgstr "ID de produit Aquos (pour les rendez-vous et les achats)"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:353
+#: admin/class-tmsm-aquos-spa-booking-admin.php:312
+#, php-format
+msgid "Warning %s=%s doesn't match %s"
+msgstr "Attention %s=%s ne correspond pas à %s"
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:315
+#, php-format
+msgid "%s=%s matches %s"
+msgstr "%s=%s correspond à %s"
+
+#: admin/class-tmsm-aquos-spa-booking-admin.php:366
 msgid ""
 "This section finds if Aquos IDs are missing for the web service "
 "synchronization:"
@@ -124,12 +134,12 @@ msgstr ""
 "Cette section trouve les ID Aquos qui manquent pour la synchronisation des "
 "ventes :"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:387
+#: admin/class-tmsm-aquos-spa-booking-admin.php:400
 #, php-format
 msgid "Price not found for product %s"
 msgstr "Prix non trouvé pour le produit %s"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:463
+#: admin/class-tmsm-aquos-spa-booking-admin.php:476
 msgid ""
 "This section lists the products/variations with a non-matching price for the "
 "web service synchronization:"
@@ -137,7 +147,7 @@ msgstr ""
 "Cette section liste les produits/variations qui ont un prix incohérent pour "
 "la synchronisation des ventes :"
 
-#: admin/class-tmsm-aquos-spa-booking-admin.php:479
+#: admin/class-tmsm-aquos-spa-booking-admin.php:492
 #, php-format
 msgid "%s: TMSM Aquos Spa Booking regeneration error on %s"
 msgstr "%s : TMSM Aquos Spa Booking erreur de génération des prix sur %s"
@@ -157,16 +167,16 @@ msgstr "Ces produits en brouillon n’ont pas d’identifiant Aquos"
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:207
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:208
-#: public/class-tmsm-aquos-spa-booking-public.php:2404
-#: public/class-tmsm-aquos-spa-booking-public.php:2406
+#: public/class-tmsm-aquos-spa-booking-public.php:2403
+#: public/class-tmsm-aquos-spa-booking-public.php:2405
 msgid "Web service is not available"
 msgstr "Le web service n’est pas disponible"
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:220
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:221
+#: public/class-tmsm-aquos-spa-booking-public.php:2414
 #: public/class-tmsm-aquos-spa-booking-public.php:2415
-#: public/class-tmsm-aquos-spa-booking-public.php:2416
-#: public/class-tmsm-aquos-spa-booking-public.php:2418
+#: public/class-tmsm-aquos-spa-booking-public.php:2417
 #, php-format
 msgid "Error: Delivery URL returned response code: %s"
 msgstr "Erreur : l’url de livraison a retourné le code %s"
@@ -178,8 +188,8 @@ msgstr "Code erreur : %s"
 
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:239
 #: includes/class-tmsm-aquos-spa-booking-backgroundprocess.php:240
-#: public/class-tmsm-aquos-spa-booking-public.php:2445
-#: public/class-tmsm-aquos-spa-booking-public.php:2447
+#: public/class-tmsm-aquos-spa-booking-public.php:2444
+#: public/class-tmsm-aquos-spa-booking-public.php:2446
 #, php-format
 msgid "Error code %s: %s"
 msgstr "Code erreur %s : %s"
@@ -676,38 +686,38 @@ msgstr ""
 msgid "Pick your course time:"
 msgstr "Choisir l’heure du parcours :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:429
+#: public/class-tmsm-aquos-spa-booking-public.php:428
 msgid "Cancel"
 msgstr "Annuler"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:431
+#: public/class-tmsm-aquos-spa-booking-public.php:430
 msgid "Add this appointment"
 msgstr "Ajouter ce rendez-vous"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:482
-#: public/class-tmsm-aquos-spa-booking-public.php:500
+#: public/class-tmsm-aquos-spa-booking-public.php:481
+#: public/class-tmsm-aquos-spa-booking-public.php:499
 msgid "Change time"
 msgstr "Changer l’heure"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:622
+#: public/class-tmsm-aquos-spa-booking-public.php:621
 msgid "Token security is not valid"
 msgstr "Jeton de sécurité non valide"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:633
+#: public/class-tmsm-aquos-spa-booking-public.php:632
 msgid "Ajax referer is not valid"
 msgstr "Le référant ajax n’est pas valide"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:724
+#: public/class-tmsm-aquos-spa-booking-public.php:723
 msgid "Product not found"
 msgstr "Le produit n’a pas été trouvé"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:738
+#: public/class-tmsm-aquos-spa-booking-public.php:737
 #, php-format
 msgctxt "date+time"
 msgid "%s at %s"
 msgstr "%s à %s"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:782
+#: public/class-tmsm-aquos-spa-booking-public.php:781
 #, php-format
 msgid ""
 "Your appointment was added. <a href=\"%s\">Do you want to add another one?</"
@@ -716,7 +726,7 @@ msgstr ""
 "Votre rendez-vous est ajouté. <a href=\"%s\">Voulez-vous en ajouter un "
 "autre ?</a>"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:969
+#: public/class-tmsm-aquos-spa-booking-public.php:968
 msgid ""
 "There is an error with the price configuration of this product, technical "
 "team was notified about this."
@@ -724,14 +734,14 @@ msgstr ""
 "Une erreur s’est produite dans la configuration des prix, notre équipe "
 "technique a été prévenue du problème."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:975
+#: public/class-tmsm-aquos-spa-booking-public.php:974
 #, php-format
 msgid ""
 "%s: TMSM Aquos Spa Booking price/id not matching for variation/product %s"
 msgstr ""
 "%s : TMSM Aquos Spa Booking prix/id ne correspond pas pour le produit n°%s"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:995
+#: public/class-tmsm-aquos-spa-booking-public.php:994
 msgid ""
 "There is an error with the IDs configuration of this product, technical team "
 "was notified about this."
@@ -739,37 +749,37 @@ msgstr ""
 "Une erreur s’est produite dans la configuration des identifiants, notre "
 "équipe technique a été prévenue du problème."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1001
+#: public/class-tmsm-aquos-spa-booking-public.php:1000
 #, php-format
 msgid "%s: TMSM Aquos Spa Booking price/id missing for variation/product %s"
 msgstr "%s : TMSM Aquos Spa Booking prix/id manquant pour le produit n°%s"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1091
+#: public/class-tmsm-aquos-spa-booking-public.php:1090
 msgid "Aquos ID"
 msgstr "ID de produit Aquos"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1154
+#: public/class-tmsm-aquos-spa-booking-public.php:1153
 #, php-format
 msgid "%s: TMSM Aquos Spa Booking price/id missing for order %s"
 msgstr "%s : TMSM Aquos Spa Booking prix/id manquant pour la commande n°%s"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1191
+#: public/class-tmsm-aquos-spa-booking-public.php:1190
 msgid "Appointment:"
 msgstr "Rendez-vous :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1195
+#: public/class-tmsm-aquos-spa-booking-public.php:1194
 msgid "Has Voucher:"
 msgstr "Bon cadeau :"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1203
+#: public/class-tmsm-aquos-spa-booking-public.php:1202
 msgid "Appointment has an error"
 msgstr "Rendez-vous en erreur"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1234
+#: public/class-tmsm-aquos-spa-booking-public.php:1233
 msgid "Your appointments"
 msgstr "Vos rendez-vous"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1514
+#: public/class-tmsm-aquos-spa-booking-public.php:1513
 msgid ""
 "Submission failed, booking service has been notified and will contact you "
 "shortly."
@@ -777,7 +787,7 @@ msgstr ""
 "Échec de l’inscription du rendez-vous, le service réservation a été prévenu "
 "et vous contactera rapidement pour confirmer."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1640
+#: public/class-tmsm-aquos-spa-booking-public.php:1639
 #, php-format
 msgid ""
 "The product %s has been removed from cart since it has expired. Please try "
@@ -786,7 +796,7 @@ msgstr ""
 "Le produit %s a été retiré du panier puisqu’il a expiré. Veuillez essayer de "
 "prendre rendez-vous à nouveau."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1648
+#: public/class-tmsm-aquos-spa-booking-public.php:1647
 msgid ""
 "The cart can't have both appointments and products, appointments are now "
 "removed from the cart."
@@ -794,48 +804,48 @@ msgstr ""
 "Le panier ne peut contenir à la fois des rendez-vous et des produits, les "
 "rendez-vous sont maintenant supprimés du panier."
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1699
+#: public/class-tmsm-aquos-spa-booking-public.php:1698
 msgid "Appointment booked"
 msgstr "Réservation effectuée"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1715
+#: public/class-tmsm-aquos-spa-booking-public.php:1714
 msgid "Book this appointment"
 msgstr "Confirmer ce rendez-vous"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1885
+#: public/class-tmsm-aquos-spa-booking-public.php:1884
 msgid "Order gift wrap"
 msgstr "Emballer la commande dans un papier-cadeau"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:1908
+#: public/class-tmsm-aquos-spa-booking-public.php:1907
 msgid "Once Only"
 msgstr "Une fois"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2036
-#: public/class-tmsm-aquos-spa-booking-public.php:2104
+#: public/class-tmsm-aquos-spa-booking-public.php:2035
+#: public/class-tmsm-aquos-spa-booking-public.php:2103
 msgid "Product is not variable"
 msgstr "Le produit n’est pas variable"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2109
+#: public/class-tmsm-aquos-spa-booking-public.php:2108
 msgid "Product doesnt not exist"
 msgstr "Le produit n’existe pas"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2329
+#: public/class-tmsm-aquos-spa-booking-public.php:2328
 msgid "This product is not bookable"
 msgstr "Le produit n’est pas réservable"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2332
+#: public/class-tmsm-aquos-spa-booking-public.php:2331
 msgid "Product information is missing"
 msgstr "L’information sur le produit est manquante"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2335
+#: public/class-tmsm-aquos-spa-booking-public.php:2334
 msgid "Date is missing"
 msgstr "La date est manquante"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2462
+#: public/class-tmsm-aquos-spa-booking-public.php:2461
 msgid "No time slot available for this day and this product"
 msgstr "Aucun créneau horaire disponible pour ce jour et ce soin"
 
-#: public/class-tmsm-aquos-spa-booking-public.php:2523
+#: public/class-tmsm-aquos-spa-booking-public.php:2522
 msgid "You will receive a text message two days before the appointment."
 msgstr "Vous recevrez un SMS de confirmation deux jours avant le rendez-vous."
 

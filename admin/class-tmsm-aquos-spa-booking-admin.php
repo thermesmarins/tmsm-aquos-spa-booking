@@ -187,7 +187,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 * Add Aquos ID Field to Inventory Product Data Tab
 	 */
 	public function woocommerce_product_options_inventory_product_data_fields(){
-		global $thepostid, $post;
+		global $thepostid, $post, $product;
 
 		echo '<div class="options_group">';
 
@@ -229,7 +229,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		woocommerce_wp_text_input(
 			array(
 				'id'          => '_aquos_price',
-				'label'       => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ),
+				'label'       => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ) . ' ' . $thepostid . get_post_meta( $thepostid, '_aquos_id', true ) . (get_post_meta($thepostid, '_aquos_price', true) ),
 				'custom_attributes' => ['disabled' => 'disabled'],
 			)
 		);
@@ -294,6 +294,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 * @param WP_Post $variation      Post data.
 	 */
 	function woocommerce_variation_options_pricing( $loop, $variation_data, $variation ) {
+		global $thepostid;
+
 		woocommerce_wp_text_input( array(
 				'id' => '_aquos_id[' . $loop . ']',
 				'wrapper_class' => 'form-row',
@@ -302,10 +304,21 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				'custom_attributes' => ['required' => 'required'],
 			)
 		);
+		$product_to_check_aquosprice = get_post_meta( $variation->ID, '_aquos_price', true );
+		$product_to_check_aquosprice_values   = explode( '+', $product_to_check_aquosprice );
+		$product_to_check_aquosprice_sum   = array_sum($product_to_check_aquosprice_values) ;
+		$product = wc_get_product($variation->ID);
+		if($product->get_price() != $product_to_check_aquosprice_sum){
+			$warning_price = ' <span class="notice-error notice-alt">'. sprintf(__( 'Warning %s=%s doesn\'t match %s', 'tmsm-aquos-spa-booking' ), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
+		}
+		else{
+			$warning_price = ' <span class="notice-success notice-alt">'. sprintf(__( '%s=%s matches %s', 'tmsm-aquos-spa-booking' ), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
+		}
+
 		woocommerce_wp_text_input( array(
 				'id' => '_aquos_price[' . $loop . ']',
 				'wrapper_class' => 'form-row',
-				'label' => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ),
+				'label' => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ) . $warning_price,
 				'value' => get_post_meta( $variation->ID, '_aquos_price', true ),
 				'custom_attributes' => ['disabled' => 'disabled']
 			)
