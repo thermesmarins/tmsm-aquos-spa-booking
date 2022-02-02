@@ -980,7 +980,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$message .= '<br>aquosprice sum: ' . (float)$product_to_check_aquosprice_sum;
 			$message .= '<br>product/variation price: ' . (float)$product_to_check->get_price();
 			$current_user = wp_get_current_user();
-			$message .= '<br>user: ' . $current_user->user_email . ' - ' . $current_user->display_name;
+			if($current_user){
+				$message .= '<br>user: ' . $current_user->user_email . ' - ' . $current_user->display_name;
+			}
 			$message .= '<br>requested url: ' .home_url( $wp->request );
 
 			$headers = [
