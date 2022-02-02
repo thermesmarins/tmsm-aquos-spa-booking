@@ -1,4 +1,5 @@
 * Non-matching Aquos price: add user info to email
+* Hardcoded price for Paris: 31>30 for EBE
 
 ### 2.1.7: January 31st, 2022
 * Non-matching Aquos price: display warning in variation tabs
