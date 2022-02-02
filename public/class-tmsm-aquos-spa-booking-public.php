@@ -928,8 +928,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	/**
 	 * Validates recipient data before adding to cart
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param bool    $valid
 	 * @param integer $product_id
 	 * @param integer $quantity
@@ -938,10 +936,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @param array   $cart_item_data
 	 *
 	 * @return bool $valid
+	 *@since 1.0.0
+	 *
 	 */
-	public function woocommerce_add_to_cart_validation(
-		$valid, $product_id, $quantity, $variation_id = '', $variations = array(), $cart_item_data = array()
-	) {
+	public function woocommerce_add_to_cart_validation(	bool $valid, int $product_id, int $quantity, $variation_id = '', array $variations = array(), array $cart_item_data = array()
+	): bool {
+		global $wp;
 
 		$product = wc_get_product($product_id);
 		$variation = wc_get_product($variation_id);
@@ -974,11 +974,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking price/id not matching for variation/product %s', 'tmsm-aquos-spa-booking' ), $blogname, $product_to_check->get_id() );
 
 			$message = '';
-			$message .= '<br>name: ' . $product_to_check->get_name();
+			$message .= '<br>product name: ' . $product_to_check->get_name();
 			$message .= '<br>variation_id: ' . $variation_id;
 			$message .= '<br>product_id: ' . $product_id;
 			$message .= '<br>aquosprice sum: ' . (float)$product_to_check_aquosprice_sum;
 			$message .= '<br>product/variation price: ' . (float)$product_to_check->get_price();
+			$current_user = wp_get_current_user();
+			$message .= '<br>user: ' . $current_user->user_email . ' - ' . $current_user->display_name;
+			$message .= '<br>requested url: ' .home_url( $wp->request );
 
 			$headers = [
 				'Auto-Submitted: auto-generated',

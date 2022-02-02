@@ -1,4 +1,6 @@
-### 2.1.7: January 31th, 2022
+* Non-matching Aquos price: add user info to email
+
+### 2.1.7: January 31st, 2022
 * Non-matching Aquos price: display warning in variation tabs
 * Non-matching Aquos price: exclude non existing products
 
