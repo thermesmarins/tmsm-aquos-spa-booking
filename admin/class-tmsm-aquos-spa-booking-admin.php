@@ -558,9 +558,10 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				case 191: // Modelage nuque et cuir chevelu
 					$price = 18;
 					break;
-				case 538: // Modelage dos d'accueil
+				case 680: // Modelage dos d'accueil
 					$price = 18;
 					break;
+
 			}
 		}
 		if ( is_multisite() && get_current_blog_id() === 9 ) { // Paris
