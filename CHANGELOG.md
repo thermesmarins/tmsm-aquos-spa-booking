@@ -1,3 +1,4 @@
+### 2.1.8: February 9th, 2022
 * Non-matching Aquos price: add user info to email
 * Hardcoded price for Paris: 31>30 for EBE
 * Hardcoded ID for modelage dos accueil Nantes 
