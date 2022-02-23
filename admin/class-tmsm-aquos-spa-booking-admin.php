@@ -545,7 +545,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					$price = 18;
 					break;
 				case 427: // Une nuit Oceania
-					$price = 80;
+					$price = 82;
 					break;
 			}
 		}
