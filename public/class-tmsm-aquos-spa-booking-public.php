@@ -10,6 +10,11 @@
  * @subpackage Tmsm_Aquos_Spa_Booking/public
  */
 
+use common\models\Lesson;
+use yii\base\InvalidConfigException;
+use yii\httpclient\Exception;
+use yii\web\NotFoundHttpException;
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -690,10 +695,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @throws Exception
 	 */
 	public static function ajax_addtocart() {
-
+		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+			error_log('ajax_addtocart');
+		}
 		$selecteddata_array = isset( $_POST['selecteddata'] ) ? $_POST['selecteddata'] : array();
 
 		$errors = array(); // Array to hold validation errors
@@ -723,6 +729,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			$errors[] = __('Product not found', 'tmsm-aquos-spa-booking');
 		}
 		else{
+
 			if(empty($aquos_id)){
 				$aquos_id = sanitize_text_field( $product->get_meta('_aquos_id', true ));
 			}
@@ -762,7 +769,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				//'price' => 12 // if I want to force a price in the cart
 			];
 
-			$return = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_data, $cart_item_data);
+			$result = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_data, $cart_item_data);
 
 			//$redirect = wc_get_cart_url();
 			$redirect = wc_get_checkout_url();
@@ -774,6 +781,10 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		if( ! empty($errors) ) {
 			$jsondata['success'] = false;
 			$jsondata['errors']  = $errors;
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+				error_log('Add to cart errors:');
+				error_log(print_r($errors, true));
+			}
 		}
 		else {
 			$jsondata['success'] = true;
@@ -923,6 +934,30 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		});
 
 		return $selected_times;
+	}
+
+
+	/**
+	 * Appointments must be purchasable
+	 *
+	 * @param bool $purchasable
+	 * @param      $product
+	 *
+	 * @return bool
+	 */
+	public function woocommerce_is_purchasable_appointment( bool $purchasable, WC_Product $product ): bool {
+
+		$parent = $product;
+		if ( ! empty( $product->get_parent_id() ) ) {
+			$parent = wc_get_product( $product->get_parent_id() );
+		}
+		$bookable = get_post_meta( $parent->get_id(), '_bookable', true );
+		if ( $bookable === 'yes' ) {
+			$purchasable = true;
+		}
+
+		return $purchasable;
+
 	}
 
 	/**
@@ -1631,17 +1666,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * Check cart items
 	 */
 	public function woocommerce_check_cart_items(){
-		error_log('woocommerce_check_cart_items');
 		if( is_cart() || is_checkout() ) {
 
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 
-				error_log(print_r($cart_item, true));
 				// Remove Appointments that are expired, too old = 2 hours
 				if(!empty($cart_item['appointment']) && !empty($cart_item['timestamp_added'])){
 					$_product = $cart_item['data'];
 					if( time() > ( $cart_item['timestamp_added'] + 60 * get_option( 'tmsm_aquos_spa_booking_cartexpireminutes', 60 ))){
-						error_log('Remove cart item (appointments that are expired)' );
 						WC()->cart->remove_cart_item( $cart_item_key );
 						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'tmsm-aquos-spa-booking' ), $_product->get_name() ), 'error' );
 
@@ -1650,7 +1682,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 				// Remove appointments in cart if other products are present in the cart
 				if ( self::cart_has_appointment() && ! self::cart_has_appointmentonly() && ! empty( $cart_item['appointment'] ) ) {
-					error_log('Remove cart item (appointments in cart if other products are present in the cart)' );
 					WC()->cart->remove_cart_item( $cart_item_key );
 					wc_add_notice( __( 'The cart can\'t have both appointments and products, appointments are now removed from the cart.',
 						'tmsm-aquos-spa-booking' ), 'error' );
