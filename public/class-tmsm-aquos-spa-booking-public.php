@@ -1641,6 +1641,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				if(!empty($cart_item['appointment']) && !empty($cart_item['timestamp_added'])){
 					$_product = $cart_item['data'];
 					if( time() > ( $cart_item['timestamp_added'] + 60 * get_option( 'tmsm_aquos_spa_booking_cartexpireminutes', 60 ))){
+						error_log('Remove cart item (appointments that are expired)' );
 						WC()->cart->remove_cart_item( $cart_item_key );
 						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'tmsm-aquos-spa-booking' ), $_product->get_name() ), 'error' );
 
@@ -1649,6 +1650,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 				// Remove appointments in cart if other products are present in the cart
 				if ( self::cart_has_appointment() && ! self::cart_has_appointmentonly() && ! empty( $cart_item['appointment'] ) ) {
+					error_log('Remove cart item (appointments in cart if other products are present in the cart)' );
 					WC()->cart->remove_cart_item( $cart_item_key );
 					wc_add_notice( __( 'The cart can\'t have both appointments and products, appointments are now removed from the cart.',
 						'tmsm-aquos-spa-booking' ), 'error' );
