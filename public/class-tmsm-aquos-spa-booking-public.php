@@ -756,7 +756,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'appointment_date' => $date,
 				'appointment_time' => $hourminutes,
 				'aquos_id' => $aquos_id,
-				//'timestamp_added' => time(),
+				'timestamp_added' => time(),
 				'virtual' => 1,
 				'_virtual' => 1,
 				//'price' => 12 // if I want to force a price in the cart
@@ -1631,11 +1631,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * Check cart items
 	 */
 	public function woocommerce_check_cart_items(){
-
+		error_log('woocommerce_check_cart_items');
 		if( is_cart() || is_checkout() ) {
 
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 
+				error_log(print_r($cart_item, true));
 				// Remove Appointments that are expired, too old = 2 hours
 				if(!empty($cart_item['appointment']) && !empty($cart_item['timestamp_added'])){
 					$_product = $cart_item['data'];

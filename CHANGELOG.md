@@ -1,4 +1,5 @@
 * Hardcoded price for Rennes: 80>82 for Oceania
+* Enable again timestamp for appointments to expire them after 2 hours
 
 ### 2.1.8: February 9th, 2022
 * Non-matching Aquos price: add user info to email
