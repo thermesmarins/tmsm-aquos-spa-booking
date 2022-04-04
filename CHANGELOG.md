@@ -1,3 +1,4 @@
+### 2.2.0: April 4th, 2022
 * Convert "Days Date From" to "Hours Date From" to allow users to book a spa within 2 hours
 
 ### 2.1.9: April 4th, 2022
