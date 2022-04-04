@@ -109,19 +109,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-public'.( !(in_array('administrator',  wp_get_current_user()->roles) || (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG)) ?'.min' : '' ).'.js', array( 'jquery', 'moment', 'wp-util', 'bootstrap-datepicker', 'wp-api' ), $this->version, true );
 
-
-			$datebeforeforbidden = DateTime::createFromFormat('Y-m-d', get_option( 'tmsm_aquos_spa_booking_datebeforeforbidden', '' ));
-
 			$today = new \DateTime();
 
-			$startdate = new \DateTime();
-			$startdate->modify('+'.get_option( 'tmsm_aquos_spa_booking_daysrangefrom', 1 ). ' days');
-
-			if($datebeforeforbidden > $startdate){
-				$startdate = $datebeforeforbidden;
-			}
-
-			$interval = $today->diff($startdate);
+			$interval = $today->diff(self::getMinimumDatetime());
 			$daysrangefrom = $interval->format('%a');
 
 
@@ -152,7 +142,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					'daysrangefrom' => esc_js( $daysrangefrom ),
 					'daysrangeto'   => esc_js( get_option( 'tmsm_aquos_spa_booking_daysrangeto', 60 ) ),
 					'enddate'       => $enddate->format( 'Y-m-d' ),
-					'startdate'     => $startdate->format( 'Y-m-d' ),
+					'startdate'     => self::getMinimumDatetime()->format( 'Y-m-d' ),
 				],
 				'role'         => current_user_can( 'edit_posts' ),
 				'locale'       => $this->get_locale(),
@@ -186,6 +176,27 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			wp_localize_script( $this->plugin_name, 'TmsmAquosSpaBookingApp', $data );
 		}
 
+	}
+
+	/**
+	 * Returns minimum datetime for an appointment
+	 *
+	 * @return DateTime
+	 * @throws \Exception
+	 */
+	static function getMinimumDatetime(): DateTime {
+
+		$datebeforeforbidden = DateTime::createFromFormat( 'Y-m-d', get_option( 'tmsm_aquos_spa_booking_datebeforeforbidden', '' ), wp_timezone() );
+
+		$startdate = new \DateTime( 'now', wp_timezone() );
+		$startdate->modify( '+' . get_option( 'tmsm_aquos_spa_booking_hoursrangefrom', 24 ) . ' hours' );
+
+		if ( $datebeforeforbidden > $startdate ) {
+			$startdate = $datebeforeforbidden;
+		}
+		error_log( 'getMinimumDatetime :' . print_r( $startdate, true ) );
+
+		return $startdate;
 	}
 
 
@@ -2334,6 +2345,8 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	private function _get_times() {
 
+		$minimumdatetime = self::getMinimumDatetime();
+
 		$product_category_id = sanitize_text_field( $_REQUEST['productcategory'] );
 		$product_id          = sanitize_text_field( $_REQUEST['product'] );
 		$productvariation_id = sanitize_text_field( $_REQUEST['productvariation'] );
@@ -2469,13 +2482,18 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 					foreach($response_data->Schedules as $schedule){
 						$schedule_hourminutes = explode(':', $schedule->Hour);
-						$times[] = [
-						'date' => $date_with_dash,
-						'hour' => $schedule_hourminutes[0],
-						'minutes' => $schedule_hourminutes[1],
-						'hourminutes' => $schedule->Hour,
-						'priority' => $schedule->Priority,
-						];
+
+						$datetime_object = Datetime::createFromFormat('Y-m-d H:i', $date_with_dash . ' ' . $schedule->Hour);
+						if($datetime_object > $minimumdatetime){
+							$times[] = [
+								'date' => $date_with_dash,
+								'hour' => $schedule_hourminutes[0],
+								'minutes' => $schedule_hourminutes[1],
+								'hourminutes' => $schedule->Hour,
+								'priority' => $schedule->Priority,
+							];
+						}
+
 					}
 				}
 				else{

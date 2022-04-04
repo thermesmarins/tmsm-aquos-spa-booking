@@ -1,3 +1,5 @@
+* Convert "Days Date From" to "Hours Date From" to allow users to book a spa within 2 hours
+
 ### 2.1.9: April 4th, 2022
 * Hardcoded price for Rennes: 80>82 for Oceania
 * Enable again timestamp for appointments to expire them after 2 hours
