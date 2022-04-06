@@ -194,7 +194,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		if ( $datebeforeforbidden > $startdate ) {
 			$startdate = $datebeforeforbidden;
 		}
-		error_log( 'getMinimumDatetime :' . print_r( $startdate, true ) );
 
 		return $startdate;
 	}
