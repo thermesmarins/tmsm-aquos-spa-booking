@@ -136,6 +136,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					'seconds_abrv'          => _x( 's', 'displayed in interval', 'tmsm-aquos-spa-booking' ),
 					'run_now'               => _x( 'Run event now.', 'Title for run now icon', 'tmsm-aquos-spa-booking' ),
 					'livesearchplaceholder' => _x( 'Search', 'Bootstrap Select live search placeholder', 'tmsm-aquos-spa-booking' ),
+					'ifnotincludedinvoucher' => _x( 'if not included in voucher', 'attribute selection description', 'tmsm-aquos-spa-booking' ),
 				),
 				'calendar' => [
 					'dateselection' => esc_js( get_option( 'tmsm_aquos_spa_booking_dateselection', 'calendar' ) ),
@@ -572,7 +573,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<# _.each( data.terms, function(term, index) { #>
 
 			<label class="radio-inline radio-inline-{{ data.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> style="display:none"<# } #>>
-			<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked="checked"<# } #>>{{term.name}} <# if ( data.is_voucher == '0' && term.description ) { #>({{term.description}})<# } #>
+			<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked="checked"<# } #>>{{term.name}} <# if (  term.description ) { #>({{term.description}}<# if ( data.is_voucher != '0' ) { #> {{ TmsmAquosSpaBookingApp.strings.ifnotincludedinvoucher}}<# } #>)<# } #>
 			</label>
 			<# }) #>
 
@@ -1204,7 +1205,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 				$message = '';
 				$message .= 'item:' . print_r( $item, true );
-				$message .= 'values:' . print_r( $values, true );
+				$message .= '<br><br>values:' . print_r( $values, true );
 
 				$headers = [
 					'Auto-Submitted: auto-generated',
