@@ -1,3 +1,4 @@
+### 2.2.1: June 9th, 2022
 * When customer doesn't have a voucher, display the price anyway
 
 ### 2.2.0: April 4th, 2022
