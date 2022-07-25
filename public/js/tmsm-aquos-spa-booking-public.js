@@ -413,7 +413,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         console.log('ProductsListView selectpicker refresh');
         $list.selectpicker('refresh');
 
-        if(TmsmAquosSpaBookingApp.havevoucherList.selectedValue != '' && TmsmAquosSpaBookingApp.productIdFromUrl != ''){
+        if( TmsmAquosSpaBookingApp.havevoucherList.selectedValue != null && TmsmAquosSpaBookingApp.productIdFromUrl != ''){
+          console.log('doing product preselection');
           $('#tmsm-aquos-spa-booking-products-select').val(TmsmAquosSpaBookingApp.productIdFromUrl).trigger('change');
         }
 
@@ -421,7 +422,9 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       }
       this.loaded();
 
-      $('#tmsm-aquos-spa-booking-products-select').val(TmsmAquosSpaBookingApp.productIdFromUrl);
+      if(TmsmAquosSpaBookingApp.havevoucherList.selectedValue != null  && TmsmAquosSpaBookingApp.productIdFromUrl != ''){
+        $('#tmsm-aquos-spa-booking-products-select').val(TmsmAquosSpaBookingApp.productIdFromUrl);
+      }
 
       return this;
     },

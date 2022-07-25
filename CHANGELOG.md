@@ -1,3 +1,6 @@
+### 2.2.4: July 25th, 2022
+* Fix preselect product from URL
+
 ### 2.2.3: July 25th, 2022
 * Fix removing Moment tests
 
