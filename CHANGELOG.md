@@ -1,3 +1,5 @@
+* Allow product ID in URL (after hashtag, example #33605) to pre-select the product in the product list
+
 ### 2.2.1: June 9th, 2022
 * When customer doesn't have a voucher, display the price anyway
 

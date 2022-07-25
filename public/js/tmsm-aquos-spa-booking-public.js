@@ -412,9 +412,15 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       if (typeof $list.selectpicker === 'function') {
         console.log('ProductsListView selectpicker refresh');
         $list.selectpicker('refresh');
+
+        if(TmsmAquosSpaBookingApp.havevoucherList.selectedValue == 1 && TmsmAquosSpaBookingApp.productIdFromUrl != ''){
+          $('#tmsm-aquos-spa-booking-products-select').val(TmsmAquosSpaBookingApp.productIdFromUrl).trigger('change');
+        }
         //TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productsList.element());
       }
       this.loaded();
+
+      $('#tmsm-aquos-spa-booking-products-select').val(TmsmAquosSpaBookingApp.productIdFromUrl);
 
       return this;
     },
@@ -1440,16 +1446,17 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     daysPage: 1,
 
     templateHelpers: {
-      moment: moment // <-- this is the reference to the moment in your view
+      moment: TmsmAquosSpaBookingApp.moment // <-- this is the reference to the moment in your view
     },
 
     initialize: function() {
 
-      //console.log('WeekDayListView initialize');
+      console.log('WeekDayListView initialize');
 
-      moment.locale(TmsmAquosSpaBookingApp.locale);
-      //console.log("moment", moment().format());
-      //console.log("moment locale: "+ moment.locale());
+      TmsmAquosSpaBookingApp.moment.locale(TmsmAquosSpaBookingApp.locale);
+      console.log("moment", moment().format());
+      console.log("TmsmAquosSpaBookingApp.locale: "+ TmsmAquosSpaBookingApp.locale);
+      console.log("moment locale: "+ TmsmAquosSpaBookingApp.moment.locale());
 
       //console.log("moment fromnow: "+ moment().fromNow());
       this.listenTo( this.collection, 'sync', this.render );
@@ -1496,16 +1503,18 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
 
       var i = 0;
-
+      var tempDate = new TmsmAquosSpaBookingApp.moment();
       if(TmsmAquosSpaBookingApp.productsList.selectedValue){
         var loaded_days = 1;
+        tempDate.add((this.daysPage-1) * 7, 'days');
         for (i = (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+(this.daysPage-1) * 7); i < (parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom)+7+(this.daysPage-1) * 7); i++) {
+          tempDate.add(1, 'days');
 
           this.collection.push( {
-            date_label: moment().add(i, 'days').format('dddd Do MMMM'),
-            date_label_secondline: moment().add(i, 'days').format('MMMM'),
-            date_label_firstline: moment().add(i, 'days').format('dddd Do'),
-            date_computed: moment().add(i, 'days').format('YYYY-MM-DD')
+            date_label: tempDate.format('dddd Do MMMM'),
+            date_label_secondline: tempDate.format('MMMM'),
+            date_label_firstline: tempDate.format('dddd Do'),
+            date_computed: tempDate.format('YYYY-MM-DD')
           });
         }
 
@@ -1947,6 +1956,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
    */
   TmsmAquosSpaBookingApp.init = function() {
 
+    TmsmAquosSpaBookingApp.productIdFromUrl = window.location.href.split('#').pop();
+
+    TmsmAquosSpaBookingApp.moment = window.moment;
+    TmsmAquosSpaBookingApp.moment.locale(TmsmAquosSpaBookingApp.locale);
+
     TmsmAquosSpaBookingApp.courseParticipants = 0;
 
     TmsmAquosSpaBookingApp.havevoucherList = new TmsmAquosSpaBookingApp.HavevoucherListView( );
@@ -1965,6 +1979,8 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     TmsmAquosSpaBookingApp.products.reset( TmsmAquosSpaBookingApp.data.products );
     TmsmAquosSpaBookingApp.productsList = new TmsmAquosSpaBookingApp.ProductsListView( { collection: TmsmAquosSpaBookingApp.products } );
     TmsmAquosSpaBookingApp.productsList.render();
+
+
 
     TmsmAquosSpaBookingApp.productvariations = new TmsmAquosSpaBookingApp.ProductVariationsCollection();
     TmsmAquosSpaBookingApp.productvariations.reset( TmsmAquosSpaBookingApp.data.productvariations );
