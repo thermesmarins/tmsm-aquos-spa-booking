@@ -1,3 +1,4 @@
+### 2.2.2: July 25th, 2022
 * Allow product ID in URL (after hashtag, example #33605) to pre-select the product in the product list
 
 ### 2.2.1: June 9th, 2022
