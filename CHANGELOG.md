@@ -1,3 +1,4 @@
+### 2.2.5: July 26th, 2022
 * Link from product page to booking page
 
 ### 2.2.4: July 25th, 2022
