@@ -242,13 +242,24 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	private static function button_class_nostate(){
 		$theme = wp_get_theme();
 		$buttonclass = '';
-		if ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) ) {
+		if ( self::is_theme_stormbringer() ) {
 			$buttonclass = 'btn';
 		}
-		if ( 'OceanWP' == $theme->get( 'Name' ) || 'oceanwp' == $theme->get( 'Template' ) ) {
+		if ( self::is_theme_ocean() ) {
 			$buttonclass = 'button';
 		}
 		return $buttonclass;
+	}
+
+
+	private static function is_theme_ocean(){
+		$theme = wp_get_theme();
+		return ( 'OceanWP' == $theme->get( 'Name' ) || 'oceanwp' == $theme->get( 'Template' ) );
+	}
+
+	private static function is_theme_stormbringer(){
+		$theme = wp_get_theme();
+		return ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) );
 	}
 
 	/**
@@ -257,15 +268,32 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return string
 	 */
 	private static function button_class_default(){
-		$theme = wp_get_theme();
 		$buttonclass = '';
-		if ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) ) {
+
+		if ( self::is_theme_stormbringer() ) {
 			$buttonclass = 'btn btn-default';
 		}
-		if ( 'OceanWP' == $theme->get( 'Name' ) || 'oceanwp' == $theme->get( 'Template' ) ) {
+		if ( self::is_theme_ocean() ) {
 			$buttonclass = 'button';
 		}
 		return $buttonclass;
+	}
+
+	/**
+	 * Well Class Default
+	 *
+	 * @return string
+	 */
+	private static function well_class_default(){
+		$wellclass = '';
+
+		if ( self::is_theme_stormbringer() ) {
+			$wellclass = 'well';
+		}
+		if ( self::is_theme_ocean() ) {
+			$wellclass = '';
+		}
+		return $wellclass;
 	}
 
 	/**
@@ -274,13 +302,25 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return string
 	 */
 	private static function button_class_primary(){
-		$theme = wp_get_theme();
 		$buttonclass = '';
-		if ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) ) {
+		if ( self::is_theme_stormbringer() ) {
 			$buttonclass = 'btn btn-primary';
 		}
-		if ( 'OceanWP' == $theme->get( 'Name' ) || 'oceanwp' == $theme->get( 'Template' ) ) {
+		if ( self::is_theme_ocean() ) {
 			$buttonclass = 'button';
+		}
+		return $buttonclass;
+	}
+
+	/**
+	 * Button Class Small
+	 *
+	 * @return string
+	 */
+	private static function button_class_small(){
+		$buttonclass = '';
+		if ( self::is_theme_stormbringer() ) {
+			$buttonclass = 'btn-sm';
 		}
 		return $buttonclass;
 	}
@@ -292,12 +332,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 * @return string
 	 */
 	private static function alert_class_error(){
-		$theme = wp_get_theme();
 		$buttonclass = '';
-		if ( 'StormBringer' == $theme->get( 'Name' ) || 'stormbringer' == $theme->get( 'Template' ) ) {
+		if ( self::is_theme_stormbringer() ) {
 			$buttonclass = 'alert alert-danger';
 		}
-		if ( 'OceanWP' == $theme->get( 'Name' ) || 'oceanwp' == $theme->get( 'Template' ) ) {
+		if ( self::is_theme_ocean() ) {
 			$buttonclass = 'alert';
 		}
 		return $buttonclass;
@@ -2633,9 +2672,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 
 		if ( ! empty( $page_booking_id ) && $product && $product->get_meta( '_bookable' ) === 'yes' ) {
 			$page_booking = get_post( $page_booking_id );
-			echo '<p class="tmsm-aquos-spa-booking-link-to-appointment">' . __( 'You want to book?', 'tmsm-aquos-spa-booking' ) . ' <a href="'
-			     . get_permalink( $page_booking_id ) . '#' . $product->get_id() . '" class="' . self::button_class_default() . '">'
-			     . $page_booking->post_title . '</a></p>';
+			echo '
+			<div class="' . self::well_class_default() . ' tmsm-aquos-spa-booking-link-to-appointment">
+				<p class="">' . __( 'You want to book?', 'tmsm-aquos-spa-booking' ) . '
+				</p>
+				<p class="last-paragraph"><a href="'
+			     . get_permalink( $page_booking_id ) . '#' . $product->get_id() . '" class="' . self::button_class_default() . ' ' . self::button_class_small() . '">'
+			     . __( 'Book Now', 'tmsm-aquos-spa-booking' ) . '</a>
+				</p>
+			</div>
+			';
 		}
 
 	}

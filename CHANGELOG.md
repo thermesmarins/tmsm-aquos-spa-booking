@@ -1,3 +1,5 @@
+* Link to booking page displayed as a well
+
 ### 2.2.5: July 26th, 2022
 * Link from product page to booking page
 
