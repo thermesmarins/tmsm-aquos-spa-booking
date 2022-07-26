@@ -2623,4 +2623,20 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		}
 
 	}
+
+	/**
+	 * Display appointment link below product short description in single product
+	 */
+	public function woocommerce_single_product_summary_appointmentlink() {
+		global $product;
+		$page_booking_id = get_option( 'tmsm_aquos_spa_booking_bookingpage', null );
+
+		if ( ! empty( $page_booking_id ) && $product && $product->get_meta( '_bookable' ) === 'yes' ) {
+			$page_booking = get_post( $page_booking_id );
+			echo '<p class="tmsm-aquos-spa-booking-link-to-appointment">' . __( 'You want to book?', 'tmsm-aquos-spa-booking' ) . ' <a href="'
+			     . get_permalink( $page_booking_id ) . '#' . $product->get_id() . '" class="' . self::button_class_default() . '">'
+			     . $page_booking->post_title . '</a></p>';
+		}
+
+	}
 }

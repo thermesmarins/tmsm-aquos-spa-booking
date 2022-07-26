@@ -286,6 +286,9 @@ class Tmsm_Aquos_Spa_Booking {
 
 		$this->loader->add_action( 'woocommerce_checkout_create_order_fee_item', $plugin_public, 'order_fee_item_metadata_giftwrap', 80, 4 );
 		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'create_order_line_item_with_coupon', 50, 4 );
+
+		// Appointment link
+		$this->loader->add_action( 'woocommerce_single_product_summary', $plugin_public, 'woocommerce_single_product_summary_appointmentlink', 30 );
 	}
 
 	/**

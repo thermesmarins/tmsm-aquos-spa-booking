@@ -76,10 +76,11 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 				}
 				else{
 					$pages = [];
-					$pages[''] = __( 'Select a contact page', 'tmsm-aquos-spa-booking' );
+					$pages[''] = __( 'Select a page', 'tmsm-aquos-spa-booking' );
 					foreach(get_pages(['sort_column' => 'post_title', 'hierarchical' => false ]) as $page){
 						$pages[$page->ID] = $page->post_title;
 					}
+
 
 					$settings = array(
 
@@ -218,42 +219,54 @@ if ( ! class_exists( 'WC_Settings_Aquosspabooking' ) ) :
 							'id'       => 'tmsm_aquos_spa_booking_contactpage',
 							'name'     => __( 'Contact Page', 'tmsm-aquos-spa-booking' ),
 							'default'  => 'no',
-							'options' => $pages,
+							'options'  => $pages,
 						),
 
 						array(
 							'type'     => 'select',
-							'id'       => 'tmsm_aquos_spa_booking_dateselection',
-							'name'     => __( 'Date Selection', 'tmsm-aquos-spa-booking' ),
-							'default'  => 'calendar',
+							'id'       => 'tmsm_aquos_spa_booking_bookingpage',
+							'name'     => __( 'Booking Page (link from product single page)', 'tmsm-aquos-spa-booking' ),
+							'default'  => 'no',
+							'options'  => $pages,
+						),
+
+						array(
+							'type'    => 'select',
+							'id'      => 'tmsm_aquos_spa_booking_dateselection',
+							'name'    => __( 'Date Selection', 'tmsm-aquos-spa-booking' ),
+							'default' => 'calendar',
 							'options' => [
 								'calendar' => __( 'Calendar View', 'tmsm-aquos-spa-booking' ),
 								'weekdays' => __( 'Week Days View', 'tmsm-aquos-spa-booking' ),
-								],
+							],
 						),
 
 						array(
-							'type'     => 'number',
-							'id'       => 'tmsm_aquos_spa_booking_hoursrangefrom',
-							'name'     => __( 'Calendar Hours Range From', 'tmsm-aquos-spa-booking' ),
-							'desc'     => '<p class="description">'.__( 'Users can\'t book before this number of hours after the current datetime.', 'tmsm-aquos-spa-booking'  ).'</p>',
-							'default'  => 24,
+							'type'    => 'number',
+							'id'      => 'tmsm_aquos_spa_booking_hoursrangefrom',
+							'name'    => __( 'Calendar Hours Range From', 'tmsm-aquos-spa-booking' ),
+							'desc'    => '<p class="description">' . __( 'Users can\'t book before this number of hours after the current datetime.',
+									'tmsm-aquos-spa-booking' ) . '</p>',
+							'default' => 24,
 						),
 
 						array(
-							'type'     => 'number',
-							'id'       => 'tmsm_aquos_spa_booking_daysrangeto',
-							'name'     => __( 'Calendar Days Range To', 'tmsm-aquos-spa-booking' ),
-							'desc'     => '<p class="description">'.__( 'Users can\'t book after this number of days after the current date.', 'tmsm-aquos-spa-booking'  ).'</p>',
-							'default'  => 60,
+							'type'    => 'number',
+							'id'      => 'tmsm_aquos_spa_booking_daysrangeto',
+							'name'    => __( 'Calendar Days Range To', 'tmsm-aquos-spa-booking' ),
+							'desc'    => '<p class="description">' . __( 'Users can\'t book after this number of days after the current date.',
+									'tmsm-aquos-spa-booking' ) . '</p>',
+							'default' => 60,
 						),
 
 						array(
-							'type'     => 'text',
-							'id'       => 'tmsm_aquos_spa_booking_datebeforeforbidden',
-							'name'     => __( 'Calendar Days Before Forbidden', 'tmsm-aquos-spa-booking' ),
-							'desc'     => '<p class="description">'.__( 'Users can\'t book before this date, format YYYY-MM-DD. Leave empty for no restriction', 'tmsm-aquos-spa-booking'  ).'</p>',
-							'default'  => '',
+							'type'    => 'text',
+							'id'      => 'tmsm_aquos_spa_booking_datebeforeforbidden',
+							'name'    => __( 'Calendar Days Before Forbidden', 'tmsm-aquos-spa-booking' ),
+							'desc'    => '<p class="description">'
+							             . __( 'Users can\'t book before this date, format YYYY-MM-DD. Leave empty for no restriction',
+									'tmsm-aquos-spa-booking' ) . '</p>',
+							'default' => '',
 						),
 
 						array(

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2022-06-09 09:03+0200\n"
+"POT-Creation-Date: 2022-07-26 14:49+0200\n"
 "PO-Revision-Date: 2014-10-24 21:08+0100\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
@@ -263,241 +263,245 @@ msgid "Regenerates Aquos Prices"
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:79
-msgid "Select a contact page"
+msgid "Select a page"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:87
+#: includes/class-tmsm-aquos-spa-booking-settings.php:88
 msgid "Aquos Spa Booking Settings"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:96
+#: includes/class-tmsm-aquos-spa-booking-settings.php:97
 msgid "Aquos Site ID"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:103
+#: includes/class-tmsm-aquos-spa-booking-settings.php:104
 msgid "Aquos Secret"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:110
+#: includes/class-tmsm-aquos-spa-booking-settings.php:111
 msgid "Web Service URL for times"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:113
-#: includes/class-tmsm-aquos-spa-booking-settings.php:128
+#: includes/class-tmsm-aquos-spa-booking-settings.php:114
+#: includes/class-tmsm-aquos-spa-booking-settings.php:129
 msgid ""
 "The URL of the Aquos web service. Use the special variables in "
 "the URL:"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:114
-#: includes/class-tmsm-aquos-spa-booking-settings.php:129
-#, php-format
-msgid "%s as the the web site id."
-msgstr ""
-
 #: includes/class-tmsm-aquos-spa-booking-settings.php:115
 #: includes/class-tmsm-aquos-spa-booking-settings.php:130
 #, php-format
-msgid "%s as the requested product ID."
+msgid "%s as the the web site id."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:116
 #: includes/class-tmsm-aquos-spa-booking-settings.php:131
 #, php-format
-msgid "%s as the requested date."
+msgid "%s as the requested product ID."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:117
-#: includes/class-tmsm-aquos-spa-booking-settings.php:144
+#: includes/class-tmsm-aquos-spa-booking-settings.php:132
+#, php-format
+msgid "%s as the requested date."
+msgstr ""
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:118
+#: includes/class-tmsm-aquos-spa-booking-settings.php:145
 #, php-format
 msgid "%s as the web site name."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:125
+#: includes/class-tmsm-aquos-spa-booking-settings.php:126
 msgid "Web Service URL for submission"
-msgstr ""
-
-#: includes/class-tmsm-aquos-spa-booking-settings.php:132
-#, php-format
-msgid "%s as the requested time."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:133
 #, php-format
-msgid "%s as the customer title."
+msgid "%s as the requested time."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:134
 #, php-format
-msgid "%s as the customer lastname."
+msgid "%s as the customer title."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:135
 #, php-format
-msgid "%s as the customer firstname."
+msgid "%s as the customer lastname."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:136
 #, php-format
-msgid "%s as the customer email."
+msgid "%s as the customer firstname."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:137
 #, php-format
-msgid "%s if customer has a voucher."
+msgid "%s as the customer email."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:138
 #, php-format
-msgid "%s as the customer birthdate."
+msgid "%s if customer has a voucher."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:139
 #, php-format
-msgid "%s as the customer address."
+msgid "%s as the customer birthdate."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:140
 #, php-format
-msgid "%s as the customer postalcode."
+msgid "%s as the customer address."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:141
 #, php-format
-msgid "%s as the customer city."
+msgid "%s as the customer postalcode."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:142
 #, php-format
-msgid "%s as the customer phone."
+msgid "%s as the customer city."
 msgstr ""
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:143
 #, php-format
+msgid "%s as the customer phone."
+msgstr ""
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:144
+#, php-format
 msgid "%s as the customer notes."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:152
+#: includes/class-tmsm-aquos-spa-booking-settings.php:153
 msgid "WooCommerce Product Category ID"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:155
+#: includes/class-tmsm-aquos-spa-booking-settings.php:156
 msgid ""
 "The ID of the product category. Leave 0 if all categories can be "
 "booked."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:163
+#: includes/class-tmsm-aquos-spa-booking-settings.php:164
 msgid "WooCommerce Product Excluded Category IDs"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:166
+#: includes/class-tmsm-aquos-spa-booking-settings.php:167
 msgid "The IDs of excluded product categories. Separated by comma."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:174
+#: includes/class-tmsm-aquos-spa-booking-settings.php:175
 msgid "Order Gift Wrap Aquos ID"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:177
+#: includes/class-tmsm-aquos-spa-booking-settings.php:178
 msgid "The ID of order gift wrap in Aquos"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:185
+#: includes/class-tmsm-aquos-spa-booking-settings.php:186
 msgid "Aquos products ignored when booking"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:188
+#: includes/class-tmsm-aquos-spa-booking-settings.php:189
 msgid ""
 "Aquos product IDs separated by comma. Those products can’t be "
 "booked."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:196
+#: includes/class-tmsm-aquos-spa-booking-settings.php:197
 msgid "Accept Cash On Delivery"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:197
+#: includes/class-tmsm-aquos-spa-booking-settings.php:198
 msgid ""
 "Accept Cash On Delivery for the bookable products. It has to be "
 "enabled in the Checkout Page. Note: if cart has other types of "
 "products, the default methods will apply."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:204
+#: includes/class-tmsm-aquos-spa-booking-settings.php:205
 msgid "Accept Online Payment"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:205
+#: includes/class-tmsm-aquos-spa-booking-settings.php:206
 msgid "Accept Online Payment for the Bookable Products."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:212
+#: includes/class-tmsm-aquos-spa-booking-settings.php:213
 msgid "Enable Course Booking Integration"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:219
+#: includes/class-tmsm-aquos-spa-booking-settings.php:220
 msgid "Contact Page"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:227
+#: includes/class-tmsm-aquos-spa-booking-settings.php:228
+msgid "Booking Page (link from product single page)"
+msgstr ""
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:236
 msgid "Date Selection"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:230
+#: includes/class-tmsm-aquos-spa-booking-settings.php:239
 msgid "Calendar View"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:231
+#: includes/class-tmsm-aquos-spa-booking-settings.php:240
 msgid "Week Days View"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:238
+#: includes/class-tmsm-aquos-spa-booking-settings.php:247
 msgid "Calendar Hours Range From"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:239
+#: includes/class-tmsm-aquos-spa-booking-settings.php:248
 msgid ""
 "Users can't book before this number of hours after the current "
 "datetime."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:246
+#: includes/class-tmsm-aquos-spa-booking-settings.php:255
 msgid "Calendar Days Range To"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:247
+#: includes/class-tmsm-aquos-spa-booking-settings.php:256
 msgid ""
 "Users can't book after this number of days after the current date."
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:254
+#: includes/class-tmsm-aquos-spa-booking-settings.php:263
 msgid "Calendar Days Before Forbidden"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:255
+#: includes/class-tmsm-aquos-spa-booking-settings.php:264
 msgid ""
 "Users can't book before this date, format YYYY-MM-DD. Leave empty "
 "for no restriction"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:262
+#: includes/class-tmsm-aquos-spa-booking-settings.php:271
 msgid "Cart Products Expires"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:263
+#: includes/class-tmsm-aquos-spa-booking-settings.php:272
 msgid "Minutes"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:270
+#: includes/class-tmsm-aquos-spa-booking-settings.php:279
 msgid "Cancellation Policy"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:276
+#: includes/class-tmsm-aquos-spa-booking-settings.php:285
 msgid "Message in order received page"
 msgstr ""
 
-#: includes/class-tmsm-aquos-spa-booking-settings.php:282
+#: includes/class-tmsm-aquos-spa-booking-settings.php:291
 msgid "Message in order email"
 msgstr ""
 
@@ -827,6 +831,10 @@ msgstr ""
 #: public/class-tmsm-aquos-spa-booking-public.php:2579
 msgid ""
 "You will receive a text message two days before the appointment."
+msgstr ""
+
+#: public/class-tmsm-aquos-spa-booking-public.php:2636
+msgid "You want to book?"
 msgstr ""
 
 #: templates/emails/plain/tmsm-aquos-spa-booking-appointment-message.php:14
