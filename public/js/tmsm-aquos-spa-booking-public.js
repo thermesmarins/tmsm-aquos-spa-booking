@@ -409,16 +409,38 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         $list.append( $categories[index] );
       });
 
+
+
+
       if (typeof $list.selectpicker === 'function') {
         console.log('ProductsListView selectpicker refresh');
         $list.selectpicker('refresh');
 
+
         if( TmsmAquosSpaBookingApp.havevoucherList.selectedValue != null && TmsmAquosSpaBookingApp.productIdFromUrl != ''){
-          console.log('doing product preselection');
+          console.log('Doing product preselection');
+
+          var foundparent = $('#tmsm-aquos-spa-booking-products-select option[data-parent_id='+TmsmAquosSpaBookingApp.productIdFromUrl+ ']');
+          if(foundparent.length > 0){
+            console.log('found parent ' + foundparent.val());
+            TmsmAquosSpaBookingApp.productIdFromUrl = foundparent.val();
+          }
+          else{
+            var foundproduct = $('#tmsm-aquos-spa-booking-products-select option[value='+TmsmAquosSpaBookingApp.productIdFromUrl+ ']');
+            if(foundproduct.length > 0){
+              console.log('found value ' + foundproduct.val());
+            }
+            else{
+              console.log('did not found value');
+              TmsmAquosSpaBookingApp.productIdFromUrl = null;
+            }
+          }
+
+          console.log('TmsmAquosSpaBookingApp.productIdFromUrl:' + TmsmAquosSpaBookingApp.productIdFromUrl);
           $('#tmsm-aquos-spa-booking-products-select').val(TmsmAquosSpaBookingApp.productIdFromUrl).trigger('change');
         }
-
         //TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productsList.element());
+
       }
       this.loaded();
 
@@ -544,6 +566,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       return {
         value: this.model.get('id'),
         'data-sku': this.model.get('sku'),
+        'data-parent_id': this.model.get('parent_id'),
         'data-subtext': this.model.get('sku'),
         'data-category': this.model.get('category'),
         'data-variable': this.model.get('variable'),
@@ -1957,7 +1980,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
    */
   TmsmAquosSpaBookingApp.init = function() {
 
-    TmsmAquosSpaBookingApp.productIdFromUrl = window.location.href.split('#').pop();
+    TmsmAquosSpaBookingApp.productIdFromUrl = window.location.hash.split('#').pop();
 
     //TmsmAquosSpaBookingApp.moment = window.moment;
     //TmsmAquosSpaBookingApp.moment.locale(TmsmAquosSpaBookingApp.locale);

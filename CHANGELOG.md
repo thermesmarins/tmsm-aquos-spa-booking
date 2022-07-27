@@ -1,4 +1,5 @@
 * Link to booking page displayed as a well
+* Fix preselect product from URL, when product has choices
 
 ### 2.2.5: July 26th, 2022
 * Link from product page to booking page

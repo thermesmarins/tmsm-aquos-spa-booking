@@ -2348,6 +2348,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 							'thumbnail'                    => get_the_post_thumbnail_url( $product_id ) ? get_the_post_thumbnail_url( $product_id ) : '',
 							'price'                        => html_entity_decode( wp_strip_all_tags( $price ) ),
 							'sku'                          => esc_js( $product->get_sku() ),
+							'parent_id'                   => wp_get_post_parent_id($product_has_only_attribute_voucher_variation_id ?? esc_js( $product->get_id() )),
 							'name'                         => esc_js( $product->get_name() ),
 							'variable'                     => esc_js( $product->is_type( 'variable' ) ),
 							'voucher_variation_id'         => $product_has_only_attribute_voucher_variation_id,
