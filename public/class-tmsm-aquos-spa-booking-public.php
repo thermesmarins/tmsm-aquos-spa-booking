@@ -10,10 +10,6 @@
  * @subpackage Tmsm_Aquos_Spa_Booking/public
  */
 
-use common\models\Lesson;
-use yii\base\InvalidConfigException;
-use yii\httpclient\Exception;
-use yii\web\NotFoundHttpException;
 
 /**
  * The public-facing functionality of the plugin.
