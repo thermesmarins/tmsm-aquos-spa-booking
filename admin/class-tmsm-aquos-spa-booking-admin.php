@@ -404,7 +404,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					$aquos_price = [];
 					$aquos_ids   = explode( '+', $result->meta_value );
 					foreach ( $aquos_ids as $aquos_id ) {
-						$price = self::get_product_price_from_aquos_or_product_id( $aquos_id, $result->post_id );
+						$price = self::get_product_price_from_aquos_or_product_id( intval($aquos_id), $result->post_id );
 						$aquos_price[] = $price;
 						if($price == 0){
 							$non_matching_prices[$result->post_id] .= sprintf(__( 'Price not found for product %s', 'tmsm-aquos-spa-booking' ), $result->post_id);

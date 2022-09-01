@@ -1,3 +1,5 @@
+* Fix var type in get_product_price_from_aquos_or_product_id
+
 ### 2.2.6: July 27th, 2022
 * Link to booking page displayed as a well
 * Fix preselect product from URL, when product has choices
