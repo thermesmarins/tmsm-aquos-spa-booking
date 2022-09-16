@@ -515,7 +515,7 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			{{ data.date_label_firstline }} <span class="secondline">{{ data.date_label_secondline }}</span>
 			<ul class="tmsm-aquos-spa-booking-weekday-times list-unstyled" data-date="{{ data.date_computed }}" >
 			</ul>
-			<span class="glyphicon glyphicon-refresh glyphicon-spin" title="{{ TmsmAquosSpaBookingApp.strings.loading }}"></span>
+			<span class="glyphicon glyphicon-refresh glyphicon-spin fas fa-spinner fa-spin " title="{{ TmsmAquosSpaBookingApp.strings.loading }}"></span>
 		</script>
 
 		<?php
