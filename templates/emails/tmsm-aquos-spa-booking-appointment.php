@@ -9,7 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 // Hide prices and totals if total is zero
-if($order->get_total() == 0) {
+/** @var WC_Order $order */
+if( $order->get_total() == 0) {
 ?>
 	<style type="text/css">
 		table.td thead tr .td:nth-child(3),
