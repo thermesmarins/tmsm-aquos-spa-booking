@@ -414,6 +414,14 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			</div>
 			</div>
 			
+			<div id="tmsm-aquos-spa-booking-choices-container" >
+			<div id="tmsm-aquos-spa-booking-choices-inner">
+			<h3>' . __( 'Pick your choice:', 'tmsm-aquos-spa-booking' ) . '</h3>
+			<p id="tmsm-aquos-spa-booking-choices-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
+			<select id="tmsm-aquos-spa-booking-choices-select"  title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
+			</div>
+			</div>
+			
 			<div id="tmsm-aquos-spa-booking-attributes-container" >
 			<div id="tmsm-aquos-spa-booking-attributes-inner">
 			<h3>' . __( 'Pick your variation:', 'tmsm-aquos-spa-booking' ) . '</h3>
@@ -428,14 +436,6 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			<div style="display:none"> 
 			<select id="tmsm-aquos-spa-booking-variations-select" title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
-			</div>
-			</div>
-			
-			<div id="tmsm-aquos-spa-booking-choices-container" >
-			<div id="tmsm-aquos-spa-booking-choices-inner">
-			<h3>' . __( 'Pick your choice:', 'tmsm-aquos-spa-booking' ) . '</h3>
-			<p id="tmsm-aquos-spa-booking-choices-loading">' . __( 'Loading', 'tmsm-aquos-spa-booking' ) . '</p>
-			<select id="tmsm-aquos-spa-booking-choices-select"  title="' . esc_attr__( 'No selection', 'tmsm-aquos-spa-booking' ) . '"></select>
 			</div>
 			</div>
 			
@@ -814,7 +814,12 @@ class Tmsm_Aquos_Spa_Booking_Public {
 				'_virtual' => 1,
 				//'price' => 12 // if I want to force a price in the cart
 			];
-
+			if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+				error_log('$product_id:' . print_r($product_id, true));
+				error_log('$variation_id:' . print_r($variation_id, true));
+				error_log('$variation_data:' . print_r($variation_data, true));
+				error_log('$cart_item_data:' . print_r($cart_item_data, true));
+			}
 			$result = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation_data, $cart_item_data);
 
 			//$redirect = wc_get_cart_url();
@@ -1722,6 +1727,11 @@ class Tmsm_Aquos_Spa_Booking_Public {
 					if( time() > ( $cart_item['timestamp_added'] + 60 * get_option( 'tmsm_aquos_spa_booking_cartexpireminutes', 60 ))){
 						WC()->cart->remove_cart_item( $cart_item_key );
 						wc_add_notice( sprintf( __( 'The product %s has been removed from cart since it has expired. Please try to book it again.', 'tmsm-aquos-spa-booking' ), $_product->get_name() ), 'error' );
+
+						if ( defined( 'TMSM_AQUOS_SPA_BOOKING_DEBUG' ) && TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
+							error_log( '$cart_item[timestamp_added]:' . $cart_item['timestamp_added'] );
+							error_log( 'time():' . time() );
+						}
 
 					}
 				}

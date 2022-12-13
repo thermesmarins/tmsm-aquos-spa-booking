@@ -1152,11 +1152,27 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       console.log('TmsmAquosSpaBookingApp.selectedData.get(\'selectedHasAttributesOtherthanVoucher\'):' + TmsmAquosSpaBookingApp.selectedData.get('selectedHasAttributesOtherthanVoucher'));
       console.log('this.selectedHasAttributesOtherthanVoucher:' + this.selectedHasAttributesOtherthanVoucher);
 
-      TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
+      if(TmsmAquosSpaBookingApp.selectedData.get('selectedHasAttributesOtherthanVoucher')){
+        console.warn('loading productAttributesList');
 
+        TmsmAquosSpaBookingApp.productvariations.fetch({ data: {
+            product: TmsmAquosSpaBookingApp.selectedData.get('product'),
+          } });
+        TmsmAquosSpaBookingApp.productattributes.fetch({ data: {
+            product: TmsmAquosSpaBookingApp.selectedData.get('product'),
+          } });
 
-      if(TmsmAquosSpaBookingApp.calendar.dateselection == 'weekdays'){
-        TmsmAquosSpaBookingApp.weekdaysList.render();
+        TmsmAquosSpaBookingApp.productVariationsList.matchattributes();
+        //TmsmAquosSpaBookingApp.productAttributesList.render();
+
+        TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.productAttributesList.element());
+      }
+      else{
+        console.warn('loading dateList');
+        TmsmAquosSpaBookingApp.animateTransition(TmsmAquosSpaBookingApp.dateList.element());
+        if(TmsmAquosSpaBookingApp.calendar.dateselection == 'weekdays'){
+          TmsmAquosSpaBookingApp.weekdaysList.render();
+        }
       }
     },
 
