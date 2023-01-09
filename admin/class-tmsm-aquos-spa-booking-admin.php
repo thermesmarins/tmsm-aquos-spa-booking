@@ -536,16 +536,20 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			switch ( $aquos_id ) {
 				case 338: // Parcours Aquatonic
 					//$price = 20; // 2021
-					$price = 21; // 2022
+					//$price = 21; // 2022
+					$price = 22.5; // 2023
 					break;
 				case 191: // Modelage nuque et cuir chevelu
-					$price = 18;
+					//$price = 18; // 2020
+					$price = 20; // 2023
 					break;
 				case 538: // Modelage dos d'accueil
-					$price = 18;
+					//$price = 18; // 2020
+					$price = 20; // 2023
 					break;
 				case 427: // Une nuit Oceania
-					$price = 82;
+					//$price = 82; // 2020
+					$price = 85; // 2023
 					break;
 			}
 		}
@@ -553,13 +557,16 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			switch ( $aquos_id ) {
 				case 338: // Parcours Aquatonic
 					//$price = 23; // 2021
-					$price = 24; // 2022
+					//$price = 24; // 2022
+					$price = 26; // 2023
 					break;
 				case 191: // Modelage nuque et cuir chevelu
-					$price = 18;
+					//$price = 18; //2020
+					$price = 20; // 2023
 					break;
 				case 680: // Modelage dos d'accueil
-					$price = 18;
+					//$price = 18; //2020
+					$price = 20; // 2023
 					break;
 
 			}
@@ -568,16 +575,17 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			switch ( $aquos_id ) {
 				case 368: // Parcours Aquatonic
 					//$price = 30; // 2021
-					$price = 31; // 2022
+					//$price = 31; // 2022
+					$price = 34; // 2023
 					break;
 				case 470: // Accès Espace Bien-être en complément d'un soin
-					$price = 30;
+					$price = 30; // 2020
 					break;
 				case 495: // Balnéo privative en duo
-					$price = 39;
+					$price = 39; // 2020
 					break;
 				case 847: // Supplément French Manucure
-					$price = 5;
+					$price = 5; // 2020
 					break;
 			}
 		}
