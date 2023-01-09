@@ -1,6 +1,7 @@
 * Fix var type in get_product_price_from_aquos_or_product_id
 * Loading icon with Font Awesome instead of Glyphicon
 * Handle product with choice and product attribute at the same time
+* New hardcoded prices for 2023
 
 ### 2.2.6: July 27th, 2022
 * Link to booking page displayed as a well
