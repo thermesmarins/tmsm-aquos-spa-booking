@@ -1,3 +1,4 @@
+### 2.2.7 January 9th, 2023
 * Fix var type in get_product_price_from_aquos_or_product_id
 * Loading icon with Font Awesome instead of Glyphicon
 * Handle product with choice and product attribute at the same time
