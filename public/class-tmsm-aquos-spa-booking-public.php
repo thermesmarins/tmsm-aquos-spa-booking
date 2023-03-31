@@ -2643,24 +2643,40 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		// Product was discounted with a coupon
 		if($item->get_total() != $item->get_subtotal() && $item->get_subtotal() > $item->get_total() ){
 
+			// Calculate discount percentage
 			$discount = 100 - ( $item->get_total() * 100 / $item->get_subtotal() );
+
+			// Check if discount is valid
 			if($discount > 0 && $discount < 100){
+				// Retrieve aquos price stored in meta "_aquos_price"
 				$aquos_prices = $item->get_meta('_aquos_price', true);
 
-				// Store old aquos price as item meta
+				// Store old aquos price as new meta data "_aquos_price_regular"
 				$item->add_meta_data( '_aquos_price_regular', $aquos_prices, true );
 
+				// Update aquos prices with discount
 				$aquos_prices_array = explode('+', $aquos_prices);
 
-				if(is_array($aquos_prices_array)){
+				// Check if Aquos prices array is valid
+                if(is_array($aquos_prices_array)){
+
+	                // Create new Aquos prices array with discount applied
 					$aquos_prices_array_new = [];
 					foreach ($aquos_prices_array as $aquos_price){
 						$aquos_prices_array_new[] = $aquos_price - ( $aquos_price * $discount / 100 );
+						$aquos_prices_total += floatval($aquos_price);
 					}
 
-					$aquos_prices_new = join('+', $aquos_prices_array_new);
+	                // Check if new Aquos prices array matches discounted total price, accounting for rounding errors
+	                if ($aquos_prices_total != floatval($item->get_total()) && abs($aquos_prices_total - floatval($item->get_total())) <= 0.01) {
+		                // Adjust first price in array to make up for rounding error
+		                $aquos_prices_tampon = floatval($aquos_prices_array_new[0]);
+		                $aquos_prices_tampon += $aquos_prices_total - floatval($item->get_total());
+		                $aquos_prices_array_new[0] = $aquos_prices_tampon;
+	                }
 
-					// Store new aquos price and replace old price
+	                // Join new Aquos prices array into string and update meta data with new value
+					$aquos_prices_new = join('+', $aquos_prices_array_new);
 					$aquos_prices = $item->update_meta_data('_aquos_price', $aquos_prices_new);
 				}
 
