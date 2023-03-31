@@ -1,3 +1,7 @@
+### 2.2.8 March 31th, 2023
+* Forced path to cart before validation order
+* Traduction to French notice in cart
+
 ### 2.2.7 January 9th, 2023
 * Fix var type in get_product_price_from_aquos_or_product_id
 * Loading icon with Font Awesome instead of Glyphicon
