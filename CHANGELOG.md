@@ -1,3 +1,6 @@
+### 2.2.10 April 3rd, 2023
+* Update file
+
 ### 2.2.9 April 3rd, 2023
 * New error message for more than 1 appointment in cart with the phone number in case the customer wants more information
 
