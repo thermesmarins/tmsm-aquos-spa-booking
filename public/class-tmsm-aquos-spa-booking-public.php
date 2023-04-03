@@ -840,8 +840,31 @@ class Tmsm_Aquos_Spa_Booking_Public {
 		else {
 			$jsondata['success'] = true;
 
-//			wc_add_notice( sprintf( __( 'Your appointment was added. <a href="%s">Do you want to add another one?</a>', 'tmsm-aquos-spa-booking' ), wc_get_raw_referer() ? wp_validate_redirect( wc_get_raw_referer(), false ) : wc_get_page_permalink( 'shop' ) ) );
-            wc_add_notice(__("Your appointment was added. <b> Please validate your order before adding a new one. </b>", 'tmsm-aquos-spa-booking'));
+            if (WC()->cart->get_cart_contents_count() > 1) {
+                // get phone numbers for each site
+                switch (get_current_blog_id()) {
+                    case 6 :
+                        $phone = "2 99 237 877";
+                        break;
+                    case 8 :
+                        $phone = "2 40 41 89 89";
+                        break;
+                    case 9 :
+                        $phone = "1 60 31 01 01";
+                        break;
+                    default:
+                        $phone = " ";
+
+                }
+                // Phone number modification for the "href" link
+                $phoneCall = str_replace(' ', '', $phone);
+
+                wc_add_notice(sprintf(__('To best respond to your request and ensure availability,<b> beyond 1 appointment, please contact us by phone at <a href = tel:+33%s >0%s</a> . </b>','tmsm-aquos-spa-booking'),$phoneCall,$phone ), 'error');
+            } else {
+
+                // wc_add_notice( sprintf( __( 'Your appointment was added. <a href="%s">Do you want to add another one?</a>', 'tmsm-aquos-spa-booking' ), wc_get_raw_referer() ? wp_validate_redirect( wc_get_raw_referer(), false ) : wc_get_page_permalink( 'shop' ) ) );
+                wc_add_notice(__("Your appointment was added. <b> Please validate your order before adding a new one. </b>", 'tmsm-aquos-spa-booking'));
+            }
 		}
 
 		if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
