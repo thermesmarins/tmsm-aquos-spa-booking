@@ -1,3 +1,6 @@
+### 2.2.11 April 3rd, 2023
+* Check if new Aquos prices array matches discounted total price, accounting for rounding errors
+
 ### 2.2.10 April 3rd, 2023
 * Update file
 
