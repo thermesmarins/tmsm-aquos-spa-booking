@@ -2663,34 +2663,69 @@ class Tmsm_Aquos_Spa_Booking_Public {
 	 */
 	public function create_order_line_item_with_coupon( $item, $cart_item_key, $values, $order ) {
 
-		// Product was discounted with a coupon
-		if($item->get_total() != $item->get_subtotal() && $item->get_subtotal() > $item->get_total() ){
+        try {
+	        // Product was discounted with a coupon
+	        if ($item->get_total() != $item->get_subtotal() && $item->get_subtotal() > $item->get_total()) {
 
-			$discount = 100 - ( $item->get_total() * 100 / $item->get_subtotal() );
-			if($discount > 0 && $discount < 100){
-				$aquos_prices = $item->get_meta('_aquos_price', true);
+		        // Calculate discount percentage
+		        $discount = 100 - ($item->get_total() * 100 / $item->get_subtotal());
 
-				// Store old aquos price as item meta
-				$item->add_meta_data( '_aquos_price_regular', $aquos_prices, true );
+		        // Check if discount is valid
+		        if ($discount > 0 && $discount < 100) {
 
-				$aquos_prices_array = explode('+', $aquos_prices);
+			        // Retrieve aquos price stored in meta "_aquos_price"
+			        $aquos_prices = $item->get_meta('_aquos_price', true);
 
-				if(is_array($aquos_prices_array)){
-					$aquos_prices_array_new = [];
-					foreach ($aquos_prices_array as $aquos_price){
-						$aquos_prices_array_new[] = $aquos_price - ( $aquos_price * $discount / 100 );
-					}
+			        // Store old aquos price as new meta data "_aquos_price_regular"
+			        $item->add_meta_data('_aquos_price_regular', $aquos_prices, true);
 
-					$aquos_prices_new = join('+', $aquos_prices_array_new);
+			        // Update aquos prices with discount
+			        $aquos_prices_array = explode('+', $aquos_prices);
 
-					// Store new aquos price and replace old price
-					$aquos_prices = $item->update_meta_data('_aquos_price', $aquos_prices_new);
-				}
+			        // Check if Aquos prices array is valid
+			        if (is_array($aquos_prices_array)) {
 
-			}
+				        // Create new Aquos prices array with discount applied
+				        $aquos_prices_array_new = [];
+				        foreach ($aquos_prices_array as $aquos_price) {
+					        $aquos_prices_array_new[] = $aquos_price - ($aquos_price * $discount / 100);
+					        $aquos_prices_total += floatval($aquos_price);
+				        }
 
-		}
+				        // Check if new Aquos prices array matches discounted total price, accounting for rounding errors
+				        if ($aquos_prices_total != floatval($item->get_total()) && abs($aquos_prices_total - floatval($item->get_total())) <= 0.01) {
+					        // Adjust first price in array to make up for rounding error
+					        $aquos_prices_tampon = floatval($aquos_prices_array_new[0]);
+					        $aquos_prices_tampon += $aquos_prices_total - floatval($item->get_total());
+					        $aquos_prices_array_new[0] = $aquos_prices_tampon;
+				        }else {
+					        if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+						        throw new Exception('Aquos prices total does not match discounted total price.');
+					        }
+				        }
 
+				        // Join new Aquos prices array into string and update meta data with new value
+				        $aquos_prices_new = join('+', $aquos_prices_array_new);
+				        $aquos_prices = $item->update_meta_data('_aquos_price', $aquos_prices_new);
+			        }else{
+				        if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+					        throw new Exception('Invalid aquos prices format.');
+				        }
+			        }
+
+		        }else{
+			        if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+				        throw new Exception('Invalid aquos % discount.');
+			        }
+		        }
+
+	        }
+        } catch (Exception $e) {
+	        // Handle the exception here
+	        $error_message = $e->getMessage();
+	        // Log the error message
+	        error_log("Error in create_order_line_item_with_coupon function: " . $error_message);
+        }
 	}
 
 	/**
