@@ -1,3 +1,6 @@
+### 2.2.9 April 3rd, 2023
+* New error message for more than 1 appointment in cart with the phone number in case the customer wants more information
+
 ### 2.2.8 March 31th, 2023
 * Forced path to cart before validation order
 * Traduction to French notice in cart
