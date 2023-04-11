@@ -860,8 +860,9 @@ class Tmsm_Aquos_Spa_Booking_Public {
                 $phoneCall = str_replace(' ', '', $phone);
 
                 wc_add_notice(sprintf(__('To best respond to your request and ensure availability,<b> beyond 1 appointment, please contact us by phone at <a href = tel:+33%s >0%s</a> . </b>','tmsm-aquos-spa-booking'),$phoneCall,$phone ), 'error');
-            } else {
 
+
+            } else {
                 // wc_add_notice( sprintf( __( 'Your appointment was added. <a href="%s">Do you want to add another one?</a>', 'tmsm-aquos-spa-booking' ), wc_get_raw_referer() ? wp_validate_redirect( wc_get_raw_referer(), false ) : wc_get_page_permalink( 'shop' ) ) );
                 wc_add_notice(__("Your appointment was added. <b> Please validate your order before adding a new one. </b>", 'tmsm-aquos-spa-booking'));
             }
@@ -879,7 +880,16 @@ class Tmsm_Aquos_Spa_Booking_Public {
 			wp_send_json_error($jsondata);
 		}
 	}
+    public function remove_checkout_button() {
+        global $woocommerce;
 
+        if(self::cart_has_appointmentonly()) {
+
+            if ($woocommerce->cart->get_cart_contents_count() > 1) {
+                remove_action('woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20);
+            }
+        }
+    }
 	/**
 	 * Send a response to ajax request, as JSON.
 	 *

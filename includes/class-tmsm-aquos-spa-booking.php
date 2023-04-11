@@ -223,7 +223,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_filter( 'woocommerce_is_purchasable', $plugin_public, 'woocommerce_is_purchasable_appointment', 20, 2 );
 		$this->loader->add_filter( 'woocommerce_variation_is_purchasable', $plugin_public, 'woocommerce_is_purchasable_appointment', 20, 2 );
 		$this->loader->add_filter( 'woocommerce_add_cart_item_data', $plugin_public, 'woocommerce_add_cart_item_data_appointment', 10, 3 );
-
+        $this->loader->add_action( 'woocommerce_after_cart_table', $plugin_public, 'remove_checkout_button',10,0);
 		$this->loader->add_filter( 'woocommerce_add_to_cart_validation', $plugin_public, 'woocommerce_add_to_cart_validation', 10, 6 );
 		$this->loader->add_filter( 'woocommerce_get_item_data', $plugin_public, 'woocommerce_get_item_data_appointment', 10, 2 );
 		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'woocommerce_checkout_create_order_line_item_appointment', 20, 4 );
