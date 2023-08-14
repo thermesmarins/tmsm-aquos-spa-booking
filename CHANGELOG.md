@@ -1,3 +1,6 @@
+### 2.2.14 August 14th, 2023
+* Update min.js file for production
+
 ### 2.2.13 August 14th, 2023
 * Added new message to show up base on backoffice's parameters for the prices updates for next year.
 
