@@ -1,3 +1,6 @@
+### 2.2.13 July 14th, 2023
+* Added new message to show up base on backoffice's parameters for the prices updates for next year.
+
 ### 2.2.12 April 11th,2023
 * Disable the checkout button in cart, if more than one appointment booked.
 
