@@ -568,7 +568,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					//$price = 18; //2020
 					$price = 20; // 2023
 					break;
-				case 898: // Modelage nuque et cuir chevelu pour 2 personnes
+				case 891: // Modelage nuque et cuir chevelu pour 2 personnes
 					$price = 40; // 2023
 					break;
 				case 680: // Modelage dos d'accueil
