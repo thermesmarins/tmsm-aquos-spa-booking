@@ -172,7 +172,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 								                   '',
 								'city'          => self::sanitize_for_webservice( sanitize_text_field( trim( $order->get_billing_city() ) ) ) ?? '',
 								'phone_number'  => self::sanitize_for_webservice( sanitize_text_field( trim( $order->get_billing_phone() ) ) ) ?? '',
-								'note'          => self::sanitize_for_webservice( sanitize_text_field( trim( $order->get_customer_note() ) ) ) ?? '',
+								'note'          => $pa . self::sanitize_for_webservice( sanitize_text_field( trim( $order->get_customer_note() ) ) ) ?? '',
 								'list_products' => $aquos_id_array_formatted,
 							];
 
