@@ -123,6 +123,12 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 						if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
 							error_log('Tmsm_Aquos_Spa_Booking_Background_Process order_item is not processed');
 						}
+						// Add to aquos with or without aquatonic options in note !
+						if ( wc_get_order_item_meta( $order_item_id, 'pa_parcoursaquatonic', true ) === "sans-parcours-aquatonic" ) {
+							$pa = '';
+						} else {
+							$pa = '-AVEC PA- ';
+						}
 
 						// Prepare web service params
 						$settings_webserviceurl = get_option( 'tmsm_aquos_spa_booking_webserviceurlsubmit' );

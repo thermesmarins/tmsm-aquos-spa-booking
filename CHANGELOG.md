@@ -1,3 +1,6 @@
+### 2.2.19: November 6th, 2023
+* Add new message in aquos for 'parcours aquatonic' in customers notes.
+* 
 ### 2.2.14 August 14th, 2023
 * Update min.js file for production
 
