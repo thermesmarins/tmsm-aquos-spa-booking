@@ -112,7 +112,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			$interval = $today->diff(self::getMinimumDatetime());
 			$daysrangefrom = $interval->format('%a');
 
-
+			$dateto = new \DateTime(get_option('tmsm_aquos_spa_booking_dateto'));
 			$enddate = new \DateTime();
 			$enddate->modify('+' . get_option('tmsm_aquos_spa_booking_daysrangeto', 60) . ' days');
 
@@ -137,6 +137,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 					'ifnotincludedinvoucher' => _x('if not included in voucher', 'attribute selection description', 'tmsm-aquos-spa-booking'),
 				),
 				'calendar' => [
+					'messagedate'	=> $dateto->format('Y-m-d'),
 					'dateselection' => esc_js(get_option('tmsm_aquos_spa_booking_dateselection', 'calendar')),
 					'daysrangefrom' => esc_js($daysrangefrom),
 					'daysrangeto'   => esc_js(get_option('tmsm_aquos_spa_booking_daysrangeto', 60)),
@@ -421,8 +422,8 @@ class Tmsm_Aquos_Spa_Booking_Public
 			<div id="tmsm-aquos-spa-booking-products-container" >
 			<div id="tmsm-aquos-spa-booking-products-inner">
 			<div class="alert alert-info tmsm-message" style="display:none;">
-				<p> <strong>' . __('Please note our rates change in January.', 'tmsm-aquos-spa-booking') . '</strong> </p>
-				<p>'  . __('For a treatment carried out next year, the new rates will be applied.', 'tmsm-aquos-spa-booking') . '</p>
+			 <p> <strong>' . get_option('tmsm_aquos_spa_booking_messagestrong') .'</strong> </p>
+			 <p>'  . get_option('tmsm_aquos_spa_booking_message') . '</p>
 			</div>
 			<h3>' . __('Pick your treatment:', 'tmsm-aquos-spa-booking') . '</h3>
 			<p id="tmsm-aquos-spa-booking-products-loading">' . __('Loading', 'tmsm-aquos-spa-booking') . '</p>

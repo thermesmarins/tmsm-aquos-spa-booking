@@ -1,3 +1,6 @@
+### 2.2.20: December 14th, 2023
+* Add possibility to do the message and set the end of display, for treatments prices annual augmentation, in the reservation path
+
 ### 2.2.19: November 6th, 2023
 * Add new message in aquos for 'parcours aquatonic' in customers notes.
 * 

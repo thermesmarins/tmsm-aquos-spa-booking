@@ -2197,27 +2197,39 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
   /**
    * Show or hide the message for warning the customer about the price augmentation
    */
-  TmsmAquosSpaBookingApp.messageForPriceAugmentation = function() 
-  {
-      // get the days range to available for each aquatonic
-      let daysrangeto = TmsmAquosSpaBookingApp.calendar.daysrangeto;
-      // get the value of the voucher choise
-      let value = $(event.target).val();
-      // get the current date
-      let currentDate = new Date();
-      // get the last day of the year
-      let lastDayOfTheYear= new Date(currentDate.getFullYear(), 11, 31); // Month is 0-based, so 11 represents December.
-      // get the diffenrence value in days
-      let diffDays = Math.floor((lastDayOfTheYear - currentDate) / (1000 * 60 * 60 * 24));
-      if (diffDays <= daysrangeto) {
-        if (value == 0) {
-          $(".tmsm-message").show();
-        }
-        else {
-          $(".tmsm-message").hide();
-        }
+  TmsmAquosSpaBookingApp.messageForPriceAugmentation = function () {
+    // add one day to the date to be sure it shows up to the date
+    function addOneDay(date) {
+      var date = new Date(date);
+      date.setDate(date.getDate() + 1);
+      return date;
+    }
+    // get the days range to available for each aquatonic
+    let daysrangeto = TmsmAquosSpaBookingApp.calendar.daysrangeto;
+    // get de date to message display
+    let dateEndForMessage = TmsmAquosSpaBookingApp.calendar.messagedate;
+    // get the value of the voucher choise
+    let value = $(event.target).val();
+    // get the current date
+    let currentDate = new Date();
+    // get the last day of the year
+    //let lastDayOfTheYear = new Date(currentDate.getFullYear(), 11, 31); // Month is 0-based, so 11 represents December.
+    // Get the day of ending message set in the backoffice
+    let LastDayOfMessage = addOneDay(dateEndForMessage);
+    // get the diffenrence value in days
+    let diffDays = Math.floor(
+      // (lastDayOfTheYear - currentDate) / (1000 * 60 * 60 * 24)
+      (LastDayOfMessage - currentDate) / (1000 * 60 * 60 * 24)
+    );
+    console.log(diffDays);
+    if (diffDays <= daysrangeto && diffDays >= 0) {
+      if (value == 0) {
+        $(".tmsm-message").show();
+      } else {
+        $(".tmsm-message").hide();
       }
-  }
+    }
+  };
 
   /**
    * Set initial data into view and start recurring display updates.
