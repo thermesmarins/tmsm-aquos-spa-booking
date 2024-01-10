@@ -553,7 +553,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					break;
 				case 427: // Une nuit Oceania
 					//$price = 82; // 2020
-					$price = 85; // 2023
+					//$price = 85; // 2023
+					$price = 90; // 2024
 					break;
 			}
 		}
