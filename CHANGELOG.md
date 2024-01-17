@@ -1,3 +1,6 @@
+### 2.2.22: January 17th, 2024
+* New hardcoded prices (aquatonic spa)
+
 ### 2.2.21: January 10th, 2024
 * Change Accomodation price for Rennes
 

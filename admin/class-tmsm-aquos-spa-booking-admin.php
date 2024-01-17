@@ -537,19 +537,23 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				case 338: // Parcours Aquatonic
 					//$price = 20; // 2021
 					//$price = 21; // 2022
-					$price = 22.5; // 2023
+					//$price = 22.5; // 2023
+					$price = 24; // 2024
 					break;
 				case 191: // Modelage nuque et cuir chevelu
 					//$price = 18; // 2020
-					$price = 20; // 2023
+					//$price = 20; // 2023
+					$price = 21; // 2024
 					break;
 				case 1076: // Modelage nuque et cuir chevelu pour 2 personnes
 					//$price = 36; // 2020
-					$price = 40; // 2023
+					//$price = 40; // 2023
+					$price = 42; // 2024
 					break;
 				case 538: // Modelage dos d'accueil
 					//$price = 18; // 2020
-					$price = 20; // 2023
+					//$price = 20; // 2023
+					$price = 21; // 2024
 					break;
 				case 427: // Une nuit Oceania
 					//$price = 82; // 2020
@@ -563,18 +567,22 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				case 338: // Parcours Aquatonic
 					//$price = 23; // 2021
 					//$price = 24; // 2022
-					$price = 26; // 2023
+					//$price = 26; // 2023
+					$price = 27; // 2024
 					break;
 				case 191: // Modelage nuque et cuir chevelu
 					//$price = 18; //2020
-					$price = 20; // 2023
+					//$price = 20; // 2023
+					$price = 21; // 2024
 					break;
 				case 891: // Modelage nuque et cuir chevelu pour 2 personnes
-					$price = 40; // 2023
+					//$price = 40; // 2023
+					$price = 42; // 2024
 					break;
 				case 680: // Modelage dos d'accueil
 					//$price = 18; //2020
-					$price = 20; // 2023
+					//$price = 20; // 2023
+					$price = 21; // 2024
 					break;
 
 			}
@@ -584,10 +592,12 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 				case 368: // Parcours Aquatonic
 					//$price = 30; // 2021
 					//$price = 31; // 2022
-					$price = 34; // 2023
+					//$price = 34; // 2023
+					$price = 36; // 2024
 					break;
 				case 470: // Accès Espace Bien-être en complément d'un soin
-					$price = 30; // 2020
+					//$price = 30; // 2020
+					$price = 31; // 2024
 					break;
 				case 495: // Balnéo privative en duo
 					$price = 39; // 2020
