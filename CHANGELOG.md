@@ -1,3 +1,6 @@
+### 2.2.24 May 02nd, 2024
+* Add new text for gift voucher
+
 ### 2.2.22: January 17th, 2024
 * New hardcoded prices (aquatonic spa)
 
