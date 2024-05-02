@@ -2800,6 +2800,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 				. get_permalink($page_booking_id) . '#' . $product->get_id() . '" class="' . self::button_class_default() . ' ' . self::button_class_small() . '">'
 				. __('Book Now', 'tmsm-aquos-spa-booking') . '</a>
 				</p>
+				<p>
+				<em><small>' . __('To buy a gift voucher, continue below.','tmsm-aquos-spa-booking') . '</small></em>
+				</p>
 			</div>
 			';
 		}

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
 "POT-Creation-Date: 2023-12-14 09:17+0100\n"
-"PO-Revision-Date: 2023-12-14 09:28+0100\n"
+"PO-Revision-Date: 2024-05-02 13:18+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-KeywordsList: _e;__;_n:1,2;_x:1,2c;esc_attr__;esc_attr_e;"
 "esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;_ex:1,2c\n"
@@ -900,6 +900,10 @@ msgstr "Vous souhaitez réserver pour une date précise ?"
 #: public/class-tmsm-aquos-spa-booking-public.php:2801
 msgid "Book Now"
 msgstr "Réserver maintenant"
+
+#: public/class-tmsm-aquos-spa-booking-public.php:2804
+msgid "To buy a gift voucher, continue below."
+msgstr "Pour acheter un bon cadeau, continuez ci-dessous."
 
 #: templates/emails/plain/tmsm-aquos-spa-booking-appointment-message.php:14
 #, php-format
