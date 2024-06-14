@@ -1,3 +1,6 @@
+### 2.2.25 June 14th, 2024
+* New hardcoded prices (balneo duo paris)
+
 ### 2.2.24 May 02nd, 2024
 * Add new text for gift voucher
 

@@ -600,7 +600,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					$price = 31; // 2024
 					break;
 				case 495: // Balnéo privative en duo
-					$price = 39; // 2020
+					// $price = 39; // 2020
+					$price = 59; // 2024
 					break;
 				case 847: // Supplément French Manucure
 					$price = 5; // 2020
