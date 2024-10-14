@@ -422,7 +422,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			<div id="tmsm-aquos-spa-booking-products-container" >
 			<div id="tmsm-aquos-spa-booking-products-inner">
 			<div class="alert alert-info tmsm-message" style="display:none;">
-			 <p> <strong>' . get_option('tmsm_aquos_spa_booking_messagestrong') .'</strong> </p>
+			 <p> <strong>' . get_option('tmsm_aquos_spa_booking_messagestrong') . '</strong> </p>
 			 <p>'  . get_option('tmsm_aquos_spa_booking_message') . '</p>
 			</div>
 			<h3>' . __('Pick your treatment:', 'tmsm-aquos-spa-booking') . '</h3>
@@ -1695,13 +1695,36 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 */
 	public function woocommerce_email_before_order_table_appointment($order, $sent_to_admin, $plain_text, $email)
 	{
+		$actual_year = date('Y');
+		$today = date('Y-m-d');
+		$end_date = get_option('tmsm_aquos_spa_booking_dateto', $actual_year . '12-31');
+		$number_of_days = get_option('tmsm_aquos_spa_booking_daysrangeto', 90);
+		$start_message = date('Y-m-d', strtotime('-' . $number_of_days . ' days', strtotime($end_date)));
+		$in_date_range = false;
+		if ($today >= $start_message && $today < $end_date) {
+			$in_date_range = true;
+			echo '<p> Ca fonctionne </p>';
+		}
+		$voucher = false;
+		foreach ($order->get_items() as $item) {
+			if ($item['_voucher'] === 'yes') {
+				$voucher = true;
+			}
+		}
 
 		if (self::order_has_appointment($order) === true && $sent_to_admin === false) {
 			$message = get_option('tmsm_aquos_spa_booking_orderemail', false);
 
 			if (!empty($message)) {
 				echo '<p>' . nl2br(esc_html($message)) . '</p>';
+				if ($in_date_range === true && $voucher === true) {
+					$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
+					$price_change_information = get_option('tmsm_aquos_spa_booking_message', false);
+					echo '<p><strong>' . nl2br(esc_html($price_change_information_notice)) . '</strong></p>';
+					echo '<p>' . nl2br(esc_html($price_change_information)) . '</p>';
+				}
 			}
+
 
 			if ($plain_text || !is_a($order, 'WC_Order')) {
 				return;
@@ -2801,7 +2824,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 				. __('Book Now', 'tmsm-aquos-spa-booking') . '</a>
 				</p>
 				<p class="buy-voucher">
-				<em><small>' . __('To buy a gift voucher, continue below.','tmsm-aquos-spa-booking') . '</small></em>
+				<em><small>' . __('To buy a gift voucher, continue below.', 'tmsm-aquos-spa-booking') . '</small></em>
 				</p>
 			</div>
 			';

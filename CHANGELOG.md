@@ -1,3 +1,6 @@
+### 2.2.26 October 14th, 2024
+* Add message to confirmation's emails for booking a treatment for next year. It says that the prices will change during january.
+
 ### 2.2.25 June 14th, 2024
 * New hardcoded prices (balneo duo paris)
 
