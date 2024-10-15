@@ -1703,7 +1703,6 @@ class Tmsm_Aquos_Spa_Booking_Public
 		$in_date_range = false;
 		if ($today >= $start_message && $today < $end_date) {
 			$in_date_range = true;
-			echo '<p> Ca fonctionne </p>';
 		}
 		$voucher = false;
 		foreach ($order->get_items() as $item) {
@@ -1711,19 +1710,21 @@ class Tmsm_Aquos_Spa_Booking_Public
 				$voucher = true;
 			}
 		}
-
 		if (self::order_has_appointment($order) === true && $sent_to_admin === false) {
+
+			
 			$message = get_option('tmsm_aquos_spa_booking_orderemail', false);
 
 			if (!empty($message)) {
 				echo '<p>' . nl2br(esc_html($message)) . '</p>';
+				if ($in_date_range === true && $voucher === false) {
+					$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
+					$price_change_information = get_option('tmsm_aquos_spa_booking_message', false);
+					echo '<p><strong>' . nl2br(esc_html($price_change_information_notice)) . ' ' .  nl2br(esc_html($price_change_information)) . '</strong></p>';
+					
+				}
 			}
-			if ($in_date_range === true && $voucher === true) {
-				$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
-				$price_change_information = get_option('tmsm_aquos_spa_booking_message', false);
-				echo '<p><strong>' . nl2br(esc_html($price_change_information_notice)) . ' ' .  nl2br(esc_html($price_change_information)) . '</strong></p>';
-			}
-
+			
 			if ($plain_text || !is_a($order, 'WC_Order')) {
 				return;
 			}
@@ -1802,7 +1803,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 				);
 			}
-
+			
 			if ($markup) {
 				echo '<script type="application/ld+json">' . wc_esc_json(wp_json_encode($markup), true) . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
