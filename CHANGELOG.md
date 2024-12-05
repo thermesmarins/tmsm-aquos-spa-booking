@@ -1,3 +1,6 @@
+### 2.2.28 December 05th, 2024
+* New hardcoded prices (Une nuit Oceania)
+
 ### 2.2.27 October 14th, 2024
 * Add message to confirmation's emails for booking a treatment for next year. It says that the prices will change during january.
 
