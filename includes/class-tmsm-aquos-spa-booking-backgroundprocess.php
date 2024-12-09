@@ -195,7 +195,13 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							);
 							$response_code = wp_remote_retrieve_response_code( $response );
 							$response_data = json_decode( wp_remote_retrieve_body( $response ) );
-
+							// todo remove for production
+							error_log('response_data : ');
+							error_log(print_r($response_data, true));
+							error_log(print_r($response_data->appointment_id, true));
+							
+							error_log('order_response');
+							error_log(print_r($order, true));
 							$errors = [];
 
 							$logger = wc_get_logger();
@@ -231,10 +237,17 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 									error_log('Error message: '. $response->get_error_message());
 									$errors[] = sprintf( __( 'Error message: %s', 'tmsm-aquatonic-course-booking' ), $response->get_error_message() );
 								}
-
+								// todo ajouter ici la sauvegarde de l'id aquos du rendez-vous ! (L234)
+								// todo vérifier que appointment_id n'est pas vide.
+								// todo sauvegarder dans les méta de la commande l'id que j'utiliserais plus tard pour la suppression.
 								// No errors, success
 								if ( ! empty( $response_data->Status ) && $response_data->Status == 'true' ) {
 									wc_update_order_item_meta( $order_item_id, '_appointment_processed', 'yes' );
+									if (!empty($response_data->appointment_id)) {
+										$order->add_meta_data('_aquos_appointment_id', $response_data->appointment_id);
+										$order->save();
+										
+									}
 									if ( defined( 'TMSM_AQUOS_SPA_BOOKING_DEBUG' ) && TMSM_AQUOS_SPA_BOOKING_DEBUG ) {
 										error_log( 'Web service submission successful' );
 									}
