@@ -2571,7 +2571,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			];
 
 			$body = json_encode($data);
-
+// todo récupérer la formations de la signature pour l'annulation de rdv
 			$headers = [
 				'Content-Type' => 'application/json; charset=utf-8',
 				'X-Signature' => $this->aquos_generate_signature($body),
@@ -2828,5 +2828,30 @@ class Tmsm_Aquos_Spa_Booking_Public
 			</div>
 			';
 		}
+	}
+	public function appointment_cancelation($order) {
+
+$order_id = $order->get_id();
+$order = wc_get_order( $order_id );
+$date = [];
+foreach ( $order->get_items() as $item_id => $item ) {
+	$date = wc_get_order_item_meta($item_id,'_appointment_date', true);
+}
+		// todo : récupérer l'url de la commande
+		$url = '/%s/boutique/mon-compte/voir-commande/%d';
+		$url_complete = sprintf($url, get_site_url(),$order->get_id());
+		// todo : checker si un rendez vous
+		echo $order->get_meta('_appointment');
+		// todo récupérer la date du rendez-vous
+		echo $date;
+		// todo : checker si rendez vous est toujours valable
+		echo 'Ici le bouton de commande en bas !'; 
+		echo $url_complete;
+		// todo : creer le bouton
+		//  todo : faire une fonction pour le traitement du bouton (annulation du rendez-vous)
+		// todo : retourner le statut du rendez-vous annuler
+		// if ( $order->get_status() === 'pending' ) { // Modifier le statut selon vos besoins
+		// 	echo '<a href="' . wp_nonce_url( admin_url( 'post.php?post=' . $order->get_id() . '&action=cancel_order_client' ), 'cancel-order-client' ) ) . '" class="button">Annuler</a>';
+		// }
 	}
 }

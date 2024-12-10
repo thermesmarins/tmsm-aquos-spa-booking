@@ -289,6 +289,7 @@ class Tmsm_Aquos_Spa_Booking {
 
 		// Appointment link
 		$this->loader->add_action( 'woocommerce_single_product_summary', $plugin_public, 'woocommerce_single_product_summary_appointmentlink', 30 );
+		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'appointment_cancelation', 30 );
 	}
 
 	/**
