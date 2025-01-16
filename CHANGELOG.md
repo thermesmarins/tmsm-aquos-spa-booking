@@ -1,3 +1,6 @@
+### 2.2.29: January 6th, 2025
+* New hardcoded prices (aquatonic spa)
+
 ### 2.2.28 December 05th, 2024
 * New hardcoded prices (Une nuit Oceania)
 
