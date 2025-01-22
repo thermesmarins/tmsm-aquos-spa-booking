@@ -13,7 +13,7 @@ if(! defined('TMSM_AQUOS_SPA_BOOKING_TEMPLATES')){
  *
  * @see WP_Background_Process
  */
-class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
+class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Process {
 
 	/**
 	 * Specific action identifier
@@ -196,12 +196,12 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends WP_Background_Process {
 							$response_code = wp_remote_retrieve_response_code( $response );
 							$response_data = json_decode( wp_remote_retrieve_body( $response ) );
 							// todo remove for production
-							error_log('response_data : ');
-							error_log(print_r($response_data, true));
-							error_log(print_r($response_data->appointment_id, true));
+							// error_log('response_data : ');
+							// error_log(print_r($response_data, true));
+							// error_log(print_r($response_data->appointment_id, true));
 							
-							error_log('order_response');
-							error_log(print_r($order, true));
+							// error_log('order_response');
+							// error_log(print_r($order, true));
 							$errors = [];
 
 							$logger = wc_get_logger();

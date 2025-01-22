@@ -5,14 +5,14 @@
  * @package WP-Background-Processing
  */
 
-if ( ! class_exists( 'WP_Async_Request' ) ) {
+if ( ! class_exists( 'Tmsm_WP_Async_Request' ) ) {
 
 	/**
 	 * Abstract WP_Async_Request class.
 	 *
 	 * @abstract
 	 */
-	abstract class WP_Async_Request {
+	abstract class Tmsm_WP_Async_Request {
 
 		/**
 		 * Prefix
