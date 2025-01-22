@@ -1,5 +1,10 @@
+### 2.2.30: January 22th, 2025
+* New prefix classes for Background process class in vendors folder
+  
+  
 ### 2.2.29: January 6th, 2025
 * New hardcoded prices (aquatonic spa)
+* New save the aquos id for appointments
 
 ### 2.2.28 December 05th, 2024
 * New hardcoded prices (Une nuit Oceania)
