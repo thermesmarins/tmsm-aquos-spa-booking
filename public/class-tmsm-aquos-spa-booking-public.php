@@ -2829,4 +2829,30 @@ class Tmsm_Aquos_Spa_Booking_Public
 			';
 		}
 	}
+	function filter_woocommerce_cart_crosssell_ids($cross_sells, $cart) {
+		// Initialize
+		$cross_sells_ids_in_cart = array();
+		
+    
+		// Loop through cart items
+		foreach ( $cart->get_cart() as $cart_item_key => $values ) {
+
+			if ( $values['quantity'] > 0 ) {
+			// Utilisation d'empty pour ne pas créer d'erreur si la variable n'existe pas. 
+				if (!empty($values['appointment'])) {
+					error_log('not empty');
+					$cross_sells_ids_in_cart = [];
+
+				} else {
+					// Merge one or more arrays
+				$cross_sells_ids_in_cart = array_merge( $values['data']->get_cross_sell_ids(), $cross_sells_ids_in_cart );
+				}				
+			}
+		}
+		
+		// Cleans up an array, comma- or space-separated list of IDs
+		$cross_sells = wp_parse_id_list( $cross_sells_ids_in_cart );
+	
+		return $cross_sells;
+	}
 }

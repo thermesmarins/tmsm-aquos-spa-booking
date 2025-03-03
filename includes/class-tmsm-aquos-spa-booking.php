@@ -275,6 +275,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_filter( 'woocommerce_cod_process_payment_order_status', $plugin_public, 'woocommerce_cod_process_payment_order_status', 20, 1 );
 		$this->loader->add_filter( 'woocommerce_order_item_needs_processing', $plugin_public, 'woocommerce_order_item_needs_processing', 20, 3 );
 		$this->loader->add_action( 'woocommerce_after_cart_item_quantity_update', $plugin_public, 'woocommerce_after_cart_item_quantity_update', 20, 4 );
+		$this->loader->add_filter( 'woocommerce_cart_crosssell_ids', $plugin_public, 'filter_woocommerce_cart_crosssell_ids', 10, 2 );
 
 
 		// Order Status Appointment for COD (not free)
