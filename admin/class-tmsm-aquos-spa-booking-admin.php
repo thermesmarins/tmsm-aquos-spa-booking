@@ -588,7 +588,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					//$price = 18; //2020
 					//$price = 20; // 2023
 					// $price = 21; // 2024
-					$price = 22; // 2025
+					$price = 20; // 2025
 					break;
 
 			}
