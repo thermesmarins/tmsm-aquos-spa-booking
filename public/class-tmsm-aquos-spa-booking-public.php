@@ -10,6 +10,7 @@
  * @subpackage Tmsm_Aquos_Spa_Booking/public
  */
 
+use DynamicConditions\Lib\Date;
 
 /**
  * The public-facing functionality of the plugin.
@@ -2854,5 +2855,71 @@ class Tmsm_Aquos_Spa_Booking_Public
 		$cross_sells = wp_parse_id_list( $cross_sells_ids_in_cart );
 	
 		return $cross_sells;
+	}
+	/**
+	 * Display appointment link below product short description in single product
+	 */
+	public function add_woocommerce_valid_order_statuses_for_cancel_filter( $array, $order ){
+		$date = [];
+		foreach ( $order->get_items() as $item_id => $item ) {
+			$date = wc_get_order_item_meta($item_id,'_appointment_date', true);
+		}
+		// error_log('date de rendez vous : ' . $date);
+		$today = new DateTime('now');
+		// error_log('date de aujourd\'hui : ' . $today->format('Y-m-d'));
+		if ($date > $today->format('Y-m-d')) {
+		$array = [
+		   'appointment',
+		   'pending', 
+		   'failed'
+		];
+	}
+		   // filter...
+		   return $array;
+	   }
+	/**
+	 * Display appointment link below product short description in single product
+	 */
+	public function add_woocommerce_order_details_after_order_table ($order) {
+		// TODO ne pas afficher le bouton "voir" dans le détail des commandes (pas necessaire)
+		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
+		$actions = wc_get_account_orders_actions( $order );
+		$date = [];
+		foreach ( $order->get_items() as $item_id => $item ) {
+			$date = wc_get_order_item_meta($item_id,'_appointment_date', true);
+		}
+		$today = new DateTime('now');
+
+	if ($date < $today->format("Y-m-d") ) {
+		echo "date rdv inferieure";
+	}
+// error_log('actions ' . print_r($actions, true));
+	// if ( ! empty( $actions )  ) {
+	// 	foreach ( $actions as $key => $action ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+	// 		/* translators: %s: order number */
+	// 		echo '<a href="' . esc_url( $action['url'] ) . '" class="woocommerce-button button ' . sanitize_html_class( $key ) . 
+	// 		'" aria-label="' . esc_attr( sprintf( __( 'View order number %s', 'woocommerce' ), $order->get_order_number() ) ) . '"> ' 
+	// 		. esc_html( $action['name'] ) . '</a>  ';
+			
+	// 	}
+	// }
+	}
+
+	/**
+	 * Get the value of a meta_key from the woocommerce_order_itemmeta table.
+	 *
+	 * @param int $order_item_id The order item ID.
+	 * @param string $meta_key The meta key to retrieve.
+	 * @return mixed The value of the meta key, or false if not found.
+	 */
+	public function get_order_item_meta_value($order_item_id, $meta_key)
+	{
+		return wc_get_order_item_meta($order_item_id, $meta_key, true);
+	}
+
+	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status) {
+		error_log('$order_id : ' . print_r($order_id));
+		error_log('$old_status : ' . print_r($old_status));
+		error_log('$new_status : ' . print_r($new_status));
 	}
 }
