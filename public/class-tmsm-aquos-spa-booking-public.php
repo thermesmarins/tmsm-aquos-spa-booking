@@ -2860,6 +2860,8 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 * Display appointment link below product short description in single product
 	 */
 	public function add_woocommerce_valid_order_statuses_for_cancel_filter( $array, $order ){
+		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
+		// TODO creer une difference de jours pour pouvoir comparer les dates et ne pas afficher les boutons d'annulation
 		$date = [];
 		foreach ( $order->get_items() as $item_id => $item ) {
 			$date = wc_get_order_item_meta($item_id,'_appointment_date', true);
@@ -2883,6 +2885,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 	public function add_woocommerce_order_details_after_order_table ($order) {
 		// TODO ne pas afficher le bouton "voir" dans le détail des commandes (pas necessaire)
 		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
+		
 		$actions = wc_get_account_orders_actions( $order );
 		$date = [];
 		foreach ( $order->get_items() as $item_id => $item ) {
@@ -2916,10 +2919,28 @@ class Tmsm_Aquos_Spa_Booking_Public
 	{
 		return wc_get_order_item_meta($order_item_id, $meta_key, true);
 	}
-
+	/**
+	 * Do aquos delete request if custumer cancel appointment
+	 *
+	 * @param [int] $order_id
+	 * @param [string] $old_status
+	 * @param [string] $new_status
+	 * @return void
+	 */
 	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status) {
-		error_log('$order_id : ' . print_r($order_id));
-		error_log('$old_status : ' . print_r($old_status));
-		error_log('$new_status : ' . print_r($new_status));
+		error_log('$order_id : ' . print_r($order_id, true));
+		error_log('$old_status : ' . print_r($old_status, true));
+		error_log('$new_status : ' . print_r($new_status, true));
+		// TODO recuperer l'id du rdv
+		// TODO recuperer l'id du site
+		// TODO formater l'id du rdv et l'id du site en json
+		// TODO creer la signature avec l'id du site et l'id du rdv 
+		// TODO Faire l'appel api vers aquos
+		
+
+
+		if ($old_status == 'appointment' && $new_status == 'cancelled') {
+			error_log('rdv annulé côté client');
+		}
 	}
 }

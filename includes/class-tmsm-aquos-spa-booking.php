@@ -288,10 +288,10 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'woocommerce_checkout_create_order_fee_item', $plugin_public, 'order_fee_item_metadata_giftwrap', 80, 4 );
 		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'create_order_line_item_with_coupon', 50, 4 );
 
-			// Appointment public cancelation
-			$this->loader->add_filter( 'woocommerce_valid_order_statuses_for_cancel', $plugin_public, 'add_woocommerce_valid_order_statuses_for_cancel_filter', 10, 2 );
-			$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'add_woocommerce_order_details_after_order_table', 10, 2 );
-			$this->loader->add_action( 'woocommerce_order_status_changed', $plugin_public, 'appointment_order_status_changed_to_canceled', 10, 3);
+		// Appointment public cancelation
+		$this->loader->add_filter( 'woocommerce_valid_order_statuses_for_cancel', $plugin_public, 'add_woocommerce_valid_order_statuses_for_cancel_filter', 10, 2 );
+		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'add_woocommerce_order_details_after_order_table', 10, 2 );
+		$this->loader->add_action( 'woocommerce_order_status_changed', $plugin_public, 'appointment_order_status_changed_to_canceled', 10, 3);
 
 		// Appointment link
 		$this->loader->add_action( 'woocommerce_single_product_summary', $plugin_public, 'woocommerce_single_product_summary_appointmentlink', 30 );
