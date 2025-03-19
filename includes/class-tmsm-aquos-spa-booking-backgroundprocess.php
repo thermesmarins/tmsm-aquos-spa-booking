@@ -245,6 +245,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 								if ( ! empty( $response_data->Status ) && $response_data->Status == 'true' ) {
 									wc_update_order_item_meta( $order_item_id, '_appointment_processed', 'yes' );
 									if (!empty($response_data->appointment_id)) {
+										wc_update_order_item_meta($order_item_id, '_aquos_appointment_id', $response_data->appointment_id);
 										$order->add_meta_data('_aquos_appointment_id', $response_data->appointment_id);
 										$order->save();
 										

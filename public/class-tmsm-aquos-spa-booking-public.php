@@ -2931,16 +2931,58 @@ class Tmsm_Aquos_Spa_Booking_Public
 		error_log('$order_id : ' . print_r($order_id, true));
 		error_log('$old_status : ' . print_r($old_status, true));
 		error_log('$new_status : ' . print_r($new_status, true));
-		// TODO recuperer l'id du rdv
+		// todo récupérer le détail de la commande
+		$order = wc_get_order( $order_id );
+		// TODO recuperer l'id du rdv	
+		$appintment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
+		error_log('appointment_id' . print_r($appintment_id, true));
 		// TODO recuperer l'id du site
+		$site_id =  get_option( 'tmsm_aquos_spa_booking_aquossiteid' );
+		error_log('site_id' . print_r($site_id, true));
+		$delete_appointment_array = array( 
+			'id_site' => $site_id,
+			'appointment_id' => $appintment_id
+		);
 		// TODO formater l'id du rdv et l'id du site en json
+		$json_body =json_encode($delete_appointment_array);
 		// TODO creer la signature avec l'id du site et l'id du rdv 
+		$signature =  $this->generate_hmac_signature($json_body);
 		// TODO Faire l'appel api vers aquos
-		
+		$response = $this->delete_in_aquos($json_body, $signature);
+		print_r($response);
 
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
 			error_log('rdv annulé côté client');
 		}
+	}
+	private function generate_hmac_signature($json_body) {
+		// todo voir où mettre le token secret d'annulation
+		$secret_token = "C9HFwFYF3n45CKnSw97gux3ewTWRiMFd9bWszEJq7MWkaq63c9wX5349B84473n8";
+		$hmacSignature = hash_hmac('sha256', $json_body, $secret_token, true);
+        return base64_encode($hmacSignature);
+
+	}
+	private function delete_in_aquos ($body, $signature) {
+		$headers = [
+			'Content-Type' => 'application/json; charset=utf-8',
+			'X-Signature' => $signature,
+			'Cache-Control' => 'no-cache',
+		];
+// todo voir où mettre l'url d'aquos pour l'annulation du rdv
+		$response = wp_remote_post(
+			"https://resaspa.api.aquatonic.fr/unsubscribeappointment",
+			array(
+				'method'     => 'DELETE',
+				'headers'     => $headers,
+				'body'        => $body,
+				'data_format' => 'body',
+				'timeout' => 10,
+			)
+		);
+		$response_code = wp_remote_retrieve_response_code( $response );
+		$response_data = json_decode( wp_remote_retrieve_body( $response ) );
+		error_log('response cancel ! ' . print_r($response_data, true));
+		return $response_data->Status;
 	}
 }

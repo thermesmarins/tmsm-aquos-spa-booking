@@ -124,8 +124,9 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		if ( empty( $formatted_meta ) ) {
 			return $formatted_meta;
 		}
-
+		error_log('$order_item' . print_r($order_item, true));
 		foreach ( $formatted_meta as $meta ) {
+			error_log('meta' . print_r($meta, true));
 
 			if($meta->key == '_appointment' && !empty($meta->value)){
 				$meta->display_key = __('Appointment', 'tmsm-aquos-spa-booking');
@@ -143,6 +144,10 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			}
 			if($meta->key == '_aquos_price' && !empty($meta->value)){
 				$meta->display_key = __('Aquos Price', 'tmsm-aquos-spa-booking');
+			}
+			if($meta->key == '_appointment_id' && !empty($meta->value)){
+				// TODO ajouter la traduction de "id du rendez-vous"
+				$meta->display_key = __('Appointment_id', 'tmsm-aquos-spa-booking');
 			}
 		}
 
@@ -738,6 +743,23 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 		return $price;
 	}
+	/**
+ * Plugin Name: Mon Plugin Custom Détail Commande
+ * Description: Ajoute une valeur personnalisée au détail de la commande.
+ * Version: 1.0
+ * Author: Votre Nom
+ */
+
+function woocommerce_admin_order_data_after_order_details_appointment_id($order) {
+    $order_id = $order->get_id();
+
+    // Effectuer une requête à votre base de données
+    $appintment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
+	if ($appintment_id) {
+        echo '<p>Valeur Custom : ' . esc_html($appintment_id) . '</p>';
+    }
+    
+}
 
 
 }
