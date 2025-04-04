@@ -2928,16 +2928,15 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 * @return void
 	 */
 	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status) {
+		// TODO supprimer les error_log
 		error_log('$order_id : ' . print_r($order_id, true));
 		error_log('$old_status : ' . print_r($old_status, true));
 		error_log('$new_status : ' . print_r($new_status, true));
-		// todo récupérer le détail de la commande
 		$order = wc_get_order( $order_id );
-		// TODO recuperer l'id du rdv	
 		$appintment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
-		error_log('appointment_id' . print_r($appintment_id, true));
-		// TODO recuperer l'id du site
 		$site_id =  get_option( 'tmsm_aquos_spa_booking_aquossiteid' );
+		$url = get_option('tmsm_aquos_spa_booking_webserviceurldelete');
+		// TODO supprimer les error_log
 		error_log('site_id' . print_r($site_id, true));
 		$delete_appointment_array = array( 
 			'id_site' => $site_id,
@@ -2948,30 +2947,32 @@ class Tmsm_Aquos_Spa_Booking_Public
 		// TODO creer la signature avec l'id du site et l'id du rdv 
 		$signature =  $this->generate_hmac_signature($json_body);
 		// TODO Faire l'appel api vers aquos
-		$response = $this->delete_in_aquos($json_body, $signature);
-		print_r($response);
+		$response = $this->delete_in_aquos($json_body, $signature, $url);
+		error_log('response from aquos' . print_r($response, true));
 
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
 			error_log('rdv annulé côté client');
+			$this->envoyer_email_confirmation_annulation( $order );
 		}
 	}
 	private function generate_hmac_signature($json_body) {
+		// get_option('tmsm_aquos_spa_booking_deleteaquossecret')
 		// todo voir où mettre le token secret d'annulation
-		$secret_token = "C9HFwFYF3n45CKnSw97gux3ewTWRiMFd9bWszEJq7MWkaq63c9wX5349B84473n8";
+		$secret_token = get_option('tmsm_aquos_spa_booking_deleteaquossecret');
+		// $secret_token = "C9HFwFYF3n45CKnSw97gux3ewTWRiMFd9bWszEJq7MWkaq63c9wX5349B84473n8";
 		$hmacSignature = hash_hmac('sha256', $json_body, $secret_token, true);
         return base64_encode($hmacSignature);
 
 	}
-	private function delete_in_aquos ($body, $signature) {
+	private function delete_in_aquos ($body, $signature, $url) {
 		$headers = [
 			'Content-Type' => 'application/json; charset=utf-8',
 			'X-Signature' => $signature,
 			'Cache-Control' => 'no-cache',
 		];
-// todo voir où mettre l'url d'aquos pour l'annulation du rdv
 		$response = wp_remote_post(
-			"https://resaspa.api.aquatonic.fr/unsubscribeappointment",
+			$url,
 			array(
 				'method'     => 'DELETE',
 				'headers'     => $headers,
@@ -2984,5 +2985,55 @@ class Tmsm_Aquos_Spa_Booking_Public
 		$response_data = json_decode( wp_remote_retrieve_body( $response ) );
 		error_log('response cancel ! ' . print_r($response_data, true));
 		return $response_data->Status;
+	}
+	function envoyer_email_confirmation_annulation( $order ) {
+		$client_email = $order->get_billing_email();
+		$current_user = wp_get_current_user();
+		$user_name =  $current_user->user_firstname . ' ' . $current_user->user_lastname;
+		$items = $order->get_items();
+		$date = '';
+		$heure = '';
+		$nom_service = '';
+		$site= get_bloginfo('name');
+		$signature="À bientôt à ".get_bloginfo('name') . " Saint-Grégoire";
+	
+		foreach ( $items as $item ) {
+			$appointment_date = $item->get_meta( '_appointment_date', true );
+			$date = new DateTime($appointment_date);
+			// TODO transformer la date en objet date et le mettre au format français
+
+			$heure = $item->get_meta( '_appointment_time', true );
+			$nom_service = $item->get_name();
+			break;
+		}
+	// Charger le modèle HTML
+    ob_start();
+    include(dirname(dirname(__FILE__)) . '/templates/emails/tmsm-aquos-spa-booking-appointment-cancellation.php');
+    $message = ob_get_contents();
+    ob_end_clean();
+
+    // Remplacer la variable VOTRE_CONTENU
+    // $message = str_replace('VOTRE_CONTENU', $contenu, $message);
+		$subject = sprintf('Confirmation d\'annulation de votre rendez-vous à l\'%s', $site);
+		$contenu = sprintf(
+			"
+			<p>Cher %s,</p>
+			<p>Votre rendez-vous du %s à %s pour %s a été annulé avec succès.</p>
+			<p>Nous sommes désolés de ne pas pouvoir vous recevoir.</p>
+			
+			",
+			$user_name,
+			$date->format('d-m-Y'),
+			$heure,
+			$nom_service
+		);
+		$message = str_replace('VOTRE_CONTENU', $contenu, $message);
+		$message = str_replace('SIGNATURE', $signature, $message);
+		error_log(
+			"email = " . print_r($message, true)
+		);
+		$headers = array('Content-Type: text/html; charset=UTF-8');
+	
+		wp_mail( $client_email, $subject, $message, $headers );
 	}
 }

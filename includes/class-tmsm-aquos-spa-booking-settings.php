@@ -109,7 +109,27 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 						'name'     => __('Aquos Secret', 'tmsm-aquos-spa-booking'),
 						'class'  => 'small-text',
 					),
-
+					// TODO ajout de l'url d'annulation
+					array(
+						'type'     => 'url',
+						'id'       => 'tmsm_aquos_spa_booking_webserviceurldelete',
+						'name'     => __('Web Service URL for deletion', 'tmsm-aquos-spa-booking'),
+						'desc'     => '' .
+							'<p class="description">' .
+							__('The URL of the Aquos web service. Use the special variables in the URL:', 'tmsm-aquos-spa-booking') .
+							'<br>' . sprintf(__('%s as the the web site id.', 'tmsm-aquos-spa-booking'), '<code>{site_id}</code>') .
+							'<br>' . sprintf(__('%s as the requested appointment ID.', 'tmsm-aquos-spa-booking'), '<code>{appointment_id}</code>') .
+							'</p>',
+						'class'  => 'large-text',
+					),
+					// TODO ajout du token d'annulation
+					array(
+						'type'     => 'text',
+						'id'       => 'tmsm_aquos_spa_booking_deleteaquossecret',
+						'name'     => __('Aquos Secret Delete', 'tmsm-aquos-spa-booking'),
+						'class'  => 'small-text',
+					),
+					// TODO ajout du nombre de jours limite pour l'annulation
 					array(
 						'type'     => 'url',
 						'id'       => 'tmsm_aquos_spa_booking_webserviceurltimes',
