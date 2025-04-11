@@ -205,6 +205,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                    'default' 		=> '',
                    'css' 			=> 'width:300px;',
                ),
+               
                'additional_content' => array(
                    'title' 		=> __( 'Additional content', 'woocommerce' ),
                    'description' 	=> __( 'Text to appear below the main email content.', 'woocommerce' ),
@@ -214,6 +215,18 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                    'default' 		=> $this->get_default_additional_content(),
                    'desc_tip' 		=> true,
                ),
+                'email_type' => array(
+                     'title' 		=> __( 'Email type', 'woocommerce' ),
+                     'type' 			=> 'select',
+                     'description' 	=> __( 'Choose which format of email to send.', 'woocommerce' ),
+                     'default' 		=> 'html',
+                     'class' 			=> 'email_type',
+                     'options' 		=> array(
+                          'plain' 	=> __( 'Plain text', 'woocommerce' ),
+                          'html' 	=> __( 'HTML', 'woocommerce' ),
+                          'multipart' => __( 'Multipart', 'woocommerce' ),
+                     ),
+                ),
            );
        }
 

@@ -14,13 +14,13 @@ echo esc_html__( 'Nous vous informons que votre rendez-vous (#' . $order->get_or
 
 // Tu peux ajouter ici des informations spécifiques à l'annulation (raison, date, etc.) 
 
-echo esc_html__( 'Voici les détails de votre commande annulée :', 'tmsm-aquos-spa-booking' ) . "\n\n";
+// echo esc_html__( 'Voici les détails de votre commande annulée :', 'tmsm-aquos-spa-booking' ) . "\n\n";
 
 /*
  * @hooked WC_Emails::order_details() Shows the order details table.
  * @since 3.0.0
  */
-do_action( 'woocommerce_email_order_details', $order, $sent_to_admin, $plain_text, $email );
+// do_action( 'woocommerce_email_order_details', $order, $sent_to_admin, $plain_text, $email );
 
 echo "\n----------------------------------------\n\n";
 
