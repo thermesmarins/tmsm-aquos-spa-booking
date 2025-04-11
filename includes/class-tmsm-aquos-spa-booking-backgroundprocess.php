@@ -34,8 +34,8 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 	public function __construct() {
 
 
-
-		$this->prefix = 'wp_' . get_current_blog_id();
+// TODO rendre dynamique le préfix de BDD
+		$this->prefix = 'aq_' . get_current_blog_id();
 
 		add_filter( 'woocommerce_email_classes', array( $this, 'register_email' ), 90, 1 );
 
@@ -74,7 +74,9 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment'] = require_once(plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-email-appointment.php');
 
 		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Message'] = require_once(plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-email-appointment-message.php');
-
+		// Enregistrement de l'email d'annulation pour le client
+		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'] = require_once(plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php');
+		
 		return $email_classes;
 	}
 

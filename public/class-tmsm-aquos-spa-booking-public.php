@@ -2952,8 +2952,14 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
-			error_log('rdv annulé côté client');
-			$this->envoyer_email_confirmation_annulation( $order );
+			// error_log('rdv annulé côté client');
+			// $this->envoyer_email_confirmation_annulation( $order );
+			$email_classes = WC()->mailer()->emails;
+
+        if ( isset( $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'] ) ) {
+            $email_appointment_cancelled = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'];
+            $email_appointment_cancelled->trigger( $order_id ); // Déclenche l'email en passant l'ID de la commande
+        }
 		}
 	}
 	private function generate_hmac_signature($json_body) {
