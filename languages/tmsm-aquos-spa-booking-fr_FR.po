@@ -1059,3 +1059,28 @@ msgstr "Erreurs de rendez-vous : %s"
 
 #~ msgid "Change treatment"
 #~ msgstr "Changer de soin"
+
+#: templates/emails/tmsm-aquos-spa-booking-appointment-cancelled.php:38
+#, php-format
+msgid "We inform you that your appointment with order %s has been cancelled."
+msgstr "Votre rendez-vous de la commande %s a été annulé avec succès"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:32
+#, php-format
+msgid "Order Email for Cancelled Appointment."
+msgstr "Email pour annulation de commande."
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:35
+#, php-format
+msgid "Notification emails are sent to the customer when their appointment is cancelled"
+msgstr "Email de notification lorsque le rendez-vous est annulé"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:38
+#, php-format
+msgid "Appointment Cancellation Confirmation"
+msgstr "Confirmation d'annulation de rendez-vous"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:39
+#, php-format
+msgid "Your Appointment has been Cancelled"
+msgstr "Votre rendez-vous à été annulé !"

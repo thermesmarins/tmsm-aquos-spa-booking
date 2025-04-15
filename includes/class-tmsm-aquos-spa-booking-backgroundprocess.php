@@ -34,8 +34,8 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 	public function __construct() {
 
 
-
-		$this->prefix = 'wp_' . get_current_blog_id();
+// TODO rendre dynamique le préfix de BDD
+		$this->prefix = 'aq_' . get_current_blog_id();
 
 		add_filter( 'woocommerce_email_classes', array( $this, 'register_email' ), 90, 1 );
 
@@ -74,7 +74,9 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment'] = require_once(plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-email-appointment.php');
 
 		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Message'] = require_once(plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-email-appointment-message.php');
-
+		// Enregistrement de l'email d'annulation pour le client
+		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'] = require_once(plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php');
+		
 		return $email_classes;
 	}
 
@@ -196,9 +198,9 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 							$response_code = wp_remote_retrieve_response_code( $response );
 							$response_data = json_decode( wp_remote_retrieve_body( $response ) );
 							// todo remove for production
-							// error_log('response_data : ');
-							// error_log(print_r($response_data, true));
-							// error_log(print_r($response_data->appointment_id, true));
+							error_log('response_data : ');
+							error_log(print_r($response_data, true));
+							error_log(print_r($response_data->appointment_id, true));
 							
 							// error_log('order_response');
 							// error_log(print_r($order, true));
@@ -240,10 +242,12 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 								// todo ajouter ici la sauvegarde de l'id aquos du rendez-vous ! (L234)
 								// todo vérifier que appointment_id n'est pas vide.
 								// todo sauvegarder dans les méta de la commande l'id que j'utiliserais plus tard pour la suppression.
+								error_log('response from aquos' . print_r($response_data, true));
 								// No errors, success
 								if ( ! empty( $response_data->Status ) && $response_data->Status == 'true' ) {
 									wc_update_order_item_meta( $order_item_id, '_appointment_processed', 'yes' );
 									if (!empty($response_data->appointment_id)) {
+										wc_update_order_item_meta($order_item_id, '_aquos_appointment_id', $response_data->appointment_id);
 										$order->add_meta_data('_aquos_appointment_id', $response_data->appointment_id);
 										$order->save();
 										
