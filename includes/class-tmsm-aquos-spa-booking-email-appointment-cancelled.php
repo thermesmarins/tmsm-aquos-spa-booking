@@ -48,7 +48,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
             );
 
             // Manually send via admin order actions (optional, you might trigger this via the order status change)
-            // add_action( 'woocommerce_order_action_send_appointment_cancellation', array( $this, 'trigger' ) );
+            add_action( 'woocommerce_order_action_send_appointment_cancellation', array( $this, 'trigger' ) );
 
             // Call parent constructor to load any other defaults not explicitly defined here
             parent::__construct();
@@ -57,6 +57,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
             add_action( 'woocommerce_order_status_cancelled', array( $this, 'trigger' ), 10, 1 );
              // Hook into the settings fields
              add_action( 'woocommerce_email_settings_fields', array( $this, 'init_form_fields' ), 10 );
+             
              
         }
 
@@ -100,6 +101,52 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                 $this->recipient                      = $this->object->get_billing_email();
                 $this->placeholders['{order_date}']   = wc_format_datetime( $this->object->get_date_created() );
                 $this->placeholders['{order_number}'] = $this->object->get_order_number();
+
+                 // Récupère le modèle de texte depuis les réglages de ton plugin custom
+                $cancellation_template = get_option('tmsm_aquos_spa_booking_cancellation_text_template');
+                $current_user = wp_get_current_user();
+                $user_name = $current_user->user_firstname . ' ' . $current_user->user_lastname;
+
+                $appointment_date_str = '';
+                $appointment_time = '';
+                $service_name = '';
+
+                foreach ( $order->get_items() as $item ) {
+                    $appointment_date_str = $item->get_meta( '_appointment_date' );
+                    $appointment_time = $item->get_meta( '_appointment_time' );
+                    $service_name = $item->get_name();
+                    break; // On ne prend que le premier service
+                    }
+                    $date = new DateTime( $appointment_date_str );
+                    $appointment_date = $appointment_date_str ? date_i18n( get_option( 'date_format' ), strtotime( $appointment_date_str ) ) : '';
+                    error_log( 'Appointment Date: ' . $appointment_date ); // Debugging line
+                    error_log( 'Appointment Time: ' . $appointment_time ); // Debugging line
+                    error_log( 'Service Name: ' . $service_name ); // Debugging line
+                    error_log( 'User Name: ' . $user_name ); // Debugging line
+                    // Vérifie si le modèle de texte est défini
+                    if ( empty( $cancellation_template ) ) {
+                        error_log( 'Cancellation template is empty.' ); // Debugging line
+                        return;
+                    }
+
+                    // Crée un tableau d'arguments pour le remplacement
+                    $args = array(
+                        '[user_name]'       => esc_html( $user_name ),
+                        '[appointment_date]' => esc_html( $date->format( 'd-m-Y' ) ),
+                        '[appointment_time]' => esc_html( $appointment_time ),
+                        '[service_name]'    => esc_html( $service_name ),
+                    );
+                    // Remplace les placeholders dans le modèle de texte par les valeurs dynamiques
+        $dynamic_cancellation_text = str_replace( array_keys( $args ), array_values( $args ), $cancellation_template );
+
+        // Passe le contenu dynamique au template
+        $this->additional_data['dynamic_cancellation_text'] = wp_kses_post( wpautop( $dynamic_cancellation_text ) );
+
+                // Récupère l'adresse email de l'administrateur
+        $admin_email = get_option('admin_email');
+
+        
+            
             }
 
             if ( $this->is_enabled() && $this->get_recipient() ) {

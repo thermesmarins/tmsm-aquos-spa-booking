@@ -26,10 +26,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'woocommerce_email_header', $email_heading ); ?>
 
 <?php /* translators: %s: Customer first name */ ?>
-<p><?php printf( esc_html__( 'Bonjour %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
-<p><?php esc_html_e( 'Nous vous informons que votre rendez-vous (#' . $order->get_order_number() . ') a été annulé.', 'tmsm-aquos-spa-booking' ); ?></p>
 
-<?php // Tu peux ajouter ici des informations spécifiques à l'annulation (raison, date, etc.) ?>
+
+<?php // Tu peux ajouter ici des informations spécifiques à l'annulation (raison, date, etc.) 
+if ( ! empty( $email->additional_data['dynamic_cancellation_text'] ) ) {
+    echo $email->additional_data['dynamic_cancellation_text'];
+} else {
+    // Texte par défaut si le modèle n'est pas configuré
+    ?>
+    <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
+    <p><?php printf(esc_html__( 'We inform you that your appointment %s has been cancelled.', 'tmsm-aquos-spa-booking' ), esc_html($order->get_order_number())); ?></p>
+    <?php
+}
+?>
 
 <?php
 

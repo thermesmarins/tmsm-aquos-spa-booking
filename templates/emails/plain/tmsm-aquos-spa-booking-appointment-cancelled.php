@@ -9,8 +9,14 @@ echo esc_html( wp_strip_all_tags( $email_heading ) );
 echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
 /* translators: %s: Customer first name */
-echo sprintf( esc_html__( 'Bonjour %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ) . "\n\n";
-echo esc_html__( 'Nous vous informons que votre rendez-vous (#' . $order->get_order_number() . ') a été annulé.', 'tmsm-aquos-spa-booking' ) . "\n\n";
+if ( ! empty( $email->additional_data['dynamic_cancellation_text'] ) ) {
+    echo wp_strip_all_tags( $email->additional_data['dynamic_cancellation_text'] );
+} else {
+    printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) );
+    echo "\n\n";
+    printf(esc_html__( 'We inform you that your appointment %s has been cancelled.', 'tmsm-aquos-spa-booking' ), esc_html($order->get_order_number()));
+    echo "\n\n";
+}
 
 // Tu peux ajouter ici des informations spécifiques à l'annulation (raison, date, etc.) 
 

@@ -2992,54 +2992,54 @@ class Tmsm_Aquos_Spa_Booking_Public
 		error_log('response cancel ! ' . print_r($response_data, true));
 		return $response_data->Status;
 	}
-	function envoyer_email_confirmation_annulation( $order ) {
-		$client_email = $order->get_billing_email();
-		$current_user = wp_get_current_user();
-		$user_name =  $current_user->user_firstname . ' ' . $current_user->user_lastname;
-		$items = $order->get_items();
-		$date = '';
-		$heure = '';
-		$nom_service = '';
-		$site= get_bloginfo('name');
-		$signature="À bientôt à ".get_bloginfo('name') . " Saint-Grégoire";
+	// function envoyer_email_confirmation_annulation( $order ) {
+	// 	$client_email = $order->get_billing_email();
+	// 	$current_user = wp_get_current_user();
+	// 	$user_name =  $current_user->user_firstname . ' ' . $current_user->user_lastname;
+	// 	$items = $order->get_items();
+	// 	$date = '';
+	// 	$heure = '';
+	// 	$nom_service = '';
+	// 	$site= get_bloginfo('name');
+	// 	$signature="À bientôt à ".get_bloginfo('name') . " Saint-Grégoire";
 	
-		foreach ( $items as $item ) {
-			$appointment_date = $item->get_meta( '_appointment_date', true );
-			$date = new DateTime($appointment_date);
-			// TODO transformer la date en objet date et le mettre au format français
+	// 	foreach ( $items as $item ) {
+	// 		$appointment_date = $item->get_meta( '_appointment_date', true );
+	// 		$date = new DateTime($appointment_date);
+	// 		// TODO transformer la date en objet date et le mettre au format français
 
-			$heure = $item->get_meta( '_appointment_time', true );
-			$nom_service = $item->get_name();
-			break;
-		}
-	// Charger le modèle HTML
-    ob_start();
-    include(dirname(dirname(__FILE__)) . '/templates/emails/tmsm-aquos-spa-booking-appointment-cancellation.php');
-    $message = ob_get_contents();
-    ob_end_clean();
+	// 		$heure = $item->get_meta( '_appointment_time', true );
+	// 		$nom_service = $item->get_name();
+	// 		break;
+	// 	}
+	// // Charger le modèle HTML
+    // ob_start();
+    // include(dirname(dirname(__FILE__)) . '/templates/emails/tmsm-aquos-spa-booking-appointment-cancellation.php');
+    // $message = ob_get_contents();
+    // ob_end_clean();
 
-    // Remplacer la variable VOTRE_CONTENU
-    // $message = str_replace('VOTRE_CONTENU', $contenu, $message);
-		$subject = sprintf('Confirmation d\'annulation de votre rendez-vous à l\'%s', $site);
-		$contenu = sprintf(
-			"
-			<p>Cher %s,</p>
-			<p>Votre rendez-vous du %s à %s pour %s a été annulé avec succès.</p>
-			<p>Nous sommes désolés de ne pas pouvoir vous recevoir.</p>
+    // // Remplacer la variable VOTRE_CONTENU
+    // // $message = str_replace('VOTRE_CONTENU', $contenu, $message);
+	// 	$subject = sprintf('Confirmation d\'annulation de votre rendez-vous à l\'%s', $site);
+	// 	$contenu = sprintf(
+	// 		"
+	// 		<p>Cher %s,</p>
+	// 		<p>Votre rendez-vous du %s à %s pour %s a été annulé avec succès.</p>
+	// 		<p>Nous sommes désolés de ne pas pouvoir vous recevoir.</p>
 			
-			",
-			$user_name,
-			$date->format('d-m-Y'),
-			$heure,
-			$nom_service
-		);
-		$message = str_replace('VOTRE_CONTENU', $contenu, $message);
-		$message = str_replace('SIGNATURE', $signature, $message);
-		error_log(
-			"email = " . print_r($message, true)
-		);
-		$headers = array('Content-Type: text/html; charset=UTF-8');
+	// 		",
+	// 		$user_name,
+	// 		$date->format('d-m-Y'),
+	// 		$heure,
+	// 		$nom_service
+	// 	);
+	// 	$message = str_replace('VOTRE_CONTENU', $contenu, $message);
+	// 	$message = str_replace('SIGNATURE', $signature, $message);
+	// 	error_log(
+	// 		"email = " . print_r($message, true)
+	// 	);
+	// 	$headers = array('Content-Type: text/html; charset=UTF-8');
 	
-		wp_mail( $client_email, $subject, $message, $headers );
-	}
+	// 	wp_mail( $client_email, $subject, $message, $headers );
+	// }
 }
