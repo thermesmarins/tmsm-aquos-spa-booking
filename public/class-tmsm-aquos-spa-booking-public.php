@@ -1713,7 +1713,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 		}
 		if (self::order_has_appointment($order) === true && $sent_to_admin === false) {
 
-			
+
 			$message = get_option('tmsm_aquos_spa_booking_orderemail', false);
 
 			if (!empty($message)) {
@@ -1722,10 +1722,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 					$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
 					$price_change_information = get_option('tmsm_aquos_spa_booking_message', false);
 					echo '<p><strong>' . nl2br(esc_html($price_change_information_notice)) . ' ' .  nl2br(esc_html($price_change_information)) . '</strong></p>';
-					
 				}
 			}
-			
+
 			if ($plain_text || !is_a($order, 'WC_Order')) {
 				return;
 			}
@@ -1804,7 +1803,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 				);
 			}
-			
+
 			if ($markup) {
 				echo '<script type="application/ld+json">' . wc_esc_json(wp_json_encode($markup), true) . '</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
@@ -2830,82 +2829,84 @@ class Tmsm_Aquos_Spa_Booking_Public
 			';
 		}
 	}
-	function filter_woocommerce_cart_crosssell_ids($cross_sells, $cart) {
+	function filter_woocommerce_cart_crosssell_ids($cross_sells, $cart)
+	{
 		// Initialize
 		$cross_sells_ids_in_cart = array();
-		
-    
-		// Loop through cart items
-		foreach ( $cart->get_cart() as $cart_item_key => $values ) {
 
-			if ( $values['quantity'] > 0 ) {
-			// Utilisation d'empty pour ne pas créer d'erreur si la variable n'existe pas. 
+
+		// Loop through cart items
+		foreach ($cart->get_cart() as $cart_item_key => $values) {
+
+			if ($values['quantity'] > 0) {
+				// Utilisation d'empty pour ne pas créer d'erreur si la variable n'existe pas. 
 				if (!empty($values['appointment'])) {
 					error_log('not empty');
 					$cross_sells_ids_in_cart = [];
-
 				} else {
 					// Merge one or more arrays
-				$cross_sells_ids_in_cart = array_merge( $values['data']->get_cross_sell_ids(), $cross_sells_ids_in_cart );
-				}				
+					$cross_sells_ids_in_cart = array_merge($values['data']->get_cross_sell_ids(), $cross_sells_ids_in_cart);
+				}
 			}
 		}
-		
+
 		// Cleans up an array, comma- or space-separated list of IDs
-		$cross_sells = wp_parse_id_list( $cross_sells_ids_in_cart );
-	
+		$cross_sells = wp_parse_id_list($cross_sells_ids_in_cart);
+
 		return $cross_sells;
 	}
 	/**
 	 * Display appointment link below product short description in single product
 	 */
-	public function add_woocommerce_valid_order_statuses_for_cancel_filter( $array, $order ){
+	public function add_woocommerce_valid_order_statuses_for_cancel_filter($array, $order)
+	{
 		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
 		// TODO creer une difference de jours pour pouvoir comparer les dates et ne pas afficher les boutons d'annulation
 		$date = [];
-		foreach ( $order->get_items() as $item_id => $item ) {
-			$date = wc_get_order_item_meta($item_id,'_appointment_date', true);
+		foreach ($order->get_items() as $item_id => $item) {
+			$date = wc_get_order_item_meta($item_id, '_appointment_date', true);
 		}
 		// error_log('date de rendez vous : ' . $date);
 		$today = new DateTime('now');
 		// error_log('date de aujourd\'hui : ' . $today->format('Y-m-d'));
 		if ($date > $today->format('Y-m-d')) {
-		$array = [
-		   'appointment',
-		   'pending', 
-		   'failed'
-		];
+			$array = [
+				'appointment',
+				'pending',
+				'failed'
+			];
+		}
+		// filter...
+		return $array;
 	}
-		   // filter...
-		   return $array;
-	   }
 	/**
 	 * Display appointment link below product short description in single product
 	 */
-	public function add_woocommerce_order_details_after_order_table ($order) {
+	public function add_woocommerce_order_details_after_order_table($order)
+	{
 		// TODO ne pas afficher le bouton "voir" dans le détail des commandes (pas necessaire)
 		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
-		
-		$actions = wc_get_account_orders_actions( $order );
+
+		$actions = wc_get_account_orders_actions($order);
 		$date = [];
-		foreach ( $order->get_items() as $item_id => $item ) {
-			$date = wc_get_order_item_meta($item_id,'_appointment_date', true);
+		foreach ($order->get_items() as $item_id => $item) {
+			$date = wc_get_order_item_meta($item_id, '_appointment_date', true);
 		}
 		$today = new DateTime('now');
 
-	if ($date < $today->format("Y-m-d") ) {
-		echo "date rdv inferieure";
-	}
-// error_log('actions ' . print_r($actions, true));
-	// if ( ! empty( $actions )  ) {
-	// 	foreach ( $actions as $key => $action ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-	// 		/* translators: %s: order number */
-	// 		echo '<a href="' . esc_url( $action['url'] ) . '" class="woocommerce-button button ' . sanitize_html_class( $key ) . 
-	// 		'" aria-label="' . esc_attr( sprintf( __( 'View order number %s', 'woocommerce' ), $order->get_order_number() ) ) . '"> ' 
-	// 		. esc_html( $action['name'] ) . '</a>  ';
-			
-	// 	}
-	// }
+		if ($date < $today->format("Y-m-d")) {
+			echo "date rdv inferieure";
+		}
+		// error_log('actions ' . print_r($actions, true));
+		// if ( ! empty( $actions )  ) {
+		// 	foreach ( $actions as $key => $action ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		// 		/* translators: %s: order number */
+		// 		echo '<a href="' . esc_url( $action['url'] ) . '" class="woocommerce-button button ' . sanitize_html_class( $key ) . 
+		// 		'" aria-label="' . esc_attr( sprintf( __( 'View order number %s', 'woocommerce' ), $order->get_order_number() ) ) . '"> ' 
+		// 		. esc_html( $action['name'] ) . '</a>  ';
+
+		// 	}
+		// }
 	}
 
 	/**
@@ -2927,51 +2928,46 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 * @param [string] $new_status
 	 * @return void
 	 */
-	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status) {
+	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status)
+	{
 		// TODO supprimer les error_log
 		error_log('$order_id : ' . print_r($order_id, true));
 		error_log('$old_status : ' . print_r($old_status, true));
 		error_log('$new_status : ' . print_r($new_status, true));
-		$order = wc_get_order( $order_id );
+		$order = wc_get_order($order_id);
 		$appintment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
-		$site_id =  get_option( 'tmsm_aquos_spa_booking_aquossiteid' );
+		$site_id =  get_option('tmsm_aquos_spa_booking_aquossiteid');
 		$url = get_option('tmsm_aquos_spa_booking_webserviceurldelete');
-		// TODO supprimer les error_log
-		error_log('site_id' . print_r($site_id, true));
-		$delete_appointment_array = array( 
+		$delete_appointment_array = array(
 			'id_site' => $site_id,
 			'appointment_id' => $appintment_id
 		);
-		// TODO formater l'id du rdv et l'id du site en json
-		$json_body =json_encode($delete_appointment_array);
-		// TODO creer la signature avec l'id du site et l'id du rdv 
+		$json_body = json_encode($delete_appointment_array);
 		$signature =  $this->generate_hmac_signature($json_body);
-		// TODO Faire l'appel api vers aquos
 		$response = $this->delete_in_aquos($json_body, $signature, $url);
 		error_log('response from aquos' . print_r($response, true));
 
-
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
-			// error_log('rdv annulé côté client');
-			// $this->envoyer_email_confirmation_annulation( $order );
-			$email_classes = WC()->mailer()->emails;
-
-        if ( isset( $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'] ) ) {
-            $email_appointment_cancelled = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'];
-            $email_appointment_cancelled->trigger( $order_id ); // Déclenche l'email en passant l'ID de la commande
-        }
+			if ($response === true) {
+				// error_log('rdv annulé côté client');
+				$email_classes = WC()->mailer()->emails;
+				if (isset($email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'])) {
+					$email_appointment_cancelled = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'];
+					$email_appointment_cancelled->trigger($order_id); // Déclenche l'email en passant l'ID de la commande
+				}
+			}
+		} else {
+			
 		}
 	}
-	private function generate_hmac_signature($json_body) {
-		// get_option('tmsm_aquos_spa_booking_deleteaquossecret')
-		// todo voir où mettre le token secret d'annulation
+	private function generate_hmac_signature($json_body)
+	{
 		$secret_token = get_option('tmsm_aquos_spa_booking_deleteaquossecret');
-		// $secret_token = "C9HFwFYF3n45CKnSw97gux3ewTWRiMFd9bWszEJq7MWkaq63c9wX5349B84473n8";
 		$hmacSignature = hash_hmac('sha256', $json_body, $secret_token, true);
-        return base64_encode($hmacSignature);
-
+		return base64_encode($hmacSignature);
 	}
-	private function delete_in_aquos ($body, $signature, $url) {
+	private function delete_in_aquos($body, $signature, $url)
+	{
 		$headers = [
 			'Content-Type' => 'application/json; charset=utf-8',
 			'X-Signature' => $signature,
@@ -2987,59 +2983,14 @@ class Tmsm_Aquos_Spa_Booking_Public
 				'timeout' => 10,
 			)
 		);
-		$response_code = wp_remote_retrieve_response_code( $response );
-		$response_data = json_decode( wp_remote_retrieve_body( $response ) );
+		error_log('response delete ! ' . print_r($response, true));
+		if (is_wp_error($response)) {
+			error_log('Error: ' . $response->get_error_message());
+			return false;
+		}
+		$response_code = wp_remote_retrieve_response_code($response);
+		$response_data = json_decode(wp_remote_retrieve_body($response));
 		error_log('response cancel ! ' . print_r($response_data, true));
 		return $response_data->Status;
 	}
-	// function envoyer_email_confirmation_annulation( $order ) {
-	// 	$client_email = $order->get_billing_email();
-	// 	$current_user = wp_get_current_user();
-	// 	$user_name =  $current_user->user_firstname . ' ' . $current_user->user_lastname;
-	// 	$items = $order->get_items();
-	// 	$date = '';
-	// 	$heure = '';
-	// 	$nom_service = '';
-	// 	$site= get_bloginfo('name');
-	// 	$signature="À bientôt à ".get_bloginfo('name') . " Saint-Grégoire";
-	
-	// 	foreach ( $items as $item ) {
-	// 		$appointment_date = $item->get_meta( '_appointment_date', true );
-	// 		$date = new DateTime($appointment_date);
-	// 		// TODO transformer la date en objet date et le mettre au format français
-
-	// 		$heure = $item->get_meta( '_appointment_time', true );
-	// 		$nom_service = $item->get_name();
-	// 		break;
-	// 	}
-	// // Charger le modèle HTML
-    // ob_start();
-    // include(dirname(dirname(__FILE__)) . '/templates/emails/tmsm-aquos-spa-booking-appointment-cancellation.php');
-    // $message = ob_get_contents();
-    // ob_end_clean();
-
-    // // Remplacer la variable VOTRE_CONTENU
-    // // $message = str_replace('VOTRE_CONTENU', $contenu, $message);
-	// 	$subject = sprintf('Confirmation d\'annulation de votre rendez-vous à l\'%s', $site);
-	// 	$contenu = sprintf(
-	// 		"
-	// 		<p>Cher %s,</p>
-	// 		<p>Votre rendez-vous du %s à %s pour %s a été annulé avec succès.</p>
-	// 		<p>Nous sommes désolés de ne pas pouvoir vous recevoir.</p>
-			
-	// 		",
-	// 		$user_name,
-	// 		$date->format('d-m-Y'),
-	// 		$heure,
-	// 		$nom_service
-	// 	);
-	// 	$message = str_replace('VOTRE_CONTENU', $contenu, $message);
-	// 	$message = str_replace('SIGNATURE', $signature, $message);
-	// 	error_log(
-	// 		"email = " . print_r($message, true)
-	// 	);
-	// 	$headers = array('Content-Type: text/html; charset=UTF-8');
-	
-	// 	wp_mail( $client_email, $subject, $message, $headers );
-	// }
 }
