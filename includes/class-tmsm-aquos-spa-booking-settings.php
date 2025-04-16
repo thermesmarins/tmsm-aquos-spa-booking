@@ -109,6 +109,16 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 						'name'     => __('Aquos Secret', 'tmsm-aquos-spa-booking'),
 						'class'  => 'small-text',
 					),
+					// TODO traduire cette page et pouvoir ajouter le nombre de jours limites avant annulation
+					array(
+						'type'     => 'number',
+						'id'       => 'tmsm_aquos_spa_booking_daysbeforecancellation',
+						'name'     => __('Days before cancellation', 'tmsm-aquos-spa-booking'),
+						'desc'     => '' .
+							'<p class="description">' .
+							__('Days limit before cancelation', 'tmsm-aquos-spa-booking') . '</p>',
+						'class'  => 'small-text',
+					),
 					// TODO ajout de l'url d'annulation
 					array(
 						'type'     => 'url',

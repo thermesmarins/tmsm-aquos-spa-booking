@@ -2862,22 +2862,34 @@ class Tmsm_Aquos_Spa_Booking_Public
 	{
 		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
 		// TODO creer une difference de jours pour pouvoir comparer les dates et ne pas afficher les boutons d'annulation
-		$date = [];
+		$date_str  = [];
 		foreach ($order->get_items() as $item_id => $item) {
-			$date = wc_get_order_item_meta($item_id, '_appointment_date', true);
+			$date_str  = wc_get_order_item_meta($item_id, '_appointment_date', true);
 		}
+		$nombre_jours_avant = get_option('tmsm_aquos_spa_booking_daysbeforecancellation');
+		// $nombre_jours_avant = 0;
+
+// Étape 3 : Vérifier si les deux valeurs sont bien récupérées
+if ($date_str && $nombre_jours_avant !== false) {
 		// error_log('date de rendez vous : ' . $date);
-		$today = new DateTime('now');
-		// error_log('date de aujourd\'hui : ' . $today->format('Y-m-d'));
-		if ($date > $today->format('Y-m-d')) {
+		   // Étape 4 : Convertir la date récupérée en objet DateTime
+		   $date_a_comparer = new DateTime($date_str);
+		// Étape 5 : Obtenir la date actuelle
+		$date_actuelle = new DateTime();
+		    // Étape 6 : Calculer l'intervalle (la différence) entre les deux dates
+			$intervalle = $date_actuelle->diff($date_a_comparer);
+
+			// Étape 7 : Récupérer la différence en nombre de jours (la valeur absolue)
+			$difference_jours = $intervalle->days;
+		if ($difference_jours >= $nombre_jours_avant) {
 			$array = [
 				'appointment',
 				'pending',
 				'failed'
 			];
 		}
-		// filter...
-		return $array;
+	}
+	return $array;
 	}
 	/**
 	 * Display appointment link below product short description in single product
@@ -2888,6 +2900,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
 
 		$actions = wc_get_account_orders_actions($order);
+		
 		$date = [];
 		foreach ($order->get_items() as $item_id => $item) {
 			$date = wc_get_order_item_meta($item_id, '_appointment_date', true);
@@ -2930,6 +2943,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 */
 	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status)
 	{
+	
 		// TODO supprimer les error_log
 		error_log('$order_id : ' . print_r($order_id, true));
 		error_log('$old_status : ' . print_r($old_status, true));
@@ -2945,9 +2959,11 @@ class Tmsm_Aquos_Spa_Booking_Public
 		$json_body = json_encode($delete_appointment_array);
 		$signature =  $this->generate_hmac_signature($json_body);
 		$response = $this->delete_in_aquos($json_body, $signature, $url);
-		error_log('response from aquos' . print_r($response, true));
+		// error_log('response from aquos' . print_r($response, true));
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
+			// wc_clear_notices();
+			// wc_add_notice(__('Your appointment has been cancelled.', 'tmsm-aquos-spa-booking'), 'notice');
 			if ($response === true) {
 				// error_log('rdv annulé côté client');
 				$email_classes = WC()->mailer()->emails;
@@ -2993,4 +3009,5 @@ class Tmsm_Aquos_Spa_Booking_Public
 		error_log('response cancel ! ' . print_r($response_data, true));
 		return $response_data->Status;
 	}
+
 }
