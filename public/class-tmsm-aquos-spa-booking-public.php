@@ -2860,66 +2860,47 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 */
 	public function add_woocommerce_valid_order_statuses_for_cancel_filter($array, $order)
 	{
-		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
-		// TODO creer une difference de jours pour pouvoir comparer les dates et ne pas afficher les boutons d'annulation
+
 		$date_str  = [];
 		foreach ($order->get_items() as $item_id => $item) {
 			$date_str  = wc_get_order_item_meta($item_id, '_appointment_date', true);
 		}
-		$nombre_jours_avant = get_option('tmsm_aquos_spa_booking_daysbeforecancellation');
-		// $nombre_jours_avant = 0;
+		$days_limit = get_option('tmsm_aquos_spa_booking_daysbeforecancellation');
 
-// Étape 3 : Vérifier si les deux valeurs sont bien récupérées
-if ($date_str && $nombre_jours_avant !== false) {
-		// error_log('date de rendez vous : ' . $date);
-		   // Étape 4 : Convertir la date récupérée en objet DateTime
-		   $date_a_comparer = new DateTime($date_str);
-		// Étape 5 : Obtenir la date actuelle
-		$date_actuelle = new DateTime();
-		    // Étape 6 : Calculer l'intervalle (la différence) entre les deux dates
-			$intervalle = $date_actuelle->diff($date_a_comparer);
-
-			// Étape 7 : Récupérer la différence en nombre de jours (la valeur absolue)
-			$difference_jours = $intervalle->days;
-		if ($difference_jours >= $nombre_jours_avant) {
-			$array = [
-				'appointment',
-				'pending',
-				'failed'
-			];
+		if ($date_str && $days_limit !== false) {			
+			$appointment_date = new DateTime($date_str);
+			$today = new DateTime();
+			$interval = $today->diff($appointment_date);
+			$days = $interval->days;
+			error_log('difference de jours : ' . $days);
+			if ($days >= $days_limit && $appointment_date >= $today) {
+				$array = [
+					'appointment',
+					'pending',
+					'failed'
+				];
+			}
 		}
-	}
-	return $array;
+		return $array;
 	}
 	/**
 	 * Display appointment link below product short description in single product
 	 */
 	public function add_woocommerce_order_details_after_order_table($order)
 	{
-		// TODO ne pas afficher le bouton "voir" dans le détail des commandes (pas necessaire)
-		// TODO ne pas afficher le bouton "annuler" si la date est passée. 
 
 		$actions = wc_get_account_orders_actions($order);
-		
-		$date = [];
-		foreach ($order->get_items() as $item_id => $item) {
-			$date = wc_get_order_item_meta($item_id, '_appointment_date', true);
-		}
-		$today = new DateTime('now');
 
-		if ($date < $today->format("Y-m-d")) {
-			echo "date rdv inferieure";
+		error_log('actions ' . print_r($actions, true));
+		if (! empty($actions)) {
+			foreach ($actions as $key => $action) { 				
+				if ($key == 'cancel') {
+					echo '<a href="' . esc_url($action['url']) . '" class="woocommerce-button button ' . sanitize_html_class($key) .
+						'" aria-label="' . esc_attr(sprintf(__('View order number %s', 'woocommerce'), $order->get_order_number())) . '"> '
+						. esc_html($action['name']) . '</a>  ';
+				}
+			}
 		}
-		// error_log('actions ' . print_r($actions, true));
-		// if ( ! empty( $actions )  ) {
-		// 	foreach ( $actions as $key => $action ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-		// 		/* translators: %s: order number */
-		// 		echo '<a href="' . esc_url( $action['url'] ) . '" class="woocommerce-button button ' . sanitize_html_class( $key ) . 
-		// 		'" aria-label="' . esc_attr( sprintf( __( 'View order number %s', 'woocommerce' ), $order->get_order_number() ) ) . '"> ' 
-		// 		. esc_html( $action['name'] ) . '</a>  ';
-
-		// 	}
-		// }
 	}
 
 	/**
@@ -2943,7 +2924,7 @@ if ($date_str && $nombre_jours_avant !== false) {
 	 */
 	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status)
 	{
-	
+
 		// TODO supprimer les error_log
 		error_log('$order_id : ' . print_r($order_id, true));
 		error_log('$old_status : ' . print_r($old_status, true));
@@ -2973,15 +2954,28 @@ if ($date_str && $nombre_jours_avant !== false) {
 				}
 			}
 		} else {
-			
 		}
 	}
+	/** Generate HMAC signature
+	 *
+	 * @param string $json_body
+	 * @return string
+	 */
 	private function generate_hmac_signature($json_body)
 	{
 		$secret_token = get_option('tmsm_aquos_spa_booking_deleteaquossecret');
 		$hmacSignature = hash_hmac('sha256', $json_body, $secret_token, true);
 		return base64_encode($hmacSignature);
 	}
+	/**
+	 * Aquos: delete appointment
+	 *
+	 * @param string $body
+	 * @param string $signature
+	 * @param string $url
+	 *
+	 * @return bool
+	 */
 	private function delete_in_aquos($body, $signature, $url)
 	{
 		$headers = [
@@ -3009,5 +3003,4 @@ if ($date_str && $nombre_jours_avant !== false) {
 		error_log('response cancel ! ' . print_r($response_data, true));
 		return $response_data->Status;
 	}
-
 }

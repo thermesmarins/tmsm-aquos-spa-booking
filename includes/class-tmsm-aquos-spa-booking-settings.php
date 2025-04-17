@@ -109,7 +109,7 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 						'name'     => __('Aquos Secret', 'tmsm-aquos-spa-booking'),
 						'class'  => 'small-text',
 					),
-					// TODO traduire cette page et pouvoir ajouter le nombre de jours limites avant annulation
+					// TODO traduire 
 					array(
 						'type'     => 'number',
 						'id'       => 'tmsm_aquos_spa_booking_daysbeforecancellation',
@@ -119,7 +119,7 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 							__('Days limit before cancelation', 'tmsm-aquos-spa-booking') . '</p>',
 						'class'  => 'small-text',
 					),
-					// TODO ajout de l'url d'annulation
+					//  TODO traduire
 					array(
 						'type'     => 'url',
 						'id'       => 'tmsm_aquos_spa_booking_webserviceurldelete',
@@ -132,14 +132,14 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 							'</p>',
 						'class'  => 'large-text',
 					),
-					// TODO ajout du token d'annulation
+					//  TODO traduire
 					array(
 						'type'     => 'text',
 						'id'       => 'tmsm_aquos_spa_booking_deleteaquossecret',
 						'name'     => __('Aquos Secret Delete', 'tmsm-aquos-spa-booking'),
 						'class'  => 'small-text',
 					),
-					// TODO ajout du nombre de jours limite pour l'annulation
+				
 					array(
 						'type'     => 'url',
 						'id'       => 'tmsm_aquos_spa_booking_webserviceurltimes',
@@ -361,12 +361,12 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 					),
 
 					
-					  // Ajout de notre champ pour le modèle de texte de l'email d'annulation
+					  //  TODO traduire
 					array(
 						'type'    => 'textarea',
 						'id'      => 'tmsm_aquos_spa_booking_cancellation_text_template',
-						'name'    => __('Modèle de texte d\'annulation d\'email', 'tmsm-aquos-spa-booking'),
-						'desc'    => '<p class="description">' . __('Saisissez le texte d\'annulation de rendez-vous pour l\'email en utilisant les placeholders suivants : [user_name], [appointment_date], [appointment_time], [service_name].', 'tmsm-aquos-spa-booking') . '</p>',
+						'name'    => __('Message in appointment cancelled', 'tmsm-aquos-spa-booking'),
+						'desc'    => '<p class="description">' . __('Enter the appointment cancellation text for the email using the following placeholders : [user_name], [appointment_date], [appointment_time], [service_name].', 'tmsm-aquos-spa-booking') . '</p>',
 						'default' => __('Cher [user_name],\n\nVotre rendez-vous du [appointment_date] à [appointment_time] pour [service_name] a été annulé avec succès.\n\nNous sommes désolés de ne pas pouvoir vous recevoir.', 'tmsm-aquos-spa-booking'),
 						
 					),

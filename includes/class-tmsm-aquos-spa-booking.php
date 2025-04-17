@@ -291,8 +291,7 @@ class Tmsm_Aquos_Spa_Booking {
 
 		// Appointment public cancelation
 		$this->loader->add_filter( 'woocommerce_valid_order_statuses_for_cancel', $plugin_public, 'add_woocommerce_valid_order_statuses_for_cancel_filter', 90, 2);
-		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'add_woocommerce_order_details_after_order_table', 10, 2);
-		// $this->loader->add_action( 'woocommerce_order_status_appointment_to_cancelled', $plugin_public, 'appointment_order_status_changed_to_canceled', 10, 1);
+		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'add_woocommerce_order_details_after_order_table', 50, 2);
 		$this->loader->add_action( 'woocommerce_order_status_changed', $plugin_public, 'appointment_order_status_changed_to_canceled', 10, 3);
 
 		// Appointment link
