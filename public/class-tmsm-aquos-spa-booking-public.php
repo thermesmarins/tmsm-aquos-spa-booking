@@ -2867,7 +2867,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 		}
 		$days_limit = get_option('tmsm_aquos_spa_booking_daysbeforecancellation');
 
-		if ($date_str && $days_limit !== false) {			
+		if ($date_str && $days_limit !== false) {
 			$appointment_date = new DateTime($date_str);
 			$today = new DateTime();
 			$interval = $today->diff($appointment_date);
@@ -2893,7 +2893,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 		error_log('actions ' . print_r($actions, true));
 		if (! empty($actions)) {
-			foreach ($actions as $key => $action) { 				
+			foreach ($actions as $key => $action) {
 				if ($key == 'cancel') {
 					echo '<a href="' . esc_url($action['url']) . '" class="woocommerce-button button ' . sanitize_html_class($key) .
 						'" aria-label="' . esc_attr(sprintf(__('View order number %s', 'woocommerce'), $order->get_order_number())) . '"> '
@@ -2940,12 +2940,12 @@ class Tmsm_Aquos_Spa_Booking_Public
 		$json_body = json_encode($delete_appointment_array);
 		$signature =  $this->generate_hmac_signature($json_body);
 		$response = $this->delete_in_aquos($json_body, $signature, $url);
-		// error_log('response from aquos' . print_r($response, true));
+		error_log('response from aquos' . print_r($response, true));
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
-			// wc_clear_notices();
-			// wc_add_notice(__('Your appointment has been cancelled.', 'tmsm-aquos-spa-booking'), 'notice');
-			if ($response === true) {
+			$order->set_status('appointment', true);	
+			$order->save();
+			error_log( 'current action : ' . current_action() );
 				// error_log('rdv annulé côté client');
 				$email_classes = WC()->mailer()->emails;
 				if (isset($email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'])) {
@@ -2953,8 +2953,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 					$email_appointment_cancelled->trigger($order_id); // Déclenche l'email en passant l'ID de la commande
 				}
 			}
-		} else {
-		}
+			error_log( 'current action : ' . current_action() );
 	}
 	/** Generate HMAC signature
 	 *
@@ -3003,4 +3002,5 @@ class Tmsm_Aquos_Spa_Booking_Public
 		error_log('response cancel ! ' . print_r($response_data, true));
 		return $response_data->Status;
 	}
+
 }
