@@ -2931,29 +2931,42 @@ class Tmsm_Aquos_Spa_Booking_Public
 		error_log('$new_status : ' . print_r($new_status, true));
 		$order = wc_get_order($order_id);
 		$appintment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
-		$site_id =  get_option('tmsm_aquos_spa_booking_aquossiteid');
-		$url = get_option('tmsm_aquos_spa_booking_webserviceurldelete');
-		$delete_appointment_array = array(
-			'id_site' => $site_id,
-			'appointment_id' => $appintment_id
-		);
-		$json_body = json_encode($delete_appointment_array);
-		$signature =  $this->generate_hmac_signature($json_body);
-		$response = $this->delete_in_aquos($json_body, $signature, $url);
-		error_log('response from aquos' . print_r($response, true));
+
+		$response = '';
+
+		// TODO conditionner la suppression à la présence de l'ID de rendez-vous 
+		if (empty($appintment_id)) {
+			error_log('Aucun ID de rendez-vous trouvé pour la commande ' . $order_id);
+			return;
+		} else {
+			$site_id =  get_option('tmsm_aquos_spa_booking_aquossiteid');
+			$url = get_option('tmsm_aquos_spa_booking_webserviceurldelete');
+			$delete_appointment_array = array(
+				'id_site' => $site_id,
+				'appointment_id' => $appintment_id
+			);
+			$json_body = json_encode($delete_appointment_array);
+			$signature =  $this->generate_hmac_signature($json_body);
+			$response = $this->delete_in_aquos($json_body, $signature, $url);
+			error_log('response from aquos' . print_r($response, true));
+		}
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
-			$order->set_status('appointment', true);	
-			$order->save();
-			error_log( 'current action : ' . current_action() );
-				// error_log('rdv annulé côté client');
-				$email_classes = WC()->mailer()->emails;
-				if (isset($email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'])) {
-					$email_appointment_cancelled = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'];
-					$email_appointment_cancelled->trigger($order_id); // Déclenche l'email en passant l'ID de la commande
-				}
+			// error_log('rdv annulé côté client');
+			$email_classes = WC()->mailer()->emails;
+			if (isset($email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'])) {
+				$email_appointment_cancelled = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'];
+				$email_appointment_cancelled->trigger($order_id); // Déclenche l'email en passant l'ID de la commande
 			}
-			error_log( 'current action : ' . current_action() );
+		} else {
+			add_action('woocommerce_cancelled_order', array($this, 'cancel_notification'), 10, 1);
+		}
+	}
+	public function cancel_notification($order_id)
+	{
+		$order = wc_get_order($order_id);
+		wc_clear_notices();
+		wc_add_notice(__('**Erreur :** L\'annulation de votre rendez-vous (commande #%s) a rencontré un problème technique. Veuillez réessayer ou contacter notre service client.', sprintf($order_id), 'error'));
 	}
 	/** Generate HMAC signature
 	 *
@@ -2992,9 +3005,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 				'timeout' => 10,
 			)
 		);
-		error_log('response delete ! ' . print_r($response, true));
+		// Todo gérer l'erreur de rendez-vous non trouvé
 		if (is_wp_error($response)) {
-			error_log('Error: ' . $response->get_error_message());
+			
 			return false;
 		}
 		$response_code = wp_remote_retrieve_response_code($response);
@@ -3002,5 +3015,4 @@ class Tmsm_Aquos_Spa_Booking_Public
 		error_log('response cancel ! ' . print_r($response_data, true));
 		return $response_data->Status;
 	}
-
 }

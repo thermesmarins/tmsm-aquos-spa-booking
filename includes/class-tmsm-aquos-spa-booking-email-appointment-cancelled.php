@@ -143,7 +143,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
         $this->additional_data['dynamic_cancellation_text'] = wp_kses_post( wpautop( $dynamic_cancellation_text ) );
 
                 // Récupère l'adresse email de l'administrateur
-        $admin_email = get_option('admin_email');
+        // $admin_email = get_option('admin_email');
 
         
             
@@ -186,7 +186,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                     'order'              => $this->object,
                     'email_heading'      => $this->get_heading(),
                     'additional_content' => $this->get_additional_content(),
-                    'sent_to_admin'      => false,
+                    'sent_to_admin'      => true,
                     'plain_text'         => false,
                     'email'              => $this,
                 ),
@@ -207,7 +207,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                     'order'              => $this->object,
                     'email_heading'      => $this->get_heading(),
                     'additional_content' => $this->get_additional_content(),
-                    'sent_to_admin'      => false,
+                    'sent_to_admin'      => true,
                     'plain_text'         => true,
                     'email'              => $this,
                 ),
