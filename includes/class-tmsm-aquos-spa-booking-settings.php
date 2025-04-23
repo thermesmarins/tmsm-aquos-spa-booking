@@ -109,7 +109,6 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 						'name'     => __('Aquos Secret', 'tmsm-aquos-spa-booking'),
 						'class'  => 'small-text',
 					),
-					// TODO traduire 
 					array(
 						'type'     => 'number',
 						'id'       => 'tmsm_aquos_spa_booking_daysbeforecancellation',
@@ -119,7 +118,6 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 							__('Days limit before cancelation', 'tmsm-aquos-spa-booking') . '</p>',
 						'class'  => 'small-text',
 					),
-					//  TODO traduire
 					array(
 						'type'     => 'url',
 						'id'       => 'tmsm_aquos_spa_booking_webserviceurldelete',
@@ -132,7 +130,6 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 							'</p>',
 						'class'  => 'large-text',
 					),
-					//  TODO traduire
 					array(
 						'type'     => 'text',
 						'id'       => 'tmsm_aquos_spa_booking_deleteaquossecret',
@@ -359,9 +356,6 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 						'id'       => 'tmsm_aquos_spa_booking_orderemail',
 						'name'     => __('Message in order email', 'tmsm-aquos-spa-booking'),
 					),
-
-					
-					  //  TODO traduire
 					array(
 						'type'    => 'textarea',
 						'id'      => 'tmsm_aquos_spa_booking_cancellation_text_template',
