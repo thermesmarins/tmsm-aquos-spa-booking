@@ -283,6 +283,18 @@ msgstr "ID de site Aquos"
 msgid "Aquos Secret"
 msgstr "Secret Aquos"
 
+#: includes/class-tmsm-aquos-spa-booking-settings.php:113
+msgid "Days before cancellation"
+msgstr "Nombre de jours minimum avant annulation"
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:126
+msgid "Web Service URL for deletion"
+msgstr "Url du service web pour la suppression"
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:139
+msgid "Aquos Secret Delete"
+msgstr "Token d'annulation Aquos"
+
 #: includes/class-tmsm-aquos-spa-booking-settings.php:118
 msgid "Web Service URL for times"
 msgstr "URL du service web pour les créneaux"
@@ -540,6 +552,12 @@ msgstr "Message dans la page de commande reçue"
 #: includes/class-tmsm-aquos-spa-booking-settings.php:328
 msgid "Message in order email"
 msgstr "Message dans l’email de commande"
+#: includes/class-tmsm-aquos-spa-booking-settings.php:367
+msgid "Message in appointment cancelled"
+msgstr "Message dans l’email d'annulation de rendez-vous"
+#: includes/class-tmsm-aquos-spa-booking-settings.php:367
+msgid "Enter the appointment cancellation text for the email using the following placeholders : [user_name], [appointment_date], [appointment_time], [service_name]."
+msgstr "Entrez le message d'annulation de rendez-vous pour l'email en utilisant les espaces réservés suivants : [user_name], [appointment_date], [appointment_time], [service_name]."
 
 #: includes/vendors/wp-background-process.php:432
 #, php-format
