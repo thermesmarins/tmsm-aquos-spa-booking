@@ -66,6 +66,10 @@ msgstr "ID de produit Aquos"
 msgid "Appointment Processed to Aquos"
 msgstr "Rendez-vous enregistré dans Aquos"
 
+#: admin/class-tmsm-aquos-spa-booking-admin.php:141
+msgid "Appointment id"
+msgstr "ID du rendez-vous dans Aquos"
+
 #: admin/class-tmsm-aquos-spa-booking-admin.php:145
 #: public/class-tmsm-aquos-spa-booking-public.php:1261
 msgid "Aquos Price"
@@ -923,6 +927,10 @@ msgstr "Réserver maintenant"
 msgid "To buy a gift voucher, continue below."
 msgstr "Pour acheter un bon cadeau, continuez ci-dessous."
 
+#: public/class-tmsm-aquos-spa-booking-public.php:2972
+msgid "**Error :** There was a problem cancelling your appointment. Please contact our customer service."
+msgstr "**Erreur :**L'annulation de votre rendez-vous a rencontré un problème. Veuillez contacter notre service client."
+
 #: templates/emails/plain/tmsm-aquos-spa-booking-appointment-message.php:14
 #, php-format
 msgid "You’ve received the following appointment with a message from %s:"
@@ -1102,3 +1110,27 @@ msgstr "Confirmation d'annulation de rendez-vous"
 #, php-format
 msgid "Your Appointment has been Cancelled"
 msgstr "Votre rendez-vous à été annulé !"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:39
+#, php-format
+msgid "Order Email for Cancelled Appointment"
+msgstr "Email de confimation d'annulation"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:237
+#, php-format
+msgid "Enable this email notification. %s"
+msgstr "Activer cette email de notification. %s"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:243
+#, php-format
+msgid "This controls the email subject line. Leave blank to use the default subject: <code>%s</code>."
+msgstr "Sujet de l'email, laisser vide pour utiliser la valeur par défaut : <code>%s</code>."
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:251
+#, php-format
+msgid "This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>."
+msgstr "Entête de l'email contenu dans la notification. Laisser vide pour utiliser la valeur par défaut : <code>%s</code>."
+
+
+
+

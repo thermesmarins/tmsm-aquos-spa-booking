@@ -2924,17 +2924,10 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 */
 	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status)
 	{
-
-		// TODO supprimer les error_log
-		error_log('$order_id : ' . print_r($order_id, true));
-		error_log('$old_status : ' . print_r($old_status, true));
-		error_log('$new_status : ' . print_r($new_status, true));
 		$order = wc_get_order($order_id);
 		$appointment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
-		error_log('$appointment_id : ' . print_r($appointment_id, true));
 		$response = '';
 
-		// TODO conditionner la suppression à la présence de l'ID de rendez-vous 
 		if (empty($appointment_id)) {
 			error_log('Aucun ID de rendez-vous trouvé pour la commande ' . $order_id);
 			
@@ -2953,7 +2946,6 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
 			if ($response == true) {
-				error_log('rdv annulé côté client');
 				$email_classes = WC()->mailer()->emails;
 				if (isset($email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'])) {
 					$email_appointment_cancelled = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'];
@@ -2961,7 +2953,6 @@ class Tmsm_Aquos_Spa_Booking_Public
 				}
 				
 		} else {
-			// Todo remettre le status à l'ancien si response n'est pas true
 			$order->update_status($old_status);
 			add_action('woocommerce_cancelled_order', array($this, 'cancel_notification'), 10, 1);
 		}
@@ -2971,7 +2962,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 	{
 		$order = wc_get_order($order_id);
 		wc_clear_notices();
-		wc_add_notice(__('**Erreur :** L\'annulation de votre rendez-vous a rencontré un problème technique. Veuillez contacter notre service client.', 'tsmsm-aquos-spa-booking'), 'error');
+		wc_add_notice(__('**Error :** There was a problem cancelling your appointment. Please contact our customer service.', 'tsmsm-aquos-spa-booking'), 'error');
 	}
 	/** Generate HMAC signature
 	 *
@@ -3010,9 +3001,8 @@ class Tmsm_Aquos_Spa_Booking_Public
 				'timeout' => 10,
 			)
 		);
-		// Todo gérer l'erreur de rendez-vous non trouvé
 		if (is_wp_error($response)) {
-			
+			error_log('Error cancelling appointment: ' . $response->get_error_message());
 			return false;
 		}
 		$response_code = wp_remote_retrieve_response_code($response);
