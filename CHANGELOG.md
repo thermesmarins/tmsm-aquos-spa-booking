@@ -1,3 +1,7 @@
+### 2.3.0: April 25th, 2025
+* Add possibility for the customer to cancel an appointment.
+* Add email notification for customer. 
+
 ### 2.2.31: March 3rd, 2025
 * Not showing cross-sels item in cart for appointments.  
 
