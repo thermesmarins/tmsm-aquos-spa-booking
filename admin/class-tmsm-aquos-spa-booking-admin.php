@@ -20,7 +20,8 @@
  * @subpackage Tmsm_Aquos_Spa_Booking/admin
  * @author     Nicolas Mollet <nico.mollet@gmail.com>
  */
-class Tmsm_Aquos_Spa_Booking_Admin {
+class Tmsm_Aquos_Spa_Booking_Admin
+{
 
 	/**
 	 * The ID of this plugin.
@@ -47,11 +48,11 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct($plugin_name, $version)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -59,10 +60,10 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles()
+	{
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/tmsm-aquos-spa-booking-admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/tmsm-aquos-spa-booking-admin.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -70,10 +71,10 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tmsm-aquos-spa-booking-admin.js', array( 'jquery' ), $this->version, true );
-
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/tmsm-aquos-spa-booking-admin.js', array('jquery'), $this->version, true);
 	}
 
 	/**
@@ -83,16 +84,17 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return array
 	 */
-	function order_status_appointment_register( $order_statuses ) {
+	function order_status_appointment_register($order_statuses)
+	{
 
 		// Status must start with "wc-"
 		$order_statuses['wc-appointment'] = array(
-			'label'                     => _x( 'Appointment', 'Order status', 'tmsm-aquos-spa-booking' ),
+			'label'                     => _x('Appointment', 'Order status', 'tmsm-aquos-spa-booking'),
 			'public'                    => true,
 			'exclude_from_search'       => false,
 			'show_in_admin_all_list'    => true,
 			'show_in_admin_status_list' => true,
-			'label_count'               => _n_noop( 'Appointment <span class="count">(%s)</span>', 'Appointments <span class="count">(%s)</span>', 'tmsm-aquos-spa-booking' ),
+			'label_count'               => _n_noop('Appointment <span class="count">(%s)</span>', 'Appointments <span class="count">(%s)</span>', 'tmsm-aquos-spa-booking'),
 		);
 		return $order_statuses;
 	}
@@ -104,8 +106,9 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return string[]
 	 */
-	function order_status_appointment_name( $order_statuses ) {
-		$order_statuses['wc-appointment'] = _x( 'Appointment', 'Order status', 'tmsm-aquos-spa-booking' );
+	function order_status_appointment_name($order_statuses)
+	{
+		$order_statuses['wc-appointment'] = _x('Appointment', 'Order status', 'tmsm-aquos-spa-booking');
 		return $order_statuses;
 	}
 
@@ -120,34 +123,34 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return mixed
 	 */
-	public function woocommerce_order_item_get_formatted_meta_data( $formatted_meta, WC_Order_Item $order_item ) {
-		if ( empty( $formatted_meta ) ) {
+	public function woocommerce_order_item_get_formatted_meta_data($formatted_meta, WC_Order_Item $order_item)
+	{
+		if (empty($formatted_meta)) {
 			return $formatted_meta;
 		}
 		error_log('$order_item' . print_r($order_item, true));
-		foreach ( $formatted_meta as $meta ) {
+		foreach ($formatted_meta as $meta) {
 			error_log('meta' . print_r($meta, true));
 
-			if($meta->key == '_appointment' && !empty($meta->value)){
+			if ($meta->key == '_appointment' && !empty($meta->value)) {
 				$meta->display_key = __('Appointment', 'tmsm-aquos-spa-booking');
 			}
-			if ( $meta->key == '_has_voucher' ) {
+			if ($meta->key == '_has_voucher') {
 				$meta->display_key = __('Has Voucher', 'tmsm-aquos-spa-booking');
-				$meta->display_value = ( $meta->value ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
+				$meta->display_value = ($meta->value ? __('Yes', 'tmsm-aquos-spa-booking') : __('No', 'tmsm-aquos-spa-booking'));
 			}
-			if($meta->key == '_aquos_id' && !empty($meta->value)){
+			if ($meta->key == '_aquos_id' && !empty($meta->value)) {
 				$meta->display_key = __('Aquos Product ID', 'tmsm-aquos-spa-booking');
 			}
-			if($meta->key == '_appointment_processed' && !empty($meta->value)){
+			if ($meta->key == '_appointment_processed' && !empty($meta->value)) {
 				$meta->display_key = __('Appointment Processed to Aquos', 'tmsm-aquos-spa-booking');
-				$meta->display_value = ( $meta->value == 'yes' ? __( 'Yes', 'tmsm-aquos-spa-booking' ) : __( 'No', 'tmsm-aquos-spa-booking' ) );
+				$meta->display_value = ($meta->value == 'yes' ? __('Yes', 'tmsm-aquos-spa-booking') : __('No', 'tmsm-aquos-spa-booking'));
 			}
-			if($meta->key == '_aquos_price' && !empty($meta->value)){
+			if ($meta->key == '_aquos_price' && !empty($meta->value)) {
 				$meta->display_key = __('Aquos Price', 'tmsm-aquos-spa-booking');
 			}
-			if($meta->key == '_appointment_id' && !empty($meta->value)){
-				// TODO ajouter la traduction de "id du rendez-vous"
-				$meta->display_key = __('Appointment_id', 'tmsm-aquos-spa-booking');
+			if ($meta->key == '_aquos_appointment_id' && !empty($meta->value)) {
+				$meta->display_key = __('Appointment id', 'tmsm-aquos-spa-booking');
 			}
 		}
 
@@ -163,7 +166,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return array $item_meta
 	 */
-	public function woocommerce_hidden_order_itemmeta_appointment($item_meta){
+	public function woocommerce_hidden_order_itemmeta_appointment($item_meta)
+	{
 		$item_meta[] = '_appointment_date';
 		$item_meta[] = '_appointment_time';
 
@@ -179,10 +183,11 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return array
 	 */
-	function woocommerce_get_settings_pages($settings) {
+	function woocommerce_get_settings_pages($settings)
+	{
 
 
-		$settings[] = include( plugin_dir_path( dirname( __FILE__ ) ) .'includes/class-tmsm-aquos-spa-booking-settings.php' );
+		$settings[] = include(plugin_dir_path(dirname(__FILE__)) . 'includes/class-tmsm-aquos-spa-booking-settings.php');
 		return $settings; // Return
 	}
 
@@ -191,7 +196,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	/**
 	 * Add Aquos ID Field to Inventory Product Data Tab
 	 */
-	public function woocommerce_product_options_inventory_product_data_fields(){
+	public function woocommerce_product_options_inventory_product_data_fields()
+	{
 		global $thepostid, $post, $product;
 
 		echo '<div class="options_group">';
@@ -199,8 +205,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		woocommerce_wp_checkbox(
 			array(
 				'id'          => '_bookable',
-				'label'       => __( 'Bookable', 'tmsm-aquos-spa-booking' ),
-				'description' => __( 'Check this box if the product is bookable.', 'tmsm-aquos-spa-booking' ),
+				'label'       => __('Bookable', 'tmsm-aquos-spa-booking'),
+				'description' => __('Check this box if the product is bookable.', 'tmsm-aquos-spa-booking'),
 				//'value'         => $product_object->get_sold_individually( 'edit' ) ? 'yes' : 'no',
 			)
 		);
@@ -208,12 +214,12 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		woocommerce_wp_text_input(
 			array(
 				'id'          => '_aquos_id_product',
-				'label'       => __( 'Aquos Product ID (for appointments for products without choice and without options like course)', 'tmsm-aquos-spa-booking' ),
+				'label'       => __('Aquos Product ID (for appointments for products without choice and without options like course)', 'tmsm-aquos-spa-booking'),
 				'placeholder' => '',
-				'value' => get_post_meta( $thepostid, '_aquos_id', true ),
+				'value' => get_post_meta($thepostid, '_aquos_id', true),
 				'desc_tip'    => 'true',
 				'required'    => 'true',
-				'description' => __( 'If empty, the product won\'t be bookable', 'tmsm-aquos-spa-booking' )
+				'description' => __('If empty, the product won\'t be bookable', 'tmsm-aquos-spa-booking')
 			)
 		);
 
@@ -222,11 +228,11 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		woocommerce_wp_textarea_input(
 			array(
 				'id'          => '_aquos_items_ids',
-				'label'       => __( 'Aquos Products IDs (for appointment packages)', 'tmsm-aquos-spa-booking' ),
+				'label'       => __('Aquos Products IDs (for appointment packages)', 'tmsm-aquos-spa-booking'),
 				'placeholder' => '',
 				'desc_tip'    => 'true',
 				'rows'    => 8,
-				'description' => __( 'One item per line, write the Aquos product ID separated by an *. Result should be: product name * product id', 'tmsm-aquos-spa-booking' )
+				'description' => __('One item per line, write the Aquos product ID separated by an *. Result should be: product name * product id', 'tmsm-aquos-spa-booking')
 			)
 		);
 		echo '</div>';
@@ -234,7 +240,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		woocommerce_wp_text_input(
 			array(
 				'id'          => '_aquos_price',
-				'label'       => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ) . ' ' . $thepostid . get_post_meta( $thepostid, '_aquos_id', true ) . (get_post_meta($thepostid, '_aquos_price', true) ),
+				'label'       => __('Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking') . ' ' . $thepostid . get_post_meta($thepostid, '_aquos_id', true) . (get_post_meta($thepostid, '_aquos_price', true)),
 				'custom_attributes' => ['disabled' => 'disabled'],
 			)
 		);
@@ -250,17 +256,17 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return void
 	 */
-	function woocommerce_save_product_variation( $variation_id, $i ) {
+	function woocommerce_save_product_variation($variation_id, $i)
+	{
 
 		// Make Aquos ID field required on saving
-		if ( isset( $_POST['_aquos_id'][ $i ] ) && empty( $_POST['_aquos_id'][ $i ])) {
-			WC_Admin_Meta_Boxes::add_error( __( 'Aquos ID is a required field', 'tmsm-aquos-spa-booking' ) );
+		if (isset($_POST['_aquos_id'][$i]) && empty($_POST['_aquos_id'][$i])) {
+			WC_Admin_Meta_Boxes::add_error(__('Aquos ID is a required field', 'tmsm-aquos-spa-booking'));
 		}
 
-		if ( isset( $_POST['_aquos_id'][$i] ) ) :
-			update_post_meta( $variation_id, '_aquos_id', sanitize_text_field( $_POST['_aquos_id'][$i] ) );
+		if (isset($_POST['_aquos_id'][$i])) :
+			update_post_meta($variation_id, '_aquos_id', sanitize_text_field($_POST['_aquos_id'][$i]));
 		endif;
-
 	}
 
 	/**
@@ -272,23 +278,22 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return void
 	 */
-	function woocommerce_process_product_save_options( $post_id ) {
+	function woocommerce_process_product_save_options($post_id)
+	{
 
-		if ( isset( $_POST['_aquos_id_product'] ) ) :
-			update_post_meta( $post_id, '_aquos_id', sanitize_text_field( $_POST['_aquos_id_product'] ) );
+		if (isset($_POST['_aquos_id_product'])) :
+			update_post_meta($post_id, '_aquos_id', sanitize_text_field($_POST['_aquos_id_product']));
 		endif;
 
-		if ( isset( $_POST['_aquos_items_ids'] ) ) :
-			update_post_meta( $post_id, '_aquos_items_ids', sanitize_textarea_field( $_POST['_aquos_items_ids'] ) );
+		if (isset($_POST['_aquos_items_ids'])) :
+			update_post_meta($post_id, '_aquos_items_ids', sanitize_textarea_field($_POST['_aquos_items_ids']));
 		endif;
 
-		if ( isset( $_POST['_bookable'] ) ) {
-			update_post_meta( $post_id, '_bookable', sanitize_textarea_field( $_POST['_bookable'] )  );
-		}
-		else{
+		if (isset($_POST['_bookable'])) {
+			update_post_meta($post_id, '_bookable', sanitize_textarea_field($_POST['_bookable']));
+		} else {
 			delete_post_meta($post_id, '_bookable');
 		}
-
 	}
 
 	/**
@@ -298,43 +303,44 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 * @param array   $variation_data Variation data.
 	 * @param WP_Post $variation      Post data.
 	 */
-	function woocommerce_variation_options_pricing( $loop, $variation_data, $variation ) {
+	function woocommerce_variation_options_pricing($loop, $variation_data, $variation)
+	{
 		global $thepostid;
 
-		woocommerce_wp_text_input( array(
+		woocommerce_wp_text_input(
+			array(
 				'id' => '_aquos_id[' . $loop . ']',
 				'wrapper_class' => 'form-row',
-				'label' => __( 'Aquos Product ID (for appointments and purchase)', 'tmsm-aquos-spa-booking' ),
-				'value' => get_post_meta( $variation->ID, '_aquos_id', true ),
+				'label' => __('Aquos Product ID (for appointments and purchase)', 'tmsm-aquos-spa-booking'),
+				'value' => get_post_meta($variation->ID, '_aquos_id', true),
 				'custom_attributes' => ['required' => 'required'],
 			)
 		);
 		$warning_price = null;
-		$product_to_check_aquosprice = get_post_meta( $variation->ID, '_aquos_price', true );
+		$product_to_check_aquosprice = get_post_meta($variation->ID, '_aquos_price', true);
 
 		$product = wc_get_product($variation->ID);
-		if($product_to_check_aquosprice){
-			$product_to_check_aquosprice_values   = explode( '+', $product_to_check_aquosprice );
-			$product_to_check_aquosprice_sum   = array_sum($product_to_check_aquosprice_values) ;
-			if($product->get_price() != $product_to_check_aquosprice_sum){
-				$warning_price = ' <span class="notice-error notice-alt">'. sprintf(__( 'Warning %s=%s doesn\'t match %s', 'tmsm-aquos-spa-booking' ), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
-			}
-			else{
-				$warning_price = ' <span class="notice-success notice-alt">'. sprintf(__( '%s=%s matches %s', 'tmsm-aquos-spa-booking' ), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
+		if ($product_to_check_aquosprice) {
+			$product_to_check_aquosprice_values   = explode('+', $product_to_check_aquosprice);
+			$product_to_check_aquosprice_sum   = array_sum($product_to_check_aquosprice_values);
+			if ($product->get_price() != $product_to_check_aquosprice_sum) {
+				$warning_price = ' <span class="notice-error notice-alt">' . sprintf(__('Warning %s=%s doesn\'t match %s', 'tmsm-aquos-spa-booking'), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
+			} else {
+				$warning_price = ' <span class="notice-success notice-alt">' . sprintf(__('%s=%s matches %s', 'tmsm-aquos-spa-booking'), $product_to_check_aquosprice, $product_to_check_aquosprice_sum, $product->get_price()) . '</span>';
 			}
 		}
 
 
 
-		woocommerce_wp_text_input( array(
+		woocommerce_wp_text_input(
+			array(
 				'id' => '_aquos_price[' . $loop . ']',
 				'wrapper_class' => 'form-row',
-				'label' => __( 'Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking' ) . $warning_price,
-				'value' => get_post_meta( $variation->ID, '_aquos_price', true ),
+				'label' => __('Aquos Product Price (for web service synchronization)', 'tmsm-aquos-spa-booking') . $warning_price,
+				'value' => get_post_meta($variation->ID, '_aquos_price', true),
 				'custom_attributes' => ['disabled' => 'disabled']
 			)
 		);
-
 	}
 
 	/**
@@ -342,7 +348,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @param bool $echo
 	 */
-	function regenerate_aquos_prices($echo = false){
+	function regenerate_aquos_prices($echo = false)
+	{
 
 		$output = '';
 
@@ -352,29 +359,26 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		// Finding missings Aquos IDs
 		$missing_aquos_ids = [];
 		$products = wc_get_products(['numberposts' => -1, 'post_status' => 'publish']);
-		foreach($products as $product){
+		foreach ($products as $product) {
 
 			if ($product->get_type() == "variable") {
 				foreach ($product->get_available_variations() as $variation) {
 
-						$aquos_id = get_post_meta($variation['variation_id'], '_aquos_id', true);
+					$aquos_id = get_post_meta($variation['variation_id'], '_aquos_id', true);
 
-						if(empty($aquos_id)){
-							$missing_aquos_ids[$variation['variation_id']] = '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_name(). '</a> / ' . ' - '.$variation['sku']. ' variation ID '. $product->get_id().' / aquos_id missing';
-						}
-
+					if (empty($aquos_id)) {
+						$missing_aquos_ids[$variation['variation_id']] = '<a href="' . get_edit_post_link($product->get_id()) . '">' . $product->get_name() . '</a> / ' . ' - ' . $variation['sku'] . ' variation ID ' . $product->get_id() . ' / aquos_id missing';
+					}
 				}
-			}
-			else{
+			} else {
 				$aquos_id = get_post_meta($product->get_id(), '_aquos_id', true);
-				if(empty($aquos_id)){
-					$missing_aquos_ids[$product->get_id()] = '<a href="'.get_edit_post_link($product->get_id()).'">'.$product->get_name(). '</a> / ' . ' product ID '.$product->get_id().' / aquos_id missing';
+				if (empty($aquos_id)) {
+					$missing_aquos_ids[$product->get_id()] = '<a href="' . get_edit_post_link($product->get_id()) . '">' . $product->get_name() . '</a> / ' . ' product ID ' . $product->get_id() . ' / aquos_id missing';
 				}
 			}
-
 		}
-		if(!empty($missing_aquos_ids)){
-			$output .= __( 'This section finds if Aquos IDs are missing for the web service synchronization:', 'tmsm-aquos-spa-booking' );
+		if (!empty($missing_aquos_ids)) {
+			$output .= __('This section finds if Aquos IDs are missing for the web service synchronization:', 'tmsm-aquos-spa-booking');
 			$output .= '<br>';
 			$output .= implode('<br>', $missing_aquos_ids);
 			$output .= '<br>';
@@ -387,110 +391,105 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		$meta_key_aquos_price = '_aquos_price';
 		$non_matching_prices = [];
 
-		$wpdb->delete( $wpdb->postmeta, [ 'meta_key' => $meta_key_aquos_price ] );
+		$wpdb->delete($wpdb->postmeta, ['meta_key' => $meta_key_aquos_price]);
 
 		$results = $wpdb->get_results("SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value != '' ");
 
-		if(!empty($results)){
-			$count_meta = count( $results );
+		if (!empty($results)) {
+			$count_meta = count($results);
 			$errors_nb = 0;
 
 			//echo sprintf(__( 'Parsing %d products', 'tmsm-aquos-spa-booking' ), $count_meta);
 
-			foreach ( $results as $result ) {
+			foreach ($results as $result) {
 				$product = wc_get_product($result->post_id);
-				if($product){
+				if ($product) {
 					$non_matching_prices[$result->post_id] = '';
-					$non_matching_prices[$result->post_id] .= 'product id '.$result->post_id . ' / ';
-					if( $product->get_parent_id()){
-						$non_matching_prices[$result->post_id] .= 'it is a variation, parent id '.$product->get_parent_id() . ' / ';
+					$non_matching_prices[$result->post_id] .= 'product id ' . $result->post_id . ' / ';
+					if ($product->get_parent_id()) {
+						$non_matching_prices[$result->post_id] .= 'it is a variation, parent id ' . $product->get_parent_id() . ' / ';
 					}
 
 					$aquos_price = [];
-					$aquos_ids   = explode( '+', $result->meta_value );
-					foreach ( $aquos_ids as $aquos_id ) {
-						$price = self::get_product_price_from_aquos_or_product_id( intval($aquos_id), $result->post_id );
+					$aquos_ids   = explode('+', $result->meta_value);
+					foreach ($aquos_ids as $aquos_id) {
+						$price = self::get_product_price_from_aquos_or_product_id(intval($aquos_id), $result->post_id);
 						$aquos_price[] = $price;
-						if($price == 0){
-							$non_matching_prices[$result->post_id] .= sprintf(__( 'Price not found for product %s', 'tmsm-aquos-spa-booking' ), $result->post_id);
+						if ($price == 0) {
+							$non_matching_prices[$result->post_id] .= sprintf(__('Price not found for product %s', 'tmsm-aquos-spa-booking'), $result->post_id);
 							$non_matching_prices[$result->post_id] .= ' / ';
 						}
 					}
-					$result->aquos_price = join( '+', $aquos_price );
-					$non_matching_prices[$result->post_id] .= 'detailed price '.$result->aquos_price . ' / ';
+					$result->aquos_price = join('+', $aquos_price);
+					$non_matching_prices[$result->post_id] .= 'detailed price ' . $result->aquos_price . ' / ';
 
 					// Checking if calculated price matches product price
 
 					$product_price = 0;
-					if(!empty($product)){
+					if (!empty($product)) {
 						$product_price = $product->get_price();
 					}
 					$calculated_price = 0;
-					foreach($aquos_price as $item_price){
-						if(!empty($item_price)){
-							$calculated_price+=$item_price;
+					foreach ($aquos_price as $item_price) {
+						if (!empty($item_price)) {
+							$calculated_price += $item_price;
 						}
 					}
-					$non_matching_prices[$result->post_id] .= 'calculated price '.$calculated_price . ' / ';
+					$non_matching_prices[$result->post_id] .= 'calculated price ' . $calculated_price . ' / ';
 
-					if($calculated_price != $product_price){
-						$non_matching_prices[$result->post_id] .= '<b>NON MATCHING PRICE with '.$product_price . '</b> / ';
+					if ($calculated_price != $product_price) {
+						$non_matching_prices[$result->post_id] .= '<b>NON MATCHING PRICE with ' . $product_price . '</b> / ';
 
-						if(!empty($product)){
-							$non_matching_prices[$result->post_id] .= 'product is '. $product->get_status() . ' / ';
-							if($product->get_status() === 'draft'){
+						if (!empty($product)) {
+							$non_matching_prices[$result->post_id] .= 'product is ' . $product->get_status() . ' / ';
+							if ($product->get_status() === 'draft') {
 								unset($non_matching_prices[$result->post_id]);
-							}
-							else{
+							} else {
 								$parent = wc_get_product($product->get_parent_id());
-								if(!empty($parent)){
-									$non_matching_prices[$result->post_id] .= 'variation is '.  $parent->get_status(). ' / ';
-									$non_matching_prices[$result->post_id] = '<a href="'.get_edit_post_link($parent->get_id()).'">'.$parent->get_name(). '</a> / ' . $non_matching_prices[$result->post_id];
-									if($parent->get_status() === 'draft'){
+								if (!empty($parent)) {
+									$non_matching_prices[$result->post_id] .= 'variation is ' .  $parent->get_status() . ' / ';
+									$non_matching_prices[$result->post_id] = '<a href="' . get_edit_post_link($parent->get_id()) . '">' . $parent->get_name() . '</a> / ' . $non_matching_prices[$result->post_id];
+									if ($parent->get_status() === 'draft') {
 										unset($non_matching_prices[$result->post_id]);
 									}
 								}
 							}
-
 						}
 
-						if(!empty($product) && ! $product->get_status() == 'published'){
+						if (!empty($product) && ! $product->get_status() == 'published') {
 							//echo 'product is draft '. $product->get_status() . ' / ';
 						}
-						if(!empty($product) && $product->is_type('variation') ){
+						if (!empty($product) && $product->is_type('variation')) {
 							$parent = wc_get_product($product->get_parent_id());
-							if(!empty($parent) && ! $parent->get_status() == 'published'){
+							if (!empty($parent) && ! $parent->get_status() == 'published') {
 								//echo 'variation is draft / ';
 							}
 						}
 
-						$errors_nb ++;
-					}
-					else{
+						$errors_nb++;
+					} else {
 						unset($non_matching_prices[$result->post_id]);
 					}
 
-					if( defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG ){
+					if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG) {
 						//print_r( $result );
 					}
 
 					// Insert the values
-					$wpdb->query($wpdb->prepare(" INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ( %d, %s, %s ) ",
-						$result->post_id,
-						$meta_key_aquos_price,
-						$result->aquos_price
-					)
+					$wpdb->query(
+						$wpdb->prepare(
+							" INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ( %d, %s, %s ) ",
+							$result->post_id,
+							$meta_key_aquos_price,
+							$result->aquos_price
+						)
 					);
 				}
-
-
 			}
-
-
 		}
 
-		if(!empty($non_matching_prices)){
-			$output .= __( 'This section lists the products/variations with a non-matching price for the web service synchronization:', 'tmsm-aquos-spa-booking' );
+		if (!empty($non_matching_prices)) {
+			$output .= __('This section lists the products/variations with a non-matching price for the web service synchronization:', 'tmsm-aquos-spa-booking');
 			$output .= '<br>';
 			$output .= implode('<br>', $non_matching_prices);
 			$output .= '<br>';
@@ -498,15 +497,14 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 		}
 
 		// If any error occured, output is defined
-		if(!empty($output)){
-			if ( $echo ) {// print result
+		if (!empty($output)) {
+			if ($echo) { // print result
 				echo $output;
-			}
-			else {// email result
+			} else { // email result
 
-				$blogname = esc_html( get_bloginfo( 'name' ) );
-				$email    = stripslashes( get_option( 'admin_email' ) );
-				$subject  = sprintf(__( '%s: TMSM Aquos Spa Booking regeneration error on %s', 'tmsm-aquos-spa-booking' ), $blogname, date('Y-m-d'));
+				$blogname = esc_html(get_bloginfo('name'));
+				$email    = stripslashes(get_option('admin_email'));
+				$subject  = sprintf(__('%s: TMSM Aquos Spa Booking regeneration error on %s', 'tmsm-aquos-spa-booking'), $blogname, date('Y-m-d'));
 
 				$message = $output;
 
@@ -515,9 +513,9 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					'Content-Type: text/html',
 					'Charset=UTF-8'
 				];
-				$email_sent = wp_mail( $email, $subject, $message, $headers );
-				if ( TMSM_AQUOS_SPA_BOOKING_DEBUG && ! $email_sent ) {
-					error_log( 'Error email not sent' );
+				$email_sent = wp_mail($email, $subject, $message, $headers);
+				if (TMSM_AQUOS_SPA_BOOKING_DEBUG && ! $email_sent) {
+					error_log('Error email not sent');
 				}
 			}
 		}
@@ -531,14 +529,15 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 	 *
 	 * @return int
 	 */
-	function get_product_price_from_aquos_or_product_id(int $aquos_id, int $product_id){
+	function get_product_price_from_aquos_or_product_id(int $aquos_id, int $product_id)
+	{
 
 		global $wpdb;
 
 		$price = 0;
 
-		if(is_multisite() && get_current_blog_id() === 6) { // Rennes
-			switch ( $aquos_id ) {
+		if (is_multisite() && get_current_blog_id() === 6) { // Rennes
+			switch ($aquos_id) {
 				case 338: // Parcours Aquatonic
 					//$price = 20; // 2021
 					//$price = 21; // 2022
@@ -569,8 +568,8 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					break;
 			}
 		}
-		if(is_multisite() && get_current_blog_id() === 8) { // Nantes
-			switch ( $aquos_id ) {
+		if (is_multisite() && get_current_blog_id() === 8) { // Nantes
+			switch ($aquos_id) {
 				case 338: // Parcours Aquatonic
 					//$price = 23; // 2021
 					//$price = 24; // 2022
@@ -595,11 +594,10 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 					// $price = 21; // 2024
 					$price = 20; // 2025
 					break;
-
 			}
 		}
-		if ( is_multisite() && get_current_blog_id() === 9 ) { // Paris
-			switch ( $aquos_id ) {
+		if (is_multisite() && get_current_blog_id() === 9) { // Paris
+			switch ($aquos_id) {
 				case 368: // Parcours Aquatonic
 					//$price = 30; // 2021
 					//$price = 31; // 2022
@@ -620,7 +618,7 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			}
 		}
 
-		if( $price == 0 ){
+		if ($price == 0) {
 
 			//echo 'finding product with aquos id '.$aquos_id.' / ';
 
@@ -641,11 +639,11 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 			// Browser all published products
 			$products_published_ids = [];
-			foreach($products_published as $product_published){
+			foreach ($products_published as $product_published) {
 				// Product has a parent (is a variation)
-				if( ! empty($product_published->post_parent)){
+				if (! empty($product_published->post_parent)) {
 					// Parent is draft?
-					if(isset($products_draft_ids[$product_published->post_parent])){
+					if (isset($products_draft_ids[$product_published->post_parent])) {
 						continue;
 					}
 				}
@@ -657,13 +655,14 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			//echo '***';
 
 			// Prepare SQL for finding Aquos ID only for published products
-			$products_published_ids_sql = "'" . implode( "', '", $products_published_ids ) . "'";
+			$products_published_ids_sql = "'" . implode("', '", $products_published_ids) . "'";
 
 			// Find products with "aquos_id"
 			$results = $wpdb->get_results(
 				$wpdb->prepare(
 					//"SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value = '%s'", $aquos_id  // query with all products
-					"SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value = '%s' AND post_id IN ($products_published_ids_sql)", $aquos_id // query with only published products
+					"SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_id' AND meta_value = '%s' AND post_id IN ($products_published_ids_sql)",
+					$aquos_id // query with only published products
 				)
 			);
 			//echo "SELECT * FROM $wpdb->postmeta WHERE meta_key = '_aquos_price' AND meta_value = " .$aquos_id . ' / ';
@@ -671,30 +670,30 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 			//echo '***';
 
 			// Variable price products (like voucher)
-			if ( count( $results ) > 4 ) {
-				$product = wc_get_product( $product_id );
+			if (count($results) > 4) {
+				$product = wc_get_product($product_id);
 				$price   = $product->get_price();
 				//echo 'product price variable '.$price . ' / ';
 			}
 
 			// Other cases
-			else{
+			else {
 
 				//echo 'other casess';
 				//print_r($results);
 				$result = null;
 
 				// Take only the first result
-				if ( is_array( $results ) && count( $results ) > 0 ) {
+				if (is_array($results) && count($results) > 0) {
 					$result = $results[0];
 				}
 
 				//print_r($results);
-				if(!empty($result)){
+				if (!empty($result)) {
 					//echo 'finding product with post_id '.$result->post_id . ' / ';
 					$product = wc_get_product($result->post_id);
 
-					if(!empty($product)){
+					if (!empty($product)) {
 
 						$price = $product->get_price();
 						//echo 'product price '.$price . ' / ';
@@ -708,8 +707,6 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 								echo 'parent price '.$price. ' / ';
 							}
 						}*/
-
-
 					}
 				}
 			}
@@ -736,30 +733,25 @@ class Tmsm_Aquos_Spa_Booking_Admin {
 
 
 			}*/
-		}
-		else{
+		} else {
 			//echo 'hard coded price '.$price . ' for '.$aquos_id. ' / ';
 		}
 
 		return $price;
 	}
-	/**
- * Plugin Name: Mon Plugin Custom Détail Commande
- * Description: Ajoute une valeur personnalisée au détail de la commande.
- * Version: 1.0
- * Author: Votre Nom
- */
+	// /**
+	//  * Add custom value to order details
+	//  *
+	//  * @param WC_Order $order
+	//  */
+	// function woocommerce_admin_order_data_after_order_details_appointment_id($order)
+	// {
+	// 	$order_id = $order->get_id();
 
-function woocommerce_admin_order_data_after_order_details_appointment_id($order) {
-    $order_id = $order->get_id();
-
-    // Effectuer une requête à votre base de données
-    $appintment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
-	if ($appintment_id) {
-        echo '<p>Valeur Custom : ' . esc_html($appintment_id) . '</p>';
-    }
-    
-}
-
-
+	// 	// Effectuer une requête à votre base de données
+	// 	$appintment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
+	// 	if ($appintment_id) {
+	// 		echo '<p>Valeur Custom : ' . esc_html($appintment_id) . '</p>';
+	// 	}
+	// }
 }

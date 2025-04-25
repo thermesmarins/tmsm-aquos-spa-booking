@@ -23,7 +23,6 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
          * @since 0.1
          */
         public function __construct() {
-
             // set ID, this simply needs to be a unique name
             $this->id = 'tmsm_aquos_spa_booking_appointment_cancelled';
             $this->customer_email = true;
@@ -53,8 +52,6 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
             // Call parent constructor to load any other defaults not explicitly defined here
             parent::__construct();
 
-            // Trigger this email when the order status changes to cancelled
-            add_action( 'woocommerce_order_status_cancelled', array( $this, 'trigger' ), 10, 1 );
              // Hook into the settings fields
              add_action( 'woocommerce_email_settings_fields', array( $this, 'init_form_fields' ), 10 );
              
@@ -119,11 +116,6 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                     }
                     $date = new DateTime( $appointment_date_str );
                     $appointment_date = $appointment_date_str ? date_i18n( get_option( 'date_format' ), strtotime( $appointment_date_str ) ) : '';
-                    error_log( 'Appointment Date: ' . $appointment_date ); // Debugging line
-                    error_log( 'Appointment Time: ' . $appointment_time ); // Debugging line
-                    error_log( 'Service Name: ' . $service_name ); // Debugging line
-                    error_log( 'User Name: ' . $user_name ); // Debugging line
-                    // Vérifie si le modèle de texte est défini
                     if ( empty( $cancellation_template ) ) {
                         error_log( 'Cancellation template is empty.' ); // Debugging line
                         return;
@@ -142,11 +134,6 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
         // Passe le contenu dynamique au template
         $this->additional_data['dynamic_cancellation_text'] = wp_kses_post( wpautop( $dynamic_cancellation_text ) );
 
-                // Récupère l'adresse email de l'administrateur
-        $admin_email = get_option('admin_email');
-
-        
-            
             }
 
             if ( $this->is_enabled() && $this->get_recipient() ) {
