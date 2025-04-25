@@ -183,7 +183,7 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'woocommerce_process_product_meta_variable', $plugin_admin, 'woocommerce_process_product_save_options' );
 		$this->loader->add_action( 'woocommerce_save_product_variation', $plugin_admin, 'woocommerce_save_product_variation', 10, 2 );
 		$this->loader->add_action( 'woocommerce_variation_options_pricing', $plugin_admin, 'woocommerce_variation_options_pricing', 10, 3 );
-		$this->loader->add_action( 'woocommerce_admin_order_data_after_order_details', $plugin_admin, 'woocommerce_admin_order_data_after_order_details_appointment_id', 10, 3 );
+		// $this->loader->add_action( 'woocommerce_admin_order_data_after_order_details', $plugin_admin, 'woocommerce_admin_order_data_after_order_details_appointment_id', 10, 3 );
 	
 		// Regenerate Aquos Prices
 		$this->loader->add_action( 'tmsm_aquos_spa_booking_cronaction', $plugin_admin, 'regenerate_aquos_prices', 10, 1 );
@@ -290,8 +290,9 @@ class Tmsm_Aquos_Spa_Booking {
 		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'create_order_line_item_with_coupon', 50, 4 );
 
 		// Appointment public cancelation
-		$this->loader->add_filter( 'woocommerce_valid_order_statuses_for_cancel', $plugin_public, 'add_woocommerce_valid_order_statuses_for_cancel_filter', 90, 2 );
-		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'add_woocommerce_order_details_after_order_table', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_valid_order_statuses_for_cancel', $plugin_public, 'add_woocommerce_valid_order_statuses_for_cancel_filter', 90, 2);
+		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'add_woocommerce_order_details_after_order_table', 50, 2);
+		// $this->loader->add_action( 'woocommerce_cancelled_order', $plugin_public, 'cancel_notification', 50, 2);
 		$this->loader->add_action( 'woocommerce_order_status_changed', $plugin_public, 'appointment_order_status_changed_to_canceled', 10, 3);
 
 		// Appointment link

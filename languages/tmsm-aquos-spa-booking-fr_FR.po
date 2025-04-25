@@ -66,6 +66,10 @@ msgstr "ID de produit Aquos"
 msgid "Appointment Processed to Aquos"
 msgstr "Rendez-vous enregistré dans Aquos"
 
+#: admin/class-tmsm-aquos-spa-booking-admin.php:141
+msgid "Appointment id"
+msgstr "ID du rendez-vous dans Aquos"
+
 #: admin/class-tmsm-aquos-spa-booking-admin.php:145
 #: public/class-tmsm-aquos-spa-booking-public.php:1261
 msgid "Aquos Price"
@@ -282,6 +286,18 @@ msgstr "ID de site Aquos"
 #: includes/class-tmsm-aquos-spa-booking-settings.php:111
 msgid "Aquos Secret"
 msgstr "Secret Aquos"
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:113
+msgid "Days before cancellation"
+msgstr "Nombre de jours minimum avant annulation"
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:126
+msgid "Web Service URL for deletion"
+msgstr "Url du service web pour la suppression"
+
+#: includes/class-tmsm-aquos-spa-booking-settings.php:139
+msgid "Aquos Secret Delete"
+msgstr "Token d'annulation Aquos"
 
 #: includes/class-tmsm-aquos-spa-booking-settings.php:118
 msgid "Web Service URL for times"
@@ -540,6 +556,12 @@ msgstr "Message dans la page de commande reçue"
 #: includes/class-tmsm-aquos-spa-booking-settings.php:328
 msgid "Message in order email"
 msgstr "Message dans l’email de commande"
+#: includes/class-tmsm-aquos-spa-booking-settings.php:367
+msgid "Message in appointment cancelled"
+msgstr "Message dans l’email d'annulation de rendez-vous"
+#: includes/class-tmsm-aquos-spa-booking-settings.php:367
+msgid "Enter the appointment cancellation text for the email using the following placeholders : [user_name], [appointment_date], [appointment_time], [service_name]."
+msgstr "Entrez le message d'annulation de rendez-vous pour l'email en utilisant les espaces réservés suivants : [user_name], [appointment_date], [appointment_time], [service_name]."
 
 #: includes/vendors/wp-background-process.php:432
 #, php-format
@@ -905,6 +927,10 @@ msgstr "Réserver maintenant"
 msgid "To buy a gift voucher, continue below."
 msgstr "Pour acheter un bon cadeau, continuez ci-dessous."
 
+#: public/class-tmsm-aquos-spa-booking-public.php:2972
+msgid "**Error :** There was a problem cancelling your appointment. Please contact our customer service."
+msgstr "**Erreur :**L'annulation de votre rendez-vous a rencontré un problème. Veuillez contacter notre service client."
+
 #: templates/emails/plain/tmsm-aquos-spa-booking-appointment-message.php:14
 #, php-format
 msgid "You’ve received the following appointment with a message from %s:"
@@ -1066,21 +1092,41 @@ msgid "We inform you that your appointment with order %s has been cancelled."
 msgstr "Votre rendez-vous de la commande %s a été annulé avec succès"
 
 #: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:32
-#, php-format
 msgid "Order Email for Cancelled Appointment."
 msgstr "Email pour annulation de commande."
 
 #: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:35
-#, php-format
 msgid "Notification emails are sent to the customer when their appointment is cancelled"
 msgstr "Email de notification lorsque le rendez-vous est annulé"
 
 #: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:38
-#, php-format
 msgid "Appointment Cancellation Confirmation"
 msgstr "Confirmation d'annulation de rendez-vous"
 
 #: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:39
-#, php-format
 msgid "Your Appointment has been Cancelled"
 msgstr "Votre rendez-vous à été annulé !"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:39
+
+msgid "Order Email for Cancelled Appointment"
+msgstr "Email de confimation d'annulation"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:237
+#, php-format
+msgid "Enable this email notification. %s"
+msgstr "Activer cette email de notification. %s"
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:243
+#, php-format
+msgid "This controls the email subject line. Leave blank to use the default subject: <code>%s</code>."
+msgstr "Sujet de l'email, laisser vide pour utiliser la valeur par défaut : <code>%s</code>."
+
+#: includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php:251
+#, php-format
+msgid "This controls the main heading contained within the email notification. Leave blank to use the default heading: <code>%s</code>."
+msgstr "Entête de l'email contenu dans la notification. Laisser vide pour utiliser la valeur par défaut : <code>%s</code>."
+
+
+
+
