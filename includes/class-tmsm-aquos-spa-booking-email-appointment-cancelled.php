@@ -23,7 +23,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
          * @since 0.1
          */
         public function __construct() {
-
+// todo traduction
             // set ID, this simply needs to be a unique name
             $this->id = 'tmsm_aquos_spa_booking_appointment_cancelled';
             $this->customer_email = true;
@@ -54,7 +54,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
             parent::__construct();
 
             // Trigger this email when the order status changes to cancelled
-            add_action( 'woocommerce_order_status_cancelled', array( $this, 'trigger' ), 10, 1 );
+            // add_action( 'woocommerce_order_status_cancelled', array( $this, 'trigger' ), 10, 1 );
              // Hook into the settings fields
              add_action( 'woocommerce_email_settings_fields', array( $this, 'init_form_fields' ), 10 );
              
@@ -186,7 +186,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                     'order'              => $this->object,
                     'email_heading'      => $this->get_heading(),
                     'additional_content' => $this->get_additional_content(),
-                    'sent_to_admin'      => true,
+                    'sent_to_admin'      => false,
                     'plain_text'         => false,
                     'email'              => $this,
                 ),
@@ -207,7 +207,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                     'order'              => $this->object,
                     'email_heading'      => $this->get_heading(),
                     'additional_content' => $this->get_additional_content(),
-                    'sent_to_admin'      => true,
+                    'sent_to_admin'      => false,
                     'plain_text'         => true,
                     'email'              => $this,
                 ),
@@ -229,6 +229,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
         * @since 2.0.0
         */
        public function init_form_fields() {
+        // Todo traduction
            $this->form_fields = array(
                'enabled' => array(
                    'title' 		=> __( 'Enable/Disable', 'woocommerce' ),

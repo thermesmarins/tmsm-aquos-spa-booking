@@ -2952,8 +2952,8 @@ class Tmsm_Aquos_Spa_Booking_Public
 		}
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
-			// error_log('rdv annulé côté client');
-			if ($response === true) {
+			if ($response == true) {
+				error_log('rdv annulé côté client');
 				$email_classes = WC()->mailer()->emails;
 				if (isset($email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'])) {
 					$email_appointment_cancelled = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'];
