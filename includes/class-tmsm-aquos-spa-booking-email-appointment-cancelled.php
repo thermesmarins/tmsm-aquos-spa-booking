@@ -127,6 +127,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
                         '[appointment_date]' => esc_html( $date->format( 'd-m-Y' ) ),
                         '[appointment_time]' => esc_html( $appointment_time ),
                         '[service_name]'    => esc_html( $service_name ),
+                        '[new_appointment_link]' => esc_url(home_url().'/prendre-rdv/' ),
                     );
                     // Remplace les placeholders dans le modèle de texte par les valeurs dynamiques
         $dynamic_cancellation_text = str_replace( array_keys( $args ), array_values( $args ), $cancellation_template );
