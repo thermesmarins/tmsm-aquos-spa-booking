@@ -1,3 +1,6 @@
+### 2.3.2: April 25th, 2025
+* Add HPOS appointment cancelation compatibility
+
 ### 2.3.1: April 25th, 2025
 * Add link to book a new appointment in email
 
