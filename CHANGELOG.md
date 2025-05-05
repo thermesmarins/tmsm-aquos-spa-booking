@@ -1,3 +1,6 @@
+### 2.3.1: April 25th, 2025
+* Add link to book a new appointment in email
+
 ### 2.3.0: April 25th, 2025
 * Add possibility for the customer to cancel an appointment.
 * Add email notification for customer. 
