@@ -2925,7 +2925,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 	public function appointment_order_status_changed_to_canceled($order_id, $old_status, $new_status)
 	{
 		$order = wc_get_order($order_id);
-		$appointment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
+		// $appointment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
+		$appointment_id = $order->get_meta('_aquos_appointment_id');
+		error_log('appointment_id ' . $appointment_id);
 		$response = '';
 
 		if (empty($appointment_id)) {
