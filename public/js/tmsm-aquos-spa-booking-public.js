@@ -1347,13 +1347,15 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     datePicker: null,
 
     initialize: function () {
-      //console.log('DateListView initialize');
+      // console.log('DateListView initialize');
       this.hide();
       this.render();
     },
     selectDate: function (date) {
       console.warn("DateListView selectDate");
       this.selectedValue = date.format("yyyy-mm-dd");
+      // todo Datepicker
+      console.log("selectedValue: " + this.selectedValue);
 
       var options = {
         weekday: "long",
@@ -1397,7 +1399,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     render: function () {
-      // Datepicker
+      // todo Datepicker
       this.datePicker = $("#tmsm-aquos-spa-booking-datepicker")
         .datepicker({
           language: TmsmAquosSpaBookingApp.locale,
@@ -1644,13 +1646,14 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     initialize: function () {
-      //console.log('WeekDayListView initialize');
+      //Todo Initialize the view of moment voir si je dois changer ici ou changer dans le template
+      console.log('WeekDayListView initialize');
 
       moment.locale(TmsmAquosSpaBookingApp.locale);
-      //console.log("moment", moment().format());
-      //console.log("moment locale: "+ moment.locale());
+      console.log("moment", moment().format());
+      console.log("moment locale: "+ moment.locale());
 
-      //console.log("moment fromnow: "+ moment().fromNow());
+      console.log("moment fromnow: "+ moment().fromNow());
       this.listenTo(this.collection, "sync", this.render);
     },
 
