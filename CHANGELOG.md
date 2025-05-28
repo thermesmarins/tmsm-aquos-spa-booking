@@ -1,3 +1,6 @@
+### 2.3.3: April 25th, 2025
+* Fix multiple appointments cancelation.
+
 ### 2.3.2: April 25th, 2025
 * Add HPOS appointment cancelation compatibility
 
