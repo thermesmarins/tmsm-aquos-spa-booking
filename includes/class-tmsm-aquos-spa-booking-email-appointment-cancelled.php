@@ -16,7 +16,7 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled',
      */
     class Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled extends WC_Email {
 
-
+private $additional_data = array();
         /**
          * Set email defaults
          *
