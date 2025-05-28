@@ -177,7 +177,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 								'note'          => $pa . self::sanitize_for_webservice( sanitize_text_field( trim( $order->get_customer_note() ) ) ) ?? '',
 								'list_products' => $aquos_id_array_formatted,
 							];
-
+ error_log('data to send to aquos: ' . print_r($data, true));
 							$body = json_encode($data);
 
 							$headers = [
@@ -197,13 +197,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 							);
 							$response_code = wp_remote_retrieve_response_code( $response );
 							$response_data = json_decode( wp_remote_retrieve_body( $response ) );
-							// todo remove for production
-							error_log('response_data : ');
-							error_log(print_r($response_data, true));
-							error_log(print_r($response_data->appointment_id, true));
 							
-							// error_log('order_response');
-							// error_log(print_r($order, true));
 							$errors = [];
 
 							$logger = wc_get_logger();
@@ -239,16 +233,37 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 									error_log('Error message: '. $response->get_error_message());
 									$errors[] = sprintf( __( 'Error message: %s', 'tmsm-aquatonic-course-booking' ), $response->get_error_message() );
 								}
-								// todo ajouter ici la sauvegarde de l'id aquos du rendez-vous ! (L234)
-								// todo vérifier que appointment_id n'est pas vide.
-								// todo sauvegarder dans les méta de la commande l'id que j'utiliserais plus tard pour la suppression.
-								error_log('response from aquos' . print_r($response_data, true));
+								
+								error_log('response from aquos' . print_r($response_data->appointment_id, true));
 								// No errors, success
 								if ( ! empty( $response_data->Status ) && $response_data->Status == 'true' ) {
 									wc_update_order_item_meta( $order_item_id, '_appointment_processed', 'yes' );
+									// todo gerer le retour des id's multiples
 									if (!empty($response_data->appointment_id)) {
-										wc_update_order_item_meta($order_item_id, '_aquos_appointment_id', $response_data->appointment_id);
-										$order->add_meta_data('_aquos_appointment_id', $response_data->appointment_id);
+										// Faire un tableau si plusieurs id's avec la variable appointment_ids
+										$appointment_ids = array();
+										// Faire une boucle sur chaque id de la réponse
+										if ( is_array( $response_data->appointment_id ) ) {
+											foreach ($response_data->appointment_id as $appointment_id) {
+												$appointment_ids[] = $appointment_id->id;
+											}
+										}
+										// compter le nombre d'ids si supérieur à 1, on enregistre un tableau en forme de chaîne
+										if ( count( $appointment_ids ) > 1 ) {
+											$appointment_ids = implode( ',', $appointment_ids );
+										} else {
+											$appointment_ids = $appointment_ids[0];
+										}
+										error_log('appointment_ids: ' . print_r($appointment_ids, true));
+										// else {
+										// 	$appointment_ids[] = $response_data->appointment_id;
+										// }
+										// 
+
+										wc_update_order_item_meta($order_item_id, '_aquos_appointment_id', $appointment_ids);
+										$order->add_meta_data('_aquos_appointment_id', $appointment_ids);
+										// wc_update_order_item_meta($order_item_id, '_aquos_appointment_id', $response_data->appointment_id);
+										// $order->add_meta_data('_aquos_appointment_id', $response_data->appointment_id);
 										$order->save();
 										
 									}
