@@ -1347,15 +1347,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     datePicker: null,
 
     initialize: function () {
-      // console.log('DateListView initialize');
+      //console.log('DateListView initialize');
       this.hide();
       this.render();
     },
     selectDate: function (date) {
       console.warn("DateListView selectDate");
       this.selectedValue = date.format("yyyy-mm-dd");
-      // todo Datepicker
-      console.log("selectedValue: " + this.selectedValue);
 
       var options = {
         weekday: "long",
@@ -1389,9 +1387,18 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       TmsmAquosSpaBookingApp.selectedData.set("date", this.selectedValue);
 
-      TmsmAquosSpaBookingApp.animateTransition(
-        TmsmAquosSpaBookingApp.timesList.element()
-      );
+      // Show the date in the weekday view
+      if (
+        TmsmAquosSpaBookingApp.weekdaysList &&
+        typeof TmsmAquosSpaBookingApp.weekdaysList.showDate === "function"
+      ) {
+        console.warn("TmsmAquosSpaBookingApp.weekdaysList.showDate");
+        TmsmAquosSpaBookingApp.weekdaysList.showDate(this.selectedValue);
+      }
+
+      // TmsmAquosSpaBookingApp.animateTransition(
+      //   TmsmAquosSpaBookingApp.timesList.element()
+      // );
     },
 
     events: {
@@ -1399,7 +1406,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     render: function () {
-      // todo Datepicker
+      // Datepicker
       this.datePicker = $("#tmsm-aquos-spa-booking-datepicker")
         .datepicker({
           language: TmsmAquosSpaBookingApp.locale,
@@ -1646,14 +1653,13 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
 
     initialize: function () {
-      //Todo Initialize the view of moment voir si je dois changer ici ou changer dans le template
-      console.log('WeekDayListView initialize');
+      //console.log('WeekDayListView initialize');
 
       moment.locale(TmsmAquosSpaBookingApp.locale);
-      console.log("moment", moment().format());
-      console.log("moment locale: "+ moment.locale());
+      //console.log("moment", moment().format());
+      //console.log("moment locale: "+ moment.locale());
 
-      console.log("moment fromnow: "+ moment().fromNow());
+      //console.log("moment fromnow: "+ moment().fromNow());
       this.listenTo(this.collection, "sync", this.render);
     },
 
@@ -1711,7 +1717,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
           i++
         ) {
           this.collection.push({
-            date_label: moment().add(i, "days").format("dddd Do MMMM"),
+            date_label: moment().add(i, "days").format("dddd Do MMMM"),
             date_label_secondline: moment().add(i, "days").format("MMMM"),
             date_label_firstline: moment().add(i, "days").format("dddd Do"),
             date_computed: moment().add(i, "days").format("YYYY-MM-DD"),
@@ -1829,6 +1835,31 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       } else {
         TmsmAquosSpaBookingApp.animateTransition($(this.addAppointmentButton));
       }
+    },
+    showDate: function (dateString) {
+      // Find the week page containing dateString
+      // For simplicity, assume 7-day pages starting from daysrangefrom
+      var momentDate = moment(dateString, "YYYY-MM-DD");
+      var start = moment().add(
+        parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom),
+        "days"
+      );
+      var diff = momentDate.diff(start, "days");
+      var page = Math.floor(diff / 7) + 1;
+      if (page !== this.daysPage) {
+        this.daysPage = page;
+        this.render();
+      }
+      // After render, highlight the date
+      setTimeout(function () {
+        var $item = $(
+          '.tmsm-aquos-spa-booking-weekday-item[data-date="' + dateString + '"]'
+        );
+        if ($item.length) {
+          $item.addClass("highlighted"); // Add a CSS class for highlighting
+          $("html, body").animate({ scrollTop: $item.offset().top }, 400);
+        }
+      }, 100);
     },
   });
 
