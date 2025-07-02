@@ -141,7 +141,7 @@ class Tmsm_Aquos_Spa_Booking
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
-	 * @access   privateP
+	 * @access   private
 	 */
 	private function set_locale()
 	{

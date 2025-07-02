@@ -47,7 +47,7 @@ private $additional_data = array();
             );
 
             // Manually send via admin order actions (optional, you might trigger this via the order status change)
-            add_action( 'woocommerce_order_action_send_appointment_cancellation', array( $this, 'trigger' ) );
+            // add_action( 'woocommerce_order_action_send_appointment_cancellation', array( $this, 'trigger' ) );
 
             // Call parent constructor to load any other defaults not explicitly defined here
             parent::__construct();
@@ -131,10 +131,8 @@ private $additional_data = array();
                     );
                     // Remplace les placeholders dans le modèle de texte par les valeurs dynamiques
         $dynamic_cancellation_text = str_replace( array_keys( $args ), array_values( $args ), $cancellation_template );
-
         // Passe le contenu dynamique au template
         $this->additional_data['dynamic_cancellation_text'] = wp_kses_post( wpautop( $dynamic_cancellation_text ) );
-
             }
 
             if ( $this->is_enabled() && $this->get_recipient() ) {
@@ -157,7 +155,6 @@ private $additional_data = array();
             } else {
                 $email_content = $this->get_content_html();
             }
-
             return $email_content;
         }
 
@@ -167,16 +164,16 @@ private $additional_data = array();
          * @return string
          */
         public function get_content_html() {
-
             return wc_get_template_html(
                 $this->template_html,
                 array(
-                    'order'              => $this->object,
-                    'email_heading'      => $this->get_heading(),
-                    'additional_content' => $this->get_additional_content(),
-                    'sent_to_admin'      => false,
-                    'plain_text'         => false,
-                    'email'              => $this,
+                    'order'                    => $this->object,
+                    'email_heading'            => $this->get_heading(),
+                    'additional_content'       => $this->get_additional_content(),
+                    'dynamic_cancellation_text'=> $this->additional_data['dynamic_cancellation_text'] ?? '',
+                    'sent_to_admin'            => false,
+                    'plain_text'               => false,
+                    'email'                    => $this,
                 ),
                 '',
                 $this->template_base

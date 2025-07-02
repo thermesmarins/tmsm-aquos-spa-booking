@@ -29,16 +29,15 @@ do_action( 'woocommerce_email_header', $email_heading ); ?>
 
 
 <?php // Tu peux ajouter ici des informations spécifiques à l'annulation (raison, date, etc.) 
-if ( ! empty( $email->additional_data['dynamic_cancellation_text'] ) ) {
-    echo $email->additional_data['dynamic_cancellation_text'];
-} else {
-    // Texte par défaut si le modèle n'est pas configuré
-    ?>
-    <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
-    <p><?php printf(esc_html__( 'We inform you that your appointment %s has been cancelled.', 'tmsm-aquos-spa-booking' ), esc_html($order->get_order_number())); ?></p>
-    <?php
-}
-?>
+if (!empty($dynamic_cancellation_text)) {
+    echo $dynamic_cancellation_text;
+} else { ?>
+    <p>Bonjour,</p>
+    <p>Nous vous informons que votre rendez-vous a été annulé.</p>
+    <p>Nous vous remercions de bien vouloir nous contacter si vous avez des questions.</p>
+    <p>Cordialement,</p>
+    <p>L'équipe de l'Aquatnic</p>
+<?php } ?>
 
 <?php
 
