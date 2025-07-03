@@ -2965,7 +2965,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			$order->update_status($old_status);
 			$order->save();
 			add_action('woocommerce_cancelled_order', array($this, 'cancel_notification'), 10, 1);
-		}
+		}                                                                                              
 	}
 }
 	public function cancel_notification($order_id)
