@@ -1,3 +1,6 @@
+### 2.3.5 July 7th, 2025
+* Comment unused actions for cancelation button display
+
 ### 2.3.4 July 03rd, 2025
 * refactor appointment cancelation template
 
