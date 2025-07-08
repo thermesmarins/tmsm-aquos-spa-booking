@@ -1,3 +1,6 @@
+### 2.4.0 July 8th, 2025
+* Update datepicker selection for spa booking
+
 ### 2.3.5 July 7th, 2025
 * Comment unused actions for cancelation button display
 
