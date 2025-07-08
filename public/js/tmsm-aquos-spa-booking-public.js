@@ -1388,10 +1388,17 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       //console.log('selectedValue: ' + this.selectedValue);
 
       TmsmAquosSpaBookingApp.selectedData.set("date", this.selectedValue);
-
-      TmsmAquosSpaBookingApp.animateTransition(
-        TmsmAquosSpaBookingApp.timesList.element()
-      );
+     // Show the date in the weekday view
+     if (
+      TmsmAquosSpaBookingApp.weekdaysList &&
+      typeof TmsmAquosSpaBookingApp.weekdaysList.showDate === "function"
+    ) {
+      console.warn("TmsmAquosSpaBookingApp.weekdaysList.showDate");
+      TmsmAquosSpaBookingApp.weekdaysList.showDate(this.selectedValue);
+    }
+      // TmsmAquosSpaBookingApp.animateTransition(
+      //   TmsmAquosSpaBookingApp.timesList.element()
+      // );
     },
 
     events: {
@@ -1829,6 +1836,31 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       } else {
         TmsmAquosSpaBookingApp.animateTransition($(this.addAppointmentButton));
       }
+    },
+    showDate: function (dateString) {
+      // Find the week page containing dateString
+      // For simplicity, assume 7-day pages starting from daysrangefrom
+      var momentDate = moment(dateString, "YYYY-MM-DD");
+      var start = moment().add(
+        parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom),
+        "days"
+      );
+      var diff = momentDate.diff(start, "days");
+      var page = Math.floor(diff / 7) + 1;
+      if (page !== this.daysPage) {
+        this.daysPage = page;
+        this.render();
+      }
+      // After render, highlight the date
+      setTimeout(function () {
+        var $item = $(
+          '.tmsm-aquos-spa-booking-weekday-item[data-date="' + dateString + '"]'
+        );
+        if ($item.length) {
+          $item.addClass("highlighted"); // Add a CSS class for highlighting
+          $("html, body").animate({ scrollTop: $item.offset().top }, 400);
+        }
+      }, 100);
     },
   });
 

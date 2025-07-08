@@ -460,9 +460,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 			<div id="tmsm-aquos-spa-booking-date-container" class="' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'weekdays' ? 'tmsm-aquos-spa-booking-date-container-weekdays' : '') . '">
 			<div id="tmsm-aquos-spa-booking-date-inner">
 			' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') !== 'calendar' ? '<h3>' . __('Pick your treatments timeslot:', 'tmsm-aquos-spa-booking') . '</h3>' : '<h3>' . __('Pick your treatments date:', 'tmsm-aquos-spa-booking') . '</h3>') . '
-			<button class="' . self::button_class_nostate() . ' ' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'calendar' ? 'hide' : '') . '" id="tmsm-aquos-spa-booking-weekdays-previous" >' . __('Previous Dates', 'tmsm-aquos-spa-booking') .                 '</button>
-			<button class="' . self::button_class_nostate() . ' ' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'calendar' ? 'hide' : '') . '" id="tmsm-aquos-spa-booking-weekdays-next" >' . __('Next Dates', 'tmsm-aquos-spa-booking') . '</button>	
-			<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default" style="' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') !== 'calendar' ? 'display:none;' : '') . '">
+			<button class="' . self::button_class_nostate() . ' ' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'calendar' ? '' : '') . '" id="tmsm-aquos-spa-booking-weekdays-previous" >' . __('Previous Dates', 'tmsm-aquos-spa-booking') .                 '</button>
+			<button class="' . self::button_class_nostate() . ' ' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'calendar' ? '' : '') . '" id="tmsm-aquos-spa-booking-weekdays-next" >' . __('Next Dates', 'tmsm-aquos-spa-booking') . '</button>	
+			<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default" style="' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') !== 'calendar' ? '' : '') . '">
 			</div>
 			<ul id="tmsm-aquos-spa-booking-weekdays-list" class="nav nav-tabs nav-justified" style="' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') !== 'weekdays' ? 'display:none;' : '') . '">' . __('Loading', 'tmsm-aquos-spa-booking') . '
 			</ul>
