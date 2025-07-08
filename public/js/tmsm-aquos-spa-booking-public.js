@@ -1662,6 +1662,7 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
 
       console.log("moment fromnow: "+ moment().fromNow());
       this.listenTo(this.collection, "sync", this.render);
+      this.currentMonday = null; // Track the current week's Monday
     },
 
     events: {
@@ -1678,7 +1679,10 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       //console.log('WeekDayListView previous');
 
       event.preventDefault();
-      this.daysPage = this.daysPage - 1;
+      if (!this.currentMonday) {
+        this.currentMonday = moment().isoWeekday(1);
+      }
+      this.currentMonday = this.currentMonday.clone().subtract(7, 'days');
       this.render();
     },
 
@@ -1686,118 +1690,99 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
       //console.log('WeekDayListView next');
 
       event.preventDefault();
-      this.daysPage = this.daysPage + 1;
-
+      if (!this.currentMonday) {
+        this.currentMonday = moment().isoWeekday(1);
+      }
+      this.currentMonday = this.currentMonday.clone().add(7, 'days');
       this.render();
     },
 
     render: function () {
       //console.log('WeekDayListView render');
 
-      var tmpDaysPage = this.daysPage;
-
       var $list = this.$(this.listElement).empty().val("");
-
       this.collection.reset();
 
-      $("#tmsm-aquos-spa-booking-weekdays-previous").attr("disabled", true);
-      $("#tmsm-aquos-spa-booking-weekdays-next").attr("disabled", true);
-
-      var i = 0;
-
-      if (TmsmAquosSpaBookingApp.productsList.selectedValue) {
-        var loaded_days = 1;
-        for (
-          i =
-            parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom) +
-            (this.daysPage - 1) * 7;
-          i <
-          parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom) +
-            7 +
-            (this.daysPage - 1) * 7;
-          i++
-        ) {
-          this.collection.push({
-            date_label: moment().add(i, "days").format("dddd Do MMMM"),
-            date_label_secondline: moment().add(i, "days").format("MMMM"),
-            date_label_firstline: moment().add(i, "days").format("dddd Do"),
-            date_computed: moment().add(i, "days").format("YYYY-MM-DD"),
-          });
+      // Determine the base Monday
+      var selectedDateStr = TmsmAquosSpaBookingApp.selectedData && TmsmAquosSpaBookingApp.selectedData.get && TmsmAquosSpaBookingApp.selectedData.get('date');
+      if (!this.currentMonday) {
+        if (selectedDateStr) {
+          var selectedDate = moment(selectedDateStr, "YYYY-MM-DD");
+          this.currentMonday = selectedDate.clone().isoWeekday(1);
+          if (selectedDate.isoWeekday() === 7) {
+            this.currentMonday = selectedDate.clone().subtract(6, 'days');
+          }
+        } else {
+          this.currentMonday = moment().isoWeekday(1); // Default to this week's Monday
         }
+      }
 
-        //console.log('WeekDayListView collection:');
-        //console.log(this.collection);
+      // Generate 7 days starting from currentMonday
+      for (var i = 0; i < 7; i++) {
+        var day = this.currentMonday.clone().add(i, 'days');
+        this.collection.push({
+          date_label: day.format("dddd\u00A0Do MMMM"),
+          date_label_secondline: day.format("MMMM"),
+          date_label_firstline: day.format("dddd Do"),
+          date_computed: day.format("YYYY-MM-DD"),
+        });
+      }
 
-        //console.log('WeekDayListView collection length: ' + this.collection.length);
+      // Enable/disable buttons as needed (optional: add range checks)
+      $("#tmsm-aquos-spa-booking-weekdays-previous").attr("disabled", false);
+      $("#tmsm-aquos-spa-booking-weekdays-next").attr("disabled", false);
 
-        this.collection.each(function (model) {
-          //console.log('WeekDayListView each');
-          //console.log(model);
-          var item = new TmsmAquosSpaBookingApp.WeekDayListItemView({
-            model: model,
-          });
-          $list.append(item.render().$el);
-          $(
-            '.tmsm-aquos-spa-booking-weekday-times[data-date="' +
-              model.attributes.date_computed +
-              '"]'
-          )
-            .next()
-            .show();
+      this.collection.each(function (model) {
+        //console.log('WeekDayListView each');
+        //console.log(model);
+        var item = new TmsmAquosSpaBookingApp.WeekDayListItemView({
+          model: model,
+        });
+        $list.append(item.render().$el);
+        $(
+          '.tmsm-aquos-spa-booking-weekday-times[data-date="' +
+            model.attributes.date_computed +
+            '"]'
+        )
+          .next()
+          .show();
 
-          //console.log('WeekDayListView fetch:');
-          TmsmAquosSpaBookingApp.times.fetch({
-            data: {
-              productcategory:
-                TmsmAquosSpaBookingApp.productCategoriesList.selectedValue,
-              product: TmsmAquosSpaBookingApp.productsList.selectedValue,
-              productvariation:
-                TmsmAquosSpaBookingApp.productVariationsList.selectedValue,
-              choice: TmsmAquosSpaBookingApp.choicesList.selectedValue,
-              date: model.attributes.date_computed,
-            },
-            complete: function (xhr) {
-              console.log("complete fetch");
-              console.log(
-                "hide: " +
-                  '.tmsm-aquos-spa-booking-weekday-times[data-date="' +
-                  model.attributes.date_computed +
-                  '"]'
-              );
+        //console.log('WeekDayListView fetch:');
+        TmsmAquosSpaBookingApp.times.fetch({
+          data: {
+            productcategory:
+              TmsmAquosSpaBookingApp.productCategoriesList.selectedValue,
+            product: TmsmAquosSpaBookingApp.productsList.selectedValue,
+            productvariation:
+              TmsmAquosSpaBookingApp.productVariationsList.selectedValue,
+            choice: TmsmAquosSpaBookingApp.choicesList.selectedValue,
+            date: model.attributes.date_computed,
+          },
+          complete: function (xhr) {
+            console.log("complete fetch");
+            console.log(
+              "hide: " +
+                '.tmsm-aquos-spa-booking-weekday-times[data-date="' +
+                model.attributes.date_computed +
+                '"]'
+            );
+            $(
+              '.tmsm-aquos-spa-booking-weekday-times[data-date="' +
+                model.attributes.date_computed +
+                '"]'
+            )
+              .next()
+              .hide();
+            console.log(
               $(
                 '.tmsm-aquos-spa-booking-weekday-times[data-date="' +
                   model.attributes.date_computed +
                   '"]'
-              )
-                .next()
-                .hide();
-              console.log(
-                $(
-                  '.tmsm-aquos-spa-booking-weekday-times[data-date="' +
-                    model.attributes.date_computed +
-                    '"]'
-                ).next()
-              );
-
-              loaded_days++;
-              if (loaded_days == 7) {
-                //console.warn('ALl days loaded ****************');
-                //console.warn('tmpDaysPage: ' + tmpDaysPage);
-
-                $("#tmsm-aquos-spa-booking-weekdays-previous").attr(
-                  "disabled",
-                  tmpDaysPage === 1
-                );
-
-                $("#tmsm-aquos-spa-booking-weekdays-next").attr(
-                  "disabled",
-                  TmsmAquosSpaBookingApp.data.daysrangeto / 7 < tmpDaysPage
-                );
-              }
-            },
-          });
-        }, this);
-      }
+              ).next()
+            );
+          },
+        });
+      }, this);
 
       return this;
     },
@@ -1839,18 +1824,14 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
     },
     showDate: function (dateString) {
       // Find the week page containing dateString
-      // For simplicity, assume 7-day pages starting from daysrangefrom
+      // For simplicity, assume 7-day pages starting from Monday
       var momentDate = moment(dateString, "YYYY-MM-DD");
-      var start = moment().add(
-        parseInt(TmsmAquosSpaBookingApp.calendar.daysrangefrom),
-        "days"
-      );
-      var diff = momentDate.diff(start, "days");
-      var page = Math.floor(diff / 7) + 1;
-      if (page !== this.daysPage) {
-        this.daysPage = page;
-        this.render();
+      var monday = momentDate.clone().isoWeekday(1);
+      if (momentDate.isoWeekday() === 7) {
+        monday = momentDate.clone().subtract(6, 'days');
       }
+      this.currentMonday = monday;
+      this.render();
       // After render, highlight the date
       setTimeout(function () {
         var $item = $(
