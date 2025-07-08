@@ -1,3 +1,7 @@
+### 2.4.1 July 8th, 2025
+* Hide next and previous dates buttons on datepicker selection
+* Add the without attributes selection 
+
 ### 2.4.0 July 8th, 2025
 * Update datepicker selection for spa booking
 

@@ -460,8 +460,8 @@ class Tmsm_Aquos_Spa_Booking_Public
 			<div id="tmsm-aquos-spa-booking-date-container" class="' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'weekdays' ? 'tmsm-aquos-spa-booking-date-container-weekdays' : '') . '">
 			<div id="tmsm-aquos-spa-booking-date-inner">
 			' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') !== 'calendar' ? '<h3>' . __('Pick your treatments timeslot:', 'tmsm-aquos-spa-booking') . '</h3>' : '<h3>' . __('Pick your treatments date:', 'tmsm-aquos-spa-booking') . '</h3>') . '
-			<button class="' . self::button_class_nostate() . ' ' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'calendar' ? '' : '') . '" id="tmsm-aquos-spa-booking-weekdays-previous" >' . __('Previous Dates', 'tmsm-aquos-spa-booking') .                 '</button>
-			<button class="' . self::button_class_nostate() . ' ' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'calendar' ? '' : '') . '" id="tmsm-aquos-spa-booking-weekdays-next" >' . __('Next Dates', 'tmsm-aquos-spa-booking') . '</button>	
+			<button style="display:none;" class="' . self::button_class_nostate() . ' ' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'calendar' ? '' : '') . '" id="tmsm-aquos-spa-booking-weekdays-previous" >' . __('Previous Dates', 'tmsm-aquos-spa-booking') .                 '</button>
+			<button style="display:none;" class="' . self::button_class_nostate() . ' ' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') === 'calendar' ? '' : '') . '" id="tmsm-aquos-spa-booking-weekdays-next" >' . __('Next Dates', 'tmsm-aquos-spa-booking') . '</button>	
 			<div id="tmsm-aquos-spa-booking-datepicker" class="panel panel-default" style="' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') !== 'calendar' ? '' : '') . '">
 			</div>
 			<ul id="tmsm-aquos-spa-booking-weekdays-list" class="nav nav-tabs nav-justified" style="' . (get_option('tmsm_aquos_spa_booking_dateselection', 'calendar') !== 'weekdays' ? 'display:none;' : '') . '">' . __('Loading', 'tmsm-aquos-spa-booking') . '
@@ -641,7 +641,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			<span style="display: none;">{{ data.label }}</span>
 			<# _.each( data.terms, function(term, index) { #>
 
-				<label class="radio-inline radio-inline-{{ data.slug }}" <# if ( ( term.name.indexOf('Sans')>= 0 )) { #> style="display:none"<# } #>>
+				<label class="radio-inline radio-inline-{{ data.slug }}" >
 						<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans')>= 0 )) { #> checked="checked"<# } #>>{{term.name}}
 							<# if ( term.description ) { #>({{term.description}}
 								<# if ( data.is_voucher !='0' ) { #> {{ TmsmAquosSpaBookingApp.strings.ifnotincludedinvoucher}}
