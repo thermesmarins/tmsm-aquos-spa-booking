@@ -195,6 +195,9 @@ li.tmsm-aquos-spa-booking-time-item {
 #tmsm-aquos-spa-booking-date-inner .datepicker-inline {
   width: 100%;
 }
+.datepicker table tr th {
+  text-transform: uppercase;
+}
 .tmsm-aquos-spa-booking-time-listitem {
   margin-bottom: 8px;
 }

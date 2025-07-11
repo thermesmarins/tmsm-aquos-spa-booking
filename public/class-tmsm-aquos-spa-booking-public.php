@@ -1715,9 +1715,16 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 
 			$message = get_option('tmsm_aquos_spa_booking_orderemail', false);
+			$url = home_url('boutique/mon-compte/commandes/');
+		
+			$link_to_appointment_cancelation = '<p>' . sprintf(
+				esc_html__( 'You can cancel your appointment here: %s', 'tmsm-aquos-spa-booking' ),
+				'<a href="' . esc_url( home_url( '/boutique/mon-compte/commandes/' ) ) . '">' . esc_html__( 'Cancel appointment', 'tmsm-aquos-spa-booking' ) . '</a>'
+			) . '</p>';
 
 			if (!empty($message)) {
 				echo '<p>' . nl2br(esc_html($message)) . '</p>';
+				echo '<p>' . $link_to_appointment_cancelation . '</p>';
 				if ($in_date_range === true && $voucher === false) {
 					$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
 					$price_change_information = get_option('tmsm_aquos_spa_booking_message', false);

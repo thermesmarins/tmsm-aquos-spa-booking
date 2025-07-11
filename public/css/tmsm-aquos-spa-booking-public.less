@@ -1,69 +1,70 @@
-
-#tmsm-aquos-spa-booking-products .media-object{
+#tmsm-aquos-spa-booking-products .media-object {
   min-width: 150px;
 }
 
-.tmsm-aquos-spa-booking-time{
+.tmsm-aquos-spa-booking-time {
 
-    min-width: 50px;
+  min-width: 50px;
 
-    @media (min-width: 992px) {
-        min-width: 100px;
-    }
+  @media (min-width: 992px) {
+    min-width: 100px;
+  }
 }
 
-.tmsm-aquos-spa-booking-time.selected + .tmsm-aquos-spa-booking-time-change-label{
+.tmsm-aquos-spa-booking-time.selected+.tmsm-aquos-spa-booking-time-change-label {
   display: inline-block;
 }
 
 .tmsm-aquos-spa-booking-time-change-label,
 .tmsm-aquos-spa-booking-product-selected-label,
-.tmsm-aquos-spa-booking-product-change-label{
+.tmsm-aquos-spa-booking-product-change-label {
   display: none;
 }
 
 .tmsm-aquos-spa-booking-time-listitem.selected .tmsm-aquos-spa-booking-time-change-label,
 .tmsm-aquos-spa-booking-time-listitem.selected .tmsm-aquos-spa-booking-product-selected-label,
-.tmsm-aquos-spa-booking-time-listitem.selected .tmsm-aquos-spa-booking-product-change-label{
+.tmsm-aquos-spa-booking-time-listitem.selected .tmsm-aquos-spa-booking-product-change-label {
   display: inline-block;
 }
 
-.tmsm-aquos-spa-booking-time-listitem.not-selected{
+.tmsm-aquos-spa-booking-time-listitem.not-selected {
   display: none;
 }
 
 #tmsm-aquos-spa-booking-confirm-container {
-    text-align: center;
-    padding-bottom: 40px;
-    padding-left: 20px;
-    padding-right: 20px;
+  text-align: center;
+  padding-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
 
-    @media (min-width: 600px) {
-        padding-left: 0;
-        padding-right: 0;
-    }
+  @media (min-width: 600px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
-#tmsm-aquos-spa-booking-cancel{
+
+#tmsm-aquos-spa-booking-cancel {
   float: left;
   display: none !important;
 }
 
 @media (min-width: 600px) {
-  #tmsm-aquos-spa-booking-form .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+  #tmsm-aquos-spa-booking-form .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
     width: 400px;
   }
 }
 
 
 /* Hide coupon form when checkout has appointments */
-.tmsm-aquos-spa-booking-checkout-has-appointments{
-    .woocommerce-form-coupon-toggle{
-        display: none;
-    }
-    .variation-Choisissezleformatdeboncadeau{
-        display: none;
+.tmsm-aquos-spa-booking-checkout-has-appointments {
+  .woocommerce-form-coupon-toggle {
+    display: none;
+  }
 
-    }
+  .variation-Choisissezleformatdeboncadeau {
+    display: none;
+
+  }
 }
 
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .product-price,
@@ -74,8 +75,7 @@
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .cart-subtotal,
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .order-total,
 .tmsm-aquos-spa-booking-checkout-has-voucheronly .woocommerce-table--order-details tfoot,
-.tmsm-aquos-spa-booking-checkout-has-voucheronly .woocommerce-order-overview__total
-{
+.tmsm-aquos-spa-booking-checkout-has-voucheronly .woocommerce-order-overview__total {
   display: none;
 }
 
@@ -96,27 +96,30 @@ li.tmsm-aquos-spa-booking-time-item {
 #tmsm-aquos-spa-booking-course-times-container,
 #tmsm-aquos-spa-booking-date-container,
 #tmsm-aquos-spa-booking-times-container {
-    border: 3px solid black;
-    min-height: 50vh;
-    vertical-align: middle;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 40px;
-    padding: 10px;
-    @media (min-width: 600px) {
-        padding: 20px;
-        margin-bottom: 100px;
-    }
-}
-#tmsm-aquos-spa-booking-date-container.tmsm-aquos-spa-booking-date-container-weekdays{
-    vertical-align: top;
-    align-items: start;
+  border: 3px solid black;
+  min-height: 50vh;
+  vertical-align: middle;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  padding: 10px;
+
+  @media (min-width: 600px) {
+    padding: 20px;
+    margin-bottom: 100px;
+  }
 }
 
-#tmsm-aquos-spa-booking-weekdays-previous, #tmsm-aquos-spa-booking-weekdays-next{
-    margin-bottom: 10px;
+#tmsm-aquos-spa-booking-date-container.tmsm-aquos-spa-booking-date-container-weekdays {
+  vertical-align: top;
+  align-items: start;
+}
+
+#tmsm-aquos-spa-booking-weekdays-previous,
+#tmsm-aquos-spa-booking-weekdays-next {
+  margin-bottom: 10px;
 }
 
 #tmsm-aquos-spa-booking-voucher-container:before,
@@ -135,7 +138,9 @@ li.tmsm-aquos-spa-booking-time-item {
   background: black;
   content: "";
 }
+
 @media (min-width: 600px) {
+
   #tmsm-aquos-spa-booking-voucher-container:before,
   #tmsm-aquos-spa-booking-categories-container:before,
   #tmsm-aquos-spa-booking-products-container:before,
@@ -151,33 +156,37 @@ li.tmsm-aquos-spa-booking-time-item {
 }
 
 
-#tmsm-aquos-spa-booking-form{
+#tmsm-aquos-spa-booking-form {
   text-align: center;
   margin: auto auto;
   margin-top: 40px;
   margin-bottom: 300px;
-    .bootstrap-select{
-        .dropdown-header {
-            .text{
-                color: #000;
-                font-weight: bold;
-                text-transform: uppercase;
-            }
-        }
-        .text-muted{
-            display: none;
-        }
-        .dropdown-menu li a.opt{
-            padding-left: 1em;
-        }
+
+  .bootstrap-select {
+    .dropdown-header {
+      .text {
+        color: #000;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
     }
+
+    .text-muted {
+      display: none;
+    }
+
+    .dropdown-menu li a.opt {
+      padding-left: 1em;
+    }
+  }
 }
+
 @media (min-width: 600px) {
   #tmsm-aquos-spa-booking-form {
     margin-top: 100px;
 
-    &.tmsm-aquos-spa-booking-form-calendar{
-       width: 50%;
+    &.tmsm-aquos-spa-booking-form-calendar {
+      width: 50%;
     }
 
   }
@@ -191,8 +200,8 @@ li.tmsm-aquos-spa-booking-time-item {
 #tmsm-aquos-spa-booking-attributes-inner,
 #tmsm-aquos-spa-booking-choices-inner,
 #tmsm-aquos-spa-booking-date-inner,
-#tmsm-aquos-spa-booking-times-inner{
-  width:100%;
+#tmsm-aquos-spa-booking-times-inner {
+  width: 100%;
 }
 
 @media (max-width: 360px) {
@@ -200,76 +209,83 @@ li.tmsm-aquos-spa-booking-time-item {
     margin-top: 10px;
   }
 }
+
 @media (max-width: 600px) {
-  #tmsm-aquos-spa-booking-form .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+  #tmsm-aquos-spa-booking-form .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
     width: 100% !important;
   }
 }
 
 
-.tmsm-aquos-spa-booking-form-calendar{
-    #tmsm-aquos-spa-booking-date-inner{
-        display: block;
-        width: 80%;
-    }
+.tmsm-aquos-spa-booking-form-calendar {
+  #tmsm-aquos-spa-booking-date-inner {
+    display: block;
+    width: 80%;
+  }
 }
 
-#tmsm-aquos-spa-booking-date-inner table{
+#tmsm-aquos-spa-booking-date-inner table {
   width: 100%;
 }
 
-#tmsm-aquos-spa-booking-date-inner .datepicker-inline{
+#tmsm-aquos-spa-booking-date-inner .datepicker-inline {
   width: 100%;
 }
 
-.tmsm-aquos-spa-booking-time-listitem{
+.datepicker table tr th {text-transform: uppercase;}
+
+
+.tmsm-aquos-spa-booking-time-listitem {
   margin-bottom: 8px;
 }
 
-.radio-inline-pa_format-bon-cadeau{
+.radio-inline-pa_format-bon-cadeau {
   display: none !important;
 }
 
-#order_review_heading + #order_review_heading{
+#order_review_heading+#order_review_heading {
   display: none;
 }
 
-.variation-IDdeproduitAquos, .variation-PrixpourAquos{
+.variation-IDdeproduitAquos,
+.variation-PrixpourAquos {
   display: none;
 }
 
-.tmsm-aquos-spa-booking-weekday-item{
-    font-weight: bold;
-    padding-bottom: 20px;
+.tmsm-aquos-spa-booking-weekday-item {
+  font-weight: bold;
+  padding-bottom: 20px;
 
 
-    @media (min-width: 768px) and (max-width: 992px) {
-        font-size: 80%;
-        .btn{
-            padding: 3px 6px;
-            font-size: 80%;
-        }
+  @media (min-width: 768px) and (max-width: 992px) {
+    font-size: 80%;
+
+    .btn {
+      padding: 3px 6px;
+      font-size: 80%;
     }
+  }
 
-    .secondline{
-        @media (min-width: 768px) {
-            display: block;
-        }
+  .secondline {
+    @media (min-width: 768px) {
+      display: block;
     }
+  }
 
-    .glyphicon-refresh{
-        margin-top: 18px;
-        margin-bottom: 12px;
-        font-size: 24px;
-        margin-left: 34px;
-        margin-right: 34px;
-    }
+  .glyphicon-refresh {
+    margin-top: 18px;
+    margin-bottom: 12px;
+    font-size: 24px;
+    margin-left: 34px;
+    margin-right: 34px;
+  }
 }
 
-.tmsm-aquos-spa-booking-weekday-times{
-    padding-top: 10px;
-    font-weight: normal;
+.tmsm-aquos-spa-booking-weekday-times {
+  padding-top: 10px;
+  font-weight: normal;
 }
+
 .buy-voucher {
   margin: 10px 0 0 0;
 }
