@@ -1718,8 +1718,8 @@ class Tmsm_Aquos_Spa_Booking_Public
 			$url = home_url('boutique/mon-compte/commandes/');
 		
 			$link_to_appointment_cancelation = '<p>' . sprintf(
-				esc_html__( 'You can cancel your appointment here: %s', 'tmsm-aquos-spa-booking' ),
-				'<a href="' . esc_url( home_url( '/boutique/mon-compte/commandes/' ) ) . '">' . esc_html__( 'Cancel appointment', 'tmsm-aquos-spa-booking' ) . '</a>'
+				esc_html__( 'To cancel your appointment, %s', 'tmsm-aquos-spa-booking' ),
+				'<a href="' . esc_url( home_url( '/boutique/mon-compte/commandes/' ) ) . '">' . esc_html__( 'go to your account', 'tmsm-aquos-spa-booking' ) . '</a>'
 			) . '</p>';
 
 			if (!empty($message)) {

@@ -1,3 +1,7 @@
+### 2.4.2 July 8th, 2025
+* Add new translations
+* Add new link in email for appointment cancelation
+
 ### 2.4.1 July 8th, 2025
 * Hide next and previous dates buttons on datepicker selection
 * Add the without attributes selection 
