@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TMSM Aquos Spa Booking\n"
-"POT-Creation-Date: 2025-07-11 09:48+0200\n"
-"PO-Revision-Date: 2025-07-11 09:50+0200\n"
+"POT-Creation-Date: 2025-07-11 10:08+0200\n"
+"PO-Revision-Date: 2025-07-11 10:09+0200\n"
 "Last-Translator: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language-Team: Nicolas Mollet <nico.mollet@gmail.com>\n"
 "Language: fr\n"
@@ -971,12 +971,12 @@ msgstr ""
 
 #: public/class-tmsm-aquos-spa-booking-public.php:1721
 #, php-format
-msgid "You can cancel your appointment here: %s"
-msgstr "Vous pouvez annuler votre rendez-vous ici %s"
+msgid "To cancel your appointment, %s"
+msgstr "Pour annuler,  %s"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:1722
-msgid "Cancel appointment"
-msgstr "Annuler le rendez-vous"
+msgid "go to your account"
+msgstr "rendez-vous dans votre compte"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:1834
 #, php-format
@@ -1101,6 +1101,9 @@ msgstr ""
 #, php-format
 msgid "Order errors: %s"
 msgstr "Erreurs de rendez-vous : %s"
+
+#~ msgid "Cancel appointment"
+#~ msgstr "Annuler le rendez-vous"
 
 #~ msgid "Order Email for Cancelled Appointment."
 #~ msgstr "Email pour annulation de commande."
