@@ -641,11 +641,11 @@ class Tmsm_Aquos_Spa_Booking_Public
 			<span style="display: none;">{{ data.label }}</span>
 			<# _.each( data.terms, function(term, index) { #>
 
-				<label class="radio-inline radio-inline-{{ data.slug }}" >
-						<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans')>= 0 )) { #> checked="checked"<# } #>>{{term.name}}
-							<# if ( term.description ) { #>({{term.description}}
-								<# if ( data.is_voucher !='0' ) { #> {{ TmsmAquosSpaBookingApp.strings.ifnotincludedinvoucher}}
-									<# } #>)<# } #>
+				<label class="radio-inline radio-inline-{{ data.slug }}">
+					<input class="tmsm-aquos-spa-booking-term <# if ( ( term.name.indexOf('Sans') >= 0 )) { #> checked-default<# } #>" type="radio" id="{{ data.slug }}_v_{{ term.slug }}{{ data.productid }}" name="attribute_{{ data.slug }}" value="{{ term.slug }}" <# if ( ( term.name.indexOf('Sans')>= 0 )) { #> checked="checked"<# } #>>{{term.name}}
+						<# if ( term.description ) { #>({{term.description}}
+							<# if ( data.is_voucher !='0' ) { #> {{ TmsmAquosSpaBookingApp.strings.ifnotincludedinvoucher}}
+								<# } #>)<# } #>
 				</label>
 				<# }) #>
 		</script>
@@ -1716,14 +1716,14 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 			$message = get_option('tmsm_aquos_spa_booking_orderemail', false);
 			$url = home_url('boutique/mon-compte/commandes/');
-		
-			$link_to_appointment_cancelation =sprintf(
-				esc_html__( 'To cancel your appointment, %s', 'tmsm-aquos-spa-booking' ),
-				'<a href="' . esc_url( home_url( '/boutique/mon-compte/commandes/' ) ) . '">' . esc_html__( 'go to your account', 'tmsm-aquos-spa-booking' ) . '</a>'
-			) ;
+
+			$link_to_appointment_cancelation = sprintf(
+				esc_html__('To cancel your appointment, %s', 'tmsm-aquos-spa-booking'),
+				'<a href="' . esc_url(home_url('/boutique/mon-compte/commandes/')) . '">' . esc_html__('go to your account', 'tmsm-aquos-spa-booking') . '</a>'
+			);
 
 			if (!empty($message)) {
-				echo '<p>' . nl2br(esc_html($message)) . '<br/><span>' . $link_to_appointment_cancelation . '</span></p> ' ;
+				echo '<p>' . nl2br(esc_html($message)) . '<br/><span>' . $link_to_appointment_cancelation . '</span></p> ';
 				// echo '<span>' . $link_to_appointment_cancelation . '</span>';
 				if ($in_date_range === true && $voucher === false) {
 					$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
@@ -2935,19 +2935,27 @@ class Tmsm_Aquos_Spa_Booking_Public
 		// $appointment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
 		$appointment_ids = $order->get_meta('_aquos_appointment_id');
 		error_log('appointment_id ' . $appointment_ids);
+
+		// Vérifier si $appointment_ids est vide ou null avant l'explode
+		if (empty($appointment_ids)) {
+			error_log('Aucun ID de rendez-vous trouvé pour la commande ' . $order_id);
+			return;
+		}
+
 		$appointment_id = explode(',', $appointment_ids);
 		error_log('appointment_id_array ' . print_r($appointment_id, true));
-	
-		$response= array();
 
-		if (!isset($appointment_id[0])) {
-			error_log('Aucun ID de rendez-vous trouvé pour la commande ' . $order_id);
-			
-		} else {
-			$site_id =  get_option('tmsm_aquos_spa_booking_aquossiteid');
-			$url = get_option('tmsm_aquos_spa_booking_webserviceurldelete');
-			foreach ($appointment_id as $id) {
-				error_log('appointment_id_item ' . $id);
+		$response = array();
+		$site_id =  get_option('tmsm_aquos_spa_booking_aquossiteid');
+		$url = get_option('tmsm_aquos_spa_booking_webserviceurldelete');
+
+		foreach ($appointment_id as $id) {
+			// Trim pour enlever les espaces et vérifier les valeurs vides/null/0
+			$id = trim($id);
+			if (empty($id) || $id === '0' || $id === 'null') {
+				continue;
+			}
+			error_log('appointment_id_item ' . $id);
 
 			$delete_appointment_array = array(
 				'id_site' => $site_id,
@@ -2957,24 +2965,22 @@ class Tmsm_Aquos_Spa_Booking_Public
 			$signature =  $this->generate_hmac_signature($json_body);
 			$response[] = $this->delete_in_aquos($json_body, $signature, $url);
 		}
-	}
-	error_log('response from aquos' . print_r($response, true));
+		error_log('response from aquos' . print_r($response, true));
 
-		if ($old_status == 'appointment' && $new_status == 'cancelled' ) {
-			if (!in_array(false,$response)) {
+		if ($old_status == 'appointment' && $new_status == 'cancelled') {
+			if (!in_array(false, $response)) {
 				$email_classes = WC()->mailer()->emails;
 				if (isset($email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'])) {
 					$email_appointment_cancelled = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'];
 					$email_appointment_cancelled->trigger($order_id); // Déclenche l'email en passant l'ID de la commande
 				}
-				
-		} else {
-			$order->update_status($old_status);
-			$order->save();
-			add_action('woocommerce_cancelled_order', array($this, 'cancel_notification'), 10, 1);
-		}                                                                                              
+			} else {
+				$order->update_status($old_status);
+				$order->save();
+				add_action('woocommerce_cancelled_order', array($this, 'cancel_notification'), 10, 1);
+			}
+		}
 	}
-}
 	public function cancel_notification($order_id)
 	{
 		$order = wc_get_order($order_id);
@@ -3026,7 +3032,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 		$response_data = json_decode(wp_remote_retrieve_body($response));
 		$response = array();
 		if ($response_data->Status == true) {
-			$response[] = $response_data->Status; 
+			$response[] = $response_data->Status;
 		} else {
 			error_log('Error cancelling appointment: ' . $response_data->ErrorMessage);
 			$response[] = false;

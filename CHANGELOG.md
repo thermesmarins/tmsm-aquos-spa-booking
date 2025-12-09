@@ -1,3 +1,6 @@
+2.4.3 December 09th, 2025
+### Manage appointment id 0 on aquos requests.
+
 ### 2.4.2 July 8th, 2025
 * Add new translations
 * Add new link in email for appointment cancelation
