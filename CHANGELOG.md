@@ -1,3 +1,6 @@
+2.4.4 December 09th, 2025
+### New hardcoded prices (aquatonic spa)
+
 2.4.3 December 09th, 2025
 ### Manage appointment id 0 on aquos requests.
 
