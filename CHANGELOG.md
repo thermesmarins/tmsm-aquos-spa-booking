@@ -1,3 +1,6 @@
+2.4.5 December 09th, 2025
+### New hardcoded prices for Oceania (Rennes)
+
 2.4.4 December 09th, 2025
 ### New hardcoded prices (aquatonic spa)
 

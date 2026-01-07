@@ -568,7 +568,8 @@ class Tmsm_Aquos_Spa_Booking_Admin
 					//$price = 82; // 2020
 					//$price = 85; // 2023
 					// $price = 90; // 2024
-					$price = 100; // 2025
+					// $price = 100; // 2025
+					$price = 105; // 2026
 					break;
 			}
 		}
