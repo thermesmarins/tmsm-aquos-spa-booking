@@ -678,7 +678,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 */
 	public function ajax_product_categories()
 	{
-
+		error_log('ajax_product_categories');
 		$this->ajax_checksecurity();
 		$this->ajax_return($this->_get_product_categories());
 	}
@@ -2327,9 +2327,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 	private function _get_products()
 	{
 		$products = [];
+		
 
 		$is_voucher = sanitize_text_field(($_REQUEST['is_voucher'] ?? 0));
-
 
 		if (class_exists('woocommerce')) {
 			$product_category_id = null;
@@ -2340,10 +2340,12 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 			// Order categories
 			$product_categories = get_terms('product_cat');
+			error_log(print_r($product_categories, true));
 			$product_categories_order = [];
 			foreach ($product_categories as $product_category_index => $product_category) {
 				$product_categories_order[$product_category->name] = $product_category_index;
 			}
+			error_log(print_r($product_categories_order, true));
 
 			// Products arguments
 			$args = array(
@@ -2356,6 +2358,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			if (!$is_voucher) {
 				$args['status'] = 'publish';
 			}
+			
 
 			if (!empty($product_category_id)) {
 				$product_category = get_term($product_category_id, 'product_cat');
@@ -2365,14 +2368,16 @@ class Tmsm_Aquos_Spa_Booking_Public
 				$args['category'] = $product_category->slug;
 			}
 
-			// error_log('$args:');
-			// error_log(print_r($args, true));
+			error_log('$args:');
+			error_log(print_r($args, true));
 
 			// Find products
 			$products_ids = wc_get_products($args);
+			error_log('products_ids : '.print_r($products_ids, true));
 			if (!empty($products_ids)) {
 				foreach ($products_ids as $key => $product_id) {
 					$product = wc_get_product($product_id);
+					error_log('product : '.print_r($product->get_type(), true));
 
 					if (($product->is_type('simple') && empty(get_post_meta($product_id, '_aquos_id', true))) && !get_post_meta($product_id, '_aquos_items_ids', true)) {
 						continue;
@@ -2476,14 +2481,36 @@ class Tmsm_Aquos_Spa_Booking_Public
 			}
 
 			if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG) {
-				//error_log('$products:');
-				//error_log(print_r($products, true));
+				error_log('$products:');
+				error_log(print_r($products, true));
 			}
 		}
+		// 1. On crée notre trieur intelligent
+$collator = new Collator('fr_FR');
 
-		$products_column_category_index  = array_column($products, 'category-index');
-		$products_column_name  = array_column($products, 'name');
-		array_multisort($products_column_category_index, SORT_ASC, $products_column_name, SORT_ASC, $products);
+// 2. On prépare nos colonnes de tri
+$products_column_category_index = array_column($products, 'category-index');
+
+// 3. AU LIEU de prendre le nom direct, on crée une colonne de "clés de tri"
+// Ces clés transforment "É" en "E" de manière invisible pour le tri
+$products_column_sort_names = array();
+foreach ($products as $product) {
+    // getSortKey crée une version "comparable" du nom (sans accents gênants)
+    $products_column_sort_names[] = $collator->getSortKey($product['name']);
+}
+
+// 4. On lance le tri multi-niveaux
+// On utilise $products_column_sort_names à la place de $products_column_name
+array_multisort(
+    $products_column_category_index, SORT_ASC, SORT_NUMERIC, // 1er tri : Catégorie
+    $products_column_sort_names,     SORT_ASC, SORT_STRING,  // 2ème tri : Nom (intelligent)
+    $products 												 // Le tableau final à trier
+);
+
+		// $products_column_category_index  = array_column($products, 'category-index');
+		// $products_column_name  = array_column($products, 'name');
+		// array_multisort($products_column_category_index, SORT_ASC, $products_column_name, SORT_ASC, $products);
+		
 
 		return $products;
 	}
