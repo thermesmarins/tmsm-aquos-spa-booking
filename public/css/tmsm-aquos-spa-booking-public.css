@@ -97,7 +97,8 @@ li.tmsm-aquos-spa-booking-time-item {
   #tmsm-aquos-spa-booking-choices-container,
   #tmsm-aquos-spa-booking-course-times-container,
   #tmsm-aquos-spa-booking-date-container,
-  #tmsm-aquos-spa-booking-times-container {
+  #tmsm-aquos-spa-booking-times-container,
+  #tmsm-aquos-spa-booking-voucher-code-container {
     padding: 20px;
     margin-bottom: 100px;
   }
@@ -242,5 +243,38 @@ li.tmsm-aquos-spa-booking-time-item {
 }
 .buy-voucher {
   margin: 10px 0 0 0;
+}
+#tmsm-aquos-spa-booking-voucher-code-container {
+  width: 100%;
+  text-align: center;
+}
+@media (min-width: 400px) and (max-width: 500px) {
+  #tmsm-aquos-spa-booking-voucher-code-container  {
+    width: 100%;
+  }
+}
+#tmsm-aquos-spa-booking-voucher-code-container label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+@media (min-width: 990px) {
+#tmsm-aquos-spa-booking-voucher-code-container input {
+  width: 400px;
+  margin: 0 auto;
+}
+}
+@media (min-width: 501px) and (max-width: 990px) {
+  #tmsm-aquos-spa-booking-voucher-code-container input {
+    width: 300px;
+    margin: 0 auto;
+  }
+}
+ 
+@media (min-width: 400px) and (max-width: 500px) {
+  #tmsm-aquos-spa-booking-voucher-code-container input {
+    width: 200px;
+    margin: 0 auto;
+  }
 }
 /*# sourceMappingURL=tmsm-aquos-spa-booking-public.css.map */

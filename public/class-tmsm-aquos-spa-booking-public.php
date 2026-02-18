@@ -388,7 +388,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 		// Check cart items if any appointment has expired
 		do_action('woocommerce_check_cart_items');
-
+// TODO : traduire le texte
 		$output = '';
 		if ($cart_has_products) {
 			$output = '<p id="tmsm-aquos-spa-booking-emptycartfirst" class="' . self::alert_class_error() . '" >' . sprintf(__('Your cart contains products other than appointments, please <a href="%s">empty your cart or complete the order</a> before booking an appointment.', 'tmsm-aquos-spa-booking'), wc_get_cart_url()) . '</p>';
@@ -409,10 +409,16 @@ class Tmsm_Aquos_Spa_Booking_Public
 			  <input type="radio" name="tmsm-aquos-spa-booking-voucher" id="tmsm-aquos-spa-booking-voucherno" value="0" autocomplete="off"> ' . __('I don\'t have any voucher', 'tmsm-aquos-spa-booking') . '
 			</label>
 			-->
+			<div id="tmsm-aquos-spa-booking-voucher-code-container" style="display:none;">
+			<label for="tmsm-aquos-spa-booking-voucher-code">' . esc_attr__('Entrez la référence du bon cadeau et appuyez sur entrer pour confirmer', 'tmsm-aquos-spa-booking') . '</label>
+				<input type="text" id="tmsm-aquos-spa-booking-voucher-code" name="tmsm-aquos-spa-booking-voucher-code" placeholder="' . esc_attr__('Enter your voucher code', 'tmsm-aquos-spa-booking') . '" data-voucher-code="" >
+				
+			</div>
 			</div>
 			</div>
 			
 			<div id="tmsm-aquos-spa-booking-categories-container" >
+			
 			<div id="tmsm-aquos-spa-booking-categories-inner">
 			<h3>' . __('Pick your treatments category:', 'tmsm-aquos-spa-booking') . '</h3>
 			<select id="tmsm-aquos-spa-booking-categories-select" data-live-search="true"  title="' . esc_attr__('No selection', 'tmsm-aquos-spa-booking') . '">
@@ -422,6 +428,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			
 			<div id="tmsm-aquos-spa-booking-products-container" >
 			<div id="tmsm-aquos-spa-booking-products-inner">
+			
 			<div class="alert alert-info tmsm-message" style="display:none;">
 			 <p> <strong>' . get_option('tmsm_aquos_spa_booking_messagestrong') . '</strong> </p>
 			 <p>'  . get_option('tmsm_aquos_spa_booking_message') . '</p>
@@ -783,13 +790,15 @@ class Tmsm_Aquos_Spa_Booking_Public
 			error_log('ajax_addtocart');
 		}
 		$selecteddata_array = isset($_POST['selecteddata']) ? $_POST['selecteddata'] : array();
-
+		error_log('selecteddata_array: ' . print_r($selecteddata_array, true));
+		error_log('ajax_addtocart');
 		$errors = array(); // Array to hold validation errors
 		$jsondata   = array(); // Array to pass back data
 
 		$nonce = sanitize_text_field($_POST['nonce']);
 		$product_category_id = sanitize_text_field($selecteddata_array['productcategory']);
 		$is_voucher = sanitize_text_field($selecteddata_array['is_voucher']);
+		$voucher_number = isset($selecteddata_array['voucher_number']) ? sanitize_text_field($selecteddata_array['voucher_number']) : '';
 		$product_id = sanitize_text_field($selecteddata_array['product']);
 		$productvariation_id = sanitize_text_field($selecteddata_array['productvariation']);
 		$choice_id = sanitize_text_field($selecteddata_array['choice']);
@@ -840,6 +849,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 			$cart_item_data = [
 				'has_voucher' => $is_voucher,
+				'voucher_number' => $voucher_number,
 				'appointment' => $appointment,
 				'appointment_date' => $date,
 				'appointment_time' => $hourminutes,
@@ -1191,6 +1201,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 	public function woocommerce_add_cart_item_data_appointment($cart_item_data, $product_id, $variation_id)
 	{
 		$has_voucher = sanitize_text_field(filter_input(INPUT_POST, 'has_voucher'));
+		$voucher_number = sanitize_text_field(filter_input(INPUT_POST, 'voucher_number'));
 		$appointment = sanitize_text_field(filter_input(INPUT_POST, 'appointment'));
 		$appointment_date = sanitize_text_field(filter_input(INPUT_POST, 'appointment_date'));
 		$appointment_time = sanitize_text_field(filter_input(INPUT_POST, 'appointment_time'));
@@ -1198,6 +1209,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 		if (!empty($has_voucher)) {
 			$cart_item_data['has_voucher'] = $has_voucher;
+		}
+		if ($voucher_number !== '') {
+			$cart_item_data['voucher_number'] = $voucher_number;
 		}
 		if (!empty($appointment)) {
 			$cart_item_data['appointment'] = $appointment;
@@ -1248,6 +1262,14 @@ class Tmsm_Aquos_Spa_Booking_Public
 				'display' => '',
 			);
 		}
+		// TODO : traduire le texte
+		if (!empty($cart_item['voucher_number'])) {
+			$item_data[] = array(
+				'key'     => __('Référence du bon cadeau', 'tmsm-aquos-spa-booking'),
+				'value'   => wc_clean($cart_item['voucher_number']),
+				'display' => '',
+			);
+		}
 
 		if (!empty($cart_item['aquos_id'])) {
 			$item_data[] = array(
@@ -1291,6 +1313,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 			$item->add_meta_data('_appointment_time', $values['appointment_time'], true);
 			$item->add_meta_data('_appointment', $values['appointment'], true);
 			$item->add_meta_data('_has_voucher', $values['has_voucher'], true);
+			if (!empty($values['voucher_number'])) {
+				$item->add_meta_data('_voucher_number', $values['voucher_number'], true);
+			}
 			$item->add_meta_data('_aquos_id', $values['aquos_id'], true);
 
 
@@ -2340,12 +2365,10 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 			// Order categories
 			$product_categories = get_terms('product_cat');
-			error_log(print_r($product_categories, true));
 			$product_categories_order = [];
 			foreach ($product_categories as $product_category_index => $product_category) {
 				$product_categories_order[$product_category->name] = $product_category_index;
 			}
-			error_log(print_r($product_categories_order, true));
 
 			// Products arguments
 			$args = array(
@@ -2368,16 +2391,14 @@ class Tmsm_Aquos_Spa_Booking_Public
 				$args['category'] = $product_category->slug;
 			}
 
-			error_log('$args:');
-			error_log(print_r($args, true));
+		
 
 			// Find products
 			$products_ids = wc_get_products($args);
-			error_log('products_ids : '.print_r($products_ids, true));
 			if (!empty($products_ids)) {
 				foreach ($products_ids as $key => $product_id) {
 					$product = wc_get_product($product_id);
-					error_log('product : '.print_r($product->get_type(), true));
+					
 
 					if (($product->is_type('simple') && empty(get_post_meta($product_id, '_aquos_id', true))) && !get_post_meta($product_id, '_aquos_items_ids', true)) {
 						continue;
@@ -2481,8 +2502,8 @@ class Tmsm_Aquos_Spa_Booking_Public
 			}
 
 			if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG) {
-				error_log('$products:');
-				error_log(print_r($products, true));
+				// error_log('$products:');
+				// error_log(print_r($products, true));
 			}
 		}
 		// 1. On crée notre trieur intelligent
