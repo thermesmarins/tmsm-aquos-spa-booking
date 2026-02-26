@@ -128,9 +128,7 @@ class Tmsm_Aquos_Spa_Booking_Admin
 		if (empty($formatted_meta)) {
 			return $formatted_meta;
 		}
-		error_log('$order_item' . print_r($order_item, true));
 		foreach ($formatted_meta as $meta) {
-			error_log('meta' . print_r($meta, true));
 
 			if ($meta->key == '_appointment' && !empty($meta->value)) {
 				$meta->display_key = __('Appointment', 'tmsm-aquos-spa-booking');
@@ -514,7 +512,7 @@ class Tmsm_Aquos_Spa_Booking_Admin
 					'Charset=UTF-8'
 				];
 				$email_sent = wp_mail($email, $subject, $message, $headers);
-				if (TMSM_AQUOS_SPA_BOOKING_DEBUG && ! $email_sent) {
+				if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG && ! $email_sent) {
 					error_log('Error email not sent');
 				}
 			}

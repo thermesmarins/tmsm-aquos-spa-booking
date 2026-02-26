@@ -43,7 +43,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 
 		add_action('woocommerce_order_action_send_appointment_confirmation', array($this, 'trigger_confirmation'));
 		add_action('woocommerce_order_action_send_appointment_message', array($this, 'trigger_message'));
-
+		add_action('woocommerce_order_action_send_appointment_error', array($this, 'trigger_error'));
 		parent::__construct();
 	}
 
@@ -66,6 +66,13 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 		$email_appointment_with_message->trigger($order_id);
 	}
 
+	public function trigger_error($order_id)
+	{
+		$email_classes  = WC()->mailer()->emails;
+		$email_appointment_error = $email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Error'];
+		$email_appointment_error->trigger($order_id, $order);
+	}
+
 	/**
 	 * @param array $email_classes
 	 *
@@ -79,6 +86,8 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Message'] = require_once(plugin_dir_path(dirname(__FILE__)) . 'includes/class-tmsm-aquos-spa-booking-email-appointment-message.php');
 		// Enregistrement de l'email d'annulation pour le client
 		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Cancelled'] = require_once(plugin_dir_path(dirname(__FILE__)) . 'includes/class-tmsm-aquos-spa-booking-email-appointment-cancelled.php');
+		$email_classes['Tmsm_Aquos_Spa_Booking_Class_Email_Appointment_Error'] = require_once(plugin_dir_path(dirname(__FILE__)) . 'includes/class-tmsm-aquos-spa-booking-email-appointment-error.php');
+
 
 		return $email_classes;
 	}
@@ -103,7 +112,6 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 		}
 
 		$order = wc_get_order($order_id);
-
 		if (! empty($order)) {
 			if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG) {
 				error_log('Tmsm_Aquos_Spa_Booking_Background_Process is order');
@@ -118,7 +126,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 
 				// Only items with an appointment
 				if (!empty($order_item_data['_appointment'])) {
-
+					update_post_meta($order_id, '_reservation_status', 'pending');
 					if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG) {
 						error_log('Tmsm_Aquos_Spa_Booking_Background_Process order_item is appointment');
 					}
@@ -141,7 +149,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 							$voucher_number = '';
 						}
 						error_log('voucher_number: ' . print_r($voucher_number, true) . " ");
-$note = $pa . " numero de bon cadeau : " . $voucher_number . " ";
+						$note = $pa . " numero de bon cadeau : " . $voucher_number . " ";
 						// Prepare web service params
 						$settings_webserviceurl = get_option('tmsm_aquos_spa_booking_webserviceurlsubmit');
 						$settings_aquossiteid = get_option('tmsm_aquos_spa_booking_aquossiteid');
@@ -185,8 +193,7 @@ $note = $pa . " numero de bon cadeau : " . $voucher_number . " ";
 								'note'          => $note . self::sanitize_for_webservice(sanitize_text_field(trim($order->get_customer_note()))) ?? '',
 								'list_products' => $aquos_id_array_formatted,
 							];
-							// Todo : effacer les errors logs
-							error_log('data to send to aquos: ' . print_r($data, true));
+
 							$body = json_encode($data);
 
 							$headers = [
@@ -301,15 +308,15 @@ $note = $pa . " numero de bon cadeau : " . $voucher_number . " ";
 									)
 								);
 
-								$note = null;
+								$note_error = null;
 								wc_update_order_item_meta($order_item_id, '_appointment_processed', 'no');
 								wc_update_order_item_meta($order_item_id, '_appointment_error', 'yes');
 								update_post_meta($order_id, '_appointment_error', 'yes');
 
 								if (empty($order_item_data['name']) || empty($order_item_data['_appointment']) || empty(implode(', ', $errors))) {
-									$note .= '...' . $order_item_data['name'] . ' ' . $order_item_data['_appointment'] . ' ' . print_r($errors, true);
+									$note_error .= '...' . $order_item_data['name'] . ' ' . $order_item_data['_appointment'] . ' ' . print_r($errors, true);
 								} else {
-									$note .= sprintf(__('Appointment: %s on %s has not inserted because of error: %s', 'tmsm-aquos-spa-booking'), $order_item_data['name'], $order_item_data['_appointment'], implode(', ', $errors));
+									$note_error .= sprintf(__('Appointment: %s on %s has not inserted because of error: %s', 'tmsm-aquos-spa-booking'), $order_item_data['name'], $order_item_data['_appointment'], implode(', ', $errors));
 								}
 
 								/*
@@ -343,22 +350,38 @@ $note = $pa . " numero de bon cadeau : " . $voucher_number . " ";
 									error_log('Error email sent');
 								}*/
 
-								$order->add_order_note($note, false, false);
+								error_log('Error: ' . print_r($errors, true));
+								update_post_meta($order_id, '_reservation_status', 'failed');
+								update_post_meta($order_id, '_appointment_error', 'yes');
+								$order->add_order_note($note_error, false, false);
+								do_action('woocommerce_order_action_send_appointment_error', $order_id, $order);
+								continue;
+							} else {
+								error_log('Confirmed');
+								update_post_meta($order_id, '_reservation_status', 'confirmed');
+								do_action('woocommerce_order_action_send_appointment_confirmation', $order->get_id());
+								do_action('woocommerce_order_action_send_appointment_message', $order->get_id());
+								// On déclenche manuellement l'e-mail de confirmation standard
+								// $emails = WC()->mailer()->get_emails();
+								// if (isset($emails['WC_Email_Customer_Processing_Order'])) {
+								// 	$emails['WC_Email_Customer_Processing_Order']->trigger($order_id);
+								// }
+								
 							}
 						}
 					}
 				}
 			} // end $order->get_items()
 
+
+			sleep(5);
+
 			if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG) {
 				error_log('Triggering action woocommerce_order_action_send_appointment_confirmation');
 				error_log('Triggering action woocommerce_order_action_send_appointment_message');
 			}
-
-			sleep(5);
-
-			do_action('woocommerce_order_action_send_appointment_confirmation', $order->get_id());
-			do_action('woocommerce_order_action_send_appointment_message', $order->get_id());
+			// do_action('woocommerce_order_action_send_appointment_confirmation', $order->get_id());
+			// do_action('woocommerce_order_action_send_appointment_message', $order->get_id());
 		}
 
 		return false;

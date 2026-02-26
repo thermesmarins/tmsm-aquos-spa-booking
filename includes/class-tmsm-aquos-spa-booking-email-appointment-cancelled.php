@@ -116,6 +116,7 @@ private $additional_data = array();
                     }
                     $date = new DateTime( $appointment_date_str );
                     $appointment_date = $appointment_date_str ? date_i18n( get_option( 'date_format' ), strtotime( $appointment_date_str ) ) : '';
+                    
                     if ( empty( $cancellation_template ) ) {
                         error_log( 'Cancellation template is empty.' ); // Debugging line
                         return;
@@ -169,6 +170,8 @@ private $additional_data = array();
                 array(
                     'order'                    => $this->object,
                     'email_heading'            => $this->get_heading(),
+                    'order_date'               => $this->placeholders['{order_date}'],
+                    'order_number'             => $this->placeholders['{order_number}'],
                     'additional_content'       => $this->get_additional_content(),
                     'dynamic_cancellation_text'=> $this->additional_data['dynamic_cancellation_text'] ?? '',
                     'sent_to_admin'            => false,

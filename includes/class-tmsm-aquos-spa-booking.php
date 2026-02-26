@@ -235,8 +235,11 @@ class Tmsm_Aquos_Spa_Booking
 
 		// Confirmation Page/Emails
 		$this->loader->add_filter('woocommerce_thankyou_order_received_text', $plugin_public, 'woocommerce_thankyou_order_received_text_appointment', 100, 2);
+		// $this->loader->add_filter('woocommerce_email_enabled_customer_processing_order', $plugin_public, 'tmsm_hold_email_for_api', 110, 2);
+
 		$this->loader->add_action('woocommerce_before_thankyou', $plugin_public, 'woocommerce_thankyou_order_error', 0, 1);
 		$this->loader->add_action('woocommerce_email_before_order_table', $plugin_public, 'woocommerce_email_before_order_table_appointment', 20, 4);
+		// $this->loader->add_action('woocommerce_checkout_order_processed', $plugin_public, 'tmsm_handle_appointment_logic', 20, 3);
 
 		// Virtual only Column
 		//$this->loader->add_action( 'manage_shop_order_posts_custom_column', $plugin_public, 'shop_order_posts_custom_column_appointment', 50, 2 );

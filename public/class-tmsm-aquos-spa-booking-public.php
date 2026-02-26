@@ -388,7 +388,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 		// Check cart items if any appointment has expired
 		do_action('woocommerce_check_cart_items');
-// TODO : traduire le texte
+		// TODO : traduire le texte
 		$output = '';
 		if ($cart_has_products) {
 			$output = '<p id="tmsm-aquos-spa-booking-emptycartfirst" class="' . self::alert_class_error() . '" >' . sprintf(__('Your cart contains products other than appointments, please <a href="%s">empty your cart or complete the order</a> before booking an appointment.', 'tmsm-aquos-spa-booking'), wc_get_cart_url()) . '</p>';
@@ -685,7 +685,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 */
 	public function ajax_product_categories()
 	{
-		error_log('ajax_product_categories');
+
 		$this->ajax_checksecurity();
 		$this->ajax_return($this->_get_product_categories());
 	}
@@ -790,8 +790,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			error_log('ajax_addtocart');
 		}
 		$selecteddata_array = isset($_POST['selecteddata']) ? $_POST['selecteddata'] : array();
-		error_log('selecteddata_array: ' . print_r($selecteddata_array, true));
-		error_log('ajax_addtocart');
+
 		$errors = array(); // Array to hold validation errors
 		$jsondata   = array(); // Array to pass back data
 
@@ -1666,6 +1665,19 @@ class Tmsm_Aquos_Spa_Booking_Public
 		return ($count == count($cart_items));
 	}
 
+	function tmsm_hold_email_for_api($enabled, $order)
+	{
+		if (! $order) return $enabled;
+
+		$status = get_post_meta($order->get_id(), '_reservation_status', true);
+
+		// Si l'API n'a pas encore répondu, on bloque l'envoi du mail de confirmation
+		if ($status === 'pending') {
+			return false;
+		}
+
+		return $enabled;
+	}
 	/**
 	 * @param $thankyou
 	 * @param $order WC_Order
@@ -1690,7 +1702,22 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 		return $thankyou;
 	}
+	//Todo : Supprimer cette fonction si elle n'est plus utilisée
+	function tmsm_handle_appointment_logic($order_id, $posted_data, $order)
+	{
 
+
+		if (! $reservation_success) {
+			// 2. Marquer l'erreur immédiatement
+			update_post_meta($order_id, '_appointment_error', 'yes');
+
+			// 3. Déclencher votre email d'erreur
+			do_action('woocommerce_order_action_send_appointment_error', $order);
+		} else {
+			// 4. Si OK, on peut déclencher la confirmation standard ou custom
+			do_action('woocommerce_order_action_send_appointment_confirmation', $order);
+		}
+	}
 	/**
 	 * Diplay error in submission failed
 	 *
@@ -2093,7 +2120,13 @@ class Tmsm_Aquos_Spa_Booking_Public
 		if (!is_admin()) {
 			WC()->cart->empty_cart();
 		}
-
+// --- AJOUT : BLOQUER L'EMAIL DE CONFIRMATION STANDARD ---
+    // On met un flag pour dire à WooCommerce : "N'envoie pas le mail tout de suite"
+    update_post_meta($order_id, '_reservation_status', 'pending');
+    
+    // On branche le filtre qui va lire ce flag (voir étape 2 ci-dessous)
+    add_filter( 'woocommerce_email_enabled_customer_processing_order', array($this, 'tmsm_hold_email_for_api'), 10, 2 );
+    // -------------------------------------------------------
 		//$background_process = new Tmsm_Aquos_Spa_Booking_Background_Process();
 		$background_process = $GLOBALS['tmsm_asb_bp'];
 
@@ -2352,7 +2385,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 	private function _get_products()
 	{
 		$products = [];
-		
+
 
 		$is_voucher = sanitize_text_field(($_REQUEST['is_voucher'] ?? 0));
 
@@ -2381,7 +2414,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			if (!$is_voucher) {
 				$args['status'] = 'publish';
 			}
-			
+
 
 			if (!empty($product_category_id)) {
 				$product_category = get_term($product_category_id, 'product_cat');
@@ -2391,14 +2424,14 @@ class Tmsm_Aquos_Spa_Booking_Public
 				$args['category'] = $product_category->slug;
 			}
 
-		
+
 
 			// Find products
 			$products_ids = wc_get_products($args);
 			if (!empty($products_ids)) {
 				foreach ($products_ids as $key => $product_id) {
 					$product = wc_get_product($product_id);
-					
+
 
 					if (($product->is_type('simple') && empty(get_post_meta($product_id, '_aquos_id', true))) && !get_post_meta($product_id, '_aquos_items_ids', true)) {
 						continue;
@@ -2452,10 +2485,8 @@ class Tmsm_Aquos_Spa_Booking_Public
 						$avail_vars = $product->get_available_variations();
 
 						foreach ($avail_vars as $v) {
-							//error_log(print_r($v, true));
 							if ($v["attributes"]["attribute_pa_format-bon-cadeau"] == 'e-bon-cadeau') {
 								$product_has_only_attribute_voucher_variation_id = $v['variation_id'];
-								//error_log('$product_has_only_attribute_voucher_variation_id: ' . $product_has_only_attribute_voucher_variation_id);
 							}
 						}
 					}
@@ -2507,31 +2538,31 @@ class Tmsm_Aquos_Spa_Booking_Public
 			}
 		}
 		// 1. On crée notre trieur intelligent
-$collator = new Collator('fr_FR');
+		$collator = new Collator('fr_FR');
 
-// 2. On prépare nos colonnes de tri
-$products_column_category_index = array_column($products, 'category-index');
+		// 2. On prépare nos colonnes de tri
+		$products_column_category_index = array_column($products, 'category-index');
 
-// 3. AU LIEU de prendre le nom direct, on crée une colonne de "clés de tri"
-// Ces clés transforment "É" en "E" de manière invisible pour le tri
-$products_column_sort_names = array();
-foreach ($products as $product) {
-    // getSortKey crée une version "comparable" du nom (sans accents gênants)
-    $products_column_sort_names[] = $collator->getSortKey($product['name']);
-}
+		// 3. AU LIEU de prendre le nom direct, on crée une colonne de "clés de tri"
+		// Ces clés transforment "É" en "E" de manière invisible pour le tri
+		$products_column_sort_names = array();
+		foreach ($products as $product) {
+			// getSortKey crée une version "comparable" du nom (sans accents gênants)
+			$products_column_sort_names[] = $collator->getSortKey($product['name']);
+		}
 
-// 4. On lance le tri multi-niveaux
-// On utilise $products_column_sort_names à la place de $products_column_name
-array_multisort(
+		// 4. On lance le tri multi-niveaux
+		// On utilise $products_column_sort_names à la place de $products_column_name
+		array_multisort(
     $products_column_category_index, SORT_ASC, SORT_NUMERIC, // 1er tri : Catégorie
     $products_column_sort_names,     SORT_ASC, SORT_STRING,  // 2ème tri : Nom (intelligent)
-    $products 												 // Le tableau final à trier
-);
+			$products 												 // Le tableau final à trier
+		);
 
 		// $products_column_category_index  = array_column($products, 'category-index');
 		// $products_column_name  = array_column($products, 'name');
 		// array_multisort($products_column_category_index, SORT_ASC, $products_column_name, SORT_ASC, $products);
-		
+
 
 		return $products;
 	}
@@ -2927,7 +2958,6 @@ array_multisort(
 			$today = new DateTime();
 			$interval = $today->diff($appointment_date);
 			$days = $interval->days;
-			error_log('difference de jours : ' . $days);
 			if ($days >= $days_limit && $appointment_date >= $today) {
 				$array = [
 					'appointment',
@@ -2946,7 +2976,6 @@ array_multisort(
 
 		$actions = wc_get_account_orders_actions($order);
 
-		error_log('actions ' . print_r($actions, true));
 		if (! empty($actions)) {
 			foreach ($actions as $key => $action) {
 				if ($key == 'cancel') {
@@ -2982,7 +3011,7 @@ array_multisort(
 		$order = wc_get_order($order_id);
 		// $appointment_id = get_post_meta($order_id, '_aquos_appointment_id', true);
 		$appointment_ids = $order->get_meta('_aquos_appointment_id');
-		error_log('appointment_id ' . $appointment_ids);
+
 
 		// Vérifier si $appointment_ids est vide ou null avant l'explode
 		if (empty($appointment_ids)) {
@@ -2991,7 +3020,7 @@ array_multisort(
 		}
 
 		$appointment_id = explode(',', $appointment_ids);
-		error_log('appointment_id_array ' . print_r($appointment_id, true));
+
 
 		$response = array();
 		$site_id =  get_option('tmsm_aquos_spa_booking_aquossiteid');
@@ -3003,7 +3032,7 @@ array_multisort(
 			if (empty($id) || $id === '0' || $id === 'null') {
 				continue;
 			}
-			error_log('appointment_id_item ' . $id);
+
 
 			$delete_appointment_array = array(
 				'id_site' => $site_id,
@@ -3013,7 +3042,6 @@ array_multisort(
 			$signature =  $this->generate_hmac_signature($json_body);
 			$response[] = $this->delete_in_aquos($json_body, $signature, $url);
 		}
-		error_log('response from aquos' . print_r($response, true));
 
 		if ($old_status == 'appointment' && $new_status == 'cancelled') {
 			if (!in_array(false, $response)) {
@@ -3073,7 +3101,6 @@ array_multisort(
 			)
 		);
 		if (is_wp_error($response)) {
-			error_log('Error cancelling appointment: ' . $response->get_error_message());
 			return false;
 		}
 		$response_code = wp_remote_retrieve_response_code($response);
@@ -3082,7 +3109,6 @@ array_multisort(
 		if ($response_data->Status == true) {
 			$response[] = $response_data->Status;
 		} else {
-			error_log('Error cancelling appointment: ' . $response_data->ErrorMessage);
 			$response[] = false;
 		}
 		return $response;

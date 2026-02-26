@@ -364,6 +364,14 @@ if (!class_exists('WC_Settings_Aquosspabooking')) :
 						'default' => __('Cher [user_name],\n\nVotre rendez-vous du [appointment_date] à [appointment_time] pour [service_name] a été annulé avec succès.\n\nNous sommes désolés de ne pas pouvoir vous recevoir.', 'tmsm-aquos-spa-booking'),
 						
 					),
+					array(
+						'type'    => 'textarea',
+						'id'      => 'tmsm_aquos_spa_booking_error_email_template',
+						'name'    => __('Message in appointment error', 'tmsm-aquos-spa-booking'),
+						'desc'    => '<p class="description">' . __('Enter the appointment error text for the email using the following placeholders : [user_name], [site_url], [phone_number].', 'tmsm-aquos-spa-booking') . '</p>',
+						'default' => __('Bonjour [user_name],\n\nVotre tentative de réservation \'a malheureusement pas abouti.\n\nVeuillez nous excuser pour ce contretemps. Nous vous suggérons de [renouveler l\'opération en ligne]([site_url]). Si le problème persiste, n\'hésitez pas à nous joindre au [phone_number].', 'tmsm-aquos-spa-booking'),
+						
+					),
 			
 					array(
 						'type' => 'sectionend',
