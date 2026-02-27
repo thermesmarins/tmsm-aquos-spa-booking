@@ -1,4 +1,4 @@
-2.5.0 December 09th, 2025
+2.5.0 February 27th, 2026
 ### Manage appointments error emails
 ### Add voucher number input for more control
 
