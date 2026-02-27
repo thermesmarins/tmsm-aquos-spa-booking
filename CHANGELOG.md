@@ -1,3 +1,7 @@
+2.5.0 December 09th, 2025
+### Manage appointments error emails
+### Add voucher number input for more control
+
 2.4.5 December 09th, 2025
 ### Sort alphabetic treatments
 
