@@ -1,20 +1,31 @@
-2.5.0 February 27th, 2026
-### Manage appointments error emails
-### Add voucher number input for more control
+### 2.5.1 March 2nd, 2026
 
-2.4.5 December 09th, 2025
-### Sort alphabetic treatments
+* Hidden Button for reset options
+* Delete Local Storage variables
+  
+### 2.5.0 February 27th, 2026
 
-2.4.5 December 09th, 2025
-### New hardcoded prices for Oceania (Rennes)
+* Manage appointments error emails
+* Add voucher number input for more control
 
-2.4.4 December 09th, 2025
-### New hardcoded prices (aquatonic spa)
+### 2.4.6 December 09th, 2025
 
-2.4.3 December 09th, 2025
-### Manage appointment id 0 on aquos requests.
+* Sort alphabetic treatments
+
+### 2.4.5 December 09th, 2025
+
+* New hardcoded prices for Oceania (Rennes)
+
+### 2.4.4 December 09th, 2025
+
+* New hardcoded prices (aquatonic spa)
+
+### 2.4.3 December 09th, 2025
+
+* Manage appointment id 0 on aquos requests.
 
 ### 2.4.2 July 8th, 2025
+
 * Add new translations
 * Add new link in email for appointment cancelation
 

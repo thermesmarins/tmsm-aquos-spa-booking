@@ -455,7 +455,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			<p id="tmsm-aquos-spa-booking-attributes-empty">' . __('No options to pick', 'tmsm-aquos-spa-booking') . '</p>
 			<ul id="tmsm-aquos-spa-booking-attributes-list" class="list-unstyled"></ul>
 			<p class="tmsm-aquos-spa-booking-attributes-reset-confirm">
-			<a href="#" id="tmsm-aquos-spa-booking-attributes-cancel" class="' . self::button_class_default() . '">' . __('Reset your options', 'tmsm-aquos-spa-booking') . '</a>
+			<!-- <a href="#" id="tmsm-aquos-spa-booking-attributes-cancel" class="' . self::button_class_default() . ' ">' . __('Reset your options', 'tmsm-aquos-spa-booking') . '</a> -->
 			<a href="#" id="tmsm-aquos-spa-booking-attributes-confirm" class="' . self::button_class_primary() . '">' . __('Confirm your options', 'tmsm-aquos-spa-booking') . '</a>
 			</p>
 			<div style="display:none"> 
