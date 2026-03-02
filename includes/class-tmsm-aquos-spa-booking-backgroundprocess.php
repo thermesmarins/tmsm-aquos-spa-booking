@@ -126,6 +126,7 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 
 				// Only items with an appointment
 				if (!empty($order_item_data['_appointment'])) {
+					// Ajout pour faire attendre l'email de confirmation automatique de woocommerce
 					update_post_meta($order_id, '_reservation_status', 'pending');
 					if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG) {
 						error_log('Tmsm_Aquos_Spa_Booking_Background_Process order_item is appointment');
@@ -145,11 +146,13 @@ class Tmsm_Aquos_Spa_Booking_Background_Process extends Tmsm_WP_Background_Proce
 						}
 						if (wc_get_order_item_meta($order_item_id, '_voucher_number', true) !== "") {
 							$voucher_number = wc_get_order_item_meta($order_item_id, '_voucher_number', true);
+							$voucher_number_display = " numero de bon cadeau : " . $voucher_number . " ";
 						} else {
 							$voucher_number = '';
+							$voucher_number_display = '';
 						}
 						error_log('voucher_number: ' . print_r($voucher_number, true) . " ");
-						$note = $pa . " numero de bon cadeau : " . $voucher_number . " ";
+						$note = $pa . $voucher_number_display;
 						// Prepare web service params
 						$settings_webserviceurl = get_option('tmsm_aquos_spa_booking_webserviceurlsubmit');
 						$settings_aquossiteid = get_option('tmsm_aquos_spa_booking_aquossiteid');

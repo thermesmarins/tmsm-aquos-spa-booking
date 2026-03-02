@@ -2120,8 +2120,11 @@ var TmsmAquosSpaBookingApp = TmsmAquosSpaBookingApp || {};
         success: function (data) {
           console.log("wp.ajax.send success");
           console.log(data);
+
           if (data.redirect) {
             //console.log('redirect!');
+            // Effacer le numéro de BC dans le localStorage
+            localStorage.removeItem("mon_voucher_temp");
             window.location = data.redirect;
           } else {
             console.log("no redirect...");

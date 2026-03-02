@@ -848,7 +848,6 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 			$cart_item_data = [
 				'has_voucher' => $is_voucher,
-				'voucher_number' => $voucher_number,
 				'appointment' => $appointment,
 				'appointment_date' => $date,
 				'appointment_time' => $hourminutes,
@@ -858,6 +857,10 @@ class Tmsm_Aquos_Spa_Booking_Public
 				'_virtual' => 1,
 				//'price' => 12 // if I want to force a price in the cart
 			];
+			// Ajout du numéro de voucher uniquement si il existey
+			if ($voucher_number != '') {
+				$cart_item_data['voucher_number'] = $voucher_number;
+			}
 			if (defined('TMSM_AQUOS_SPA_BOOKING_DEBUG') && TMSM_AQUOS_SPA_BOOKING_DEBUG) {
 				error_log('$product_id:' . print_r($product_id, true));
 				error_log('$variation_id:' . print_r($variation_id, true));
