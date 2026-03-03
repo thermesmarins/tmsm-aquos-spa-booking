@@ -1,3 +1,8 @@
+
+### 2.5.2 March 3rd, 2026
+
+* minify js file
+
 ### 2.5.1 March 2nd, 2026
 
 * Hidden Button for reset options
