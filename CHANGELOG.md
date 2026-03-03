@@ -1,3 +1,6 @@
+### 2.5.3 March 3rd, 2026
+
+* New minify js file
 
 ### 2.5.2 March 3rd, 2026
 
