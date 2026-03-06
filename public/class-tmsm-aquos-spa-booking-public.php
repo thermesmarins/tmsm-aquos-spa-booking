@@ -411,7 +411,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			-->
 			<div id="tmsm-aquos-spa-booking-voucher-code-container" style="display:none;">
 			<label for="tmsm-aquos-spa-booking-voucher-code">' . esc_attr__('Entrez la référence du bon cadeau et appuyez sur entrer pour confirmer', 'tmsm-aquos-spa-booking') . '</label>
-				<input type="text" id="tmsm-aquos-spa-booking-voucher-code" name="tmsm-aquos-spa-booking-voucher-code" placeholder="' . esc_attr__('Enter your voucher code', 'tmsm-aquos-spa-booking') . '" data-voucher-code="" >
+				<input type="text" id="tmsm-aquos-spa-booking-voucher-code" name="tmsm-aquos-spa-booking-voucher-code" data-voucher-code="" >
 				
 			</div>
 			</div>
@@ -507,7 +507,7 @@ class Tmsm_Aquos_Spa_Booking_Public
 			
 			</div>
 			</form>
-			<p id="tmsm-aquos-spa-booking-cancellationpolicy" style="display: none">' . esc_html(get_option(
+			<p id="tmsm-aquos-spa-booking-cancellationpolicy" >' . esc_html(get_option(
 				'tmsm_aquos_spa_booking_cancellationpolicy',
 				''
 			)) . '</p>

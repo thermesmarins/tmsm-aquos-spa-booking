@@ -1,3 +1,8 @@
+### 2.5.4 March 6th, 2026
+
+* Fix placeholder translation
+* Add new cancel policy paragraph on reservation form
+
 ### 2.5.3 March 3rd, 2026
 
 * New minify js file
