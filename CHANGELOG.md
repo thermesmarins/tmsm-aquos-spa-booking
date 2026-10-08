@@ -1,3 +1,7 @@
+### 2.5.5 October 8th, 2026
+
+* Fix price change message missing in appointment confirmation email (check _has_voucher instead of _voucher)
+
 ### 2.5.4 March 6th, 2026
 
 * Fix placeholder translation

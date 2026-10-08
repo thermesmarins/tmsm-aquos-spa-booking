@@ -1762,7 +1762,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 		}
 		$voucher = false;
 		foreach ($order->get_items() as $item) {
-			if ($item['_voucher'] === 'yes') {
+			// _has_voucher = the customer pays with a gift voucher (same rule as the booking page)
+			// not _voucher, which only flags the product variation as a gift voucher product
+			if (!empty($item['_has_voucher'])) {
 				$voucher = true;
 			}
 		}
