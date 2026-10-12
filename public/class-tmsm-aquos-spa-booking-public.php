@@ -1692,18 +1692,25 @@ class Tmsm_Aquos_Spa_Booking_Public
 
 		if (!empty(WC()->cart)) {
 			WC()->cart->empty_cart();
-
-			if (self::order_has_appointment($order) === true) {
-				$message = get_option('tmsm_aquos_spa_booking_thankyou', false);
-
-				if (!empty($message)) {
-					$thankyou .= '<br><br>' . nl2br(esc_html($message));
-				}
-			}
 		}
 
+		// Outside the cart check so the message is still displayed when the page is reloaded
+		if (!$order instanceof WC_Order || self::order_has_appointment($order) !== true) {
+			return $thankyou;
+		}
 
-		return $thankyou;
+		$message = get_option('tmsm_aquos_spa_booking_thankyou', false);
+		if (empty($message)) {
+			return $thankyou;
+		}
+
+		// Replace the theme text entirely: the whole appointment message is editable in the back office
+		// Placeholders are replaced after wp_kses_post, with escaped values
+		return str_replace(
+			array('{prenom}', '{compte_url}'),
+			array(esc_html($order->get_billing_first_name()), esc_url(wc_get_page_permalink('myaccount'))),
+			nl2br(wp_kses_post($message))
+		);
 	}
 	//Todo : Supprimer cette fonction si elle n'est plus utilisée
 	function tmsm_handle_appointment_logic($order_id, $posted_data, $order)

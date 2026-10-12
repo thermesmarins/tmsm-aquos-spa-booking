@@ -1,3 +1,9 @@
+### 2.5.6 October 12th, 2026
+
+* Appointment order received page: back office message replaces the theme text and allows HTML (bold, links)
+* Add {prenom} and {compte_url} placeholders to the order received message
+* Display the appointment message independently of the cart
+
 ### 2.5.5 October 8th, 2026
 
 * Fix price change message missing in appointment confirmation email (check _has_voucher instead of _voucher)
