@@ -997,7 +997,7 @@ msgstr ""
 
 #: public/class-tmsm-aquos-spa-booking-public.php:1900
 msgid "Appointment booked"
-msgstr "Réservation effectuée"
+msgstr "Réservation en cours"
 
 #: public/class-tmsm-aquos-spa-booking-public.php:1917
 msgid "Book this appointment"

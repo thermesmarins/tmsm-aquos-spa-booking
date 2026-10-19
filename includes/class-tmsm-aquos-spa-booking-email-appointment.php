@@ -140,18 +140,22 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 		 */
 		public function get_content_html() {
 
-			return wc_get_template_html(
-				$this->template_html,
-				array(
-					'order'              => $this->object,
-					'email_heading'      => $this->get_heading(),
-					'additional_content' => $this->get_additional_content(),
-					'sent_to_admin'      => false,
-					'plain_text'         => false,
-					'email'              => $this,
-				),
-				'',
-				$this->template_base
+			return $this->render_without_order_number_and_billing(
+				function () {
+					return wc_get_template_html(
+						$this->template_html,
+						array(
+							'order'              => $this->object,
+							'email_heading'      => $this->get_heading(),
+							'additional_content' => $this->get_additional_content(),
+							'sent_to_admin'      => false,
+							'plain_text'         => false,
+							'email'              => $this,
+						),
+						'',
+						$this->template_base
+					);
+				}
 			);
 		}
 
@@ -161,19 +165,58 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 		 * @return string
 		 */
 		public function get_content_plain() {
-			return wc_get_template_html(
-				$this->template_plain,
-				array(
-					'order'              => $this->object,
-					'email_heading'      => $this->get_heading(),
-					'additional_content' => $this->get_additional_content(),
-					'sent_to_admin'      => false,
-					'plain_text'         => true,
-					'email'              => $this,
-				),
-				'',
-				$this->template_base
+			return $this->render_without_order_number_and_billing(
+				function () {
+					return wc_get_template_html(
+						$this->template_plain,
+						array(
+							'order'              => $this->object,
+							'email_heading'      => $this->get_heading(),
+							'additional_content' => $this->get_additional_content(),
+							'sent_to_admin'      => false,
+							'plain_text'         => true,
+							'email'              => $this,
+						),
+						'',
+						$this->template_base
+					);
+				}
 			);
+		}
+
+		/**
+		 * Renders the email without the "Order #123" line and the billing address block.
+		 *
+		 * Both are WooCommerce defaults and are removed only while this email is rendered:
+		 * other emails sent in the same request (admin notification...) must keep them.
+		 *
+		 * @param callable $render Returns the rendered email content.
+		 *
+		 * @return string
+		 */
+		private function render_without_order_number_and_billing( callable $render ) {
+			$mailer             = WC()->mailer();
+			$addresses_callback = array( $mailer, 'email_addresses' );
+			// Priority is read, not assumed, so the hook is put back exactly where it was
+			$addresses_priority = has_action( 'woocommerce_email_customer_details', $addresses_callback );
+			// Own callback (not __return_false): removing it cannot remove a filter added by other code
+			$hide_order_number  = static function () {
+				return false;
+			};
+
+			add_filter( 'woocommerce_email_display_order_number', $hide_order_number );
+			if ( false !== $addresses_priority ) {
+				remove_action( 'woocommerce_email_customer_details', $addresses_callback, $addresses_priority );
+			}
+
+			try {
+				return $render();
+			} finally {
+				remove_filter( 'woocommerce_email_display_order_number', $hide_order_number );
+				if ( false !== $addresses_priority ) {
+					add_action( 'woocommerce_email_customer_details', $addresses_callback, $addresses_priority, 3 );
+				}
+			}
 		}
 
 		/**

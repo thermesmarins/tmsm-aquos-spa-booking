@@ -1,3 +1,8 @@
+### 2.5.7 October 19th, 2026
+
+* Appointment order received page: title is now "Réservation en cours" (French translation)
+* Appointment confirmation email: remove the order number line and the billing address block
+
 ### 2.5.6 October 12th, 2026
 
 * Appointment order received page: back office message replaces the theme text and allows HTML (bold, links)
