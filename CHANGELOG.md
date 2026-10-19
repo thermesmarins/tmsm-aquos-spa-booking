@@ -1,3 +1,8 @@
+### 2.5.8 October 19th, 2026
+
+* Appointment confirmation email: the back office message now accepts HTML (bold, links) like the order received page
+* Appointment confirmation email: add {prenom} and {compte_url} placeholders; the default cancellation sentence is not added when the message contains {compte_url}
+
 ### 2.5.7 October 19th, 2026
 
 * Appointment order received page: title is now "Réservation en cours" (French translation)

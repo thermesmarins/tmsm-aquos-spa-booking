@@ -1705,7 +1705,22 @@ class Tmsm_Aquos_Spa_Booking_Public
 		}
 
 		// Replace the theme text entirely: the whole appointment message is editable in the back office
-		// Placeholders are replaced after wp_kses_post, with escaped values
+		return $this->format_appointment_message($message, $order);
+	}
+
+	/**
+	 * Formats a back office appointment message (order received page and confirmation email).
+	 *
+	 * HTML is limited to what wp_kses_post allows. Placeholders {prenom} and {compte_url}
+	 * are replaced after wp_kses_post, with escaped values.
+	 *
+	 * @param string   $message
+	 * @param WC_Order $order
+	 *
+	 * @return string
+	 */
+	private function format_appointment_message($message, $order)
+	{
 		return str_replace(
 			array('{prenom}', '{compte_url}'),
 			array(esc_html($order->get_billing_first_name()), esc_url(wc_get_page_permalink('myaccount'))),
@@ -1787,7 +1802,9 @@ class Tmsm_Aquos_Spa_Booking_Public
 			);
 
 			if (!empty($message)) {
-				echo '<p>' . nl2br(esc_html($message)) . '<br/><span>' . $link_to_appointment_cancelation . '</span></p> ';
+				// The message can hold its own account link ({compte_url}): the default cancellation sentence is then redundant
+				$cancelation_link = str_contains($message, '{compte_url}') ? '' : '<br/><span>' . $link_to_appointment_cancelation . '</span>';
+				echo '<p>' . $this->format_appointment_message($message, $order) . $cancelation_link . '</p> ';
 				// echo '<span>' . $link_to_appointment_cancelation . '</span>';
 				if ($in_date_range === true && $voucher === false) {
 					$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
