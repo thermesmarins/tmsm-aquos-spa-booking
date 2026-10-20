@@ -1,3 +1,7 @@
+### 2.5.9 October 20th, 2026
+
+* Appointment confirmation email: remove the order number heading also on WooCommerce older than 10.8 (the display filter does not exist there)
+
 ### 2.5.8 October 19th, 2026
 
 * Appointment confirmation email: the back office message now accepts HTML (bold, links) like the order received page

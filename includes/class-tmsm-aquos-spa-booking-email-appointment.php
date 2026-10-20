@@ -210,13 +210,31 @@ if ( ! class_exists( 'Tmsm_Aquos_Spa_Booking_Class_Email_Appointment', false ) )
 			}
 
 			try {
-				return $render();
+				return $this->strip_order_number_heading( $render() );
 			} finally {
 				remove_filter( 'woocommerce_email_display_order_number', $hide_order_number );
 				if ( false !== $addresses_priority ) {
 					add_action( 'woocommerce_email_customer_details', $addresses_callback, $addresses_priority, 3 );
 				}
 			}
+		}
+
+		/**
+		 * Removes the "[Order #123] (date)" heading from the rendered email.
+		 *
+		 * The woocommerce_email_display_order_number filter only exists since WooCommerce 10.8:
+		 * older versions print the heading unconditionally. It is the only <h2> holding a <time>
+		 * tag, so on recent versions (already hidden by the filter) nothing matches.
+		 *
+		 * @param string $content Rendered email content.
+		 *
+		 * @return string
+		 */
+		private function strip_order_number_heading( $content ) {
+			$stripped = preg_replace( '#<h2\b[^>]*>(?:(?!</h2>).)*?<time\b(?:(?!</h2>).)*?</h2>#s', '', $content );
+
+			// preg_replace returns null on error: keep the email untouched rather than sending nothing
+			return null === $stripped ? $content : $stripped;
 		}
 
 		/**

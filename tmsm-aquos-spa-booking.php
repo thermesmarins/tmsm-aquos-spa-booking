@@ -39,7 +39,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TMSM_AQUOS_SPA_BOOKING_VERSION', '2.5.8' );
+define( 'TMSM_AQUOS_SPA_BOOKING_VERSION', '2.5.9' );
 
 if(! defined('TMSM_AQUOS_SPA_BOOKING_TEMPLATES')){
 	define( 'TMSM_AQUOS_SPA_BOOKING_TEMPLATES', plugin_dir_path( __FILE__ ) );
