@@ -1,3 +1,7 @@
+### 2.5.10 October 20th, 2026
+
+* Fix plugin header version (2.5.9 still declared 2.5.8, so the update was not detected)
+
 ### 2.5.9 October 20th, 2026
 
 * Appointment confirmation email: remove the order number heading also on WooCommerce older than 10.8 (the display filter does not exist there)
