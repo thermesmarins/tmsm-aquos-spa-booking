@@ -1806,11 +1806,12 @@ class Tmsm_Aquos_Spa_Booking_Public
 				$cancelation_link = str_contains($message, '{compte_url}') ? '' : '<br/><span>' . $link_to_appointment_cancelation . '</span>';
 				echo '<p>' . $this->format_appointment_message($message, $order) . $cancelation_link . '</p> ';
 				// echo '<span>' . $link_to_appointment_cancelation . '</span>';
-				if ($in_date_range === true && $voucher === false) {
-					$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
-					$price_change_information = get_option('tmsm_aquos_spa_booking_message', false);
-					echo '<p><strong>' . nl2br(esc_html($price_change_information_notice)) . ' ' .  nl2br(esc_html($price_change_information)) . '</strong></p>';
-				}
+				// Price change notice disabled in the email since 2.5.11 (still shown on the booking page)
+				// if ($in_date_range === true && $voucher === false) {
+				// 	$price_change_information_notice = get_option('tmsm_aquos_spa_booking_messagestrong', false);
+				// 	$price_change_information = get_option('tmsm_aquos_spa_booking_message', false);
+				// 	echo '<p><strong>' . nl2br(esc_html($price_change_information_notice)) . ' ' .  nl2br(esc_html($price_change_information)) . '</strong></p>';
+				// }
 			}
 
 			if ($plain_text || !is_a($order, 'WC_Order')) {

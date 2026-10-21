@@ -1,3 +1,7 @@
+### 2.5.11 October 21st, 2026
+
+* Appointment confirmation email: remove the price change notice ("Veuillez noter que nos tarifs changent en janvier…"); it is still displayed on the booking page
+
 ### 2.5.10 October 20th, 2026
 
 * Fix plugin header version (2.5.9 still declared 2.5.8, so the update was not detected)
