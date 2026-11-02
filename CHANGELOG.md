@@ -1,3 +1,7 @@
+### 2.5.12 November 2nd, 2026
+
+* Appointment confirmation email: no more subtotal/total rows when the order total is 0€ (gift voucher). The previous CSS rule targeted a `tfoot` that recent WooCommerce email templates no longer output; the rows are now removed through the `woocommerce_get_order_item_totals` filter, only while the email order table is rendered
+
 ### 2.5.11 October 21st, 2026
 
 * Appointment confirmation email: remove the price change notice ("Veuillez noter que nos tarifs changent en janvier…"); it is still displayed on the booking page

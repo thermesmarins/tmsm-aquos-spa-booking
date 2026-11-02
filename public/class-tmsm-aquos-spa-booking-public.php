@@ -1762,6 +1762,36 @@ class Tmsm_Aquos_Spa_Booking_Public
 	}
 
 	/**
+	 * Start hiding the subtotal/total rows for free appointment orders (gift voucher).
+	 *
+	 * Hooked into `woocommerce_email_order_details` (early priority).
+	 * The filter is only active while the email order table is rendered,
+	 * so the order received page and "My account" keep their totals.
+	 *
+	 * @param WC_Order $order Order data.
+	 */
+	public function email_order_details_hide_free_totals_start($order)
+	{
+		if (!is_a($order, 'WC_Order')) {
+			return;
+		}
+
+		if ($this->order_has_appointment($order) === true && (float) $order->get_total() === 0.0) {
+			add_filter('woocommerce_get_order_item_totals', '__return_empty_array', 99);
+		}
+	}
+
+	/**
+	 * Stop hiding the totals once the email order table has been rendered.
+	 *
+	 * Hooked into `woocommerce_email_order_details` (late priority).
+	 */
+	public function email_order_details_hide_free_totals_end()
+	{
+		remove_filter('woocommerce_get_order_item_totals', '__return_empty_array', 99);
+	}
+
+	/**
 	 * Generates Order structured data.
 	 *
 	 * Hooked into `woocommerce_email_order_details` action hook.

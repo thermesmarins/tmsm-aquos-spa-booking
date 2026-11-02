@@ -239,6 +239,9 @@ class Tmsm_Aquos_Spa_Booking
 
 		$this->loader->add_action('woocommerce_before_thankyou', $plugin_public, 'woocommerce_thankyou_order_error', 0, 1);
 		$this->loader->add_action('woocommerce_email_before_order_table', $plugin_public, 'woocommerce_email_before_order_table_appointment', 20, 4);
+		// Free order (gift voucher): no subtotal/total rows in the email (priority 1 = before the table, 99 = after)
+		$this->loader->add_action('woocommerce_email_order_details', $plugin_public, 'email_order_details_hide_free_totals_start', 1, 1);
+		$this->loader->add_action('woocommerce_email_order_details', $plugin_public, 'email_order_details_hide_free_totals_end', 99, 0);
 		// $this->loader->add_action('woocommerce_checkout_order_processed', $plugin_public, 'tmsm_handle_appointment_logic', 20, 3);
 
 		// Virtual only Column
