@@ -1764,31 +1764,45 @@ class Tmsm_Aquos_Spa_Booking_Public
 	/**
 	 * Start hiding the subtotal/total rows for free appointment orders (gift voucher).
 	 *
-	 * Hooked into `woocommerce_email_order_details` (early priority).
-	 * The filter is only active while the email order table is rendered,
-	 * so the order received page and "My account" keep their totals.
+	 * Hooked before the order table in the emails (`woocommerce_email_order_details`)
+	 * and in the order details page (`woocommerce_order_details_before_order_table`).
+	 * The filter is only active while that table is rendered.
 	 *
 	 * @param WC_Order $order Order data.
 	 */
-	public function email_order_details_hide_free_totals_start($order)
+	public function hide_free_order_totals_start($order)
 	{
 		if (!is_a($order, 'WC_Order')) {
 			return;
 		}
 
 		if ($this->order_has_appointment($order) === true && (float) $order->get_total() === 0.0) {
-			add_filter('woocommerce_get_order_item_totals', '__return_empty_array', 99);
+			add_filter('woocommerce_get_order_item_totals', array($this, 'remove_free_order_totals_rows'), 99);
 		}
 	}
 
 	/**
-	 * Stop hiding the totals once the email order table has been rendered.
+	 * Stop hiding the totals once the order table has been rendered.
 	 *
-	 * Hooked into `woocommerce_email_order_details` (late priority).
+	 * Hooked after the order table (late priority), same places as the start method.
 	 */
-	public function email_order_details_hide_free_totals_end()
+	public function hide_free_order_totals_end()
 	{
-		remove_filter('woocommerce_get_order_item_totals', '__return_empty_array', 99);
+		remove_filter('woocommerce_get_order_item_totals', array($this, 'remove_free_order_totals_rows'), 99);
+	}
+
+	/**
+	 * Remove only the subtotal and total rows; any other row (e.g. the cancel "Actions" row
+	 * on the account order page) is kept.
+	 *
+	 * @param array $total_rows Order totals rows, keyed by row id.
+	 * @return array
+	 */
+	public function remove_free_order_totals_rows($total_rows)
+	{
+		unset($total_rows['cart_subtotal'], $total_rows['order_total']);
+
+		return $total_rows;
 	}
 
 	/**
