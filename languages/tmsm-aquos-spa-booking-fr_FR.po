@@ -1052,6 +1052,10 @@ msgstr "Réserver maintenant"
 msgid "To buy a gift voucher, continue below."
 msgstr "Pour acheter un bon cadeau, continuez ci-dessous."
 
+#: public/class-tmsm-aquos-spa-booking-public.php
+msgid "Gift voucher"
+msgstr "Bon cadeau"
+
 #: public/class-tmsm-aquos-spa-booking-public.php:2906
 #, php-format
 msgid "View order number %s"

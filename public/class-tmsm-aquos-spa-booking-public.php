@@ -1772,13 +1772,73 @@ class Tmsm_Aquos_Spa_Booking_Public
 	 */
 	public function hide_free_order_totals_start($order)
 	{
-		if (!is_a($order, 'WC_Order')) {
-			return;
-		}
-
-		if ($this->order_has_appointment($order) === true && (float) $order->get_total() === 0.0) {
+		if ($this->is_free_appointment_order($order)) {
 			add_filter('woocommerce_get_order_item_totals', array($this, 'remove_free_order_totals_rows'), 99);
 		}
+	}
+
+	/**
+	 * Is this an appointment order with a total of 0 (gift voucher)?
+	 *
+	 * @param mixed $order Order, anything else returns false.
+	 * @return bool
+	 */
+	private function is_free_appointment_order($order)
+	{
+		return is_a($order, 'WC_Order')
+			&& $this->order_has_appointment($order) === true
+			&& (float) $order->get_total() === 0.0;
+	}
+
+	/**
+	 * Order details page: hide the "Total" column (header and cells) for free appointment orders.
+	 *
+	 * Hooked into `woocommerce_order_details_before_order_table`.
+	 *
+	 * @param WC_Order $order Order data.
+	 */
+	public function hide_free_order_total_column($order)
+	{
+		if ($this->is_free_appointment_order($order)) {
+			echo '<style>.woocommerce-table--order-details .product-total{display:none;}</style>';
+		}
+	}
+
+	/**
+	 * Orders list (my account): start replacing the 0€ amount by a "Gift voucher" label.
+	 *
+	 * Hooked into `woocommerce_before_account_orders`. Active only while the list is rendered.
+	 */
+	public function orders_list_free_total_label_start()
+	{
+		add_filter('woocommerce_get_formatted_order_total', array($this, 'orders_list_free_total_label'), 99, 2);
+	}
+
+	/**
+	 * Orders list (my account): stop replacing the amount.
+	 *
+	 * Hooked into `woocommerce_after_account_orders`.
+	 */
+	public function orders_list_free_total_label_end()
+	{
+		remove_filter('woocommerce_get_formatted_order_total', array($this, 'orders_list_free_total_label'), 99);
+	}
+
+	/**
+	 * Replace the formatted total of a free appointment order by "Gift voucher".
+	 * The orders list then reads "Bon cadeau pour 1 article".
+	 *
+	 * @param string   $formatted_total Formatted total (e.g. "0€").
+	 * @param WC_Order $order           Order data.
+	 * @return string
+	 */
+	public function orders_list_free_total_label($formatted_total, $order)
+	{
+		if ($this->is_free_appointment_order($order)) {
+			return esc_html__('Gift voucher', 'tmsm-aquos-spa-booking');
+		}
+
+		return $formatted_total;
 	}
 
 	/**

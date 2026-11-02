@@ -245,6 +245,11 @@ class Tmsm_Aquos_Spa_Booking
 		// Same on the order details page (my account / order received); the "Actions" row (cancel) is kept
 		$this->loader->add_action('woocommerce_order_details_before_order_table', $plugin_public, 'hide_free_order_totals_start', 1, 1);
 		$this->loader->add_action('woocommerce_order_details_after_order_table', $plugin_public, 'hide_free_order_totals_end', 99, 0);
+		// Order details page: hide the "Total" column of the product table for free orders
+		$this->loader->add_action('woocommerce_order_details_before_order_table', $plugin_public, 'hide_free_order_total_column', 2, 1);
+		// Orders list (my account): "0€ pour 1 article" becomes "Bon cadeau pour 1 article"
+		$this->loader->add_action('woocommerce_before_account_orders', $plugin_public, 'orders_list_free_total_label_start', 10, 0);
+		$this->loader->add_action('woocommerce_after_account_orders', $plugin_public, 'orders_list_free_total_label_end', 10, 0);
 		// $this->loader->add_action('woocommerce_checkout_order_processed', $plugin_public, 'tmsm_handle_appointment_logic', 20, 3);
 
 		// Virtual only Column
