@@ -1,4 +1,4 @@
-### 2.5.12 November 2nd, 2026
+### 2.5.12 November 3rd, 2026
 
 * Appointment confirmation email and order details page (my account / order received): no more subtotal/total rows when the order total is 0€ (gift voucher). The previous CSS rule targeted a `tfoot` that recent WooCommerce email templates no longer output; the two rows are now removed through the `woocommerce_get_order_item_totals` filter, only while the order table is rendered. Other rows (e.g. the cancel "Actions" button) are kept
 * Order details page: the "Total" column of the product table is hidden for these free orders
